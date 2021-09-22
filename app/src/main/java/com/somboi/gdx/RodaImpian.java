@@ -3,6 +3,7 @@ package com.somboi.gdx;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.somboi.gdx.screen.LoadingScreen;
 import com.somboi.rodaimpian.AndroidLauncher;
 
 import java.util.HashMap;
