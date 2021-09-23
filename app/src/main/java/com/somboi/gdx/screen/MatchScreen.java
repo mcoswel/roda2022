@@ -41,7 +41,6 @@ public class MatchScreen extends BaseScreen {
     public MatchScreen(RodaImpian rodaImpian) {
         super(rodaImpian);
 
-
         loadWheelRigidBOdy();
         wheelActor = new WheelActor(new Texture(Gdx.files.internal("wheel.png")));
         loadNeedleBody();
@@ -50,6 +49,7 @@ public class MatchScreen extends BaseScreen {
         for (int i = 0; i < 26; i++) {
             loadWheelSlots("n" + i);
         }
+        Gdx.input.setInputProcessor(worldStage);
 
     }
 
@@ -57,7 +57,6 @@ public class MatchScreen extends BaseScreen {
     public void show() {
         worldStage.addActor(wheelActor);
         wheelActor.setPosition(4.5f - wheelActor.getWidth() / 2, 8f - wheelActor.getHeight() / 2 - 0.08f);
-
         worldStage.addActor(pointer);
     }
 
@@ -187,8 +186,9 @@ public class MatchScreen extends BaseScreen {
         for (Body body : wheelSlots) {
             body.setTransform(wheelBody.getPosition(), wheelBody.getAngle());
         }
-        if (Gdx.input.isTouched()) {
-            wheelBody.applyAngularImpulse(-50f, true);
+        if (wheelActor.getDeltaY()>2f){
+            wheelBody.applyAngularImpulse(- MathUtils.random(49f,69f)*wheelActor.getDeltaY(),false);
+            wheelActor.resetDeltaY();
             startRotate = true;
         }
         if (startRotate) {
