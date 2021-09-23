@@ -108,14 +108,16 @@ public class LoadingScreen extends ScreenAdapter {
 
         logger.debug("Subject round four: " + questionsReady.getSubjectRoundFour());
         logger.debug("Round four: " + questionsReady.getBonusRound());*/
-
     }
 
     @Override
     public void show() {
         super.show();
-        logger.debug("show");
-        rodaImpian.setScreen(new MatchScreen(rodaImpian));
+        logger.debug("loading screen ");
+        if (rodaImpian.getMatchScreen()==null){
+            rodaImpian.setMatchScreen(new MatchScreen(rodaImpian));
+        }
+        rodaImpian.spinWheel();
 
     }
 

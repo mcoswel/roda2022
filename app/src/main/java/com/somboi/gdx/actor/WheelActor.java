@@ -16,6 +16,5 @@ public class WheelActor extends Image {
         this.setSize(850f*0.01f,850f*0.01f);
         this.setOrigin((850f/2)*0.01f,(850f/2)*0.01f);
 
-
     }
 }
