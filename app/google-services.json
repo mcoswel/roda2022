@@ -1,0 +1,94 @@
+{
+  "project_info": {
+    "project_number": "902114531048",
+    "firebase_url": "https://roda-impian-acc41.firebaseio.com",
+    "project_id": "roda-impian-acc41",
+    "storage_bucket": "roda-impian-acc41.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:902114531048:android:a6352127a0950d498adb5d",
+        "android_client_info": {
+          "package_name": "com.somboi.rodaimpian"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "902114531048-8r38n4bqphd5o6cb4tl6d9hpmfu66647.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.somboi.rodaimpian",
+            "certificate_hash": "0d94e4ee6e8fd870acbd7345d9f1f74c4110eec0"
+          }
+        },
+        {
+          "client_id": "902114531048-rppnmh5q1kn9rkuprk50q5m464m54vr4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.somboi.rodaimpian",
+            "certificate_hash": "56f80f6cfc6de0b64f98050c088f2ece2cec98de"
+          }
+        },
+        {
+          "client_id": "902114531048-tc2pb3e3dlv5oklnlu8tgpjgsblrcih6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.somboi.rodaimpian",
+            "certificate_hash": "947e951d2c2bfff03fa208bfb424c9ee7cc72fb7"
+          }
+        },
+        {
+          "client_id": "902114531048-ljeadotvafsl29ub3f1aoebsba2piir5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsSxJt6hFZr9M46U5fw1WBaGc1xmtT4GA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "902114531048-ljeadotvafsl29ub3f1aoebsba2piir5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      },
+      "admob_app_id": "ca-app-pub-1637458225245574~8553588969"
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:902114531048:android:71816aab32139dad8adb5d",
+        "android_client_info": {
+          "package_name": "com.somboi.rodaimpian.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "902114531048-ljeadotvafsl29ub3f1aoebsba2piir5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsSxJt6hFZr9M46U5fw1WBaGc1xmtT4GA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "902114531048-ljeadotvafsl29ub3f1aoebsba2piir5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

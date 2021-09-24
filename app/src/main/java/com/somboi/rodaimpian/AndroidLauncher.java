@@ -19,5 +19,6 @@ public class AndroidLauncher extends AndroidApplication {
         config.useGyroscope = false;
         View gameView = initializeForView(new RodaImpian(this), config);
         setContentView(gameView);
+
     }
 }
