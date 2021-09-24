@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.database.DatabaseReference;
@@ -42,6 +44,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         return vh;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Chats chats = chatsList.get(position);
@@ -65,20 +68,22 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View v) {
                     AlertDialog.Builder alert = new AlertDialog.Builder(context);
-                    final EditText edittext = new EditText(context);
+                    final EditText editChat = new EditText(context);
                     alert.setTitle(R.string.reply);
-                    alert.setView(edittext);
+                    alert.setView(editChat);
                     alert.setPositiveButton(R.string.kirim, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
                             //What ever you want to do with the value
-                            String content = edittext.getText().toString();
+                            String content = editChat.getText().toString();
                             if (content.length() > 0) {
                                 String pushKey = chatDatabase.push().getKey();
                                 Chats thisChats = new Chats();
+                                thisChats.setPushKey(pushKey);
                                 thisChats.setContent(content);
                                 thisChats.setPlayer(thisPlayer);
                                 thisChats.setReplierName(chats.getPlayer().name);
                                 thisChats.setReplyToId(chats.getPlayer().id);
+                                thisChats.setSenderId(thisPlayer.id);
                                 chatDatabase.child(pushKey).setValue(thisChats);
                             } else {
                                 dialog.dismiss();
@@ -90,20 +95,28 @@ public class ChatAdapter extends RecyclerView.Adapter {
         }
 
         TextView name = holder.itemView.findViewById(R.id.chatname);
-
-        if (chats.getReplyToId() == thisPlayer.id) {
-            chatContent.setTextColor(Color.BLUE);
-            name.setText(chats.getPlayer().name + " " + R.string.reply + " " + thisPlayer.name);
-        } else {
-            chatContent.setText(chats.getContent());
-            name.setText(chats.getPlayer().name);
+        chatContent.setText(chats.getContent());
+        name.setText(chats.getPlayer().name);
+        if (chats.getReplyToId()!=null) {
+            if (chats.getReplyToId().equals(thisPlayer.id)) {
+                chatContent.setTextColor(Color.BLUE);
+                name.setTextColor(Color.MAGENTA);
+                name.setText(chats.getPlayer().name + " " + context.getString(R.string.replyto) +" "+ thisPlayer.name);
+            }
+        }
+        if (chats.getSenderId()!=null) {
+            if (chats.getSenderId().equals(thisPlayer.id)) {
+                chatContent.setTextColor(Color.parseColor("#FF6347"));
+                name.setTextColor(Color.MAGENTA);
+                name.setText(thisPlayer.name + " " + context.getString(R.string.replyto) +" "+ chats.getReplierName());
+            }
         }
 
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return chatsList.size();
     }
 
     private class MyViewHolder extends RecyclerView.ViewHolder {

@@ -6,5 +6,8 @@ public class RodaClient {
     private Client client;
     private String clientName;
 
+    public RodaClient() {
+        client = new Client();
 
+    }
 }

@@ -3,11 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/rodaimpian2022/app/src/main/res/drawable-v24/square.xml" value="0.22708333333333333" />
         <entry key="..\:/rodaimpian2022/app/src/main/res/drawable/capsule.xml" value="0.28229166666666666" />
         <entry key="..\:/rodaimpian2022/app/src/main/res/layout/activity_main.xml" value="0.2957427536231884" />
         <entry key="..\:/rodaimpian2022/app/src/main/res/layout/chatadapter.xml" value="0.33" />
         <entry key="..\:/rodaimpian2022/app/src/main/res/layout/fragment_main.xml" value="0.2957427536231884" />
         <entry key="..\:/rodaimpian2022/app/src/main/res/layout/roomactivity.xml" value="0.22" />
+        <entry key="..\:/rodaimpian2022/app/src/main/res/layout/roomadapter.xml" value="0.33" />
       </map>
     </option>
   </component>

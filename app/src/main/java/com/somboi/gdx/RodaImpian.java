@@ -4,7 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.somboi.gdx.screen.LoadingScreen;
-import com.somboi.gdx.screen.MatchScreen;
+import com.somboi.gdx.screen.WheelScreen;
 import com.somboi.rodaimpian.AndroidLauncher;
 
 import java.util.HashMap;
@@ -13,7 +13,7 @@ import java.util.Map;
 public class RodaImpian extends Game {
     private final AssetManager assetManager = new AssetManager();
     private final Map<String, String> questSubject = new HashMap<>();
-    private  MatchScreen matchScreen;
+    private WheelScreen wheelScreen;
     public RodaImpian(AndroidLauncher androidLauncher) {
 
     }
@@ -34,14 +34,14 @@ public class RodaImpian extends Game {
     }
 
     public void spinWheel() {
-        this.setScreen(matchScreen);
+        this.setScreen(wheelScreen);
     }
 
-    public MatchScreen getMatchScreen() {
-        return matchScreen;
+    public WheelScreen getMatchScreen() {
+        return wheelScreen;
     }
 
-    public void setMatchScreen(MatchScreen matchScreen) {
-        this.matchScreen = matchScreen;
+    public void setMatchScreen(WheelScreen wheelScreen) {
+        this.wheelScreen = wheelScreen;
     }
 }

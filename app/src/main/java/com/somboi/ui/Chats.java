@@ -8,7 +8,7 @@ public class Chats {
     private  String pushKey;
     private String replierName;
     private String replyToId;
-
+    private String senderId;
     public Player getPlayer() {
         return player;
     }
@@ -47,5 +47,13 @@ public class Chats {
 
     public void setPushKey(String pushKey) {
         this.pushKey = pushKey;
+    }
+
+    public String getSenderId() {
+        return senderId;
+    }
+
+    public void setSenderId(String senderId) {
+        this.senderId = senderId;
     }
 }

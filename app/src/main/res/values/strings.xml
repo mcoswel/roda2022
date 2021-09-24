@@ -5,6 +5,16 @@
     <string name="lihatbilik">Lihat Bilik</string>
     <string name="delete">Padam</string>
     <string name="reply">Balas</string>
+    <string name="replyto">membalas mesej</string>
+    <string name="replying">membalas mesej</string>
+    <string name="waitingoppnent">Menunggu Lawan</string>
+    <string name="waitingguest">Menunggu Penyertaan</string>
+    <string name="join">sertai</string>
+    <string name="emptyslot">Slot Kosong</string>
+
+    <string name="start">Mula</string>
+
+    <string name="cancel">Keluar</string>
 
 
 </resources>

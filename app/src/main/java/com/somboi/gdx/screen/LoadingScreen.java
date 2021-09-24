@@ -4,16 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.Logger;
 import com.somboi.gdx.RodaImpian;
-import com.somboi.gdx.assets.QuestionSingle;
 import com.somboi.gdx.assets.QuestionsGenerator;
-import com.somboi.gdx.assets.QuestionsReady;
 import com.somboi.gdx.assets.StringRes;
 import com.somboi.gdx.saves.QuestionsSaves;
-
-import java.io.BufferedReader;
 
 public class LoadingScreen extends ScreenAdapter {
     private final RodaImpian rodaImpian;
@@ -115,7 +110,7 @@ public class LoadingScreen extends ScreenAdapter {
         super.show();
         logger.debug("loading screen ");
         if (rodaImpian.getMatchScreen()==null){
-            rodaImpian.setMatchScreen(new MatchScreen(rodaImpian));
+            rodaImpian.setMatchScreen(new WheelScreen(rodaImpian));
         }
         rodaImpian.spinWheel();
 

@@ -21,9 +21,9 @@ import com.somboi.gdx.base.BaseScreen;
 import com.somboi.gdx.listener.WorldContact;
 import com.somboi.gdx.utils.BodyEditorLoader;
 
-public class MatchScreen extends BaseScreen {
+public class WheelScreen extends BaseScreen {
     private final World world = new World(new Vector2(0, -12f), false);
-    private final BodyEditorLoader bodyLoader = new BodyEditorLoader(Gdx.files.internal("roda.json"));
+    private BodyEditorLoader bodyLoader = new BodyEditorLoader(Gdx.files.internal("roda.json"));
     private final Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
     private WheelActor wheelActor;
     private Vector2 jointVector = new Vector2(4.5f, 12.45f);
@@ -38,7 +38,7 @@ public class MatchScreen extends BaseScreen {
     private Body centerJoint;
     WorldContact contact = new WorldContact();
 
-    public MatchScreen(RodaImpian rodaImpian) {
+    public WheelScreen(RodaImpian rodaImpian) {
         super(rodaImpian);
 
         loadWheelRigidBOdy();
