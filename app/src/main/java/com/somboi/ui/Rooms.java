@@ -22,6 +22,7 @@ public class Rooms {
     }
 
     public void setHostPlayer(Player hostPlayer) {
+        this.id = hostPlayer.id;
         this.hostPlayer = hostPlayer;
     }
 

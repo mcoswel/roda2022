@@ -12,12 +12,14 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import com.somboi.gdx.RodaImpian;
 import com.somboi.gdx.actor.Pointer;
 import com.somboi.gdx.actor.WheelActor;
 import com.somboi.gdx.base.BaseScreen;
+import com.somboi.gdx.config.GameConfig;
 import com.somboi.gdx.listener.WorldContact;
 import com.somboi.gdx.utils.BodyEditorLoader;
 
@@ -37,18 +39,23 @@ public class WheelScreen extends BaseScreen {
     private final Array<Body> wheelSlots = new Array<>();
     private Body centerJoint;
     WorldContact contact = new WorldContact();
-
+    private Image centerlogo = new Image(new Texture(Gdx.files.internal("centerlogo.png")));
     public WheelScreen(RodaImpian rodaImpian) {
         super(rodaImpian);
-
         loadWheelRigidBOdy();
         wheelActor = new WheelActor(new Texture(Gdx.files.internal("wheel.png")));
         loadNeedleBody();
-        // worldCamera.zoom = 0.8f;
+       // worldCamera.zoom = 0.8f;
+
+
+        centerlogo.setSize(3.2f,3.2f);
+        centerlogo.setPosition(4.5f-3.2f/2f,7.9f-3.2f/2f);
         world.setContactListener(contact);
         for (int i = 0; i < 26; i++) {
             loadWheelSlots("n" + i);
         }
+        worldStage.addActor(centerlogo);
+
         Gdx.input.setInputProcessor(worldStage);
 
     }

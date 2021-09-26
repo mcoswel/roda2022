@@ -2,6 +2,7 @@ package com.somboi.ui;
 
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,7 @@ public class RoomAdapter extends RecyclerView.Adapter {
     private final Context context;
     private final List<Rooms> roomsList;
     private final Player thisPlayer;
-    private final DatabaseReference chatDatabase = FirebaseDatabase.getInstance().getReference().getDatabase().getReference().child("Online").child("chats");
+    private final DatabaseReference chatDatabase = FirebaseDatabase.getInstance().getReference().getDatabase().getReference().child("Online").child("rooms2022");
 
     public RoomAdapter(Context context, Player player, List<Rooms> roomsList) {
         this.context = context;
@@ -49,12 +50,22 @@ public class RoomAdapter extends RecyclerView.Adapter {
         Rooms rooms = roomsList.get(position);
         CircleImageView hostImg = v.findViewById(R.id.hostplayer_img);
         TextView hostPlayerName = v.findViewById(R.id.hostplayer_name);
+        hostPlayerName.setText(context.getString(R.string.host) + " " + rooms.getHostPlayer().name);
+
         TextView hostPlayerStatus = v.findViewById(R.id.hostplayer_status);
+
+
         CircleImageView playerOneImg = v.findViewById(R.id.playerone_img);
         TextView playerOneName = v.findViewById(R.id.playerone_name);
+        if (rooms.getPlayer_one() != null) {
+            playerOneName.setText(rooms.getPlayer_one().name);
+        }
         TextView playerOneStatus = v.findViewById(R.id.playerone_status);
         CircleImageView playeTwoImg = v.findViewById(R.id.playertwo_img);
         TextView playerTwoName = v.findViewById(R.id.playertwo_name);
+        if (rooms.getPlayer_two() != null) {
+            playerTwoName.setText(rooms.getPlayer_two().name);
+        }
         TextView playerTwoStatus = v.findViewById(R.id.playertwo_status);
 
         Button start = v.findViewById(R.id.room_start);
@@ -63,20 +74,39 @@ public class RoomAdapter extends RecyclerView.Adapter {
         Button cancel = v.findViewById(R.id.room_out);
 
 
-        if (rooms.getHostPlayer().equals(thisPlayer)){
+        if (rooms.getHostPlayer().id.equals(thisPlayer.id)) {
             v.findViewById(R.id.host_button).setVisibility(View.VISIBLE);
-            if (rooms.getPlayer_one()!=null || rooms.getPlayer_two()!=null){
+            if (rooms.getPlayer_one() != null || rooms.getPlayer_two() != null) {
                 start.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 start.setVisibility(View.GONE);
             }
-        }else if (rooms.getPlayer_one().equals(thisPlayer) || rooms.getPlayer_two().equals(thisPlayer)){
-            cancel.setVisibility(View.VISIBLE);
-        }else if (rooms.getPlayer_one()==null || rooms.getPlayer_two() == null){
+        } else if (rooms.getPlayer_one() != null) {
+            if (rooms.getPlayer_one().id.equals(thisPlayer.id)) {
+                cancel.setVisibility(View.VISIBLE);
+            }
+        } else if (rooms.getPlayer_two() != null) {
+            if (rooms.getPlayer_two().id.equals(thisPlayer.id)) {
+                cancel.setVisibility(View.VISIBLE);
+            }
+        } else if (rooms.getPlayer_one() == null || rooms.getPlayer_two() == null) {
             join.setVisibility(View.VISIBLE);
         }
 
 
+        join.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("roomadapter", "join button clicked");
+                chatDatabase.child(thisPlayer.id).removeValue();
+                if (rooms.getPlayer_one()==null){
+                    rooms.setPlayer_one(thisPlayer);
+                }else{
+                    rooms.setPlayer_two(thisPlayer);
+                }
+               chatDatabase.child(rooms.getId()).setValue(rooms);
+            }
+        });
 
     }
 

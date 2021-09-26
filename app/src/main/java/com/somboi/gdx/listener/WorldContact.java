@@ -21,13 +21,11 @@ public class WorldContact implements ContactListener {
     public void beginContact(Contact contact) {
         Object userDataA = contact.getFixtureA().getUserData();
         Object userDataB = contact.getFixtureB().getUserData();
+
         if (userDataA != null && userDataB != null) {
-
             lastContact = contact.getFixtureB().getUserData().toString();
-
         }
             //logger.debug(contact.getFixtureB().getUserData().toString()+"  "+ contact.getFixtureA().getUserData().toString());
-
 
                     /*
                     switch (contact.getFixtureA().getUserData().toString()) {
@@ -93,9 +91,6 @@ public class WorldContact implements ContactListener {
                             logger.debug(contact.getFixtureA().getUserData().toString()+ " 450");
                             break;
                     }*/
-
-
-
     }
 
     public String getLastContact() {

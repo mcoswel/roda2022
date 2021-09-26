@@ -1,5 +1,6 @@
 package com.somboi.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.esotericsoftware.jsonbeans.Json;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,18 +41,44 @@ public class ChatActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ChatListener chatListener = new ChatListener();
     private ValueEventListener bilOnlineListener;
+    private Intent intent;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chatactivity);
         FirebaseApp.initializeApp(this);
+        intent = new Intent(ChatActivity.this, RoomActivity.class);
         recyclerView = findViewById(R.id.recycleView);
         send = findViewById(R.id.kirimBtn);
         editText = findViewById(R.id.chatInput);
+        ciptaBilik = findViewById(R.id.ciptaBtn);
+        lihatBilik = findViewById(R.id.lihatBtn);
+     //  player.name = "Test User 1";
+    //  player.id = "A1";
+        player.name = "Test User 2";
+     player.id = "A2";
 
-        player.name = "abu";
-        player.id = "A124";
+        Json json = new Json();
+        String playerJson = json.toJson(player, Player.class);
+        intent.putExtra("player", playerJson);
+        Rooms rooms = new Rooms();
+
+        lihatBilik.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(intent);
+            }
+        });
+        ciptaBilik.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                rooms.setHostPlayer(player);
+                roomDatabase.child(player.id).setValue(rooms);
+                startActivity(intent);
+            }
+        });
 
         send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,7 +161,7 @@ public class ChatActivity extends AppCompatActivity {
         removeChats();
     }
 
-    private void removeChats(){
+    private void removeChats() {
         chatDatabase.removeEventListener(chatListener);
         bilOnline.removeEventListener(bilOnlineListener);
         bilOnline.child(player.id).removeValue();
