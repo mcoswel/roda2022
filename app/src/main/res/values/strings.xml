@@ -13,8 +13,12 @@
     <string name="emptyslot">Slot Kosong</string>
 
     <string name="start">Mula</string>
-<string name="host">Hos: </string>
+    <string name="host">Hos: </string>
+    <string name="waitinghos">Menunggu hos memulakan permainan</string>
     <string name="cancel">Keluar</string>
-
+    <string name="p1imagepath">p1.jpeg</string>
+    <string name="p2imagepath">p2.jpeg</string>
+    <string name="p3imagepath">p3.jpeg</string>
+    <string name="facebook_app_id">196914625759446</string>
 
 </resources>

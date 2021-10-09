@@ -1,12 +1,12 @@
 package com.somboi.gdx.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -17,55 +17,75 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import com.somboi.gdx.RodaImpian;
 import com.somboi.gdx.actor.Pointer;
+import com.somboi.gdx.actor.ResultLabel;
 import com.somboi.gdx.actor.WheelActor;
+import com.somboi.gdx.assets.StringRes;
 import com.somboi.gdx.base.BaseScreen;
-import com.somboi.gdx.config.GameConfig;
+import com.somboi.gdx.base.ModeBase;
+import com.somboi.gdx.entities.WheelParam;
 import com.somboi.gdx.listener.WorldContact;
 import com.somboi.gdx.utils.BodyEditorLoader;
 
 public class WheelScreen extends BaseScreen {
     private final World world = new World(new Vector2(0, -12f), false);
     private BodyEditorLoader bodyLoader = new BodyEditorLoader(Gdx.files.internal("roda.json"));
-    private final Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
     private WheelActor wheelActor;
     private Vector2 jointVector = new Vector2(4.5f, 12.45f);
-    float rotateRandom = 0;
-    float initialRotation = 0;
     private Body needleBody;
     private Pointer pointer;
     private boolean startRotate;
-    private float balanceDegree;
     private Body wheelBody;
     private final Array<Body> wheelSlots = new Array<>();
     private Body centerJoint;
-    WorldContact contact = new WorldContact();
-    private Image centerlogo = new Image(new Texture(Gdx.files.internal("centerlogo.png")));
-    public WheelScreen(RodaImpian rodaImpian) {
+    private final WheelParam wheelParam;
+    private final Image centerlogo;
+    private final WorldContact contact;
+    private final ModeBase modeBase;
+
+    public WheelScreen(RodaImpian rodaImpian, ModeBase modeBase) {
         super(rodaImpian);
+        this.wheelParam = modeBase.getWheelParam();
         loadWheelRigidBOdy();
-        wheelActor = new WheelActor(new Texture(Gdx.files.internal("wheel.png")));
+        this.modeBase = modeBase;
+        wheelActor = new WheelActor(textureAtlas.findRegion("wheel"));
         loadNeedleBody();
-       // worldCamera.zoom = 0.8f;
-
-
-        centerlogo.setSize(3.2f,3.2f);
-        centerlogo.setPosition(4.5f-3.2f/2f,7.9f-3.2f/2f);
+        worldCamera.zoom = 0.8f;
+         centerlogo = new Image(textureAtlas.findRegion("centerlogo"));
+        centerlogo.setSize(3.2f, 3.2f);
+        centerlogo.setPosition(4.5f - 3.2f / 2f, 7.9f - 3.2f / 2f);
+        contact = new WorldContact(gameSound);
         world.setContactListener(contact);
         for (int i = 0; i < 26; i++) {
             loadWheelSlots("n" + i);
         }
-        worldStage.addActor(centerlogo);
-
-        Gdx.input.setInputProcessor(worldStage);
-
     }
 
     @Override
     public void show() {
+        worldStage.addActor(centerlogo);
         worldStage.addActor(wheelActor);
         wheelActor.setPosition(4.5f - wheelActor.getWidth() / 2, 8f - wheelActor.getHeight() / 2 - 0.08f);
         worldStage.addActor(pointer);
+        readyToSpin();
     }
+
+    public void readyToSpin() {
+        Gdx.input.setInputProcessor(null);
+
+        if (!modeBase.getActivePlayer().isAi && modeBase.getActivePlayer().turn) {
+            Gdx.input.setInputProcessor(worldStage);
+        } else {
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    wheelActor.setDeltaY(MathUtils.random(150f, 250f));
+                }
+            }, 1.5f);
+
+        }
+
+    }
+
 
     private void loadWheelRigidBOdy() {
         BodyDef bodyDef = new BodyDef();
@@ -123,7 +143,7 @@ public class WheelScreen extends BaseScreen {
         fixture.setUserData("needle");
         //  wheelFixture.add(fixture);
         needleBody.setUserData("needle");
-        pointer = new Pointer(new Texture(Gdx.files.internal("pointer.png")), needleBody);
+        pointer = new Pointer(textureAtlas.findRegion("pointer"), needleBody);
 
         BodyDef jointbodyDef = new BodyDef();
         jointbodyDef.type = BodyDef.BodyType.StaticBody;
@@ -180,7 +200,7 @@ public class WheelScreen extends BaseScreen {
     @Override
     public void render(float delta) {
         super.render(delta);
-        debugRenderer.render(world, worldStage.getCamera().combined);
+        //debugRenderer.render(world, worldStage.getCamera().combined);
     }
 
     @Override
@@ -193,10 +213,11 @@ public class WheelScreen extends BaseScreen {
         for (Body body : wheelSlots) {
             body.setTransform(wheelBody.getPosition(), wheelBody.getAngle());
         }
-        if (wheelActor.getDeltaY()>2f){
-            wheelBody.applyAngularImpulse(- MathUtils.random(49f,69f)*wheelActor.getDeltaY(),false);
+        if (wheelActor.getDeltaY() > 2f) {
+            wheelBody.applyAngularImpulse(-MathUtils.random(49f, 69f) * wheelActor.getDeltaY(), false);
             wheelActor.resetDeltaY();
             startRotate = true;
+            contact.setSpinning(true);
         }
         if (startRotate) {
             if ((int) wheelBody.getAngularVelocity() == 0) {
@@ -205,79 +226,131 @@ public class WheelScreen extends BaseScreen {
                     public void run() {
                         checkContact();
                     }
-                },1.5f);
-
+                }, 1.5f);
                 startRotate = false;
+                contact.setSpinning(false);
             }
         }
 
-
+        wheelParam.wheelangle = wheelBody.getAngle();
     }
 
     private void checkContact() {
-        logger.debug("Last Contact " + contact.getLastContact());
         switch (contact.getLastContact()) {
             case "n0":
-                logger.debug(contact.getLastContact() + " 2500");
+                wheelParam.resultValue = 2500;
+                wheelParam.results = "$2500";
                 break;
             case "n1":
             case "n4":
             case "n24":
-                logger.debug(contact.getLastContact() + " 300");
+                wheelParam.resultValue = 300;
+                wheelParam.results = "$300";
                 break;
             case "n2":
             case "n14":
-                logger.debug(contact.getLastContact() + " 900");
+                wheelParam.resultValue = 900;
+                wheelParam.results = "$900";
                 break;
             case "n3":
-                logger.debug(contact.getLastContact() + " Gift");
+                wheelParam.results = StringRes.GIFT;
+                modeBase.setGiftsStage();
+                wheelParam.resultValue = modeBase.getGifts().getGiftsValue();
                 break;
 
             case "n5":
             case "n7":
             case "n15":
             case "n25":
-                logger.debug(contact.getLastContact() + " Muflis");
+                wheelParam.resultValue = 0;
+                wheelParam.results = StringRes.BANKRUPT;
+
                 break;
             case "n6":
-                logger.debug(contact.getLastContact() + " 5000");
+                wheelParam.resultValue = 5000;
+                wheelParam.results = "Bonus $5000";
                 break;
             case "n8":
-                logger.debug(contact.getLastContact() + " 550");
+                wheelParam.resultValue = 550;
+                wheelParam.results = "$550";
                 break;
             case "n9":
-                logger.debug(contact.getLastContact() + " 400");
+                wheelParam.resultValue = 400;
+                wheelParam.results = "$400";
                 break;
             case "n10":
             case "n13":
             case "n21":
             case "n23":
-                logger.debug(contact.getLastContact() + " 500");
+                wheelParam.resultValue = 500;
+                wheelParam.results = "$500";
                 break;
             case "n11":
-                logger.debug(contact.getLastContact() + " 600");
+                wheelParam.resultValue = 600;
+                wheelParam.results = "$600";
                 break;
             case "n12":
-                logger.debug(contact.getLastContact() + " 350");
+                wheelParam.resultValue = 350;
+                wheelParam.results = "$350";
                 break;
             case "n16":
-                logger.debug(contact.getLastContact() + " 650");
+                wheelParam.resultValue = 650;
+                wheelParam.results = "$650";
                 break;
             case "n17":
-                logger.debug(contact.getLastContact() + " Percuma");
+                wheelParam.resultValue = 250;
+                wheelParam.results = StringRes.FREETURN;
                 break;
             case "n18":
-                logger.debug(contact.getLastContact() + " 700");
+                wheelParam.resultValue = 700;
+                wheelParam.results = "$700";
                 break;
             case "n19":
-                logger.debug(contact.getLastContact() + " Hilang Giliran");
+                wheelParam.resultValue = 0;
+                wheelParam.results = StringRes.LOSTTURN;
                 break;
             case "n20":
-                logger.debug(contact.getLastContact() + " 800");
+                wheelParam.resultValue = 800;
+                wheelParam.results = "$800";
                 break;
             case "n22":
-                logger.debug(contact.getLastContact() + " 450");
+                wheelParam.resultValue = 450;
+                wheelParam.results = "$450";
                 break;
         }
+        final ResultLabel resultLabel = new ResultLabel(wheelParam.results, skin);
+        if (wheelParam.resultValue==5000){
+            resultLabel.setColor(Color.GOLDENROD);
+        }
+
+        if (wheelParam.results.equals(StringRes.BANKRUPT)){
+            resultLabel.setColor(Color.RED);
+        }
+
+        stage.addActor(resultLabel);
+        if (wheelParam.results.equals(StringRes.BANKRUPT)|| wheelParam.results.equals(StringRes.LOSTTURN)){
+            gameSound.playAww();
+        }
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                resultLabel.remove();
+                if(wheelParam.results.equals(StringRes.BANKRUPT)){
+                    modeBase.getActivePlayer().currentScore = 0;
+                    modeBase.changeTurn();
+                }else if(wheelParam.results.equals(StringRes.LOSTTURN)){
+                    modeBase.changeTurn();
+                } else if (modeBase.getActivePlayer().isAi) {
+                    modeBase.cpuChooseConsonants();
+                }
+                else {
+                    if (modeBase.getActivePlayer().turn) {
+                        modeBase.showConsonants();
+                    }
+                }
+
+                rodaImpian.gotoMatch();
+            }
+        }, 2f);
     }
 }

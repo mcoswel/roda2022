@@ -7,12 +7,15 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Logger;
+import com.somboi.gdx.assets.GameSound;
 
 public class WorldContact implements ContactListener {
 
     private final Logger logger = new Logger(this.getClass().getName(), 3);
-
-    public WorldContact() {
+    private final GameSound gameSound;
+    private boolean spinning;
+    public WorldContact(GameSound gameSound) {
+        this.gameSound = gameSound;
     }
 
     private String lastContact = "";
@@ -25,6 +28,10 @@ public class WorldContact implements ContactListener {
         if (userDataA != null && userDataB != null) {
             lastContact = contact.getFixtureB().getUserData().toString();
         }
+        if (spinning) {
+            gameSound.playRotate();
+        }
+
             //logger.debug(contact.getFixtureB().getUserData().toString()+"  "+ contact.getFixtureA().getUserData().toString());
 
                     /*
@@ -110,5 +117,13 @@ public class WorldContact implements ContactListener {
     @Override
     public void postSolve(Contact contact, ContactImpulse impulse) {
 
+    }
+
+    public boolean isSpinning() {
+        return spinning;
+    }
+
+    public void setSpinning(boolean spinning) {
+        this.spinning = spinning;
     }
 }

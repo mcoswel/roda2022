@@ -1,7 +1,9 @@
 package com.somboi.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,33 +11,41 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.badlogic.gdx.backends.android.AndroidApplication;
+import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.esotericsoftware.jsonbeans.Json;
+import com.esotericsoftware.kryonet.Client;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.somboi.gdx.RodaOnline;
 import com.somboi.gdx.entities.Player;
+import com.somboi.rodaimpian.Network;
 import com.somboi.rodaimpian.R;
+import com.somboi.rodaimpian.RodaOnlineLauncher;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RoomActivity extends AppCompatActivity {
+public class RoomActivity extends AppCompatActivity implements RoomInterface {
     private final DatabaseReference roomDatabase = FirebaseDatabase.getInstance().getReference().getDatabase().getReference().child("Online").child("rooms2022");
     private final List<Rooms> roomsList = new ArrayList<>();
     private RecyclerView recyclerView;
     private Player player;
     private final RoomListener roomListener = new RoomListener();
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle extras = getIntent().getExtras();
-        if(extras !=null) {
+        if (extras != null) {
             String playerJson = extras.getString("player");
             Json json = new Json();
             player = json.fromJson(Player.class, playerJson);
-            Log.d("RoomActivity", "Player json "+player.name);
+            Log.d("RoomActivity", "Player json " + player.name);
         }
 
         setContentView(R.layout.roomactivity);
@@ -60,12 +70,12 @@ public class RoomActivity extends AppCompatActivity {
 
     }
 
-    private class RoomListener implements ValueEventListener{
+    private class RoomListener implements ValueEventListener {
 
         @Override
         public void onDataChange(@NonNull DataSnapshot snapshot) {
             roomsList.clear();
-            for (DataSnapshot ds: snapshot.getChildren()){
+            for (DataSnapshot ds : snapshot.getChildren()) {
                 roomsList.add(ds.getValue(Rooms.class));
             }
 
@@ -73,7 +83,7 @@ public class RoomActivity extends AppCompatActivity {
                     new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
             linearLayoutManager.canScrollHorizontally();
             recyclerView.setLayoutManager(linearLayoutManager);
-            RoomAdapter adapter = new RoomAdapter(RoomActivity.this, player, roomsList);
+            RoomAdapter adapter = new RoomAdapter(RoomActivity.this, player, roomsList, RoomActivity.this);
             recyclerView.setAdapter(adapter);
             recyclerView.scrollToPosition(roomsList.size() - 1);
         }
@@ -83,4 +93,13 @@ public class RoomActivity extends AppCompatActivity {
 
         }
     }
+
+    @Override
+    public void startRodaOnline(String roomID) {
+        Intent intent = new  Intent(RoomActivity.this, RodaOnlineLauncher.class);
+        intent.putExtra("roomID", roomID);
+        startActivity(intent);
+    }
+
+
 }

@@ -8,7 +8,7 @@ public class Rooms {
     private Player player_two;
     private String status;
     private String id;
-    private int port;
+    private boolean start;
     public String getStatus() {
         return status;
     }
@@ -50,11 +50,11 @@ public class Rooms {
         this.id = id;
     }
 
-    public int getPort() {
-        return port;
+    public boolean isStart() {
+        return start;
     }
 
-    public void setPort(int port) {
-        this.port = port;
+    public void setStart(boolean start) {
+        this.start = start;
     }
 }

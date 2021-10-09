@@ -1,0 +1,134 @@
+package com.somboi.gdx.entities;
+
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Timer;
+import com.somboi.gdx.actor.BoardLabel;
+import com.somboi.gdx.actor.PlayerImage;
+import com.somboi.gdx.actor.ScoreLabel;
+import com.somboi.gdx.assets.StringRes;
+
+public class PlayerGui {
+    private final Player player;
+    private final PlayerImage image;
+    private int positionIndex;
+    private ScoreLabel scoreLabel;
+    private BoardLabel nameLabel;
+    private Label freeTurnLabel;
+    private BoardLabel fullScoreLabel;
+    private Vector2 playerPos;
+    private final SequenceAction blink = new SequenceAction(Actions.fadeOut(1f), Actions.fadeIn(1f));
+    public PlayerGui(Player player, PlayerImage image) {
+        this.player = player;
+        this.image = image;
+        image.setSize(250f, 250f);
+    }
+
+    public void setFirstTurn(int index){
+        positionIndex = index;
+        image.setPosition(450f-250f-50f,800f);
+        if (positionIndex==2){
+            image.setPosition(450f+50f,800f);
+        }else if (positionIndex==0){
+            image.setPosition(450f-(250f/2),800f-100f-250f);
+        }
+        image.setOrigin(450f-image.getX(),800f-image.getY());
+
+    }
+
+    public void setPlayerBoard(Skin skin, Group playerBoardGroup){
+        String name = player.name;
+        if (name.length()>9){
+            name = name.substring(0,9);
+        }
+        Color bluHi = new Color(114f/255f, 184f/255f,249f/255f,1f);
+        nameLabel = new BoardLabel(name, skin);
+        nameLabel.pack();
+        scoreLabel = new ScoreLabel("$"+player.boardScore,skin,player);
+        scoreLabel.pack();
+        fullScoreLabel = new BoardLabel("$"+player.fullScore,skin);
+        fullScoreLabel.setColor(Color.GREEN);
+        fullScoreLabel.pack();
+        freeTurnLabel = new Label(StringRes.FREETURN,skin,"free");
+        freeTurnLabel.setAlignment(Align.center);
+        freeTurnLabel.pack();
+        float x = 150f;
+        nameLabel.setColor(bluHi);
+        if (positionIndex==1){
+            x = 150f+300f;
+        }else if (positionIndex==2){
+            x = 150f+600f;
+        }
+        float y = 267f;
+        nameLabel.setPosition(x - nameLabel.getWidth()/2f, y);
+        scoreLabel.setPosition(x-scoreLabel.getWidth()/2f, y-scoreLabel.getHeight()-25f);
+        fullScoreLabel.setPosition(x-fullScoreLabel.getWidth()/2f,40f);
+        freeTurnLabel.setPosition(x-freeTurnLabel.getWidth()/2f, y-freeTurnLabel.getHeight()*2-25f);
+
+        nameLabel.addAction(blink);
+        scoreLabel.addAction(blink);
+        fullScoreLabel.addAction(blink);
+
+
+        playerBoardGroup.addActor(nameLabel);
+        playerBoardGroup.addActor(scoreLabel);
+        playerBoardGroup.addActor(fullScoreLabel);
+
+    }
+
+    public void showFreeTurn(Stage stage){
+        freeTurnLabel.addAction(blink);
+        stage.addActor(freeTurnLabel);
+    }
+
+    public void removeFreeTurn(){
+        freeTurnLabel.addAction(new ParallelAction(
+                Actions.moveBy(0, 400f,3f),
+                Actions.fadeOut(4f)
+        ));
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                freeTurnLabel.remove();
+            }
+        },2f);
+
+    }
+
+    public void animate() {
+
+        playerPos = new Vector2(25f, 376f);
+        if (positionIndex == 1) {
+            playerPos = new Vector2(325f, 376f);
+        } else if (positionIndex == 2) {
+            playerPos = new Vector2(625f, 376f);
+        }
+        image.addAction(new ParallelAction(Actions.rotateTo(0,2f), Actions.moveTo(playerPos.x, playerPos.y,2f)));
+    }
+
+    public PlayerImage getImage() {
+        return image;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void updateFullScore(){
+        fullScoreLabel.setText("$"+player.fullScore);
+        fullScoreLabel.pack();
+
+    }
+
+    public Vector2 getPlayerPos() {
+        return playerPos;
+    }
+}

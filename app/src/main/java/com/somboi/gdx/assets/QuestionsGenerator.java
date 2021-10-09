@@ -28,13 +28,13 @@ public class QuestionsGenerator {
                 for (QuestionSingle questionSingle : questionSingles) {
                     if (questionSingle.getSubject().equals(subjects.get(i))) {
                         String question = questionSingle.getQuestion();
-                        if (allRounds.get(i).isEmpty() && question.length() <= 12) {
+                        if (allRounds.get(i).isEmpty() && question.length() <= 12 &&question.length()>0) {
                             allRounds.get(i).add(question);
                         }
-                        if (allRounds.get(i).size() == 1 && question.length() <= 14 && !question.equals(allRounds.get(i).get(0))) {
+                        if (allRounds.get(i).size() == 1 && question.length() <= 14 && question.length()>0 && !question.equals(allRounds.get(i).get(0))) {
                             allRounds.get(i).add(question);
                         }
-                        if (allRounds.get(i).size() == 2 && question.length() <= 14&& !question.equals(allRounds.get(i).get(1))) {
+                        if (allRounds.get(i).size() == 2 && question.length() <= 14&& question.length()>0 && !question.equals(allRounds.get(i).get(1))) {
                             allRounds.get(i).add(question);
                         }
                     }

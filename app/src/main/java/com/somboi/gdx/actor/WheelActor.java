@@ -11,11 +11,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.Logger;
 
 public class WheelActor extends Image {
-    private final Texture textureRegion;
+    private final TextureRegion textureRegion;
     private final Logger logger = new Logger(this.getClass().getName(), 3);
     float y1, y2;
     float deltaY;
-    public WheelActor(Texture textureRegion) {
+    public WheelActor(TextureRegion textureRegion) {
         super(textureRegion);
         this.textureRegion = textureRegion;
         this.setPosition(25f*0.01f,375f*0.01f);
@@ -25,8 +25,6 @@ public class WheelActor extends Image {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 y1 =event.getStageY();
-
-
                 return super.touchDown(event, x, y, pointer, button);
             }
 
@@ -34,7 +32,6 @@ public class WheelActor extends Image {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 y2 = event.getStageY();
                 deltaY = Math.abs(y1-y2);
-                logger.debug("delta y "+deltaY);
                 super.touchUp(event, x, y, pointer, button);
             }
         });
@@ -43,8 +40,11 @@ public class WheelActor extends Image {
     public float getDeltaY() {
         return deltaY;
     }
-
     public void resetDeltaY(){
         deltaY = 0;
+    }
+
+    public void setDeltaY(float deltaY) {
+        this.deltaY = deltaY;
     }
 }

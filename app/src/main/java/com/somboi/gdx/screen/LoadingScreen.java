@@ -6,20 +6,25 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Logger;
 import com.somboi.gdx.RodaImpian;
+import com.somboi.gdx.assets.AssetDesc;
 import com.somboi.gdx.assets.QuestionsGenerator;
 import com.somboi.gdx.assets.StringRes;
+import com.somboi.gdx.entities.Player;
+import com.somboi.gdx.saves.PlayerSaves;
 import com.somboi.gdx.saves.QuestionsSaves;
+
+import java.util.UUID;
 
 public class LoadingScreen extends ScreenAdapter {
     private final RodaImpian rodaImpian;
     private final AssetManager assetManager;
+    private final PlayerSaves playerSaves = new PlayerSaves();
     private final Logger logger = new Logger(this.getClass().getName(), 3);
 
     public LoadingScreen(RodaImpian rodaImpian) {
         this.rodaImpian = rodaImpian;
         this.assetManager = rodaImpian.getAssetManager();
         Gdx.app.setLogLevel(3);
-        logger.debug("show");
         QuestionsSaves questionsSaves = new QuestionsSaves();
 
         /**
@@ -31,7 +36,37 @@ public class LoadingScreen extends ScreenAdapter {
             questionsGenerator = questionsSaves.loadFromInternal(fileHandle);
         }
         questionsSaves.saveQuestion(questionsGenerator);
-        logger.debug("Question Generator "+questionsGenerator.getSubjects().toString());
+
+        rodaImpian.setQuestionsReady(questionsGenerator.run());
+
+        Player player = playerSaves.load();
+        if (player == null) {
+            player = new Player();
+            player.name = StringRes.ANON;
+            player.id = UUID.randomUUID().toString();
+            player.logged = true;
+        }
+        playerSaves.save(player);
+        rodaImpian.setPlayer(player);
+
+        assetManager.load(AssetDesc.TEXTUREATLAS);
+        assetManager.load(AssetDesc.CONFETTI);
+        assetManager.load(AssetDesc.WINANIMATION);
+        assetManager.load(AssetDesc.SPARKLE);
+        assetManager.load(AssetDesc.BLURBG);
+        assetManager.load(AssetDesc.SKIN);
+        assetManager.load(AssetDesc.AWWSOUND);
+        assetManager.load(AssetDesc.CHEERSOUND);
+        assetManager.load(AssetDesc.ROTATESOUND);
+        assetManager.load(AssetDesc.CORRECTSOUND);
+        assetManager.load(AssetDesc.WRONGSOUND);
+        assetManager.load(AssetDesc.WINSOUND);
+        assetManager.load(AssetDesc.CLOCKSOUND);
+        assetManager.load(AssetDesc.SLAPSOUND);
+        assetManager.load(AssetDesc.BG);
+        assetManager.load(AssetDesc.HOURGLASS);
+
+        // don't forget to dispose to avoid memory leaks!
 
     /*    questionsGenerator.getSubjects().add("PERISIAN");
         questionsGenerator.getSubjects().add("ADIWIRA");
@@ -107,19 +142,19 @@ public class LoadingScreen extends ScreenAdapter {
 
     @Override
     public void show() {
-        super.show();
-        logger.debug("loading screen ");
-        if (rodaImpian.getMatchScreen()==null){
-            rodaImpian.setMatchScreen(new WheelScreen(rodaImpian));
-        }
-        rodaImpian.spinWheel();
+
 
     }
 
     @Override
     public void render(float delta) {
-        super.render(delta);
+        if (rodaImpian.getAssetManager().update()) {
+            rodaImpian.setMenuScreen(new MenuScreen(rodaImpian));
+            rodaImpian.setMatchScreen(new MatchScreen(rodaImpian));
+            rodaImpian.gotoMenu();
+        }
     }
+
 }
 
 

@@ -79,6 +79,14 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage:20.0.0'
     implementation files('libs/kryonet-2.21-all.jar')
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+    api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+    natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-armeabi-v7a"
+    natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-arm64-v8a"
+    natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86"
+    natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86_64"
+    implementation "com.github.barsoosayque:libgdxoboe:$libgdxoboe_version"
+    api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
+    implementation 'com.facebook.android:facebook-android-sdk:8.2.0'
 
 }
 

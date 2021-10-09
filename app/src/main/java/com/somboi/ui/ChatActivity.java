@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.esotericsoftware.jsonbeans.Json;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
@@ -54,10 +55,10 @@ public class ChatActivity extends AppCompatActivity {
         editText = findViewById(R.id.chatInput);
         ciptaBilik = findViewById(R.id.ciptaBtn);
         lihatBilik = findViewById(R.id.lihatBtn);
-     //  player.name = "Test User 1";
-    //  player.id = "A1";
-        player.name = "Test User 2";
-     player.id = "A2";
+      player.name = "Test User "+ MathUtils.random(0,100);
+     player.id = "A"+MathUtils.random(0,100);
+    //    player.name = "Test User 2";
+   //  player.id = "A2";
 
         Json json = new Json();
         String playerJson = json.toJson(player, Player.class);
@@ -130,7 +131,6 @@ public class ChatActivity extends AppCompatActivity {
             for (DataSnapshot ds : snapshot.getChildren()) {
                 Chats chats = ds.getValue(Chats.class);
                 chatsList.add(chats);
-                Log.d(this.getClass().getName(), ds.getKey());
             }
 
 

@@ -27,12 +27,13 @@ public class RoomAdapter extends RecyclerView.Adapter {
     private final Context context;
     private final List<Rooms> roomsList;
     private final Player thisPlayer;
-    private final DatabaseReference chatDatabase = FirebaseDatabase.getInstance().getReference().getDatabase().getReference().child("Online").child("rooms2022");
-
-    public RoomAdapter(Context context, Player player, List<Rooms> roomsList) {
+    private final DatabaseReference roomsDatabase = FirebaseDatabase.getInstance().getReference().getDatabase().getReference().child("Online").child("rooms2022");
+    private final RoomInterface roomInterface;
+    public RoomAdapter(Context context, Player player, List<Rooms> roomsList, RoomInterface roomInterface) {
         this.context = context;
         this.thisPlayer = player;
         this.roomsList = roomsList;
+        this.roomInterface = roomInterface;
     }
 
     @NonNull
@@ -57,24 +58,41 @@ public class RoomAdapter extends RecyclerView.Adapter {
 
         CircleImageView playerOneImg = v.findViewById(R.id.playerone_img);
         TextView playerOneName = v.findViewById(R.id.playerone_name);
+        TextView playerOneStatus = v.findViewById(R.id.playerone_status);
         if (rooms.getPlayer_one() != null) {
             playerOneName.setText(rooms.getPlayer_one().name);
+            playerOneStatus.setText(context.getString(R.string.waitinghos));
         }
-        TextView playerOneStatus = v.findViewById(R.id.playerone_status);
         CircleImageView playeTwoImg = v.findViewById(R.id.playertwo_img);
         TextView playerTwoName = v.findViewById(R.id.playertwo_name);
+        TextView playerTwoStatus = v.findViewById(R.id.playertwo_status);
         if (rooms.getPlayer_two() != null) {
             playerTwoName.setText(rooms.getPlayer_two().name);
+            playerTwoStatus.setText(context.getString(R.string.waitinghos));
         }
-        TextView playerTwoStatus = v.findViewById(R.id.playertwo_status);
-
         Button start = v.findViewById(R.id.room_start);
+        start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rooms.setStart(true);
+                roomsDatabase.child(rooms.getId()).setValue(rooms);
+            }
+        });
         Button delete = v.findViewById(R.id.room_delete);
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                roomsDatabase.child(rooms.getId()).removeValue();
+            }
+        });
         Button join = v.findViewById(R.id.room_join);
         Button cancel = v.findViewById(R.id.room_out);
 
 
         if (rooms.getHostPlayer().id.equals(thisPlayer.id)) {
+            if (rooms.isStart()){
+                roomInterface.startRodaOnline(rooms.getId());
+            }
             v.findViewById(R.id.host_button).setVisibility(View.VISIBLE);
             if (rooms.getPlayer_one() != null || rooms.getPlayer_two() != null) {
                 start.setVisibility(View.VISIBLE);
@@ -83,10 +101,16 @@ public class RoomAdapter extends RecyclerView.Adapter {
             }
         } else if (rooms.getPlayer_one() != null) {
             if (rooms.getPlayer_one().id.equals(thisPlayer.id)) {
+                if (rooms.isStart()){
+                    roomInterface.startRodaOnline(rooms.getId());
+                }
                 cancel.setVisibility(View.VISIBLE);
             }
         } else if (rooms.getPlayer_two() != null) {
             if (rooms.getPlayer_two().id.equals(thisPlayer.id)) {
+                if (rooms.isStart()){
+                    roomInterface.startRodaOnline(rooms.getId());
+                }
                 cancel.setVisibility(View.VISIBLE);
             }
         } else if (rooms.getPlayer_one() == null || rooms.getPlayer_two() == null) {
@@ -97,14 +121,13 @@ public class RoomAdapter extends RecyclerView.Adapter {
         join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("roomadapter", "join button clicked");
-                chatDatabase.child(thisPlayer.id).removeValue();
+                roomsDatabase.child(thisPlayer.id).removeValue();
                 if (rooms.getPlayer_one()==null){
                     rooms.setPlayer_one(thisPlayer);
                 }else{
                     rooms.setPlayer_two(thisPlayer);
                 }
-               chatDatabase.child(rooms.getId()).setValue(rooms);
+               roomsDatabase.child(rooms.getId()).setValue(rooms);
             }
         });
 
