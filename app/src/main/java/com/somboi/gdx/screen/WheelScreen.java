@@ -2,7 +2,7 @@ package com.somboi.gdx.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -13,15 +13,18 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import com.somboi.gdx.RodaImpian;
+import com.somboi.gdx.actor.Fingers;
 import com.somboi.gdx.actor.Pointer;
 import com.somboi.gdx.actor.ResultLabel;
 import com.somboi.gdx.actor.WheelActor;
 import com.somboi.gdx.assets.StringRes;
 import com.somboi.gdx.base.BaseScreen;
 import com.somboi.gdx.base.ModeBase;
+import com.somboi.gdx.entities.Bonus;
 import com.somboi.gdx.entities.WheelParam;
 import com.somboi.gdx.listener.WorldContact;
 import com.somboi.gdx.utils.BodyEditorLoader;
@@ -41,16 +44,18 @@ public class WheelScreen extends BaseScreen {
     private final Image centerlogo;
     private final WorldContact contact;
     private final ModeBase modeBase;
-
+    private boolean firstSpin = true;
+    private final Fingers fingers;
     public WheelScreen(RodaImpian rodaImpian, ModeBase modeBase) {
         super(rodaImpian);
         this.wheelParam = modeBase.getWheelParam();
         loadWheelRigidBOdy();
         this.modeBase = modeBase;
         wheelActor = new WheelActor(textureAtlas.findRegion("wheel"));
+        fingers = new Fingers(textureAtlas);
         loadNeedleBody();
         worldCamera.zoom = 0.8f;
-         centerlogo = new Image(textureAtlas.findRegion("centerlogo"));
+        centerlogo = new Image(textureAtlas.findRegion("centerlogo"));
         centerlogo.setSize(3.2f, 3.2f);
         centerlogo.setPosition(4.5f - 3.2f / 2f, 7.9f - 3.2f / 2f);
         contact = new WorldContact(gameSound);
@@ -66,6 +71,15 @@ public class WheelScreen extends BaseScreen {
         worldStage.addActor(wheelActor);
         wheelActor.setPosition(4.5f - wheelActor.getWidth() / 2, 8f - wheelActor.getHeight() / 2 - 0.08f);
         worldStage.addActor(pointer);
+        if (modeBase.getGameRound() == 3) {
+            wheelActor.setDrawable(new SpriteDrawable(new Sprite(textureAtlas.findRegion("wheelbonus"))));
+        }
+        if (!modeBase.getActivePlayer().isAi && firstSpin){
+            firstSpin = false;
+            worldStage.addActor(fingers);
+        }/*else{
+            fingers.remove();
+        }*/
         readyToSpin();
     }
 
@@ -220,13 +234,21 @@ public class WheelScreen extends BaseScreen {
             contact.setSpinning(true);
         }
         if (startRotate) {
+            fingers.remove();
             if ((int) wheelBody.getAngularVelocity() == 0) {
                 Timer.schedule(new Timer.Task() {
                     @Override
                     public void run() {
-                        checkContact();
+                        if (modeBase.getGameRound() == 3) {
+                            Bonus bonus = new Bonus(textureAtlas);
+                            bonus.getWheelResult(wheelParam, contact.getLastContact());
+                            modeBase.setBonus(bonus);
+                            showResult();
+                        } else {
+                            checkContact();
+                        }
                     }
-                }, 1.5f);
+                }, 2.5f);
                 startRotate = false;
                 contact.setSpinning(false);
             }
@@ -318,32 +340,46 @@ public class WheelScreen extends BaseScreen {
                 wheelParam.results = "$450";
                 break;
         }
+
+        showResult();
+    }
+
+    private void showResult() {
         final ResultLabel resultLabel = new ResultLabel(wheelParam.results, skin);
-        if (wheelParam.resultValue==5000){
+        if (wheelParam.resultValue == 5000) {
             resultLabel.setColor(Color.GOLDENROD);
+            modeBase.getVanna().hostThumbsUp();
+
         }
 
-        if (wheelParam.results.equals(StringRes.BANKRUPT)){
+        if (wheelParam.results.equals(StringRes.BANKRUPT)) {
             resultLabel.setColor(Color.RED);
+            modeBase.flyingMoney();
+        }
+        if (wheelParam.results.equals(StringRes.GIFT)){
+            modeBase.getVanna().hostThumbsUp();
         }
 
         stage.addActor(resultLabel);
-        if (wheelParam.results.equals(StringRes.BANKRUPT)|| wheelParam.results.equals(StringRes.LOSTTURN)){
+        if (wheelParam.results.equals(StringRes.BANKRUPT) || wheelParam.results.equals(StringRes.LOSTTURN)) {
             gameSound.playAww();
+            modeBase.getVanna().hostWrong();
+
         }
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
                 resultLabel.remove();
-                if(wheelParam.results.equals(StringRes.BANKRUPT)){
+                if (wheelParam.results.equals(StringRes.BANKRUPT)) {
                     modeBase.getActivePlayer().currentScore = 0;
                     modeBase.changeTurn();
-                }else if(wheelParam.results.equals(StringRes.LOSTTURN)){
+                } else if (wheelParam.results.equals(StringRes.LOSTTURN)) {
                     modeBase.changeTurn();
                 } else if (modeBase.getActivePlayer().isAi) {
                     modeBase.cpuChooseConsonants();
-                }
-                else {
+                } else if (modeBase.getGameRound()==3){
+                    modeBase.bonusRound();
+                }else {
                     if (modeBase.getActivePlayer().turn) {
                         modeBase.showConsonants();
                     }

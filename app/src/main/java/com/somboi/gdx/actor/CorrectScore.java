@@ -18,8 +18,11 @@ public class CorrectScore extends Label {
         super(text, skin, "wheel");
         this.addAction(Actions.forever(GameConfig.BLINKS));
         this.setAlignment(Align.center);
+
     }
     public void show(Group tilesGroup){
+        this.pack();
+        this.setPosition(450f - this.getWidth() / 2f, 850f);
         tilesGroup.addActor(this);
         Timer.schedule(new Timer.Task() {
             @Override
@@ -28,5 +31,12 @@ public class CorrectScore extends Label {
             }
         },3f);
     }
+    public void showBonusString(Group tilesGroup){
+        this.remove();
+        this.pack();
+        this.setPosition(450f - this.getWidth() / 2f, 850f);
+        tilesGroup.addActor(this);
+    }
+
 
 }

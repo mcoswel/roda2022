@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.Logger;
 import com.somboi.gdx.entities.MatchRound;
 
 public class ConsonantKeyboard {
@@ -14,6 +13,8 @@ public class ConsonantKeyboard {
     private final Stage stage;
     private final Skin skin;
     private final MatchRound matchRound;
+    private int count;
+
     public ConsonantKeyboard(Skin skin, MatchRound matchRound, Stage stage) {
         this.skin = skin;
         this.stage = stage;
@@ -21,7 +22,7 @@ public class ConsonantKeyboard {
     }
 
 
-    private void updateTable(){
+    private void updateTable() {
         consonantTable.clear();
         String consonants = matchRound.getConsonants();
         for (int i = 0; i < consonants.length(); i++) {
@@ -36,6 +37,16 @@ public class ConsonantKeyboard {
             textButton.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
+                    if (matchRound.getGameRound() == 3) {
+                        textButton.remove();
+                        matchRound.addBonusString(cFinal);
+                        count++;
+                        if (count == 5){
+                            consonantTable.remove();
+                            matchRound.showVocalKeyboard();
+                        }
+                        return;
+                    }
                     StringBuilder builder = new StringBuilder(consonants);
                     builder.deleteCharAt(iFinal);
                     matchRound.setConsonants(builder.toString());
@@ -51,23 +62,14 @@ public class ConsonantKeyboard {
         }
 
         consonantTable.pack();
-        consonantTable.setPosition(450f-consonantTable.getWidth()/2f, 680f);
+        consonantTable.setPosition(450f - consonantTable.getWidth() / 2f, 680f);
         consonantTable.center();
     }
 
-    public void show(){
+    public void show() {
         updateTable();
         stage.addActor(consonantTable);
     }
 
-    public void removeButton(Character c){
-        for (Actor actor: consonantTable.getChildren()){
-            if (actor instanceof TextButton){
-                if (((TextButton) actor).getText().equals(String.valueOf(c))){
-                    actor.remove();
-                }
-            }
-        }
-    }
 
 }

@@ -22,6 +22,7 @@ public class QuestionsGenerator {
         questionsReady.setSubjectRoundOne(subjects.get(0));
         questionsReady.setSubjectRoundTwo(subjects.get(1));
         questionsReady.setSubjectRoundThree(subjects.get(2));
+        questionsReady.setSubjectRoundFour(subjects.get(3));
 
         for (int i = 0; i < 3; i++) {
             while (allRounds.get(i).size() != 3) {
@@ -46,12 +47,12 @@ public class QuestionsGenerator {
         questionsReady.setRoundTwo(allRounds.get(1));
         questionsReady.setRoundThree(allRounds.get(2));
 
-        questionsReady.setSubjectRoundFour(subjects.get(subjects.size-1));
         for (QuestionSingle questionSingle : questionSingles) {
             if (questionSingle.getSubject().equals(questionsReady.getSubjectRoundFour())) {
                 questionsReady.setBonusRound(questionSingle.getQuestion());
             }
         }
+
 
         return questionsReady;
     }

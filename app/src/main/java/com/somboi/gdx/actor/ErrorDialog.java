@@ -16,7 +16,7 @@ public class ErrorDialog extends Dialog {
                 return 600f;
             }
         };
-        text.setColor(Color.GOLDENROD);
+
         text.setWrap(true);
         text.pack();
         this.text(text);

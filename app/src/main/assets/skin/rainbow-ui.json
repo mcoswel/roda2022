@@ -1,5 +1,8 @@
 {
 com.badlogic.gdx.graphics.g2d.BitmapFont: {
+	arial22: {
+		file: arial22.fnt
+	}
 	arialb: {
 		file: arial.fnt
 	}
@@ -21,6 +24,9 @@ com.badlogic.gdx.graphics.g2d.BitmapFont: {
 	varsity: {
 		file: varsity.fnt
 	}
+	verysmall: {
+		file: verysmall.fnt
+	}
 }
 com.badlogic.gdx.graphics.Color: {
 	black: {
@@ -39,6 +45,12 @@ com.badlogic.gdx.graphics.Color: {
 		r: 0.25676134
 		g: 0.99
 		b: 0.15179998
+		a: 1
+	}
+	red: {
+		r: 1
+		g: 0
+		b: 0
 		a: 1
 	}
 	selection: {
@@ -178,8 +190,8 @@ com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	default: {
-		font: font
-		fontColor: black
+		font: varsity
+		fontColor: white
 	}
 	whitearial: {
 		font: arialb
@@ -215,6 +227,9 @@ com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 		font: arialsmall
 		fontColor: white
 		background: wheel
+	}
+	bonus: {
+		font: verysmall
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
@@ -288,7 +303,8 @@ com.badlogic.gdx.scenes.scene2d.ui.SplitPane$SplitPaneStyle: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 	default: {
-		font: button
+		font: arialsmall
+		fontColor: white
 		up: button
 		down: button-pressed-over
 		over: button-over
@@ -301,12 +317,12 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 		checked: button-pressed
 		checkedOver: button-pressed-over
 	}
-	small: {
-		font: font
-		fontColor: black
-		downFontColor: white
-		up: button-small
-		down: button-small-pressed
+	smallmenu: {
+		font: arial22
+		fontColor: white
+		downFontColor: red
+		up: small
+		down: small-pressed
 	}
 	small-toggle: {
 		font: font
@@ -350,8 +366,8 @@ com.badlogic.gdx.scenes.scene2d.ui.Touchpad$TouchpadStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
 	default: {
 		background: window
-		titleFont: font
-		titleFontColor: white
+		titleFont: arial22
+		titleFontColor: selection
 	}
 }
 }

@@ -24,9 +24,10 @@ import com.somboi.gdx.assets.AssetDesc;
 import com.somboi.gdx.assets.StringRes;
 import com.somboi.gdx.modes.GameModes;
 import com.somboi.gdx.saves.PlayerSaves;
+import com.somboi.gdx.screen.MatchScreen;
 import com.somboi.gdx.utils.RoundMap;
 
-public class MenuCreator {
+public class MainMenuCreator {
     private final RodaImpian rodaImpian;
     private final Skin skin;
     private final Table menuTable = new Table();
@@ -39,7 +40,7 @@ public class MenuCreator {
     private final FileHandle p1ImgPath = Gdx.files.local(StringRes.PLY1IMAGEPATH);
     private NameField inputName;
 
-    public MenuCreator(RodaImpian rodaImpian, Stage stage) {
+    public MainMenuCreator(RodaImpian rodaImpian, Stage stage) {
         this.rodaImpian = rodaImpian;
         this.stage = stage;
         this.skin = rodaImpian.getAssetManager().get(AssetDesc.SKIN);
@@ -52,8 +53,14 @@ public class MenuCreator {
                 Player player = rodaImpian.getPlayer();
                 player.name = removeSymbols(player.name);
                 savePlayer(player);
+                player.fullScore = 0;
+                player.currentScore = 0;
+                player.freeTurn = false;
+                player.gifts.clear();
+                player.bonusIndex = 0;
                 rodaImpian.setGameModes(GameModes.SINGLE);
                 rodaImpian.setPlayerImage(playerImage);
+                rodaImpian.setMatchScreen(new MatchScreen(rodaImpian));
                 rodaImpian.gotoMatch();
             }
         });
@@ -73,7 +80,7 @@ public class MenuCreator {
         choosePhoto.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                rodaImpian.choosePhoto(0, MenuCreator.this);
+                rodaImpian.choosePhoto(0, MainMenuCreator.this);
             }
         });
 

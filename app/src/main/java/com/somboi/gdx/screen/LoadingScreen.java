@@ -4,15 +4,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.Logger;
 import com.somboi.gdx.RodaImpian;
 import com.somboi.gdx.assets.AssetDesc;
+import com.somboi.gdx.assets.QuestionSingle;
 import com.somboi.gdx.assets.QuestionsGenerator;
 import com.somboi.gdx.assets.StringRes;
 import com.somboi.gdx.entities.Player;
 import com.somboi.gdx.saves.PlayerSaves;
 import com.somboi.gdx.saves.QuestionsSaves;
 
+import java.io.BufferedReader;
 import java.util.UUID;
 
 public class LoadingScreen extends ScreenAdapter {
@@ -35,9 +38,7 @@ public class LoadingScreen extends ScreenAdapter {
         if (fileHandle.exists()) {
             questionsGenerator = questionsSaves.loadFromInternal(fileHandle);
         }
-        questionsSaves.saveQuestion(questionsGenerator);
 
-        rodaImpian.setQuestionsReady(questionsGenerator.run());
 
         Player player = playerSaves.load();
         if (player == null) {
@@ -66,17 +67,17 @@ public class LoadingScreen extends ScreenAdapter {
         assetManager.load(AssetDesc.BG);
         assetManager.load(AssetDesc.HOURGLASS);
 
-        // don't forget to dispose to avoid memory leaks!
+/*
+        questionsGenerator.getSubjects().add("NAMA SYARIKAT");
+        questionsGenerator.getSubjects().add("SAINS TEKNOLOGI");
 
-    /*    questionsGenerator.getSubjects().add("PERISIAN");
-        questionsGenerator.getSubjects().add("ADIWIRA");
-        FileHandle file = Gdx.files.internal("adiwira.txt");
+        FileHandle file = Gdx.files.internal("namasyarikat.txt");
         try {
             String word = null;
             BufferedReader br = new BufferedReader(file.reader());
             while ((word = br.readLine()) != null) {
                 QuestionSingle questionSingle = new QuestionSingle();
-                questionSingle.setSubject("ADIWIRA");
+                questionSingle.setSubject("NAMA SYARIKAT");
                 questionSingle.setQuestion(word.toUpperCase());
                 questionsGenerator.getQuestionSingles().add(questionSingle);
                 logger.debug(word);
@@ -85,13 +86,14 @@ public class LoadingScreen extends ScreenAdapter {
         } catch (Exception e) {
 
         }
-        FileHandle file2 = Gdx.files.internal("perisian.txt");
+
+        FileHandle file2 = Gdx.files.internal("sainteknologi.txt");
         try {
             String word = null;
             BufferedReader br = new BufferedReader(file2.reader());
             while ((word = br.readLine()) != null) {
                 QuestionSingle questionSingle = new QuestionSingle();
-                questionSingle.setSubject("PERISIAN");
+                questionSingle.setSubject("SAINS TEKNOLOGI");
                 questionSingle.setQuestion(word.toUpperCase());
                 questionsGenerator.getQuestionSingles().add(questionSingle);
                 logger.debug(word);
@@ -99,13 +101,15 @@ public class LoadingScreen extends ScreenAdapter {
 
         } catch (Exception e) {
 
-        }*/
+        }
 
-      /*  Json json = new Json();
+        Json json = new Json();
         String qq = json.prettyPrint(questionsGenerator);
         FileHandle f = Gdx.files.local("qq.txt");
         f.writeString(qq, false);*/
 
+        questionsSaves.saveQuestion(questionsGenerator);
+        rodaImpian.setQuestionsReady(questionsGenerator.run());
 
 /*
         QuestionSingle questionSingle = new QuestionSingle();
@@ -138,6 +142,7 @@ public class LoadingScreen extends ScreenAdapter {
 
         logger.debug("Subject round four: " + questionsReady.getSubjectRoundFour());
         logger.debug("Round four: " + questionsReady.getBonusRound());*/
+
     }
 
     @Override
@@ -150,7 +155,6 @@ public class LoadingScreen extends ScreenAdapter {
     public void render(float delta) {
         if (rodaImpian.getAssetManager().update()) {
             rodaImpian.setMenuScreen(new MenuScreen(rodaImpian));
-            rodaImpian.setMatchScreen(new MatchScreen(rodaImpian));
             rodaImpian.gotoMenu();
         }
     }

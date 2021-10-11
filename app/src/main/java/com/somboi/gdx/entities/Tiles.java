@@ -51,11 +51,11 @@ public class Tiles extends Image implements Cloneable {
     }
 
     public void typeLetter(String letter) {
+        setCompleteLetter(letter.toUpperCase().charAt(0));
         for (String s : textureName) {
             //   logger.debug("texture name "+s);
             if (s.equals(letter)) {
                 setImage(textureAtlas.findRegion(s));
-                setCompleteLetter(letter.toUpperCase().charAt(0));
                 break;
             }
         }
@@ -111,6 +111,10 @@ public class Tiles extends Image implements Cloneable {
 
     public boolean checkLetter() {
         return (completeLetter == letter);
+    }
+
+    public char getCompleteLetter() {
+        return completeLetter;
     }
 
     @NonNull

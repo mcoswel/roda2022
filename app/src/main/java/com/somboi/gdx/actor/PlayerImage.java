@@ -1,5 +1,7 @@
 package com.somboi.gdx.actor;
 
+import androidx.annotation.NonNull;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -8,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
-public class PlayerImage extends Image {
+public class PlayerImage extends Image implements Cloneable{
     private Sprite animate = null;
     private TextureRegion thisRegion;
     public PlayerImage(Texture texture) {
@@ -32,16 +34,20 @@ public class PlayerImage extends Image {
 
     public void setAnimate(TextureRegion region) {
         animate = new Sprite(region);
-        this.addListener(new DragListener(){
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                animate();
-                return super.touchDown(event, x, y, pointer, button);
-            }
-        });
     }
 
-    public void flip(){
 
+    public TextureRegion getThisRegion() {
+        return thisRegion;
+    }
+
+    public Sprite getAnimate() {
+        return animate;
+    }
+
+    @NonNull
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

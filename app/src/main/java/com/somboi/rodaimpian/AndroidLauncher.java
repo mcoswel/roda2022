@@ -35,7 +35,7 @@ import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.somboi.gdx.RodaImpian;
-import com.somboi.gdx.entities.MenuCreator;
+import com.somboi.gdx.entities.MainMenuCreator;
 import com.somboi.gdx.entities.Player;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -51,7 +51,7 @@ import barsoosayque.libgdxoboe.OboeAudio;
 public class AndroidLauncher extends AndroidApplication implements AndroidInterface {
     private static final int REQUEST_GALLERY_IMAGE = 3;
     private String filename;
-    private MenuCreator menuCreator;
+    private MainMenuCreator mainMenuCreator;
     private Player player;
     private CallbackManager callbackManager;
     private ProfileTracker mProfileTracker;
@@ -150,8 +150,8 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
                 taskSnapshot -> mountainsRef.getDownloadUrl().addOnCompleteListener(task -> {
                     String image = task.getResult().toString();
                     player.picUri = (Uri.parse(image).toString());
-                    menuCreator.savePlayer(player);
-                    menuCreator.loadOnlinePic();
+                    mainMenuCreator.savePlayer(player);
+                    mainMenuCreator.loadOnlinePic();
                 }));
 
     }
@@ -193,8 +193,8 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
     }
 
     @Override
-    public void setMenuCreator(MenuCreator menuCreator) {
-        this.menuCreator = menuCreator;
+    public void setMenuCreator(MainMenuCreator mainMenuCreator) {
+        this.mainMenuCreator = mainMenuCreator;
     }
 
     @Override
@@ -240,7 +240,7 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
         player.picUri = (Profile.getCurrentProfile().getProfilePictureUri(250, 250).toString());
         player.id = (Profile.getCurrentProfile().getId());
         player.logged = true;
-        menuCreator.savePlayer(player);
+        mainMenuCreator.savePlayer(player);
     }
 
 

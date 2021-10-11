@@ -27,10 +27,12 @@ public class MatchRound {
     private final Skin skin;
     private final int gameRound;
     private final GameSound gameSound;
-    private String consonants = "BCDFGHJKLMNPQRSTVWXYZ";
-    private String vocals = "AEIOU";
+    private String consonants;
+    private String vocals;
     private final ModeBase modeBase;
     private final CorrectScore correctScore;
+    private final StringBuilder bonusStringHolder = new StringBuilder();
+    private int walkCount;
 
     public MatchRound(RodaImpian rodaImpian, GameSound gameSound, TextureAtlas textureAtlas, Group tilesGroup, Skin skin, int gameRound, ModeBase modeBase) {
         this.rodaImpian = rodaImpian;
@@ -41,10 +43,17 @@ public class MatchRound {
         this.gameSound = gameSound;
         this.modeBase = modeBase;
         this.correctScore = new CorrectScore("SCORES", skin);
+        this.consonants = "BCDFGHJKLMNPQRSTVWXYZ";
+        this.vocals = "AEIOU";
     }
 
     public void setQuestion() {
+        modeBase.getVanna().hostRelax();
+
+
+        tilesGroup.clear();
         questionTiles.clear();
+        String bonusQuestions = rodaImpian.getQuestionsReady().getBonusRound();
         List<String> question = rodaImpian.getQuestionsReady().getRoundOne();
         String subjects = rodaImpian.getQuestionsReady().getSubjectRoundOne();
         if (gameRound == 1) {
@@ -53,18 +62,35 @@ public class MatchRound {
         } else if (gameRound == 2) {
             question = rodaImpian.getQuestionsReady().getRoundThree();
             subjects = rodaImpian.getQuestionsReady().getSubjectRoundThree();
+        } else if (gameRound == 3) {
+            subjects = rodaImpian.getQuestionsReady().getSubjectRoundFour();
         }
-        for (int i = 0; i < question.size(); i++) {
-            for (int j = 0; j < question.get(i).length(); j++) {
+
+        if (gameRound == 3) {
+            for (int i = 0; i < bonusQuestions.length(); i++) {
                 Tiles tiles = new Tiles(textureAtlas);
-                tiles.setLetter(question.get(i).charAt(j));
-                if ((i == 1 || i == 2) && question.get(i).length() == 13) {
-                    tiles.setPosition(31f + (j * tiles.getWidth()), 1465f - (i * tiles.getHeight()));
+                tiles.setLetter(bonusQuestions.toUpperCase().charAt(i));
+                if (bonusQuestions.length() >= 13) {
+                    tiles.setPosition(31f + (i * tiles.getWidth()), 1465f - tiles.getHeight());
                 } else {
-                    tiles.setPosition(91f + (j * tiles.getWidth()), 1465f - (i * tiles.getHeight()));
+                    tiles.setPosition(91f + (i * tiles.getWidth()), 1465f - tiles.getHeight());
                 }
                 tiles.introAnimation();
                 questionTiles.add(tiles);
+            }
+        } else {
+            for (int i = 0; i < question.size(); i++) {
+                for (int j = 0; j < question.get(i).length(); j++) {
+                    Tiles tiles = new Tiles(textureAtlas);
+                    tiles.setLetter(question.get(i).charAt(j));
+                    if ((i == 1 || i == 2) && question.get(i).length() >= 13) {
+                        tiles.setPosition(31f + (j * tiles.getWidth()), 1465f - (i * tiles.getHeight()));
+                    } else {
+                        tiles.setPosition(91f + (j * tiles.getWidth()), 1465f - (i * tiles.getHeight()));
+                    }
+                    tiles.introAnimation();
+                    questionTiles.add(tiles);
+                }
             }
         }
 
@@ -103,6 +129,20 @@ public class MatchRound {
             }
         }
         if (correct) {
+            walkCount++;
+            modeBase.getVanna().hostCorrect();
+
+                Timer.schedule(new Timer.Task() {
+                    @Override
+                    public void run() {
+                        if (walkCount % 4 == 0) {
+                            modeBase.getVanna().hostWalk();
+                        }else{
+                            modeBase.getVanna().hostRelax();
+                        }
+                    }
+                }, 2f);
+
             if (wheelParam.results.equals(StringRes.GIFT)) {
                 modeBase.showGifts();
                 gameSound.playCheer();
@@ -124,22 +164,36 @@ public class MatchRound {
                 }
             }
             gameSound.playCorrect();
-            if (!checkRevealAll()) {
+
+            if (!checkRevealAll() && gameRound != 3) {
                 modeBase.startPlays();
-            } else {
+            } else if (checkRevealAll()) {
                 revealAll();
             }
-            correctScore.pack();
-            correctScore.setPosition(450f - correctScore.getWidth() / 2f, 850f);
+
+
+            //correctScore.pack();
+            //correctScore.setPosition(450f - correctScore.getWidth() / 2f, 850f);
         } else {
+            modeBase.getVanna().hostWrong();
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    modeBase.getVanna().hostRelax();
+                }
+            }, 3f);
             if (wheelParam.results.equals(StringRes.GIFT)) {
                 modeBase.cancelGifts();
             }
             gameSound.playWrong();
-            modeBase.changeTurn();
+            if (gameRound != 3) {
+                modeBase.changeTurn();
+            }
         }
         wheelParam.results = "";
         wheelParam.resultValue = 0;
+
+
     }
 
     private boolean checkRevealAll() {
@@ -178,7 +232,7 @@ public class MatchRound {
                 }
             }
         }
-        return null;
+        return '*';
     }
 
     public Character findCorrectVocals() {
@@ -191,7 +245,7 @@ public class MatchRound {
                 }
             }
         }
-        return null;
+        return '*';
     }
 
     public boolean questionStillHaveConsonants() {
@@ -245,10 +299,8 @@ public class MatchRound {
     }
 
     public void revealAll() {
+        modeBase.getVanna().hostThumbsUp();
         gameSound.playWinSound();
-        if (gameRound == 2) {
-            checkWinner();
-        }
         for (Tiles t : questionTiles) {
             if (!t.isRevealed()) {
                 t.reveal(t.getLetter());
@@ -264,15 +316,24 @@ public class MatchRound {
             }
         }, 3f);
         modeBase.getPlayerGuis().get(modeBase.getActivePlayer().guiIndex).getImage().addAction(Actions.moveTo(325f, 1124, 2f));
-        modeBase.getActivePlayer().fullScore = modeBase.getActivePlayer().fullScore + modeBase.getActivePlayer().currentScore+500;
+        modeBase.getActivePlayer().fullScore = modeBase.getActivePlayer().fullScore + modeBase.getActivePlayer().currentScore + 500;
         modeBase.getPlayerGuis().get(modeBase.getActivePlayer().guiIndex).updateFullScore();
-        modeBase.newRound();
-        modeBase.removeHourGlass();
+
+        if (gameRound == 3) {
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    modeBase.endGame();
+                }
+            }, 4f);
+
+        } else {
+            modeBase.removeHourGlass();
+            modeBase.newRound();
+        }
+
     }
 
-    private void checkWinner() {
-
-    }
 
     public boolean stillHaveConsonants() {
         return consonants.length() != 0;
@@ -306,4 +367,44 @@ public class MatchRound {
         return new ArrayList<>(completPuzz);
     }
 
+    public int getGameRound() {
+        return gameRound;
+    }
+
+    public void addBonusString(Character c) {
+        bonusStringHolder.append(c);
+    }
+
+    public void showVocalKeyboard() {
+        modeBase.showVocals();
+    }
+
+    public void checkBonusString() {
+
+        correctScore.setText(bonusStringHolder);
+        correctScore.showBonusString(tilesGroup);
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                if (bonusStringHolder.length() > 0) {
+                    checkAnswer(bonusStringHolder.charAt(0));
+                    bonusStringHolder.deleteCharAt(0);
+                    correctScore.setText(bonusStringHolder);
+                    correctScore.showBonusString(tilesGroup);
+
+                    if (bonusStringHolder.length() == 0) {
+                        correctScore.remove();
+                        Timer.schedule(new Timer.Task() {
+                            @Override
+                            public void run() {
+                                modeBase.completeBonus();
+                            }
+                        }, 2f);
+                    }
+                }
+
+
+            }
+        }, 2f, 2f, bonusStringHolder.length());
+    }
 }

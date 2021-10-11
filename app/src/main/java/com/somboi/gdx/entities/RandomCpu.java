@@ -3,15 +3,19 @@ package com.somboi.gdx.entities;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.Array;
 import com.somboi.gdx.actor.PlayerImage;
+import com.somboi.gdx.assets.GameSound;
 
 public class RandomCpu {
     private final TextureAtlas textureAtlas;
     private final Array<Integer> cpuIntegers = new Array<>(new Integer[]{0, 1, 2, 3, 4, 5});
-
-    public RandomCpu(TextureAtlas textureAtlas) {
+    private final GameSound gameSound;
+    public RandomCpu(TextureAtlas textureAtlas, GameSound gameSound) {
         this.textureAtlas = textureAtlas;
+        this.gameSound = gameSound;
         cpuIntegers.shuffle();
     }
 
@@ -20,7 +24,7 @@ public class RandomCpu {
         Player player = new Player();
         player.greediness = MathUtils.random(0f, 1f);
 
-        player.isAi = true;
+       player.isAi = true;
         if (cpuNo == 0) {
             player.name = "Adam";
         } else if (cpuNo == 1) {
@@ -60,9 +64,23 @@ public class RandomCpu {
             region = textureAtlas.findRegion("3_siti");
             regionA = textureAtlas.findRegion("3_siti2");
         }
-        PlayerImage playerImage = new PlayerImage(region);
+        PlayerImage playerImage = new PlayerImage(region){
+
+        };
         playerImage.setAnimate(regionA);
+        playerImage.addListener(new DragListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                if (cpuNo==3|| cpuNo == 4){
+                    gameSound.playSlapSound();
+                }
+                playerImage.animate();
+                return super.touchDown(event, x, y, pointer, button);
+            }
+        });
         return playerImage;
     }
+
+
 }
 

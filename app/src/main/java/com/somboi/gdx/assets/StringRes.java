@@ -26,9 +26,9 @@ public class StringRes {
     public static final String COMPLETE = "Selesai";
     public static final Array<String> CPUPUTAR = new Array<>(new String[]{"Saya putar", "Saya pilih untuk putar roda",
             "Saya putar dulu",
-            "Nak putar",
+            "Nak putar!",
             "Wang besar, wang besar",
-            "Saya... putar",
+            "Saya... putar!!!",
             "Nak putar roda boleh?",
             "Nak putar. Harap tak muflis"});
     public static final Array<String> CPUCHOOSECONSONANTS = new Array<>(new String[]{
@@ -60,6 +60,14 @@ public class StringRes {
     public static final String OK = "Ok" ;
     public static final String NOTENOUGHMONEY = "Maaf, wang anda tidak mencukupi.";
     public static final String BONUS = "Round Bonus";
+    public static final String ROUND = "Pusingan ";
+    public static final String BONUSROUND = "Pusingan Bonus" ;
+    public static final String CHOOSEENVELOPE = "Pilih Sampul" ;
+    public static final String CHOOSE5CONS = "Pilih 5 Huruf Konsonan & 2 Vokal";
+    public static final String PEMENANGIALAH = "Pemenang keseluruhan ialah ";
+    public static final String MATCHFINISHED =  "Permainan Tamat";
+    public static final String MAINMENU = "Menu Utama";
+    public static final String EXIT = "Keluar";
 /*    public static final String HONDABIKE = "Motorsikal Honda";
     public static final String NESKOPI = "Motorsikal Honda";
     public static final String NINIENDO = "Motorsikal Honda";

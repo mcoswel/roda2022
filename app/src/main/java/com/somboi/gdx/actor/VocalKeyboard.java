@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Timer;
 import com.somboi.gdx.entities.MatchRound;
 
 public class VocalKeyboard {
@@ -13,7 +14,7 @@ public class VocalKeyboard {
     private final Table vocalTable = new Table();
     private final Stage stage;
     private final MatchRound matchRound;
-
+    private int count;
     public VocalKeyboard(Skin skin, MatchRound matchRound, Stage stage) {
         this.skin = skin;
         this.stage = stage;
@@ -35,11 +36,26 @@ public class VocalKeyboard {
             textButton.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
+                    if (matchRound.getGameRound()==3){
+                        textButton.remove();
+                        matchRound.addBonusString(cFinal);
+                        count++;
+                        if (count == 2){
+                            vocalTable.remove();
+                            Timer.schedule(new Timer.Task() {
+                                @Override
+                                public void run() {
+                                    matchRound.checkBonusString();
+                                }
+                            },2f);
+                        }
+                        return;                    }
                     StringBuilder builder = new StringBuilder(vocals);
                     builder.deleteCharAt(iFinal);
                     matchRound.setVocals(builder.toString());
                     matchRound.checkAnswer(cFinal);
-                    vocalTable.remove();
+                        vocalTable.remove();
+
 
                 }
             });

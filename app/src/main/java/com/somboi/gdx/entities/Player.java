@@ -17,5 +17,6 @@ public class Player {
     public boolean turn;
     public int guiIndex;
     public float greediness;
+    public int bonusIndex;
     public List<Integer>gifts = new ArrayList<>();
 }

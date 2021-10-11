@@ -5,8 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.somboi.gdx.actor.PlayerImage;
 import com.somboi.gdx.assets.QuestionsReady;
-import com.somboi.gdx.base.ModeBase;
-import com.somboi.gdx.entities.MenuCreator;
+import com.somboi.gdx.entities.MainMenuCreator;
 import com.somboi.gdx.entities.Player;
 import com.somboi.gdx.modes.GameModes;
 import com.somboi.gdx.screen.LoadingScreen;
@@ -14,9 +13,6 @@ import com.somboi.gdx.screen.MatchScreen;
 import com.somboi.gdx.screen.MenuScreen;
 import com.somboi.gdx.screen.WheelScreen;
 import com.somboi.rodaimpian.AndroidInterface;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class RodaImpian extends Game {
     private final AssetManager assetManager = new AssetManager();
@@ -87,11 +83,11 @@ public class RodaImpian extends Game {
         androidInterface.setPlayer(player);
     }
 
-    public void setMenuCreator(MenuCreator menuCreator) {
-        androidInterface.setMenuCreator(menuCreator);
+    public void setMenuCreator(MainMenuCreator mainMenuCreator) {
+        androidInterface.setMenuCreator(mainMenuCreator);
     }
 
-    public void choosePhoto(int playerInt, MenuCreator menuCreator) {
+    public void choosePhoto(int playerInt, MainMenuCreator mainMenuCreator) {
         androidInterface.choosePhoto(playerInt);
     }
 

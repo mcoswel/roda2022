@@ -150,6 +150,8 @@ public class Gifts {
         return giftImages;
     }
 
+
+
     public int getGiftsValue() {
         return giftsValue;
     }
