@@ -1,0 +1,65 @@
+super man
+hulk
+iron man
+spider-man
+aquaman
+ant-man
+batman
+catwoman
+daredevil
+elektra
+ghost rider
+green arrow
+green lantern
+hawkeye
+hellboy
+robin
+supergirl
+watchmen
+the wasp
+thor
+human torch
+plastic man
+wolverine
+beast boy
+starfire
+raven
+hercules
+black panther
+orion
+wonder woman
+zatanna
+bucky barnes
+vixen
+professor x
+doctor strange
+captain atom
+nick fury
+beast
+iron fist
+hawkgirl
+black widow
+stargirl
+kaine
+zorro
+ultraman
+power rangers
+flash
+captain comet
+doom patrol
+cyclops
+iceman
+rogue
+quicksilver
+animal man
+nightshade
+black knight
+falcon
+birdman
+starhawk
+nikki
+ninja turtle
+deadpool
+mermaid man
+
+

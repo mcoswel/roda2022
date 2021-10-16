@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:backgroundTint="@color/white"
+        app:cardCornerRadius="20dp"
+        app:cardPreventCornerOverlap="true"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/ranking"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/scorefont"
+                android:text="ranking"
+                android:textColor="@color/com_facebook_blue"
+                android:textSize="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_pic"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/default_avatar"
+                app:civ_border_color="@color/black"
+                app:civ_border_width="2dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ranking" />
+
+            <TextView
+                android:id="@+id/nameInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/scorefont"
+                android:text="Name"
+                android:textColor="@color/badge_4_border_color"
+                android:textSize="40dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/profile_pic" />
+            <TextView
+                android:id="@+id/bestscore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/scorefont"
+                android:text="Score"
+                android:textColor="@color/com_facebook_blue"
+                android:textSize="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/nameInfo" />
+
+            <TextView
+                android:id="@+id/badgelabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/scorefont"
+                android:text="Hadiah dimenangi:"
+                android:textColor="@color/com_facebook_blue"
+                android:textSize="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/bestscore" />
+            <LinearLayout
+                android:id="@+id/linear_layout_badge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/badgelabel">
+                <ImageView
+                    android:id="@+id/g0"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@color/badge_2_border_color" />
+                <ImageView
+                    android:id="@+id/g1"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@color/badge_2_border_color" />
+                <ImageView
+                    android:id="@+id/g2"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@color/badge_2_border_color" />
+            </LinearLayout>
+            <TextView
+                android:id="@+id/bonuslabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/scorefont"
+                android:text="Bonus dimenangi:"
+                android:textColor="@color/com_facebook_blue"
+                android:textSize="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/linear_layout_badge" />
+            <LinearLayout
+                android:id="@+id/linear_layout_bonus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/bonuslabel">
+                <ImageView
+                    android:id="@+id/b0"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@color/badge_2_border_color" />
+                <ImageView
+                    android:id="@+id/b1"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@color/badge_2_border_color" />
+                <ImageView
+                    android:id="@+id/b2"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@color/badge_2_border_color" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/topfanlabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/scorefont"
+                android:text="Top Fan Level:"
+                android:textColor="@color/com_facebook_blue"
+                android:textSize="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/linear_layout_bonus" />
+            <ImageView
+                android:id="@+id/topfanbadge"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@color/badge_2_border_color"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/topfanlabel"/>
+            <TextView
+                android:id="@+id/bankruptlabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/scorefont"
+                android:text="Anugerah Muflis: "
+                android:textColor="@color/com_facebook_blue"
+                android:textSize="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/topfanbadge" />
+            <ImageView
+                android:id="@+id/bankruptbadge"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@color/badge_2_border_color"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/bankruptlabel"/>
+
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ok"
+                android:id="@+id/okbutton"
+                app:layout_constraintTop_toBottomOf="@id/bankruptbadge"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

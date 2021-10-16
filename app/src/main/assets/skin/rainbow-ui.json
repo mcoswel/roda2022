@@ -190,7 +190,7 @@ com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	default: {
-		font: varsity
+		font: arialsmall
 		fontColor: white
 	}
 	whitearial: {
@@ -217,11 +217,6 @@ com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 		font: arialsmall
 		fontColor: green
 		background: title-box
-	}
-	score: {
-		font: varsity
-		fontColor: white
-		background: list
 	}
 	wheel: {
 		font: arialsmall

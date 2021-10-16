@@ -19,15 +19,15 @@
             android:value="@string/facebook_app_id" />
 
 
-        <activity android:name="com.somboi.ui.ChatActivity"
+        <activity android:name=".android.ChatActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.MyApplication.NoActionBar">
         </activity>
-        <activity android:name="com.somboi.ui.RoomActivity"
+        <activity android:name=".android.RoomActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.MyApplication.NoActionBar"/>
         <activity
-            android:name=".AndroidLauncher"
+            android:name=".android.AndroidLauncher"
             android:exported="true"
             android:label="@string/app_name"
             android:screenOrientation="portrait"

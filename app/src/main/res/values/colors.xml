@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="badge_1_border_color">#FFff9200</color>
+    <color name="badge_2_border_color">#FFd40b0b</color>
+    <color name="badge_3_border_color">#FFe00bd3</color>
+    <color name="badge_4_border_color">#FF150be0</color>
+    <color name="badge_5_border_color">#FF0be047</color>
+    <color name="badge_6_border_color">#FFf5a9e4</color>
+    <color name="badge_7_border_color">#FF83e00b</color>
+    <color name="badge_10_border_color">#FFa2f03c</color>
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
@@ -146,4 +154,6 @@
     <color name="DarkBlue">#00008B</color>
     <color name="Navy">#000080</color>
     <color name="Black">#000000</color>
+    <color name="avatar_border_color">#FF0cf7e4</color>
+    <color name="score_background_color_default">#FF97b9f3</color>
 </resources>

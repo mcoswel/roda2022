@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/score_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:backgroundTint="@color/white">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:backgroundTint="@color/white"
+        app:cardCornerRadius="20dp"
+        android:id="@+id/cardview"
+        app:cardPreventCornerOverlap="true"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constcard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/player1_image"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_margin="5dp"
+                android:src="@drawable/default_avatar"
+                app:civ_border_color="@color/black"
+                app:civ_border_overlay="true"
+                app:civ_border_width="2dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <!--<ProgressBar
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_margin="5dp"
+                android:id="@+id/progressPic"/>-->
+
+            <LinearLayout
+                android:id="@+id/linear_layout_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/linear_layout_badge">
+
+
+                <Button
+                    android:id="@+id/infobtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="1dp"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:text="info" />
+
+                <Button
+                    android:id="@+id/chatfriend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="1dp"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:text="💬" />
+
+                <Button
+                    android:id="@+id/like_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="1dp"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:text="👍" />
+                <Button
+                    android:id="@+id/delete_this"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="1dp"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:visibility="gone"
+                    android:text="Padam" />
+                <TextView
+                    android:id="@+id/likes_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/com_facebook_blue" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_layout_badge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="center_horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/commenter_name">
+
+                <ImageView
+                    android:id="@+id/badge_crown"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@color/badge_1_border_color" />
+
+                <ImageView
+                    android:id="@+id/badge_g0"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@color/badge_2_border_color" />
+
+                <ImageView
+                    android:id="@+id/badge_b1"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@color/badge_6_border_color" />
+
+
+                <ImageView
+                    android:id="@+id/badge_g2"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@color/badge_4_border_color" />
+
+                <ImageView
+                    android:id="@+id/badge_b0"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@color/badge_5_border_color" />
+
+                <ImageView
+                    android:id="@+id/badge_g1"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@color/badge_3_border_color" />
+
+
+                <ImageView
+                    android:id="@+id/badge_b2"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@color/badge_7_border_color" />
+
+                <ImageView
+                    android:id="@+id/badge_bankrupt"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@color/black" />
+
+                <ImageView
+                    android:id="@+id/badge_top_fan"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@color/badge_2_border_color" />
+
+                <ImageView
+                    android:id="@+id/badge_score"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@color/badge_5_border_color" />
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/player1_image">
+
+                <ImageView
+                    android:id="@+id/rank_Img"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/default_rank" />
+
+                <TextView
+                    android:id="@+id/rank_Txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="30dp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/score_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:fontFamily="@font/scorefont"
+                android:text="$1234"
+                android:textColor="@color/com_facebook_blue"
+                android:textSize="25dp"
+                app:layout_constraintBottom_toTopOf="@id/linear_layout_badge"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/commenter_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="5dp"
+                android:fontFamily="@font/scorefont"
+                android:text="PLAYER NAME"
+                android:textColor="@color/black"
+                android:textSize="25dp"
+                app:layout_constraintBottom_toTopOf="@id/linear_layout_badge"
+                app:layout_constraintEnd_toStartOf="@id/score_txt"
+                app:layout_constraintStart_toEndOf="@id/player1_image"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

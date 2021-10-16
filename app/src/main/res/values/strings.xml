@@ -20,5 +20,10 @@
     <string name="p2imagepath">p2.jpeg</string>
     <string name="p3imagepath">p3.jpeg</string>
     <string name="facebook_app_id">196914625759446</string>
+    <string name="fb_login_protocol_scheme">fb196914625759446</string>
+    <string name="mopub_inter">cbca24dfe6404ad6a136a5b093180980</string>
+    <string name="mopubbanner">708ea2638b89457c8d9e84da8f9061fa</string>
+    <string name="bilik">"Bilik "</string>
+    <string name="chat">chat</string>
 
 </resources>
