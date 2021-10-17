@@ -14,6 +14,7 @@ import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdx.base.ModeBase;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
 import com.somboi.rodaimpian.gdx.online.GameState;
+import com.somboi.rodaimpian.gdx.online.PlayerState;
 
 public class MenuButtons {
     private final RodaImpian rodaImpian;

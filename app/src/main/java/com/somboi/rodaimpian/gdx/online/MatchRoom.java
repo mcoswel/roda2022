@@ -6,5 +6,4 @@ import com.somboi.rodaimpian.gdx.entities.WheelParam;
 public class MatchRoom {
     public WheelParam wheelParam;
     public QuestionsReady questionsReady;
-    public float firstTurnRotation;
 }

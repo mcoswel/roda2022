@@ -17,11 +17,12 @@ import com.somboi.rodaimpian.gdx.entities.RandomCpu;
 import com.somboi.rodaimpian.gdx.online.ChatOnline;
 import com.somboi.rodaimpian.gdx.online.GameState;
 import com.somboi.rodaimpian.gdx.online.MatchRoom;
+import com.somboi.rodaimpian.gdx.online.PlayerState;
 import com.somboi.rodaimpian.gdx.online.RodaClient;
 import com.somboi.rodaimpian.gdx.utils.CopyPlayer;
 
 public class OnlinePlay extends ModeBase {
-    private GameState gameState = GameState.INIT;
+    private GameState gameState;
     private RodaClient rodaClient;
     private final RandomCpu randomCpu;
     private MatchRoom matchRoom;
@@ -98,9 +99,10 @@ public class OnlinePlay extends ModeBase {
         stage.addActor(giftsBonusGroup);
         stage.addActor(hourGlass);
         matchRound.setQuestion();
-        gameState = GameState.READY;
-        sendObject(GameState.READY);
+        rodaClient.setPlayerState(PlayerState.READY);
+
      //   sendObject(GameState.READY);
+
     }
 
     @Override
@@ -126,7 +128,7 @@ public class OnlinePlay extends ModeBase {
         }else{
             hideMenu();
         }
-        gameState = GameState.STARTPLAY;
+        rodaClient.setPlayerState(PlayerState.SHOWMENU);
     }
 
     @Override
@@ -180,7 +182,7 @@ public class OnlinePlay extends ModeBase {
     public void spinWheel() {
         rodaImpian.spinWheel();
         gameSound.stopClockSound();
-        gameState = GameState.SPIN;
+       // gameState = GameState.SPIN;
     }
 
     public void setGameState(GameState gameState) {
@@ -190,6 +192,11 @@ public class OnlinePlay extends ModeBase {
     public void checkAnswer(Character c){
         matchRound.checkAnswer(c);
         timerLimit.reset();
+    }
+
+    @Override
+    public RodaClient getRodaClient() {
+        return rodaClient;
     }
 
 }

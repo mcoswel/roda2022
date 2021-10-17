@@ -61,7 +61,7 @@ public class VocalKeyboard {
                     if (matchRound.getRodaImpian().getGameModes().equals(GameModes.ONLINE)) {
                         CheckAnswer checkAnswer = new CheckAnswer();
                         checkAnswer.character = cFinal;
-                        matchRound.getModeBase().sendObject(GameState.BUYVOCAL);
+                      //  matchRound.getModeBase().sendObject(GameState.BUYVOCAL);
                         matchRound.getModeBase().sendObject(checkAnswer);
                     } else {
                         matchRound.checkAnswer(cFinal);

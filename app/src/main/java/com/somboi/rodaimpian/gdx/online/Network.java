@@ -39,6 +39,6 @@ public class Network {
         kryo.register(CheckAnswer.class);
         kryo.register(Character.class);
         kryo.register(BeginSpin.class);
-
+        kryo.register(PlayerState.class);
     }
 }

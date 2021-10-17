@@ -1,5 +1,7 @@
 package com.somboi.rodaimpian.gdx.entities;
 
+import com.somboi.rodaimpian.gdx.online.PlayerState;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,4 +21,6 @@ public class Player {
     public int bonusIndex;
     public int bankrupt;
     public List<Integer>gifts = new ArrayList<>();
+    public PlayerState playerState;
+    public int conID;
 }

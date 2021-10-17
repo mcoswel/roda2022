@@ -48,6 +48,7 @@ import com.somboi.rodaimpian.gdx.listener.InputCompleteKey;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
 import com.somboi.rodaimpian.gdx.online.ChatOnline;
 import com.somboi.rodaimpian.gdx.online.GameState;
+import com.somboi.rodaimpian.gdx.online.RodaClient;
 import com.somboi.rodaimpian.gdx.screen.WheelScreen;
 
 import java.util.ArrayList;
@@ -73,7 +74,7 @@ public class ModeBase {
     private VocalKeyboard vocalKeyboard;
     private final Group menuGroup = new Group();
     protected MenuButtons menuButtons;
-    private WheelParam wheelParam = new WheelParam();
+    protected WheelParam wheelParam = new WheelParam();
     protected final Group playerImageGroup = new Group();
     protected final Group playerBoardGroup = new Group();
     protected final Group completeGroup = new Group();
@@ -737,6 +738,9 @@ public class ModeBase {
     public void spinWheel() {
         rodaImpian.spinWheel();
         gameSound.stopClockSound();
+    }
+    public RodaClient getRodaClient(){
+        return null;
     }
 
     public void setWheelParam(WheelParam wheelParam) {

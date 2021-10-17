@@ -1,16 +1,5 @@
 package com.somboi.rodaimpian.gdx.online;
 
-import static com.somboi.rodaimpian.gdx.online.GameState.BUYVOCAL;
-import static com.somboi.rodaimpian.gdx.online.GameState.CHANGETURN;
-import static com.somboi.rodaimpian.gdx.online.GameState.CHECKCONTACT;
-import static com.somboi.rodaimpian.gdx.online.GameState.INIT;
-import static com.somboi.rodaimpian.gdx.online.GameState.RESULTSHOWN;
-import static com.somboi.rodaimpian.gdx.online.GameState.SHOWCONS;
-import static com.somboi.rodaimpian.gdx.online.GameState.SPIN;
-import static com.somboi.rodaimpian.gdx.online.GameState.SPINNING;
-import static com.somboi.rodaimpian.gdx.online.GameState.STARTPLAY;
-
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Logger;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
@@ -25,7 +14,7 @@ public class RodaClient extends Client {
     private final Logger logger = new Logger(this.getClass().getName(), 3);
     private MatchRoom matchRoom;
     private boolean isHost;
-    private WheelParam wheelParam;
+    private PlayerState playerState;
 
     public RodaClient(RodaImpian rodaImpian, GameSound gameSound, OnlinePlay onlinePlay) {
 
@@ -35,21 +24,19 @@ public class RodaClient extends Client {
             @Override
             public void connected(Connection connection) {
 
-
                 RegisterPlayer registerPlayer = new RegisterPlayer();
+                playerState = PlayerState.CONNECTED;
                 registerPlayer.player = rodaImpian.getPlayer();
                 registerPlayer.roomID = rodaImpian.getRooms().getId();
                 sendTCP(registerPlayer);
 
                 if (rodaImpian.getPlayer().id.equals(rodaImpian.getRooms().getHostPlayer().id)) {
                     MatchRoom matchRoom = new MatchRoom();
-                    matchRoom.firstTurnRotation = MathUtils.random(5f, 9f);
                     matchRoom.questionsReady = rodaImpian.getQuestionsReady();
                     matchRoom.wheelParam = new WheelParam();
                     sendTCP(matchRoom);
                     isHost = true;
                 }
-                logger.debug("connected ");
 
             }
 
@@ -62,65 +49,76 @@ public class RodaClient extends Client {
             @Override
             public void received(Connection connection, Object o) {
                 if (o instanceof WheelParam) {
-                    wheelParam = (WheelParam) o;
-                  //  onlinePlay.setWheelParam(wheelParam);
-                    if (onlinePlay.getGameState().equals(SPIN)) {
-                        rodaImpian.getWheelScreen().applyImpulse(wheelParam.wheelImpulse);
-                        onlinePlay.setGameState(SPINNING);
-                    }
-
-                    if (onlinePlay.getGameState().equals(CHECKCONTACT)) {
-                        rodaImpian.getWheelScreen().showResult();
-                        onlinePlay.setGameState(RESULTSHOWN);
-                    }
+                    onlinePlay.setWheelParam((WheelParam) o);
                 }
 
-                if (o instanceof BeginSpin){
-                    BeginSpin beginSpin = (BeginSpin) o;
-
-                    if (wheelParam!=null){
-                        rodaImpian.getWheelScreen().getWheelBody().setTransform(
-                                rodaImpian.getWheelScreen().getWheelBody().getPosition(),
-                               beginSpin.startingAngle
-                        );
-                    }
-                    onlinePlay.spinWheel();
-                }
-
-                if (o instanceof GameState) {
-                    GameState gameState = (GameState) o;
-                    if (!gameState.equals(onlinePlay.getGameState())) {
-                        if (gameState.equals(BUYVOCAL)) {
-                            onlinePlay.getActivePlayer().currentScore -= 250;
-                        }
-                        if (gameState.equals(STARTPLAY)) {
-                            onlinePlay.startPlays();
-                        }
-
-                        if (gameState.equals(CHECKCONTACT)) {
-                            rodaImpian.getWheelScreen().checkContact();
-                            onlinePlay.setGameState(CHECKCONTACT);
-                        }
-                        if (gameState.equals(SHOWCONS)) {
-                            onlinePlay.showConsonants();
-                            onlinePlay.setGameState(SHOWCONS);
-                        }
-                        if (gameState.equals(CHANGETURN)){
-                            onlinePlay.changeTurnOffline();
-                            onlinePlay.setGameState(CHANGETURN);
-                        }
-                    }
-                }
                 if (o instanceof MatchRoom) {
-                    matchRoom = (MatchRoom) o;
+                    //  logger.debug("receive matchroom");
+                    MatchRoom matchRoom0 = (MatchRoom) o;
+                    matchRoom = matchRoom0;
 
-                    if (onlinePlay.getGameState().equals(INIT)) {
+                    if (playerState.equals(PlayerState.CONNECTED)) {
                         if (!isHost) {
                             rodaImpian.setQuestionsReady(matchRoom.questionsReady);
                         }
                         onlinePlay.setPlayers();
                     }
+
                 }
+                if (o instanceof GameState) {
+                    GameState gameState = (GameState) o;
+                    if (gameState.equals(GameState.SHOWMENU)) {
+                        if (!playerState.equals(PlayerState.SHOWMENU)) {
+                            onlinePlay.startPlays();
+                        }
+                    }
+                    if (gameState.equals(GameState.SPIN)) {
+                        if (!playerState.equals(PlayerState.SPIN)) {
+                            onlinePlay.spinWheel();
+                            setPlayerState(PlayerState.SPIN);
+                        }
+                    }
+                    if (gameState.equals(GameState.WHEELIMPULSE)) {
+                        if (!playerState.equals(PlayerState.WHEELIMPULSE)) {
+                            rodaImpian.getWheelScreen().applyImpulse(onlinePlay.getWheelParam().wheelImpulse);
+                            setPlayerState(PlayerState.WHEELIMPULSE);
+                        }
+                    }
+                    if (gameState.equals(GameState.WHEELSTOP)) {
+                        if (!rodaImpian.getPlayer().turn) {
+                            rodaImpian.getWheelScreen().getWheelBody().setTransform(
+                                    rodaImpian.getWheelScreen().getWheelBody().getPosition(),
+                                    onlinePlay.getWheelParam().wheelangle
+                            );
+                        } else {
+                            rodaImpian.getWheelScreen().checkContact();
+                        }
+                    }
+
+                    if (gameState.equals(GameState.SHOWRESULT)) {
+                        if (!playerState.equals(PlayerState.SHOWRESULT)) {
+                            if (rodaImpian.getPlayer().turn) {
+                                rodaImpian.getWheelScreen().showResult();
+                            }
+                            setPlayerState(PlayerState.SHOWRESULT);
+                        }
+                    }
+
+                    if (gameState.equals(GameState.GOTOMATCH)){
+                        if (!playerState.equals(PlayerState.GOTOMATCH)){
+                            rodaImpian.gotoMatch();
+                        }
+                    }
+
+                    if (gameState.equals(GameState.CHANGETURN)){
+                        if (!playerState.equals(PlayerState.CHANGETURN)){
+                            onlinePlay.changeTurnOffline();
+                            setPlayerState(PlayerState.CHANGETURN);
+                        }
+                    }
+
+                }
+
                 if (o instanceof StatusText) {
                     StatusText statusText = (StatusText) o;
                     onlinePlay.getDebugStatus().setText(statusText.status);
@@ -143,6 +141,10 @@ public class RodaClient extends Client {
 
     }
 
+    public void setPlayerState(PlayerState playerState) {
+        this.playerState = playerState;
+        sendTCP(playerState);
+    }
 
     public MatchRoom getMatchRoom() {
         return matchRoom;
