@@ -74,6 +74,17 @@ public class StringRes {
     public static final String PLAYERONLINESAVE = "playeronline";
     public static final String ONLINE = "Online";
     public static final String CHAT = "Chat";
+    public static final String WHEELRESULT = "Roda: ";
+    public static final String CREATEROOM = "Cipta Bilik";
+    public static final String FAILSERVER = "Gagal menghubungi Server";
+    public static final String JOIN = "Sertai";
+    public static final String DELETE = "Padam";
+    public static final String KICK = "Tendang";
+    public static final String EMPTYSLOT = "Kosong";
+    public static final String ROOM = "Bilik " ;
+    public static final String PLAYING = "Sedang Bermain" ;
+    public static final String CONNECTING = "Sedang mengubungi server";
+
 /*    public static final String HONDABIKE = "Motorsikal Honda";
     public static final String NESKOPI = "Motorsikal Honda";
     public static final String NINIENDO = "Motorsikal Honda";

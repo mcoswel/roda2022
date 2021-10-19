@@ -13,66 +13,66 @@ import com.somboi.rodaimpian.gdx.base.ModeBase;
 import com.somboi.rodaimpian.gdx.entities.Moves;
 import com.somboi.rodaimpian.gdx.entities.Player;
 import com.somboi.rodaimpian.gdx.entities.PlayerGui;
-import com.somboi.rodaimpian.gdx.entities.RandomCpu;
 import com.somboi.rodaimpian.gdx.online.ChatOnline;
 import com.somboi.rodaimpian.gdx.online.GameState;
-import com.somboi.rodaimpian.gdx.online.MatchRoom;
 import com.somboi.rodaimpian.gdx.online.PlayerState;
 import com.somboi.rodaimpian.gdx.online.RodaClient;
-import com.somboi.rodaimpian.gdx.utils.CopyPlayer;
+import com.somboi.rodaimpian.gdx.online.SessionRoom;
 
 public class OnlinePlay extends ModeBase {
     private GameState gameState;
-    private RodaClient rodaClient;
-    private final RandomCpu randomCpu;
-    private MatchRoom matchRoom;
+    private  RodaClient rodaClient;
     private StatusLabel debugStatus;
+    private SessionRoom sessionRoom;
 
     public OnlinePlay(RodaImpian rodaImpian, Stage stage) {
         super(rodaImpian, stage);
-        randomCpu = new RandomCpu(textureAtlas, gameSound);
-        debugStatus = new StatusLabel("Sedang berhubung dengan server ", skin);
+        debugStatus = new StatusLabel(StringRes.CONNECTING, skin);
         stage.addActor(debugStatus);
         stage.addActor(playerImageGroup);
+        //logger.debug("session name " +sessionRoom.getRoomName()+" player size "+sessionRoom.getPlayerList().size());
+        Gdx.input.setInputProcessor(stage);
     }
 
 
     @Override
     public void setPlayers() {
-
-        Player hostPlayer = CopyPlayer.getPlayer(rodaImpian.getRooms().getHostPlayer());
-        hostPlayer.guiIndex = 0;
-        if (rodaImpian.getPlayer().id.equals(hostPlayer.id)) {
-            rodaImpian.setPlayer(hostPlayer);
-            thisPlayer = hostPlayer;
-            logger.debug("im host");
+        //setRound();
+        stage.addActor(vanna);
+        stage.addActor(timerLimit);
+        sessionRoom = rodaImpian.getSessionRoom();
+        int index = 0;
+        for (Player player : sessionRoom.getPlayerList()){
+            player.guiIndex = index;
+            if (player.id.equals(thisPlayer.id)){
+                rodaImpian.setPlayer(player);
+            }
+            index++;
+            playerGuis.add(new PlayerGui(player, new PlayerImage(player.picUri, textureAtlas.findRegion("default_avatar"))));
         }
+      /*  Player hostPlayer = sessionRoom.getHostPlayer();
         PlayerGui playerGui0 = new PlayerGui(hostPlayer, new PlayerImage(hostPlayer.picUri, textureAtlas.findRegion("default_avatar")));
         playerGuis.add(playerGui0);
 
-        Player playerOne = CopyPlayer.getPlayer(rodaImpian.getRooms().getPlayer_one());
-        playerOne.guiIndex = 1;
+        Player playerOne = sessionRoom.getPlayerOne();
+
         if (rodaImpian.getPlayer().id.equals(playerOne.id)) {
             rodaImpian.setPlayer(playerOne);
             thisPlayer = playerOne;
-            logger.debug("im player one");
-
         }
 
         PlayerGui playerGui1 = new PlayerGui(playerOne, new PlayerImage(playerOne.picUri, textureAtlas.findRegion("default_avatar")));
         playerGuis.add(playerGui1);
 
-        if (rodaImpian.getRooms().getPlayer_two() != null) {
-            Player playerTwo = CopyPlayer.getPlayer(rodaImpian.getRooms().getPlayer_two());
-            playerTwo.guiIndex = 2;
+        if (sessionRoom.getPlayerTwo() != null) {
+            Player playerTwo = sessionRoom.getPlayerTwo();
             if (rodaImpian.getPlayer().id.equals(playerTwo.id)) {
                 rodaImpian.setPlayer(playerTwo);
                 thisPlayer = playerTwo;
             }
             PlayerGui playerGui2 = new PlayerGui(playerTwo, new PlayerImage(playerTwo.picUri, textureAtlas.findRegion("default_avatar")));
             playerGuis.add(playerGui2);
-
-        }
+        }*/
 
 
         for (PlayerGui playerGui : playerGuis) {
@@ -90,8 +90,8 @@ public class OnlinePlay extends ModeBase {
         });
         playerImageGroup.addActor(chat);
         Gdx.input.setInputProcessor(stage);
-        setActivePlayer(hostPlayer.guiIndex);
-        logger.debug("Active Player "+activePlayer.name);
+        setActivePlayer(0);
+        logger.debug("Active Player " + activePlayer.name);
         setRound();
         matchRound.setOnlinePlay(true);
         showPlayerBoard();
@@ -100,8 +100,8 @@ public class OnlinePlay extends ModeBase {
         stage.addActor(hourGlass);
         matchRound.setQuestion();
         rodaClient.setPlayerState(PlayerState.READY);
-
-     //   sendObject(GameState.READY);
+        thisPlayer = rodaImpian.getPlayer();
+        //   sendObject(GameState.READY);
 
     }
 
@@ -122,10 +122,10 @@ public class OnlinePlay extends ModeBase {
 
     @Override
     public void startPlays() {
-      //  super.startPlays();
-        if (thisPlayer.turn){
+        //  super.startPlays();
+        if (thisPlayer.turn) {
             showMenu();
-        }else{
+        } else {
             hideMenu();
         }
         rodaClient.setPlayerState(PlayerState.SHOWMENU);
@@ -145,9 +145,7 @@ public class OnlinePlay extends ModeBase {
         return gameState;
     }
 
-    public void setRodaClient(RodaClient rodaClient) {
-        this.rodaClient = rodaClient;
-    }
+
 
 
     public StatusLabel getDebugStatus() {
@@ -169,8 +167,8 @@ public class OnlinePlay extends ModeBase {
     }
 
     @Override
-    public void sendObject(final Object o){
-        new Thread(){
+    public void sendObject(final Object o) {
+        new Thread() {
             @Override
             public void run() {
                 rodaClient.sendTCP(o);
@@ -182,14 +180,14 @@ public class OnlinePlay extends ModeBase {
     public void spinWheel() {
         rodaImpian.spinWheel();
         gameSound.stopClockSound();
-       // gameState = GameState.SPIN;
+        // gameState = GameState.SPIN;
     }
 
     public void setGameState(GameState gameState) {
         this.gameState = gameState;
     }
 
-    public void checkAnswer(Character c){
+    public void checkAnswer(Character c) {
         matchRound.checkAnswer(c);
         timerLimit.reset();
     }
@@ -199,4 +197,11 @@ public class OnlinePlay extends ModeBase {
         return rodaClient;
     }
 
+    public void showInfo(String text) {
+        matchRound.showInfo(text);
+    }
+
+    public void setRodaClient(RodaClient rodaClient) {
+        this.rodaClient = rodaClient;
+    }
 }

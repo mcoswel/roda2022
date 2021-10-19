@@ -29,6 +29,7 @@ public class BaseScreen extends ScreenAdapter {
     protected final TextureAtlas textureAtlas;
     protected final GameSound gameSound;
     protected final Player player;
+    protected final BgImg bgImg;
     public BaseScreen(RodaImpian rodaImpian) {
         this.rodaImpian = rodaImpian;
         this.player = rodaImpian.getPlayer();
@@ -36,7 +37,8 @@ public class BaseScreen extends ScreenAdapter {
         skin = assetManager.get(AssetDesc.SKIN);
         textureAtlas = assetManager.get(AssetDesc.TEXTUREATLAS);
         gameSound = new GameSound(assetManager);
-        stage.addActor(new BgImg(assetManager.get(AssetDesc.BLURBG)));
+        bgImg = new BgImg(assetManager.get(AssetDesc.BLURBG));
+        stage.addActor(bgImg);
     }
 
     @Override
@@ -44,13 +46,15 @@ public class BaseScreen extends ScreenAdapter {
         GameConfig.clearScreen();
         update(delta);
         stage.draw();
+        stage.act();
+
         worldStage.draw();
+        worldStage.act();
 
     }
 
     public void update(float delta) {
-        stage.act();
-        worldStage.act();
+
 
     }
 

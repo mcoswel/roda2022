@@ -90,7 +90,6 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
             String roomJson = extra.getString("rooms");
             rooms = json.fromJson(Rooms.class, roomJson);
             rodaImpian = new RodaImpian(this);
-            rodaImpian.setRooms(rooms);
             rodaImpian.setGameModes(GameModes.ONLINE);
         } else {
             rodaImpian = new RodaImpian(this);
@@ -306,8 +305,8 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
     private void getFaceBookDetail() {
         player.name = Profile.getCurrentProfile().getName();
 
-        if (player.name.length() > 15) {
-            player.name = player.name.substring(0, 15);
+        if (player.name.length() > 10) {
+            player.name = player.name.substring(0, 10);
         }
         playerOnline.name = player.name;
         player.picUri = (Profile.getCurrentProfile().getProfilePictureUri(250, 250).toString());
@@ -349,10 +348,10 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
     }
 
     @Override
-    public void onlineChat(PlayerOnline playerOnline) {
+    public void onlineChat() {
         Intent intent = new Intent(this, ChatActivity.class);
         Json json = new Json();
-        String playerOnlineJson = json.toJson(playerOnline);
+        String playerOnlineJson = json.toJson(rodaImpian.getPlayerOnline());
         intent.putExtra("player", playerOnlineJson);
         startActivity(intent);
     }

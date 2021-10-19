@@ -15,6 +15,7 @@ import com.somboi.rodaimpian.gdx.assets.GameSound;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdx.base.ModeBase;
 import com.somboi.rodaimpian.gdx.config.GameConfig;
+import com.somboi.rodaimpian.gdx.online.GameState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -190,7 +191,7 @@ public class MatchRound {
         }
         wheelParam.results = "";
         wheelParam.resultValue = 0;
-
+        modeBase.getTimerLimit().reset();
 
     }
 
@@ -330,6 +331,7 @@ public class MatchRound {
             modeBase.newRound();
         }
 
+
     }
 
 
@@ -404,6 +406,12 @@ public class MatchRound {
 
             }
         }, 2f, 2f, bonusStringHolder.length());
+    }
+
+
+    public void showInfo(String text){
+        correctScore.setText(text);
+        correctScore.show(tilesGroup);
     }
 
     public boolean isOnlinePlay() {

@@ -22,8 +22,8 @@ public class PlayerImage extends Image implements Cloneable {
             public void downloadComplete(Pixmap pixmap) {
 
                 Texture tx = new Texture(RoundMap.execute(new Texture(pixmap)));
-
                 PlayerImage.this.setDrawable(new SpriteDrawable(new Sprite(tx)));
+                PlayerImage.this.setSize(250f, 250f);
             }
 
             @Override

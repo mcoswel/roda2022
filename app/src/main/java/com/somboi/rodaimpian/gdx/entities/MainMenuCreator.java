@@ -25,9 +25,10 @@ import com.somboi.rodaimpian.gdx.actor.PlayerImage;
 import com.somboi.rodaimpian.gdx.assets.AssetDesc;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
-import com.somboi.rodaimpian.saves.PlayerSaves;
 import com.somboi.rodaimpian.gdx.screen.MatchScreen;
+import com.somboi.rodaimpian.gdx.screen.RoomScreen;
 import com.somboi.rodaimpian.gdx.utils.RoundMap;
+import com.somboi.rodaimpian.saves.PlayerSaves;
 
 public class MainMenuCreator {
     private final RodaImpian rodaImpian;
@@ -77,8 +78,8 @@ public class MainMenuCreator {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if (rodaImpian.getPlayer().logged) {
-                    rodaImpian.startOnline();
-                }else{
+                    rodaImpian.setScreen(new RoomScreen(rodaImpian));
+                } else {
                     rodaImpian.loginFB();
                 }
             }
@@ -104,23 +105,24 @@ public class MainMenuCreator {
         playerTable.pack();
         playerTable.setPosition(450f - playerTable.getWidth() / 2f, 900f);
 
-        menuTable.padTop(50f);
         menuTable.defaults().pad(10f);
-        menuTable.setFillParent(true);
-        menuTable.center();
+        //menuTable.setFillParent(true);
+        //menuTable.center();
         menuTable.add(startBtn).row();
         menuTable.add(onlineBtn).row();
         menuTable.add(leaderboard).row();
+        menuTable.pack();
+        menuTable.setPosition(450f-menuTable.getWidth()/2f, playerTable.getY()-menuTable.getHeight()-20f);
 
     }
 
     public void show() {
         stage.addActor(menuTable);
         stage.addActor(playerTable);
-        FBPrompt fbPrompt = new FBPrompt(skin){
+        FBPrompt fbPrompt = new FBPrompt(skin) {
             @Override
             protected void result(Object object) {
-                if (object.equals(true)){
+                if (object.equals(true)) {
                     rodaImpian.loginFB();
                 }
             }
@@ -183,7 +185,7 @@ public class MainMenuCreator {
         }
     }
 
-    public void savePlayerOnline(PlayerOnline playerOnline){
+    public void savePlayerOnline(PlayerOnline playerOnline) {
         playerSaves.savePlayerOnline(playerOnline);
     }
 

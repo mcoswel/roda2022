@@ -12,6 +12,6 @@ public interface AndroidInterface {
     void setMenuCreator(MainMenuCreator mainMenuCreator);
     void loginFB();
     void leaderBoard();
-    void onlineChat(PlayerOnline playerOnline);
+    void onlineChat();
     void chat(int guiIndex, OnlinePlay onlinePlay);
 }

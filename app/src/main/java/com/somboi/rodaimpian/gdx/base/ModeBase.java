@@ -87,7 +87,6 @@ public class ModeBase {
     protected final Logger logger = new Logger(this.getClass().getName(), 3);
     protected final CorrectScore infoLabel;
     protected Bonus bonus;
-
     public ModeBase(RodaImpian rodaImpian, Stage stage) {
         this.rodaImpian = rodaImpian;
         this.thisPlayer = rodaImpian.getPlayer();
@@ -115,9 +114,6 @@ public class ModeBase {
             playerGuis.shuffle();
             setRound();
             firstTurn();
-            stage.addActor(vanna);
-            stage.addActor(timerLimit);
-        } else {
             stage.addActor(vanna);
             stage.addActor(timerLimit);
         }
@@ -163,6 +159,7 @@ public class ModeBase {
         gifts.showGifts(playerGuis.get(activePlayer.guiIndex));
     }
 
+
     public void cancelGifts() {
         gifts.cancel();
     }
@@ -195,6 +192,14 @@ public class ModeBase {
         Player player = playerGuis.get(i).getPlayer();
         player.turn = true;
         activePlayer = player;
+        if (rodaImpian.getGameModes().equals(GameModes.ONLINE)){
+            if (activePlayer.disconnect){
+               if (getRodaClient().isHost()){
+                   sendObject(GameState.CHANGETURN);
+                   logger.debug("active player disconnect");
+               }
+            }
+        }
 
     }
 
@@ -268,6 +273,7 @@ public class ModeBase {
     }
 
     public void changeTurnOffline() {
+        logger.debug("change turn");
         menuButtons.hideMenu();
         vocalKeyboard.hide();
         consonantKeyboard.hide();
@@ -277,16 +283,24 @@ public class ModeBase {
             removeFreeTurn();
             startPlays();
             activePlayer.freeTurn = false;
+
         /*    if (rodaImpian.getGameModes().equals(GameModes.ONLINE)) {
                 showMenu();
             }*/
         } else {
             activePlayer.turn = false;
+            if (activePlayer.id.equals(rodaImpian.getPlayer().id)){
+                rodaImpian.getPlayer().turn = false;
+            }
             hideMenu();
             int next = (activePlayer.guiIndex + 1) % playerGuis.size;
             setActivePlayer(next);
             startPlays();
         }
+    }
+
+    public void reveaAll(){
+        matchRound.revealAll();
     }
 
     public void startPlays() {
@@ -545,7 +559,12 @@ public class ModeBase {
         completeGroup.clear();
         completeGroup.remove();
         if (correct) {
-            matchRound.revealAll();
+
+            if (rodaImpian.getGameModes().equals(GameModes.ONLINE)){
+                sendObject(GameState.REVEALALL);
+            }else{
+                matchRound.revealAll();
+            }
         } else {
             if (gameRound == 3) {
                 endGame();
@@ -703,6 +722,13 @@ public class ModeBase {
     public Gifts getGifts() {
         return gifts;
     }
+    public int getGiftIndex(){
+        return gifts.getGiftIndex();
+    }
+
+    public void setGiftOnline(int giftIndex){
+        gifts.getGiftImages(giftIndex);
+    }
 
     public void completeBonus() {
         completePuzzle();
@@ -726,9 +752,18 @@ public class ModeBase {
     }
 
     public void update(float delta) {
-        if (timerLimit.isChangeTurn()) {
-            changeTurn();
-            timerLimit.reset();
+        if (rodaImpian.getGameModes().equals(GameModes.ONLINE)) {
+            if (rodaImpian.getPlayer().turn){
+                if (timerLimit.isChangeTurn()){
+                    changeTurn();
+                    timerLimit.reset();
+                }
+            }
+        } else {
+            if (timerLimit.isChangeTurn()) {
+                changeTurn();
+                timerLimit.reset();
+            }
         }
     }
 
@@ -739,12 +774,17 @@ public class ModeBase {
         rodaImpian.spinWheel();
         gameSound.stopClockSound();
     }
-    public RodaClient getRodaClient(){
+
+    public RodaClient getRodaClient() {
         return null;
     }
 
     public void setWheelParam(WheelParam wheelParam) {
         this.wheelParam = wheelParam;
+    }
+
+    public TimerLimit getTimerLimit() {
+        return timerLimit;
     }
 }
 

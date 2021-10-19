@@ -12,6 +12,7 @@ import com.somboi.rodaimpian.gdx.entities.WheelParam;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,8 +27,6 @@ public class Network {
         kryo.register(RegisterName.class);
         kryo.register(List.class);
         kryo.register(ArrayList.class);
-        kryo.register(Rooms.class);
-        kryo.register(MatchRoom.class);
         kryo.register(QuestionsReady.class);
         kryo.register(WheelParam.class);
         kryo.register(Player.class);
@@ -40,5 +39,8 @@ public class Network {
         kryo.register(Character.class);
         kryo.register(BeginSpin.class);
         kryo.register(PlayerState.class);
+        kryo.register(SessionRoom.class);
+        kryo.register(SessionList.class);
+        kryo.register(DisconnectPlayer.class);
     }
 }

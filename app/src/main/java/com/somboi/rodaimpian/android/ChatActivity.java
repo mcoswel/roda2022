@@ -49,36 +49,16 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.chatactivity);
         FirebaseApp.initializeApp(this);
         Bundle extra = getIntent().getExtras();
-        intent = new Intent(ChatActivity.this, RoomActivity.class);
         if (extra != null) {
             Json json = new Json();
             player = json.fromJson(PlayerOnline.class, extra.getString("player"));
-            intent.putExtra("player",extra.getString("player"));
         }
-
 
         recyclerView = findViewById(R.id.recycleView);
         send = findViewById(R.id.kirimBtn);
         editText = findViewById(R.id.chatInput);
-        ciptaBilik = findViewById(R.id.ciptaBtn);
-        lihatBilik = findViewById(R.id.lihatBtn);
 
-        Rooms rooms = new Rooms();
-        lihatBilik.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(intent);
-            }
-        });
-        ciptaBilik.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                rooms.setHostPlayer(player);
-                roomDatabase.child(player.id).setValue(rooms);
-                startActivity(intent);
-            }
-        });
 
         send.setOnClickListener(new View.OnClickListener() {
             @Override

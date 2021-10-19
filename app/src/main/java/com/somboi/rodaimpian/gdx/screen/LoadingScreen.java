@@ -40,7 +40,6 @@ public class LoadingScreen extends ScreenAdapter {
 
 
         Player player = playerSaves.load();
-
         PlayerOnline playerOnline = playerSaves.loadPlayerOnline();
         if (playerOnline != null) {
             rodaImpian.setPlayerOnline(playerOnline);
@@ -55,6 +54,10 @@ public class LoadingScreen extends ScreenAdapter {
             playerOnline.id = player.id;
             rodaImpian.setPlayerOnline(playerOnline);
             playerSaves.savePlayerOnline(playerOnline);
+        }
+        player.name = player.name.replaceAll("[^a-zA-Z0-9]", "");
+        if (player.name.length()>10){
+            player.name = player.name.substring(0,10);
         }
         playerSaves.save(player);
         rodaImpian.setPlayer(player);
@@ -91,14 +94,7 @@ public class LoadingScreen extends ScreenAdapter {
     public void render(float delta) {
         if (rodaImpian.getAssetManager().update()) {
             rodaImpian.setMenuScreen(new MenuScreen(rodaImpian));
-            if (rodaImpian.getGameModes() == null) {
-                rodaImpian.gotoMenu();
-            } else if (rodaImpian.getGameModes().equals(GameModes.ONLINE)) {
-                rodaImpian.setMatchScreen(new MatchScreen(rodaImpian));
-                rodaImpian.gotoMatch();
-            } else {
-                rodaImpian.gotoMenu();
-            }
+            rodaImpian.gotoMenu();
         }
     }
 
