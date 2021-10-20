@@ -40,8 +40,19 @@ public class Gifts {
         getGiftImages();
         index= (index+1)%(giftIntegers.size-1);
     }
+
+    public void onlineGifts(int index){
+        getGiftImages(index);
+    }
+
     public void setGifts(){
         generateGifts();
+        giftsGroup.addActor(unopenedGift);
+        giftsGroup.addActor(sparkling);
+    }
+
+    public void setGiftsOnline(int giftIndex){
+        getGiftImages(giftIndex);
         giftsGroup.addActor(unopenedGift);
         giftsGroup.addActor(sparkling);
 

@@ -9,6 +9,7 @@ import com.esotericsoftware.kryonet.Listener;
 import com.somboi.rodaimpian.RodaImpian;
 import com.somboi.rodaimpian.gdx.assets.GameSound;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
+import com.somboi.rodaimpian.gdx.entities.Bonus;
 import com.somboi.rodaimpian.gdx.entities.Player;
 import com.somboi.rodaimpian.gdx.entities.PlayerGui;
 import com.somboi.rodaimpian.gdx.entities.WheelParam;
@@ -69,6 +70,19 @@ public class RodaClient extends Client {
                             }
                         }
                     }
+                }
+
+                if (o instanceof EnvelopeIndex){
+                    EnvelopeIndex envelopeIndex = (EnvelopeIndex)o;
+                    onlinePlay.openEnvelopeByIndex(envelopeIndex.index);
+                }
+                if (o instanceof BonusHolder){
+                    BonusHolder bonusHolder = (BonusHolder) o;
+                    onlinePlay.checkBonusStringOnline(bonusHolder.holder);
+                }
+                if (o instanceof BonusIndex){
+                    BonusIndex bonusIndex = (BonusIndex) o;
+                    onlinePlay.setOnlineBonus(bonusIndex.index);
                 }
 
                 if (o instanceof WheelParam) {

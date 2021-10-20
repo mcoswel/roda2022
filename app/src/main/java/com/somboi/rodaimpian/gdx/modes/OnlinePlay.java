@@ -4,15 +4,20 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Timer;
 import com.somboi.rodaimpian.RodaImpian;
 import com.somboi.rodaimpian.gdx.actor.ChatBtn;
+import com.somboi.rodaimpian.gdx.actor.EnvelopeSubject;
+import com.somboi.rodaimpian.gdx.actor.Envelopes;
 import com.somboi.rodaimpian.gdx.actor.PlayerImage;
 import com.somboi.rodaimpian.gdx.actor.StatusLabel;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdx.base.ModeBase;
+import com.somboi.rodaimpian.gdx.entities.Bonus;
 import com.somboi.rodaimpian.gdx.entities.Moves;
 import com.somboi.rodaimpian.gdx.entities.Player;
 import com.somboi.rodaimpian.gdx.entities.PlayerGui;
+import com.somboi.rodaimpian.gdx.online.BonusIndex;
 import com.somboi.rodaimpian.gdx.online.ChatOnline;
 import com.somboi.rodaimpian.gdx.online.GameState;
 import com.somboi.rodaimpian.gdx.online.PlayerState;
@@ -101,27 +106,13 @@ public class OnlinePlay extends ModeBase {
         rodaClient.setPlayerState(PlayerState.READY);
         thisPlayer = rodaImpian.getPlayer();
         //   sendObject(GameState.READY);
-
     }
 
-    @Override
-    public void firstTurn() {
-        int index = 0;
-        for (PlayerGui playerGui : playerGuis) {
-            playerGui.setFirstTurn(index);
-            playerGui.getPlayer().guiIndex = index;
-            index++;
-            playerImageGroup.addActor(playerGui.getImage());
-        }
-        showPlayerBoard();
-        stage.addActor(playerImageGroup);
-        stage.addActor(giftsBonusGroup);
-        stage.addActor(hourGlass);
-    }
 
     @Override
     public void startPlays() {
-        //  super.startPlays();
+
+          super.startPlays();
         if (thisPlayer.turn) {
             showMenu();
         } else {
@@ -191,6 +182,28 @@ public class OnlinePlay extends ModeBase {
         timerLimit.reset();
     }
 
+    public void checkBonusStringOnline(String holder){
+        matchRound.checkBonusStringOnline(holder);
+    }
+
+    public void openEnvelopeByIndex(int index){
+        Envelopes envelopes =envelopesOnline.get(index);
+        envelopes.opened();
+        float xPosition = envelopes.getX() + envelopes.getWidth() / 2f;
+        tilesGroup.addActor(new EnvelopeSubject(skin, rodaImpian.getQuestionsReady().getSubjectRoundFour(), xPosition));
+        envelopeClicked = true;
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                tilesGroup.clear();
+                matchRound.setQuestion();
+                rodaImpian.showAds(3);
+                chooseBonusConsonant();
+            }
+        }, 3f);
+
+    }
+
     @Override
     public RodaClient getRodaClient() {
         return rodaClient;
@@ -202,5 +215,11 @@ public class OnlinePlay extends ModeBase {
 
     public void setRodaClient(RodaClient rodaClient) {
         this.rodaClient = rodaClient;
+    }
+
+    public void setOnlineBonus(int bonusIndex) {
+        Bonus bonus = new Bonus(textureAtlas,bonusIndex);
+        setBonus(bonus);
+        bonusRound();
     }
 }

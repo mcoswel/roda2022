@@ -12,6 +12,7 @@ public class SessionRoom {
     private QuestionsReady questionsReady;
     private String roomName;
     private boolean isPlaying;
+
     public List<Player> getPlayerList() {
         return playerList;
     }

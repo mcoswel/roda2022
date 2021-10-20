@@ -24,11 +24,12 @@ public class MenuButtons {
     private final MenuBtn vocals;
     private final MenuBtn spin;
     private final Table menuCompleteTable = new Table();
-
+    private final ModeBase modeBase;
     public MenuButtons(Group menuGroup, RodaImpian rodaImpian, ModeBase modeBase) {
         this.skin = rodaImpian.getAssetManager().get(AssetDesc.SKIN);
         this.rodaImpian = rodaImpian;
         this.menuGroup = menuGroup;
+        this.modeBase = modeBase;
 
         vocals = new MenuBtn(StringRes.VOKAL, skin);
         vocals.addListener(new ChangeListener() {
@@ -120,6 +121,9 @@ public class MenuButtons {
     public void showCompleteMenu() {
         menuTable.remove();
         menuGroup.addActor(menuCompleteTable);
+        if (modeBase.getGameRound()==3){
+            rodaImpian.showAds(3);
+        }
     }
 
     public void hideMenu() {

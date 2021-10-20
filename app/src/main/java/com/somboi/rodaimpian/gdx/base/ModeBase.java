@@ -48,6 +48,7 @@ import com.somboi.rodaimpian.gdx.entities.WheelParam;
 import com.somboi.rodaimpian.gdx.listener.InputCompleteKey;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
 import com.somboi.rodaimpian.gdx.online.ChatOnline;
+import com.somboi.rodaimpian.gdx.online.EnvelopeIndex;
 import com.somboi.rodaimpian.gdx.online.GameState;
 import com.somboi.rodaimpian.gdx.online.RodaClient;
 import com.somboi.rodaimpian.gdx.screen.WheelScreen;
@@ -95,6 +96,7 @@ public class ModeBase {
     protected boolean gameEnds;
     protected float adsLoadCounter = 65f;
     private final float ADSCOUNTER = 65f;
+    protected final Array<Envelopes> envelopesOnline = new Array<>();
     public ModeBase(RodaImpian rodaImpian, Stage stage) {
         this.rodaImpian = rodaImpian;
         this.thisPlayer = rodaImpian.getPlayer();
@@ -581,6 +583,7 @@ public class ModeBase {
                 EndGameDialog endGameDialog = new EndGameDialog(skin, playerGuis.get(activePlayer.guiIndex), textureAtlas, rodaImpian);
                 endGameDialog.show(stage);
                 Gdx.input.setInputProcessor(stage);
+                rodaImpian.showAds(2);
             }
         }, 2f);
 
@@ -629,14 +632,17 @@ public class ModeBase {
             p.removeFreeTurn();
         }
 
-        Timer.schedule(new Timer.Task() {
-            @Override
-            public void run() {
-                rodaImpian.showAds(gameRound);
-            }
-        },2.5f);
+        if (!rodaImpian.getGameModes().equals(GameModes.ONLINE)) {
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    rodaImpian.showAds(gameRound);
+                }
+            }, 2.5f);
+        }
 
         gameRound++;
+
         setRound();
         Timer.schedule(new Timer.Task() {
             @Override
@@ -713,41 +719,62 @@ public class ModeBase {
     }
 
     public void bonusRound() {
+
         bonusRound = true;
         timerLimit.reset();
         timerLimit.stop();
         Array<Integer> integers = new Array<>(new Integer[]{0, 1, 2});
         integers.shuffle();
-
+        rodaImpian.loadAds();
         for (int i = 0; i < 3; i++) {
             final Envelopes envelopes = new Envelopes(textureAtlas, integers.get(i));
             envelopes.setPosition(150 + (300 * i) - envelopes.getWidth() / 2f, 674f);
+            int finalI = i;
             envelopes.addListener(new DragListener() {
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    if (!envelopeClicked) {
-                        envelopes.opened();
-                        float xPosition = envelopes.getX() + envelopes.getWidth() / 2f;
-                        tilesGroup.addActor(new EnvelopeSubject(skin, rodaImpian.getQuestionsReady().getSubjectRoundFour(), xPosition));
-                        envelopeClicked = true;
-                        Timer.schedule(new Timer.Task() {
-                            @Override
-                            public void run() {
-                                tilesGroup.clear();
-                                matchRound.setQuestion();
-                                chooseBonusConsonant();
+                    if (rodaImpian.getGameModes().equals(GameModes.ONLINE)){
+                        if (rodaImpian.getPlayer().turn){
+                            if (!envelopeClicked) {
+                                EnvelopeIndex envelopeIndex = new EnvelopeIndex();
+                                envelopeIndex.index = finalI;
+                                sendObject(envelopeIndex);
                             }
-                        }, 3f);
+                        }
+                    }else {
+                        if (!envelopeClicked) {
+                            clickEnveloped(envelopes);
+                        }
                     }
                     return super.touchDown(event, x, y, pointer, button);
                 }
             });
             tilesGroup.addActor(envelopes);
-            playerBoardGroup.addActor(bonus.getBonusImage());
-            tilesGroup.addActor(new Sparkling(assetManager.get(AssetDesc.SPARKLE)));
-            infoLabel.setText(StringRes.CHOOSEENVELOPE);
-            infoLabel.show(tilesGroup);
+            envelopesOnline.add(envelopes);
         }
+        playerBoardGroup.addActor(bonus.getBonusImage());
+        tilesGroup.addActor(new Sparkling(assetManager.get(AssetDesc.SPARKLE)));
+        infoLabel.setText(StringRes.CHOOSEENVELOPE);
+        infoLabel.show(tilesGroup);
+    }
+
+
+
+
+    private void clickEnveloped(Envelopes envelopes){
+        envelopes.opened();
+        float xPosition = envelopes.getX() + envelopes.getWidth() / 2f;
+        tilesGroup.addActor(new EnvelopeSubject(skin, rodaImpian.getQuestionsReady().getSubjectRoundFour(), xPosition));
+        envelopeClicked = true;
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                tilesGroup.clear();
+                matchRound.setQuestion();
+                rodaImpian.showAds(3);
+                chooseBonusConsonant();
+            }
+        }, 3f);
     }
 
     public void chooseBonusConsonant() {
@@ -810,12 +837,13 @@ public class ModeBase {
 
     public void update(float delta) {
 
-        adsLoadCounter -= delta;
-        if (adsLoadCounter <= 0) {
-            rodaImpian.loadAds();
-            adsLoadCounter = ADSCOUNTER;
+        if (!rodaImpian.getGameModes().equals(GameModes.ONLINE)) {
+            adsLoadCounter -= delta;
+            if (adsLoadCounter <= 0) {
+                rodaImpian.loadAds();
+                adsLoadCounter = ADSCOUNTER;
+            }
         }
-
 
         if (rodaImpian.getGameModes().equals(GameModes.ONLINE)) {
             if (rodaImpian.getPlayer().turn) {

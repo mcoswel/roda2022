@@ -50,6 +50,7 @@ public class VocalKeyboard {
                                 @Override
                                 public void run() {
                                     matchRound.checkBonusString();
+
                                 }
                             }, 2f);
                         }

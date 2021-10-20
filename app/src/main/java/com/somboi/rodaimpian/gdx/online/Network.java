@@ -1,20 +1,14 @@
 package com.somboi.rodaimpian.gdx.online;
 
 import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryo.serializers.MapSerializer;
 import com.esotericsoftware.kryonet.EndPoint;
 import com.somboi.rodaimpian.android.PlayerOnline;
-import com.somboi.rodaimpian.android.Rooms;
 import com.somboi.rodaimpian.gdx.assets.QuestionsReady;
 import com.somboi.rodaimpian.gdx.entities.Player;
 import com.somboi.rodaimpian.gdx.entities.WheelParam;
 
-import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 // This class is a convenient place to keep things common to both the client and server.
 public class Network {
@@ -42,5 +36,10 @@ public class Network {
         kryo.register(SessionRoom.class);
         kryo.register(SessionList.class);
         kryo.register(DisconnectPlayer.class);
+        kryo.register(BonusHolder.class);
+        kryo.register(EnvelopeIndex.class);
+        kryo.register(BonusIndex.class);
+        kryo.register(TilesOnline.class);
+        kryo.register(TilesOnline.class);
     }
 }

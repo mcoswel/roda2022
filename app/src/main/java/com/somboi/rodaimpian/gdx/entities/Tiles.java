@@ -14,6 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 
+import java.util.Locale;
+
 public class Tiles extends Image implements Cloneable {
     private final TextureAtlas textureAtlas;
     private char letter;
@@ -75,6 +77,10 @@ public class Tiles extends Image implements Cloneable {
                 setImage(textureAtlas.findRegion(String.valueOf(c).toLowerCase()));
             }
         }, 1f);
+    }
+
+    public void doReveal(){
+        setImage(textureAtlas.findRegion(String.valueOf(letter).toLowerCase()));
     }
 
     public char getLetter() {

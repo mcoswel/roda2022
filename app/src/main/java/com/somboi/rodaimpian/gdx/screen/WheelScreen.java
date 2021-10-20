@@ -29,6 +29,7 @@ import com.somboi.rodaimpian.gdx.entities.Bonus;
 import com.somboi.rodaimpian.gdx.entities.WheelParam;
 import com.somboi.rodaimpian.gdx.listener.WorldContact;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
+import com.somboi.rodaimpian.gdx.online.BonusIndex;
 import com.somboi.rodaimpian.gdx.online.GameState;
 import com.somboi.rodaimpian.gdx.utils.BodyEditorLoader;
 
@@ -96,8 +97,8 @@ public class WheelScreen extends BaseScreen {
             wheelActor.setDrawable(new SpriteDrawable(new Sprite(textureAtlas.findRegion("wheelbonus"))));
         }
         if (!modeBase.getActivePlayer().isAi && firstSpin && !rodaImpian.getGameModes().equals(GameModes.ONLINE)) {
-                worldStage.addActor(fingers);
-        }else{
+            worldStage.addActor(fingers);
+        } else {
             fingers.remove();
         }
         firstSpin = false;
@@ -118,7 +119,7 @@ public class WheelScreen extends BaseScreen {
             if (rodaImpian.getPlayer().turn) {
                 Gdx.input.setInputProcessor(worldStage);
             }
-            if (rodaImpian.getGameModes().equals(GameModes.LOCALMULTI)){
+            if (rodaImpian.getGameModes().equals(GameModes.LOCALMULTI)) {
                 Gdx.input.setInputProcessor(worldStage);
             }
         } else {
@@ -260,7 +261,7 @@ public class WheelScreen extends BaseScreen {
             if (rodaImpian.getPlayer().turn) {
                 Gdx.input.setInputProcessor(worldStage);
             }
-            if (rodaImpian.getGameModes().equals(GameModes.LOCALMULTI)){
+            if (rodaImpian.getGameModes().equals(GameModes.LOCALMULTI)) {
                 Gdx.input.setInputProcessor(worldStage);
             }
         }
@@ -301,11 +302,11 @@ public class WheelScreen extends BaseScreen {
             }
         }
 
-      //  logger.debug("Wheel impulse "+wheelBody.isActive());
+        //  logger.debug("Wheel impulse "+wheelBody.isActive());
 
         if (startRotate && !rodaImpian.getGameModes().equals(GameModes.ONLINE) && !finishSpin) {
-          //  logger.debug("Wheel velocit "+wheelBody.getAngularVelocity());
-            if ( wheelBody.getAngularVelocity() > 0) {
+            //  logger.debug("Wheel velocit "+wheelBody.getAngularVelocity());
+            if (wheelBody.getAngularVelocity() > 0) {
                 //  wheelBody.setTransform(wheelBody.getPosition(), modeBase.getWheelParam().wheelangle);
                 Timer.schedule(new Timer.Task() {
                     @Override
@@ -315,7 +316,9 @@ public class WheelScreen extends BaseScreen {
                                 Bonus bonus = new Bonus(textureAtlas);
                                 bonus.getWheelResult(wheelParam, contact.getLastContact());
                                 modeBase.setBonus(bonus);
+
                                 showResult();
+
                             } else {
                                 checkContact();
                             }
@@ -330,14 +333,22 @@ public class WheelScreen extends BaseScreen {
             if (rodaImpian.getPlayer().turn) {
                 wheelParam.wheelangle = wheelBody.getAngle();
                 modeBase.sendObject(wheelParam);
-                if ( wheelBody.getAngularVelocity() > 0) {
+                if (wheelBody.getAngularVelocity() > 0) {
                     Timer.schedule(new Timer.Task() {
                         @Override
                         public void run() {
 
                             if (!showingResult) {
-                                modeBase.sendObject(GameState.WHEELSTOP);
-                                modeBase.sendObject(GameState.CHECKCONTACT);
+                                if (modeBase.getGameRound() == 3) {
+                                    Bonus bonus = new Bonus(textureAtlas);
+                                    bonus.getWheelResult(wheelParam, contact.getLastContact());
+                                    BonusIndex bonusIndex = new BonusIndex();
+                                    bonusIndex.index = bonus.getBonusIndex();
+                                    modeBase.sendObject(bonusIndex);
+                                } else {
+                                    modeBase.sendObject(GameState.WHEELSTOP);
+                                    modeBase.sendObject(GameState.CHECKCONTACT);
+                                }
                                 showingResult = true;
                             }
                         }
@@ -536,7 +547,7 @@ public class WheelScreen extends BaseScreen {
                 }
 
 
-                if(wheelParam.resultValue > 0 && !modeBase.getActivePlayer().isAi && modeBase.getGameRound()!=3) {
+                if (wheelParam.resultValue > 0 && !modeBase.getActivePlayer().isAi && modeBase.getGameRound() != 3) {
 
                     if (rodaImpian.getGameModes().equals(GameModes.ONLINE)) {
                         if (rodaImpian.getPlayer().turn) {

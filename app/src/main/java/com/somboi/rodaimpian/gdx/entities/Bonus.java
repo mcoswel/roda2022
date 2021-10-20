@@ -12,7 +12,10 @@ public class Bonus {
         this.textureAtlas = textureAtlas;
         bonusImage = new BonusGiftImg(textureAtlas.findRegion("7_b_motorcycle"));
     }
-
+    public Bonus(TextureAtlas textureAtlas, int index) {
+        this.textureAtlas = textureAtlas;
+        bonusImage = BonusGiftImg.getBonus(textureAtlas, index);
+    }
     public void getWheelResult(WheelParam wheelParam, String lastContact) {
 
         switch (lastContact) {
