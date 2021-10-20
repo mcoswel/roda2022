@@ -93,8 +93,8 @@ public class ModeBase {
     protected boolean winBonus;
     protected boolean bonusRound;
     protected boolean gameEnds;
-    protected float adsLoadCounter = 30f;
-
+    protected float adsLoadCounter = 65f;
+    private final float ADSCOUNTER = 65f;
     public ModeBase(RodaImpian rodaImpian, Stage stage) {
         this.rodaImpian = rodaImpian;
         this.thisPlayer = rodaImpian.getPlayer();
@@ -628,7 +628,14 @@ public class ModeBase {
             p.getPlayer().freeTurn = false;
             p.removeFreeTurn();
         }
-        rodaImpian.showAds(gameRound);
+
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                rodaImpian.showAds(gameRound);
+            }
+        },2.5f);
+
         gameRound++;
         setRound();
         Timer.schedule(new Timer.Task() {
@@ -806,7 +813,7 @@ public class ModeBase {
         adsLoadCounter -= delta;
         if (adsLoadCounter <= 0) {
             rodaImpian.loadAds();
-            adsLoadCounter = 30f;
+            adsLoadCounter = ADSCOUNTER;
         }
 
 
