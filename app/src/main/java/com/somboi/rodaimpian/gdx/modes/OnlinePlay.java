@@ -39,7 +39,6 @@ public class OnlinePlay extends ModeBase {
     public void setPlayers() {
         //setRound();
         stage.addActor(vanna);
-        stage.addActor(timerLimit);
         sessionRoom = rodaImpian.getSessionRoom();
         int index = 0;
         for (Player player : sessionRoom.getPlayerList()){

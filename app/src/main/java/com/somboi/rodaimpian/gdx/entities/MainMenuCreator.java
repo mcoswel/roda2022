@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
@@ -25,7 +26,9 @@ import com.somboi.rodaimpian.gdx.actor.PlayerImage;
 import com.somboi.rodaimpian.gdx.assets.AssetDesc;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
+import com.somboi.rodaimpian.gdx.screen.LoadingScreen;
 import com.somboi.rodaimpian.gdx.screen.MatchScreen;
+import com.somboi.rodaimpian.gdx.screen.MenuScreen;
 import com.somboi.rodaimpian.gdx.screen.RoomScreen;
 import com.somboi.rodaimpian.gdx.utils.RoundMap;
 import com.somboi.rodaimpian.saves.PlayerSaves;
@@ -38,19 +41,25 @@ public class MainMenuCreator {
     private final PlayerSaves playerSaves = new PlayerSaves();
     private final Table playerTable = new Table();
     private final SequenceAction blink = new SequenceAction(Actions.fadeOut(0.2f), Actions.fadeIn(0.2f));
-    private final Stage stage;
+    private final Group menuGroup;
     private Label loadingLabel;
     private final FileHandle p1ImgPath = Gdx.files.local(StringRes.PLY1IMAGEPATH);
     private NameField inputName;
-
-    public MainMenuCreator(RodaImpian rodaImpian, Stage stage) {
+    private final Stage stage;
+    private final MenuScreen menuScreen;
+    private boolean promptFb;
+    public MainMenuCreator(RodaImpian rodaImpian, Group menuGroup, Stage stage, MenuScreen menuScreen) {
         this.rodaImpian = rodaImpian;
+        this.menuGroup = menuGroup;
         this.stage = stage;
+        this.menuScreen = menuScreen;
         this.skin = rodaImpian.getAssetManager().get(AssetDesc.SKIN);
         playerImage = new PlayerImage(rodaImpian.getAssetManager().get(AssetDesc.TEXTUREATLAS).findRegion("default_avatar"));
-
-        LargeButton startBtn = new LargeButton(StringRes.START, skin);
-        startBtn.addListener(new ChangeListener() {
+        loadingLabel = new Label(StringRes.LOADING, skin, "title");
+        loadingLabel.setPosition(120f, 920f);
+        loadingLabel.addAction(Actions.forever(blink));
+        LargeButton offline = new LargeButton(StringRes.Offline, skin);
+        offline.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 Player player = rodaImpian.getPlayer();
@@ -63,8 +72,7 @@ public class MainMenuCreator {
                 player.bonusIndex = 0;
                 rodaImpian.setGameModes(GameModes.SINGLE);
                 rodaImpian.setPlayerImage(playerImage);
-                rodaImpian.setMatchScreen(new MatchScreen(rodaImpian));
-                rodaImpian.gotoMatch();
+                menuScreen.showLocal();
             }
         });
 
@@ -73,6 +81,12 @@ public class MainMenuCreator {
         }
 
         LargeButton leaderboard = new LargeButton(StringRes.LEADERBOARD, skin);
+        leaderboard.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                rodaImpian.gotoLeaderBoard();
+            }
+        });
         LargeButton onlineBtn = new LargeButton(StringRes.ONLINE, skin);
         onlineBtn.addListener(new ChangeListener() {
             @Override
@@ -80,11 +94,35 @@ public class MainMenuCreator {
                 if (rodaImpian.getPlayer().logged) {
                     rodaImpian.setScreen(new RoomScreen(rodaImpian));
                 } else {
-                    rodaImpian.loginFB();
+                    FBPrompt fbPrompt = new FBPrompt(skin){
+                        @Override
+                        protected void result(Object object) {
+                            if (object.equals(true)){
+                                rodaImpian.loginFB();
+                            }
+                        }
+                    };
+                    fbPrompt.show(stage);
                 }
             }
         });
         LargeButton logoutFB = new LargeButton(StringRes.LOGOUT, skin);
+        logoutFB.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                rodaImpian.getPlayer().logged = false;
+                rodaImpian.getPlayer().picUri = null;
+                savePlayer(rodaImpian.getPlayer());
+                rodaImpian.setScreen(new LoadingScreen(rodaImpian));
+            }
+        });
+        LargeButton comment = new LargeButton(StringRes.MESSAGE, skin);
+        comment.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                rodaImpian.openComment();
+            }
+        });
 
 
         Table leftTable = new Table();
@@ -94,7 +132,7 @@ public class MainMenuCreator {
         choosePhoto.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                rodaImpian.choosePhoto(0, MainMenuCreator.this);
+                rodaImpian.choosePhoto(0);
             }
         });
 
@@ -108,8 +146,9 @@ public class MainMenuCreator {
         menuTable.defaults().pad(10f);
         //menuTable.setFillParent(true);
         //menuTable.center();
-        menuTable.add(startBtn).row();
-        menuTable.add(onlineBtn).row();
+        menuTable.add(offline).row();
+        menuTable.add(onlineBtn).row();        menuTable.add(comment).row();
+
         menuTable.add(leaderboard).row();
         menuTable.pack();
         menuTable.setPosition(450f-menuTable.getWidth()/2f, playerTable.getY()-menuTable.getHeight()-20f);
@@ -117,8 +156,8 @@ public class MainMenuCreator {
     }
 
     public void show() {
-        stage.addActor(menuTable);
-        stage.addActor(playerTable);
+        menuGroup.addActor(menuTable);
+        menuGroup.addActor(playerTable);
         FBPrompt fbPrompt = new FBPrompt(skin) {
             @Override
             protected void result(Object object) {
@@ -127,8 +166,9 @@ public class MainMenuCreator {
                 }
             }
         };
-        if (!rodaImpian.getPlayer().logged) {
+        if (!rodaImpian.getPlayer().logged && rodaImpian.getPlayerOnline().timesplayed==0 && !promptFb) {
             fbPrompt.show(stage);
+            promptFb = true;
         }
 
 
@@ -141,6 +181,7 @@ public class MainMenuCreator {
 
     public void loadOnlinePic() {
         createLoading();
+
         Pixmap.downloadFromUrl(rodaImpian.getPlayer().picUri, new Pixmap.DownloadPixmapResponseListener() {
             @Override
             public void downloadComplete(Pixmap pixmap) {
@@ -168,14 +209,12 @@ public class MainMenuCreator {
                 }, 2f);
             }
         });
+
     }
 
     public void createLoading() {
-        loadingLabel = new Label(StringRes.LOADING, skin, "title");
-        loadingLabel.setPosition(120f, 920f);
-        loadingLabel.addAction(Actions.forever(blink));
-        stage.addActor(loadingLabel);
 
+        stage.addActor(loadingLabel);
     }
 
     public void loadLocalPic() {

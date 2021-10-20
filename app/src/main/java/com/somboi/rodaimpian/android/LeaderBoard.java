@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.esotericsoftware.jsonbeans.Json;
+import com.badlogic.gdx.utils.Json;
 import com.google.android.play.core.review.ReviewInfo;
 import com.google.android.play.core.review.ReviewManager;
 import com.google.android.play.core.review.ReviewManagerFactory;
@@ -138,10 +138,6 @@ public class LeaderBoard extends AppCompatActivity {
         };
     }
 
-    @Override
-    public void onBackPressed() {
-        startActivity(new Intent(LeaderBoard.this, AndroidLauncher.class));
-        finish();
-    }
+
 
 }

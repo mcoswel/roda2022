@@ -43,6 +43,11 @@ public class PlayerImage extends Image implements Cloneable {
         setUp();
     }
 
+    public PlayerImage(Texture texture) {
+        super(texture);
+        setUp();
+    }
+
     private void setUp() {
         this.setSize(250f, 250f);
     }

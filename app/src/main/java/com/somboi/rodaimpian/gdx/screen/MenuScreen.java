@@ -1,17 +1,24 @@
 package com.somboi.rodaimpian.gdx.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.somboi.rodaimpian.RodaImpian;
 import com.somboi.rodaimpian.gdx.assets.AssetDesc;
 import com.somboi.rodaimpian.gdx.base.BaseScreen;
+import com.somboi.rodaimpian.gdx.entities.LocalPlayMenu;
 import com.somboi.rodaimpian.gdx.entities.MainMenuCreator;
 
 public class MenuScreen extends BaseScreen {
     private final MainMenuCreator mainMenuCreator;
+    private final LocalPlayMenu localPlayMenu;
+    private final Group mainMenuGroup = new Group();
+    private final Group localGroup = new Group();
     public MenuScreen(RodaImpian rodaImpian) {
         super(rodaImpian);
-        mainMenuCreator = new MainMenuCreator(rodaImpian, stage);
+        mainMenuCreator = new MainMenuCreator(rodaImpian, mainMenuGroup, stage, this);
+        localPlayMenu = new LocalPlayMenu(rodaImpian, localGroup,skin,textureAtlas, this);
         rodaImpian.setMenuCreator(mainMenuCreator);
         Image bg = new Image(assetManager.get(AssetDesc.BLURBG));
         bg.setSize(900f,1600f);
@@ -21,18 +28,31 @@ public class MenuScreen extends BaseScreen {
         titleBg.setPosition(0, 1200f );
         stage.addActor(bg);
         stage.addActor(titleBg);
-
+        stage.addActor(mainMenuGroup);
     }
 
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
+        localGroup.remove();
         mainMenuCreator.show();
+        stage.addActor(mainMenuGroup);
+
     }
 
+    public void showLocal(){
+        mainMenuGroup.remove();
+        localPlayMenu.showFirstMenu();
+        stage.addActor(localGroup);
+    }
     @Override
     public void update(float delta) {
         super.update(delta);
         mainMenuCreator.loadLocalPic();
+        localPlayMenu.loadLocalPic();
+        localPlayMenu.update();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.BACK)){
+            Gdx.app.exit();
+        }
     }
 }

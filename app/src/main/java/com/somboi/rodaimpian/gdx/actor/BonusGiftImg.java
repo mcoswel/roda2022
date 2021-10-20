@@ -62,4 +62,59 @@ public class BonusGiftImg extends Image {
         return giftImages;
     }
 
+
+    public static BonusGiftImg getBonus(TextureAtlas textureAtlas, int bonusIndex) {
+        BonusGiftImg bonusImage = new BonusGiftImg(textureAtlas.findRegion("7_b_motorcycle"));
+        if (bonusIndex == 2) {
+            bonusImage = new BonusGiftImg(textureAtlas.findRegion("7_b_neskopi"));
+
+        } else if (bonusIndex == 3) {
+            bonusImage = new BonusGiftImg(textureAtlas.findRegion("7_b_nintendo"));
+        } else if (bonusIndex == 4) {
+            bonusImage = new BonusGiftImg(textureAtlas.findRegion("7_b_polystation"));
+        } else if (bonusIndex == 5) {
+            bonusImage = new BonusGiftImg(textureAtlas.findRegion("7_b_predator"));
+        } else if (bonusIndex == 6) {
+            bonusImage = new BonusGiftImg(textureAtlas.findRegion("7_b_ring"));
+        } else if (bonusIndex == 7) {
+            bonusImage = new BonusGiftImg(textureAtlas.findRegion("7_b_toyoda"));
+        } else if (bonusIndex == 8) {
+            bonusImage = new BonusGiftImg(textureAtlas.findRegion("7_b_kawansakit"));
+        } else if (bonusIndex == 9) {
+            bonusImage = new BonusGiftImg(textureAtlas.findRegion("7_b_laptop"));
+        } else if (bonusIndex == 10) {
+            bonusImage = new BonusGiftImg(textureAtlas.findRegion("7_b_wash"));
+        } else if (bonusIndex == 11) {
+            bonusImage = new BonusGiftImg(textureAtlas.findRegion("7_b_lintah"));
+        } else if (bonusIndex == 12) {
+            bonusImage = new BonusGiftImg(textureAtlas.findRegion("7_b_microwave"));
+        } else if (bonusIndex == 13) {
+            bonusImage = new BonusGiftImg(textureAtlas.findRegion("7_b_car"));
+        } else if (bonusIndex == 14) {
+            bonusImage = new BonusGiftImg(textureAtlas.findRegion("7_b_chair"));
+        } else if (bonusIndex == 15) {
+            bonusImage = new BonusGiftImg(textureAtlas.findRegion("7_b_earring"));
+        } else if (bonusIndex == 16) {
+            bonusImage = new BonusGiftImg(textureAtlas.findRegion("7_b_ferraro"));
+        } else if (bonusIndex == 17) {
+            bonusImage = new BonusGiftImg(textureAtlas.findRegion("7_b_flattv"));
+        } else if (bonusIndex == 18) {
+            bonusImage = new BonusGiftImg(textureAtlas.findRegion("7_b_fridge"));
+        } else if (bonusIndex == 19) {
+            bonusImage = new BonusGiftImg(textureAtlas.findRegion("7_b_frog"));
+        } else if (bonusIndex == 20) {
+            bonusImage = new BonusGiftImg(textureAtlas.findRegion("7_b_golf"));
+        } else if (bonusIndex == 21) {
+            bonusImage = new BonusGiftImg(textureAtlas.findRegion("7_b_headphone"));
+        } else if (bonusIndex == 22) {
+            bonusImage = new BonusGiftImg(textureAtlas.findRegion("7_b_jersey"));
+        } else if (bonusIndex == 23) {
+            bonusImage = new BonusGiftImg(textureAtlas.findRegion("7_b_jewel"));
+        }else if (bonusIndex == 24) {
+            bonusImage = new BonusGiftImg(textureAtlas.findRegion("7_b_airasia"));
+        }
+
+        return bonusImage;
+    }
+
 }

@@ -319,6 +319,18 @@ public class MatchRound {
         modeBase.getPlayerGuis().get(modeBase.getActivePlayer().guiIndex).updateFullScore();
 
         if (gameRound == 3) {
+            if (!modeBase.getActivePlayer().isAi) {
+                modeBase.getActivePlayer().bonusIndex = modeBase.getBonus().getBonusIndex();
+                if (modeBase.getActivePlayer().id!=null){
+                    if (modeBase.getActivePlayer().id.equals(rodaImpian.getPlayer().id)){
+                        if (modeBase.getBonus() != null){
+                            if (modeBase.isBonusRound()){
+                                modeBase.setWinBonus(true);
+                            }
+                        }
+                    }
+                }
+            }
             Timer.schedule(new Timer.Task() {
                 @Override
                 public void run() {

@@ -10,7 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.somboi.rodaimpian.RodaImpian;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
+import com.somboi.rodaimpian.gdx.entities.Bonus;
 import com.somboi.rodaimpian.gdx.entities.PlayerGui;
+import com.somboi.rodaimpian.gdx.screen.LoadingScreen;
 
 public class EndGameDialog extends Dialog {
 
@@ -33,17 +35,23 @@ public class EndGameDialog extends Dialog {
             int rowIndex = 0;
             for (Integer i: winnerGui.getPlayer().gifts){
                 BonusGiftImg bonusGiftImg = BonusGiftImg.getGifts(textureAtlas,i);
-                bonusGiftImg.setSize(75f,75f);
+                bonusGiftImg.setSize(50f,50f);
                 giftsTable.add(bonusGiftImg);
                 rowIndex++;
                 if (rowIndex%4==0){
                     giftsTable.row();
                 }
             }
+
             giftsTable.pack();
             table.add(giftsTable).row();
-
         }
+        if (winnerGui.getPlayer().bonusIndex>0){
+            BonusGiftImg bonusGiftImg = BonusGiftImg.getBonus(textureAtlas, winnerGui.getPlayer().bonusIndex);
+            bonusGiftImg.setSize(50f,50f);
+            table.add(bonusGiftImg).row();
+        }
+
 
 
         MenuBtn mainMenu = new MenuBtn(StringRes.MAINMENU, skin);
@@ -51,10 +59,16 @@ public class EndGameDialog extends Dialog {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
               //  rodaImpian.setMatchScreen(new MatchScreen(rodaImpian));
-                rodaImpian.gotoMenu();
+                rodaImpian.setScreen(new LoadingScreen(rodaImpian));
             }
         });
         MenuBtn leaderBoard = new MenuBtn(StringRes.LEADERBOARD,skin);
+        leaderBoard.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                rodaImpian.gotoLeaderBoard();
+            }
+        });
         MenuBtn exit = new MenuBtn(StringRes.EXIT,skin);
 
         table.add(mainMenu).row();

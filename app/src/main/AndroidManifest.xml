@@ -18,12 +18,19 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/app_ads_id" />
 
         <activity android:name=".android.ChatActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.MyApplication.NoActionBar">
         </activity>
-        <activity android:name=".android.RoomActivity"
+        <activity android:name=".android.LeaderBoard"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.MyApplication.NoActionBar">
+        </activity>
+        <activity android:name=".android.CommentActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.MyApplication.NoActionBar"/>
         <activity
@@ -38,14 +45,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".RodaOnlineLauncher"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.MyApplication.NoActionBar">
         </activity>
 
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"

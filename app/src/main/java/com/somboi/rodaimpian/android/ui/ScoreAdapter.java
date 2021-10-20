@@ -26,7 +26,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.somboi.rodaimpian.R;
 import com.somboi.rodaimpian.android.AndroidLauncher;
-import com.somboi.rodaimpian.android.Comment;
 import com.somboi.rodaimpian.android.PlayerOnline;
 
 import java.util.List;
@@ -205,7 +204,7 @@ public class ScoreAdapter extends RecyclerView.Adapter {
             }
         });
 
-        DatabaseReference dataComment = FirebaseDatabase.getInstance().getReference().child("Offline").child("Comment2021");
+        DatabaseReference dataComment = FirebaseDatabase.getInstance().getReference().child("Offline").child("Comment2022");
         chat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

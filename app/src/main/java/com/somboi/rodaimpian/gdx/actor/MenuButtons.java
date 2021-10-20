@@ -1,4 +1,4 @@
-package com.somboi.rodaimpian.gdx.entities;
+package com.somboi.rodaimpian.gdx.actor;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;

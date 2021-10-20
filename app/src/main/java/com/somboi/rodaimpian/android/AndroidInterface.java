@@ -14,4 +14,8 @@ public interface AndroidInterface {
     void leaderBoard();
     void onlineChat();
     void chat(int guiIndex, OnlinePlay onlinePlay);
+    void uploadScore(PlayerOnline playerOnline);
+    void comments();
+    void loadAllAds();
+    void showAds(int i);
 }

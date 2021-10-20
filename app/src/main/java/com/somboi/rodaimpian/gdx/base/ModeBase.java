@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.Queue;
 import com.badlogic.gdx.utils.Timer;
 import com.somboi.rodaimpian.RodaImpian;
+import com.somboi.rodaimpian.android.PlayerOnline;
 import com.somboi.rodaimpian.gdx.actor.ChatBubble;
 import com.somboi.rodaimpian.gdx.actor.Confetti;
 import com.somboi.rodaimpian.gdx.actor.ConsonantKeyboard;
@@ -26,6 +27,7 @@ import com.somboi.rodaimpian.gdx.actor.Envelopes;
 import com.somboi.rodaimpian.gdx.actor.FirstTurnWheel;
 import com.somboi.rodaimpian.gdx.actor.FlyingMoney;
 import com.somboi.rodaimpian.gdx.actor.HourGlass;
+import com.somboi.rodaimpian.gdx.actor.MenuButtons;
 import com.somboi.rodaimpian.gdx.actor.Sparkling;
 import com.somboi.rodaimpian.gdx.actor.TimerLimit;
 import com.somboi.rodaimpian.gdx.actor.Trophy;
@@ -38,7 +40,6 @@ import com.somboi.rodaimpian.gdx.config.GameConfig;
 import com.somboi.rodaimpian.gdx.entities.Bonus;
 import com.somboi.rodaimpian.gdx.entities.Gifts;
 import com.somboi.rodaimpian.gdx.entities.MatchRound;
-import com.somboi.rodaimpian.gdx.entities.MenuButtons;
 import com.somboi.rodaimpian.gdx.entities.Moves;
 import com.somboi.rodaimpian.gdx.entities.Player;
 import com.somboi.rodaimpian.gdx.entities.PlayerGui;
@@ -50,6 +51,8 @@ import com.somboi.rodaimpian.gdx.online.ChatOnline;
 import com.somboi.rodaimpian.gdx.online.GameState;
 import com.somboi.rodaimpian.gdx.online.RodaClient;
 import com.somboi.rodaimpian.gdx.screen.WheelScreen;
+import com.somboi.rodaimpian.gdx.utils.CopyPlayer;
+import com.somboi.rodaimpian.saves.PlayerSaves;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -87,6 +90,11 @@ public class ModeBase {
     protected final Logger logger = new Logger(this.getClass().getName(), 3);
     protected final CorrectScore infoLabel;
     protected Bonus bonus;
+    protected boolean winBonus;
+    protected boolean bonusRound;
+    protected boolean gameEnds;
+    protected float adsLoadCounter = 30f;
+
     public ModeBase(RodaImpian rodaImpian, Stage stage) {
         this.rodaImpian = rodaImpian;
         this.thisPlayer = rodaImpian.getPlayer();
@@ -115,8 +123,10 @@ public class ModeBase {
             setRound();
             firstTurn();
             stage.addActor(vanna);
-            stage.addActor(timerLimit);
         }
+        winBonus = false;
+        bonusRound = false;
+        rodaImpian.loadAds();
     }
 
 
@@ -192,12 +202,12 @@ public class ModeBase {
         Player player = playerGuis.get(i).getPlayer();
         player.turn = true;
         activePlayer = player;
-        if (rodaImpian.getGameModes().equals(GameModes.ONLINE)){
-            if (activePlayer.disconnect){
-               if (getRodaClient().isHost()){
-                   sendObject(GameState.CHANGETURN);
-                   logger.debug("active player disconnect");
-               }
+        if (rodaImpian.getGameModes().equals(GameModes.ONLINE)) {
+            if (activePlayer.disconnect) {
+                if (getRodaClient().isHost()) {
+                    sendObject(GameState.CHANGETURN);
+                    logger.debug("active player disconnect");
+                }
             }
         }
 
@@ -222,9 +232,14 @@ public class ModeBase {
 
     public void showConsonants() {
         vanna.hostSide();
-        if (rodaImpian.getPlayer().turn) {
+        if (rodaImpian.getGameModes().equals(GameModes.ONLINE)) {
+            if (rodaImpian.getPlayer().turn) {
+                consonantKeyboard.show();
+            }
+        } else {
             consonantKeyboard.show();
         }
+
     }
 
     public void queueChat(String text) {
@@ -256,6 +271,7 @@ public class ModeBase {
     }
 
     public void showPlayerBoard() {
+        stage.addActor(timerLimit);
         for (PlayerGui p : playerGuis) {
             p.setPlayerBoard(skin, playerBoardGroup);
         }
@@ -289,8 +305,10 @@ public class ModeBase {
             }*/
         } else {
             activePlayer.turn = false;
-            if (activePlayer.id.equals(rodaImpian.getPlayer().id)){
-                rodaImpian.getPlayer().turn = false;
+            if (rodaImpian.getGameModes().equals(GameModes.ONLINE)) {
+                if (activePlayer.id.equals(rodaImpian.getPlayer().id)) {
+                    rodaImpian.getPlayer().turn = false;
+                }
             }
             hideMenu();
             int next = (activePlayer.guiIndex + 1) % playerGuis.size;
@@ -299,7 +317,7 @@ public class ModeBase {
         }
     }
 
-    public void reveaAll(){
+    public void reveaAll() {
         matchRound.revealAll();
     }
 
@@ -532,11 +550,37 @@ public class ModeBase {
 
 
     public void endGame() {
+        gameEnds = true;
+        timerLimit.stop();
+        if (rodaImpian.getGameModes().equals(GameModes.SINGLE)) {
+            if (activePlayer.id != null) {
+                if (activePlayer.id.equals(rodaImpian.getPlayer().id)) {
+                    PlayerOnline playerOnline = CopyPlayer.getPlayerOnline(rodaImpian.getPlayerOnline(), activePlayer);
+                    playerOnline.timesplayed += 1;
+                    rodaImpian.setPlayerOnline(playerOnline);
+                    PlayerSaves playerSaves = new PlayerSaves();
+                    playerSaves.save(activePlayer);
+                    if (rodaImpian.getPlayer().logged) {
+                        if (winBonus) {
+                            playerOnline.bonusList.add(bonus.getBonusIndex());
+                        }
+                        if (activePlayer.fullScore > playerOnline.bestScore) {
+                            playerOnline.bestScore = activePlayer.fullScore;
+                        }
+                        playerOnline.logged = true;
+                        playerSaves.savePlayerOnline(playerOnline);
+                        rodaImpian.uploadScore(playerOnline);
+                    }
+                }
+            }
+        }
+
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
                 EndGameDialog endGameDialog = new EndGameDialog(skin, playerGuis.get(activePlayer.guiIndex), textureAtlas, rodaImpian);
                 endGameDialog.show(stage);
+                Gdx.input.setInputProcessor(stage);
             }
         }, 2f);
 
@@ -560,9 +604,9 @@ public class ModeBase {
         completeGroup.remove();
         if (correct) {
 
-            if (rodaImpian.getGameModes().equals(GameModes.ONLINE)){
+            if (rodaImpian.getGameModes().equals(GameModes.ONLINE)) {
                 sendObject(GameState.REVEALALL);
-            }else{
+            } else {
                 matchRound.revealAll();
             }
         } else {
@@ -584,6 +628,7 @@ public class ModeBase {
             p.getPlayer().freeTurn = false;
             p.removeFreeTurn();
         }
+        rodaImpian.showAds(gameRound);
         gameRound++;
         setRound();
         Timer.schedule(new Timer.Task() {
@@ -661,6 +706,9 @@ public class ModeBase {
     }
 
     public void bonusRound() {
+        bonusRound = true;
+        timerLimit.reset();
+        timerLimit.stop();
         Array<Integer> integers = new Array<>(new Integer[]{0, 1, 2});
         integers.shuffle();
 
@@ -722,17 +770,19 @@ public class ModeBase {
     public Gifts getGifts() {
         return gifts;
     }
-    public int getGiftIndex(){
+
+    public int getGiftIndex() {
         return gifts.getGiftIndex();
     }
 
-    public void setGiftOnline(int giftIndex){
+    public void setGiftOnline(int giftIndex) {
         gifts.getGiftImages(giftIndex);
     }
 
     public void completeBonus() {
         completePuzzle();
         menuButtons.showCompleteMenu();
+        timerLimit.start();
     }
 
     public int getGameRound() {
@@ -752,17 +802,37 @@ public class ModeBase {
     }
 
     public void update(float delta) {
+
+        adsLoadCounter -= delta;
+        if (adsLoadCounter <= 0) {
+            rodaImpian.loadAds();
+            adsLoadCounter = 30f;
+        }
+
+
         if (rodaImpian.getGameModes().equals(GameModes.ONLINE)) {
-            if (rodaImpian.getPlayer().turn){
-                if (timerLimit.isChangeTurn()){
-                    changeTurn();
-                    timerLimit.reset();
+            if (rodaImpian.getPlayer().turn) {
+                if (timerLimit.isChangeTurn()) {
+                    if (gameRound != 3) {
+                        changeTurn();
+                        timerLimit.reset();
+                    } else {
+                        timerLimit.reset();
+                        timerLimit.stop();
+                        endGame();
+                    }
                 }
             }
         } else {
             if (timerLimit.isChangeTurn()) {
-                changeTurn();
-                timerLimit.reset();
+                if (gameRound != 3) {
+                    changeTurn();
+                    timerLimit.reset();
+                } else {
+                    timerLimit.reset();
+                    timerLimit.stop();
+                    endGame();
+                }
             }
         }
     }
@@ -783,8 +853,20 @@ public class ModeBase {
         this.wheelParam = wheelParam;
     }
 
+    public Bonus getBonus() {
+        return bonus;
+    }
+
     public TimerLimit getTimerLimit() {
         return timerLimit;
+    }
+
+    public boolean isBonusRound() {
+        return bonusRound;
+    }
+
+    public void setWinBonus(boolean winBonus) {
+        this.winBonus = winBonus;
     }
 }
 

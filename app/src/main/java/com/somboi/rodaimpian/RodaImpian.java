@@ -35,7 +35,11 @@ public class RodaImpian extends Game {
     private RoomScreen roomScreen;
     private SessionList sessionList = new SessionList();
     private RodaClient rodaClient;
-
+    private int bestScore;
+    private Player PlayerTwo;
+    private Player PlayerThree;
+    private PlayerImage PlayerTwoImage;
+    private PlayerImage PlayerThreeImage;
     public RodaImpian(AndroidInterface androidInterface) {
         this.androidInterface = androidInterface;
     }
@@ -114,7 +118,7 @@ public class RodaImpian extends Game {
         androidInterface.setMenuCreator(mainMenuCreator);
     }
 
-    public void choosePhoto(int playerInt, MainMenuCreator mainMenuCreator) {
+    public void choosePhoto(int playerInt) {
         androidInterface.choosePhoto(playerInt);
     }
 
@@ -177,11 +181,64 @@ public class RodaImpian extends Game {
         setScreen(roomScreen);
     }
 
+    public void uploadScore(PlayerOnline playerOnline){
+        androidInterface.uploadScore(playerOnline);
+    }
 
-    public OnlinePlay getOnlinePlay() {
-        if (matchScreen != null) {
-            return matchScreen.getOnlinePlay();
-        }
-        return null;
+    public void loadAds(){
+        androidInterface.loadAllAds();
+    }
+
+    public void showAds(int gameRound){
+        androidInterface.showAds(gameRound);
+    }
+
+
+    public void gotoLeaderBoard(){
+        androidInterface.leaderBoard();
+    }
+
+    public int getBestScore() {
+        return bestScore;
+    }
+
+    public void setBestScore(int bestScore) {
+        this.bestScore = bestScore;
+    }
+
+    public void openComment() {
+        androidInterface.comments();
+    }
+
+    public Player getPlayerTwo() {
+        return PlayerTwo;
+    }
+
+    public void setPlayerTwo(Player playerTwo) {
+        PlayerTwo = playerTwo;
+    }
+
+    public Player getPlayerThree() {
+        return PlayerThree;
+    }
+
+    public void setPlayerThree(Player playerThree) {
+        PlayerThree = playerThree;
+    }
+
+    public PlayerImage getPlayerTwoImage() {
+        return PlayerTwoImage;
+    }
+
+    public void setPlayerTwoImage(PlayerImage playerTwoImage) {
+        PlayerTwoImage = playerTwoImage;
+    }
+
+    public PlayerImage getPlayerThreeImage() {
+        return PlayerThreeImage;
+    }
+
+    public void setPlayerThreeImage(PlayerImage playerThreeImage) {
+        PlayerThreeImage = playerThreeImage;
     }
 }

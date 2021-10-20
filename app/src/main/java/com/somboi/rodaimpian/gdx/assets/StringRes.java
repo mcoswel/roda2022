@@ -6,6 +6,8 @@ public class StringRes {
     public static final String QUESTIONS = "questions";
     public static final String PLAYERSAVE = "playersave";
     public static final String START = "Mula";
+    public static final String Offline = "Offline";
+
     public static final String VOKAL = "VOKAL(-$250)";
     public static final String PUTAR = "PUTAR";
     public static final String LENGKAPKAN = "LENGKAPKAN";
@@ -84,6 +86,14 @@ public class StringRes {
     public static final String ROOM = "Bilik " ;
     public static final String PLAYING = "Sedang Bermain" ;
     public static final String CONNECTING = "Sedang mengubungi server";
+    public static final String MESSAGE = "Message";
+    public static final String ONEPLAYER = "1 Pemain";
+    public static final String TWOPLAYER = "2 Pemain";
+    public static final String THREEPLAYER = "3 Pemain";
+    public static final String BACK = "Kembali" ;
+    public static final String PLAYERTWO = "Pemain 2";
+    public static final String PLAYERTHREE = "Pemain 3";
+    public static final String PAUSEMENU = "Menu";
 
 /*    public static final String HONDABIKE = "Motorsikal Honda";
     public static final String NESKOPI = "Motorsikal Honda";

@@ -43,6 +43,7 @@ public class LoadingScreen extends ScreenAdapter {
         PlayerOnline playerOnline = playerSaves.loadPlayerOnline();
         if (playerOnline != null) {
             rodaImpian.setPlayerOnline(playerOnline);
+            rodaImpian.setBestScore(playerOnline.bestScore);
         }
 
         if (player == null) {

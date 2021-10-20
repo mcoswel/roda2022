@@ -1,6 +1,7 @@
 package com.somboi.rodaimpian.android.ui;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -73,7 +74,7 @@ public class LoadBadge {
             g[1].setVisibility(View.VISIBLE);
             g[2].setVisibility(View.VISIBLE);
         }
-
+        Log.d("score adapter","gift size "+gifts.size());
     }
 
     public void giftImage(List<Integer> gifts, ImageView[] img) {
@@ -82,6 +83,7 @@ public class LoadBadge {
         }
         int index = 0;
         for (Integer integer : gifts) {
+
             if (integer == 1) {
                 Glide.with(context).load(R.drawable.ipong).into(img[index]);
             } else if (integer == 2) {
@@ -130,10 +132,8 @@ public class LoadBadge {
                 Glide.with(context).load(R.drawable.voucher).into(img[index]);
             }
 
-
             index++;
-
-            if (index == 2) {
+            if (index >= img.length) {
                 return;
             }
         }
@@ -194,7 +194,8 @@ public class LoadBadge {
             }else if (integer == 24) {
                 Glide.with(context).load(R.drawable.airasia).into(img[index]);
             }
-            if (index == 2) {
+            index++;
+            if (index >= img.length) {
                 return;
             }
         }

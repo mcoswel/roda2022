@@ -23,4 +23,5 @@ public class Player {
     public List<Integer>gifts = new ArrayList<>();
     public PlayerState playerState;
     public int conID;
+    public boolean disconnect;
 }

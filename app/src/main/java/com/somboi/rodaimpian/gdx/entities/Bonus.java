@@ -183,6 +183,10 @@ public class Bonus {
         }
     }
 
+    public int getBonusIndex() {
+        return bonusIndex;
+    }
+
     public BonusGiftImg getBonusImage() {
         return bonusImage;
     }

@@ -24,6 +24,10 @@
     <string name="mopub_inter">cbca24dfe6404ad6a136a5b093180980</string>
     <string name="mopubbanner">708ea2638b89457c8d9e84da8f9061fa</string>
     <string name="bilik">"Bilik "</string>
-    <string name="chat">chat</string>
+    <string name="chat">Chat</string>
+    <string name="app_ads_id">ca-app-pub-1637458225245574~8553588969</string>
+    <string name="google_inter_id">ca-app-pub-1637458225245574/3301262286</string>
+    <string name="fb_inter_ads">986438558802383_986440272135545</string>
+
 
 </resources>

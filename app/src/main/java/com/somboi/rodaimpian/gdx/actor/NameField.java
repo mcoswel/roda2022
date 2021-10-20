@@ -9,7 +9,7 @@ public class NameField extends TextField {
     public NameField(String text, Skin skin) {
         super(text, skin);
         this.setAlignment(Align.center);
-        this.setMaxLength(15);
+        this.setMaxLength(10);
     }
 
     @Override

@@ -109,63 +109,63 @@
                     android:id="@+id/badge_crown"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@color/badge_1_border_color" />
+                    android:src="@color/white" />
 
                 <ImageView
                     android:id="@+id/badge_g0"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@color/badge_2_border_color" />
+                    android:src="@color/white" />
 
                 <ImageView
                     android:id="@+id/badge_b1"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@color/badge_6_border_color" />
+                    android:src="@color/white" />
 
 
                 <ImageView
                     android:id="@+id/badge_g2"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@color/badge_4_border_color" />
+                    android:src="@color/white" />
 
                 <ImageView
                     android:id="@+id/badge_b0"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@color/badge_5_border_color" />
+                    android:src="@color/white" />
 
                 <ImageView
                     android:id="@+id/badge_g1"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@color/badge_3_border_color" />
+                    android:src="@color/white" />
 
 
                 <ImageView
                     android:id="@+id/badge_b2"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@color/badge_7_border_color" />
+                    android:src="@color/white" />
 
                 <ImageView
                     android:id="@+id/badge_bankrupt"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@color/black" />
+                    android:src="@color/white" />
 
                 <ImageView
                     android:id="@+id/badge_top_fan"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@color/badge_2_border_color" />
+                    android:src="@color/white" />
 
                 <ImageView
                     android:id="@+id/badge_score"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@color/badge_5_border_color" />
+                    android:src="@color/white" />
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout

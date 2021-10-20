@@ -146,6 +146,80 @@ public class Gifts {
         return giftImages;
     }
 
+    public BonusGiftImg getGiftImages(int giftIndex) {
+        if (giftIndex==1) {
+            giftImages = new BonusGiftImg(textureAtlas.findRegion("5_b_ipong"));
+            giftsValue = 1500;
+        }else if (giftIndex==2){
+            giftImages = new BonusGiftImg(textureAtlas.findRegion("5_b_urut"));
+            giftsValue = 35;
+        }else if (giftIndex==3){
+            giftImages = new BonusGiftImg(textureAtlas.findRegion("5_g_bicycle"));
+            giftsValue = 800;
+        }else if (giftIndex==4){
+            giftImages = new BonusGiftImg(textureAtlas.findRegion("5_g_canned"));
+            giftsValue = 45;
+        }else if (giftIndex==5){
+            giftImages = new BonusGiftImg(textureAtlas.findRegion("5_g_drone"));
+            giftsValue = 700;
+        }else if (giftIndex==6){
+            giftImages = new BonusGiftImg(textureAtlas.findRegion("5_g_elvis"));
+            giftsValue = 550;
+        }else if (giftIndex==7){
+            giftImages = new BonusGiftImg(textureAtlas.findRegion("5_g_facial"));
+            giftsValue = 400;
+        }else if (giftIndex==8){
+            giftImages = new BonusGiftImg(textureAtlas.findRegion("5_g_kitchen"));
+            giftsValue = 320;
+        }else if (giftIndex==9){
+            giftImages = new BonusGiftImg(textureAtlas.findRegion("5_g_lepoo"));
+            giftsValue = 125;
+        }else if (giftIndex==10){
+            giftImages = new BonusGiftImg(textureAtlas.findRegion("5_g_makeup"));
+            giftsValue = 150;
+        }else if (giftIndex==11){
+            giftImages = new BonusGiftImg(textureAtlas.findRegion("5_g_pumba"));
+            giftsValue = 375;
+        }else if (giftIndex==12){
+            giftImages = new BonusGiftImg(textureAtlas.findRegion("5_g_razor"));
+            giftsValue = 270;
+        }else if (giftIndex==13){
+            giftImages = new BonusGiftImg(textureAtlas.findRegion("5_g_ricecooker"));
+            giftsValue = 130;
+        }else if (giftIndex==14){
+            giftImages = new BonusGiftImg(textureAtlas.findRegion("5_g_roles"));
+            giftsValue = 990;
+        }else if (giftIndex==15){
+            giftImages = new BonusGiftImg(textureAtlas.findRegion("5_g_shoe"));
+            giftsValue = 80;
+        }else if (giftIndex==16){
+            giftImages = new BonusGiftImg(textureAtlas.findRegion("5_g_socks"));
+            giftsValue = 25;
+        }else if (giftIndex==17){
+            giftImages = new BonusGiftImg(textureAtlas.findRegion("5_g_speaker"));
+            giftsValue = 35;
+        }else if (giftIndex==18){
+            giftImages = new BonusGiftImg(textureAtlas.findRegion("5_g_starbock"));
+            giftsValue = 100;
+        }else if (giftIndex==19){
+            giftImages = new BonusGiftImg(textureAtlas.findRegion("5_g_sweater"));
+            giftsValue = 140;
+        }else if (giftIndex==20){
+            giftImages = new BonusGiftImg(textureAtlas.findRegion("5_g_tablet"));
+            giftsValue = 880;
+        }else if (giftIndex==21){
+            giftImages = new BonusGiftImg(textureAtlas.findRegion("5_g_teddybear"));
+            giftsValue = 90;
+        }else if (giftIndex==22){
+            giftImages = new BonusGiftImg(textureAtlas.findRegion("5_g_ultraman"));
+            giftsValue = 35;
+        }else if (giftIndex==23){
+            giftImages = new BonusGiftImg(textureAtlas.findRegion("5_g_voucher"));
+            giftsValue = 1000;
+        }
+
+        return giftImages;
+    }
 
 
     public int getGiftsValue() {
@@ -155,5 +229,9 @@ public class Gifts {
     public void cancel() {
         unopenedGift.remove();
         sparkling.remove();
+    }
+
+    public int getGiftIndex() {
+        return giftIndex;
     }
 }

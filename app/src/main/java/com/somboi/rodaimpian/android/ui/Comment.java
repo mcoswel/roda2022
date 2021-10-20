@@ -1,4 +1,5 @@
-package com.somboi.rodaimpian.android;
+package com.somboi.rodaimpian.android.ui;
+
 
 public class Comment {
     String picUri;
