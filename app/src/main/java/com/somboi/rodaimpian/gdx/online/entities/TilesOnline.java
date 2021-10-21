@@ -1,4 +1,4 @@
-package com.somboi.rodaimpian.gdx.online;
+package com.somboi.rodaimpian.gdx.online.entities;
 
 public class TilesOnline {
     public char letter;

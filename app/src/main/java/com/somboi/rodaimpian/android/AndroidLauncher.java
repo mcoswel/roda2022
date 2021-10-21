@@ -65,7 +65,8 @@ import com.somboi.rodaimpian.gdx.entities.MainMenuCreator;
 import com.somboi.rodaimpian.gdx.entities.Player;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
 import com.somboi.rodaimpian.gdx.modes.OnlinePlay;
-import com.somboi.rodaimpian.gdx.online.ChatOnline;
+import com.somboi.rodaimpian.gdx.online.NewOnline;
+import com.somboi.rodaimpian.gdx.online.entities.ChatOnline;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -277,7 +278,7 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
     }
 
     @Override
-    public void chat(int guiIndex, OnlinePlay onlinePlay) {
+    public void chat(int guiIndex, NewOnline onlinePlay) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -426,9 +427,15 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                loadGoogleAds();
-                loadMopubAds();
-                loadFacebookAds();
+                if (googleInter == null) {
+                    loadGoogleAds();
+                }
+                if (!moPubInterstitial.isReady()) {
+                    loadMopubAds();
+                }
+                if (!facebookInter.isAdLoaded()) {
+                    loadFacebookAds();
+                }
             }
         });
     }
@@ -438,7 +445,7 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-              chooseAds(gameRound);
+                chooseAds(gameRound);
             }
         });
 

@@ -26,10 +26,9 @@ import com.somboi.rodaimpian.gdx.actor.PlayerImage;
 import com.somboi.rodaimpian.gdx.assets.AssetDesc;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
+import com.somboi.rodaimpian.gdx.online.NewClient;
 import com.somboi.rodaimpian.gdx.screen.LoadingScreen;
-import com.somboi.rodaimpian.gdx.screen.MatchScreen;
 import com.somboi.rodaimpian.gdx.screen.MenuScreen;
-import com.somboi.rodaimpian.gdx.screen.RoomScreen;
 import com.somboi.rodaimpian.gdx.utils.RoundMap;
 import com.somboi.rodaimpian.saves.PlayerSaves;
 
@@ -48,13 +47,15 @@ public class MainMenuCreator {
     private final Stage stage;
     private final MenuScreen menuScreen;
     private boolean promptFb;
+
     public MainMenuCreator(RodaImpian rodaImpian, Group menuGroup, Stage stage, MenuScreen menuScreen) {
         this.rodaImpian = rodaImpian;
         this.menuGroup = menuGroup;
         this.stage = stage;
         this.menuScreen = menuScreen;
         this.skin = rodaImpian.getAssetManager().get(AssetDesc.SKIN);
-        playerImage = new PlayerImage(rodaImpian.getAssetManager().get(AssetDesc.TEXTUREATLAS).findRegion("default_avatar"));
+        playerImage = new PlayerImage(rodaImpian.getPlayer().picUri,rodaImpian.getAssetManager().get(AssetDesc.TEXTUREATLAS).findRegion("default_avatar"));
+
         loadingLabel = new Label(StringRes.LOADING, skin, "title");
         loadingLabel.setPosition(120f, 920f);
         loadingLabel.addAction(Actions.forever(blink));
@@ -76,9 +77,7 @@ public class MainMenuCreator {
             }
         });
 
-        if (rodaImpian.getPlayer().logged) {
-            loadOnlinePic();
-        }
+
 
         LargeButton leaderboard = new LargeButton(StringRes.LEADERBOARD, skin);
         leaderboard.addListener(new ChangeListener() {
@@ -92,7 +91,8 @@ public class MainMenuCreator {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if (rodaImpian.getPlayer().logged) {
-                    rodaImpian.setScreen(new RoomScreen(rodaImpian));
+                    //rodaImpian.setScreen(new RoomScreen(rodaImpian));
+                    new NewClient(rodaImpian);
                 } else {
                     FBPrompt fbPrompt = new FBPrompt(skin){
                         @Override

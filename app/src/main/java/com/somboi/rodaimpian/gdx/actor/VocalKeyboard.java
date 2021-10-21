@@ -9,8 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Timer;
 import com.somboi.rodaimpian.gdx.entities.MatchRound;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
-import com.somboi.rodaimpian.gdx.online.CheckAnswer;
-import com.somboi.rodaimpian.gdx.online.GameState;
+import com.somboi.rodaimpian.gdx.online.entities.CheckAnswer;
 
 public class VocalKeyboard {
     private final Skin skin;

@@ -94,6 +94,8 @@ public class StringRes {
     public static final String PLAYERTWO = "Pemain 2";
     public static final String PLAYERTHREE = "Pemain 3";
     public static final String PAUSEMENU = "Menu";
+    public static final String WAITINGENTRY = "Menunggu penyertaan";
+    public static final String NOTENOUGHPLAYER = "Bilangan pemain tidak mencukupi";
 
 /*    public static final String HONDABIKE = "Motorsikal Honda";
     public static final String NESKOPI = "Motorsikal Honda";

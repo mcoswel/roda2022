@@ -15,19 +15,18 @@ import com.somboi.rodaimpian.gdx.online.entities.EnvelopeIndex;
 import com.somboi.rodaimpian.gdx.online.entities.GameState;
 import com.somboi.rodaimpian.gdx.online.entities.PlayerState;
 import com.somboi.rodaimpian.gdx.online.entities.SessionList;
-import com.somboi.rodaimpian.gdx.online.newentities.RegisterPlayer;
-import com.somboi.rodaimpian.gdx.online.newentities.SessionRoom;
 import com.somboi.rodaimpian.gdx.online.entities.StatusText;
 import com.somboi.rodaimpian.gdx.online.entities.TilesOnline;
+import com.somboi.rodaimpian.gdx.online.newentities.CreateSessions;
+import com.somboi.rodaimpian.gdx.online.newentities.RegisterPlayer;
+import com.somboi.rodaimpian.gdx.online.newentities.RemoveSession;
+import com.somboi.rodaimpian.gdx.online.newentities.RodaSession;
+import com.somboi.rodaimpian.gdx.online.newentities.SessionRoom;
 
 import java.util.ArrayList;
 import java.util.List;
 
-// This class is a convenient place to keep things common to both the client and server.
-public class Network {
-    static public final int port = 5001;
-
-    // This registers objects that are going to be sent over the network.
+public class NewNetwork {
     static public void register(EndPoint endPoint) {
         Kryo kryo = endPoint.getKryo();
         kryo.register(List.class);
@@ -51,5 +50,9 @@ public class Network {
         kryo.register(EnvelopeIndex.class);
         kryo.register(BonusIndex.class);
         kryo.register(TilesOnline.class);
+        kryo.register(CreateSessions.class);
+        kryo.register(RemoveSession.class);
+        kryo.register(RegisterPlayer.class);
+        kryo.register(RodaSession.class);
     }
 }

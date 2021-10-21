@@ -11,9 +11,10 @@ import com.somboi.rodaimpian.gdx.entities.MainMenuCreator;
 import com.somboi.rodaimpian.gdx.entities.Player;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
 import com.somboi.rodaimpian.gdx.modes.OnlinePlay;
+import com.somboi.rodaimpian.gdx.online.NewOnline;
 import com.somboi.rodaimpian.gdx.online.RodaClient;
-import com.somboi.rodaimpian.gdx.online.SessionList;
-import com.somboi.rodaimpian.gdx.online.SessionRoom;
+import com.somboi.rodaimpian.gdx.online.entities.SessionList;
+import com.somboi.rodaimpian.gdx.online.newentities.SessionRoom;
 import com.somboi.rodaimpian.gdx.screen.LoadingScreen;
 import com.somboi.rodaimpian.gdx.screen.MatchScreen;
 import com.somboi.rodaimpian.gdx.screen.MenuScreen;
@@ -61,7 +62,7 @@ public class RodaImpian extends Game {
         this.setScreen(wheelScreen);
     }
 
-    public void chat(int guiIndex, OnlinePlay onlinePlay) {
+    public void chat(int guiIndex, NewOnline onlinePlay) {
         androidInterface.chat(guiIndex, onlinePlay);
     }
 
@@ -135,6 +136,7 @@ public class RodaImpian extends Game {
     }
 
     public void setPlayerImage(PlayerImage playerImage) {
+
         this.playerImage = playerImage;
     }
 
@@ -240,5 +242,8 @@ public class RodaImpian extends Game {
 
     public void setPlayerThreeImage(PlayerImage playerThreeImage) {
         PlayerThreeImage = playerThreeImage;
+    }
+
+    public void stop() {
     }
 }

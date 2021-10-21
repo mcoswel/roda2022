@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.somboi.rodaimpian.gdx.entities.MatchRound;
-import com.somboi.rodaimpian.gdx.online.CheckAnswer;
+import com.somboi.rodaimpian.gdx.online.entities.CheckAnswer;
 
 public class ConsonantKeyboard {
     private final Table consonantTable = new Table();

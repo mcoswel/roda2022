@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.somboi.rodaimpian.RodaImpian;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdx.screen.LoadingScreen;
+import com.somboi.rodaimpian.gdx.screen.MatchScreen;
 
 public class MenuPrompt extends Dialog {
     private final RodaImpian rodaImpian;
@@ -20,6 +21,7 @@ public class MenuPrompt extends Dialog {
         mainmenu.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                rodaImpian.stop();
                 rodaImpian.setScreen(new LoadingScreen(rodaImpian));
             }
         });

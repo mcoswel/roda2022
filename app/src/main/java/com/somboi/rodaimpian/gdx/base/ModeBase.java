@@ -47,10 +47,9 @@ import com.somboi.rodaimpian.gdx.entities.Tiles;
 import com.somboi.rodaimpian.gdx.entities.WheelParam;
 import com.somboi.rodaimpian.gdx.listener.InputCompleteKey;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
-import com.somboi.rodaimpian.gdx.online.ChatOnline;
-import com.somboi.rodaimpian.gdx.online.EnvelopeIndex;
-import com.somboi.rodaimpian.gdx.online.GameState;
-import com.somboi.rodaimpian.gdx.online.RodaClient;
+import com.somboi.rodaimpian.gdx.online.entities.ChatOnline;
+import com.somboi.rodaimpian.gdx.online.entities.EnvelopeIndex;
+import com.somboi.rodaimpian.gdx.online.entities.GameState;
 import com.somboi.rodaimpian.gdx.screen.WheelScreen;
 import com.somboi.rodaimpian.gdx.utils.CopyPlayer;
 import com.somboi.rodaimpian.saves.PlayerSaves;
@@ -94,9 +93,10 @@ public class ModeBase {
     protected boolean winBonus;
     protected boolean bonusRound;
     protected boolean gameEnds;
-    protected float adsLoadCounter = 65f;
-    private final float ADSCOUNTER = 65f;
+    protected float adsLoadCounter = 25f;
+    private final float ADSCOUNTER = 25f;
     protected final Array<Envelopes> envelopesOnline = new Array<>();
+
     public ModeBase(RodaImpian rodaImpian, Stage stage) {
         this.rodaImpian = rodaImpian;
         this.thisPlayer = rodaImpian.getPlayer();
@@ -111,7 +111,6 @@ public class ModeBase {
         gifts = new Gifts(textureAtlas, assetManager.get(AssetDesc.SPARKLE), giftsBonusGroup);
         hourGlass = new HourGlass(assetManager.get(AssetDesc.HOURGLASS));
         wheelParam.results = "";
-        rodaImpian.setWheelScreen(new WheelScreen(rodaImpian, this));
 
         stage.addActor(tilesGroup);
         stage.addActor(menuGroup);
@@ -133,6 +132,7 @@ public class ModeBase {
 
 
     public void setRound() {
+        rodaImpian.setWheelScreen(new WheelScreen(rodaImpian, this));
         menuButtons = new MenuButtons(menuGroup, rodaImpian, this);
         matchRound = new MatchRound(rodaImpian, gameSound, textureAtlas, tilesGroup, skin, gameRound, this);
         consonantKeyboard = new ConsonantKeyboard(skin, matchRound, stage);
@@ -204,14 +204,7 @@ public class ModeBase {
         Player player = playerGuis.get(i).getPlayer();
         player.turn = true;
         activePlayer = player;
-        if (rodaImpian.getGameModes().equals(GameModes.ONLINE)) {
-            if (activePlayer.disconnect) {
-                if (getRodaClient().isHost()) {
-                    sendObject(GameState.CHANGETURN);
-                    logger.debug("active player disconnect");
-                }
-            }
-        }
+
 
     }
 
@@ -733,15 +726,15 @@ public class ModeBase {
             envelopes.addListener(new DragListener() {
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                    if (rodaImpian.getGameModes().equals(GameModes.ONLINE)){
-                        if (rodaImpian.getPlayer().turn){
+                    if (rodaImpian.getGameModes().equals(GameModes.ONLINE)) {
+                        if (rodaImpian.getPlayer().turn) {
                             if (!envelopeClicked) {
                                 EnvelopeIndex envelopeIndex = new EnvelopeIndex();
                                 envelopeIndex.index = finalI;
                                 sendObject(envelopeIndex);
                             }
                         }
-                    }else {
+                    } else {
                         if (!envelopeClicked) {
                             clickEnveloped(envelopes);
                         }
@@ -759,9 +752,7 @@ public class ModeBase {
     }
 
 
-
-
-    private void clickEnveloped(Envelopes envelopes){
+    private void clickEnveloped(Envelopes envelopes) {
         envelopes.opened();
         float xPosition = envelopes.getX() + envelopes.getWidth() / 2f;
         tilesGroup.addActor(new EnvelopeSubject(skin, rodaImpian.getQuestionsReady().getSubjectRoundFour(), xPosition));
@@ -880,9 +871,6 @@ public class ModeBase {
         gameSound.stopClockSound();
     }
 
-    public RodaClient getRodaClient() {
-        return null;
-    }
 
     public void setWheelParam(WheelParam wheelParam) {
         this.wheelParam = wheelParam;

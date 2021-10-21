@@ -20,15 +20,15 @@ public class PlayerImage extends Image implements Cloneable {
         Pixmap.downloadFromUrl(picUri, new Pixmap.DownloadPixmapResponseListener() {
             @Override
             public void downloadComplete(Pixmap pixmap) {
-
                 Texture tx = new Texture(RoundMap.execute(new Texture(pixmap)));
                 PlayerImage.this.setDrawable(new SpriteDrawable(new Sprite(tx)));
                 PlayerImage.this.setSize(250f, 250f);
+                setUp();
+
             }
 
             @Override
             public void downloadFailed(Throwable t) {
-
             }
         });
     }

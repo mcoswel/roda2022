@@ -11,11 +11,11 @@ import com.badlogic.gdx.utils.Logger;
 import com.somboi.rodaimpian.RodaImpian;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdx.entities.Player;
-import com.somboi.rodaimpian.gdx.online.GameState;
-import com.somboi.rodaimpian.gdx.online.PlayerState;
-import com.somboi.rodaimpian.gdx.online.RegisterPlayer;
+import com.somboi.rodaimpian.gdx.online.entities.GameState;
+import com.somboi.rodaimpian.gdx.online.entities.PlayerState;
+import com.somboi.rodaimpian.gdx.online.newentities.RegisterPlayer;
 import com.somboi.rodaimpian.gdx.online.RodaClient;
-import com.somboi.rodaimpian.gdx.online.SessionRoom;
+import com.somboi.rodaimpian.gdx.online.newentities.SessionRoom;
 
 import java.util.List;
 
@@ -31,9 +31,7 @@ public class SessionListTable extends Window {
         this.playerList = sessionRoom.getPlayerList();
         this.skin = skin;
         this.setMovable(false);
-        if (rodaImpian.getSessionRoom() != null) {
-            logger.debug("roda session id " + rodaImpian.getSessionRoom().getRoomID());
-        }
+
         MenuBtn join = new MenuBtn(StringRes.JOIN, skin);
         join.addListener(new ChangeListener() {
             @Override
@@ -42,7 +40,6 @@ public class SessionListTable extends Window {
                 RegisterPlayer registerPlayer = new RegisterPlayer();
                 registerPlayer.roomID = sessionRoom.getRoomID();
                 registerPlayer.player = rodaImpian.getPlayer();
-                rodaImpian.setSessionRoom(sessionRoom);
                 rodaClient.setSessionID(sessionRoom.getRoomID());
                 rodaClient.sendTCP(registerPlayer);
 
@@ -102,7 +99,6 @@ public class SessionListTable extends Window {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 rodaClient.sendTCP(PlayerState.EXITROOM);
-                rodaImpian.setSessionRoom(null);
             }
         });
         MenuBtn exit = new MenuBtn(StringRes.EXIT, skin);
@@ -118,7 +114,6 @@ public class SessionListTable extends Window {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 rodaClient.sendTCP(PlayerState.EXITROOM);
-                rodaImpian.setSessionRoom(null);
                 rodaClient.setSessionID(null);
             }
         });

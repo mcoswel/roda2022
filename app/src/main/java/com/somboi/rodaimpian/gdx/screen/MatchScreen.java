@@ -14,7 +14,6 @@ import com.somboi.rodaimpian.gdx.modes.SinglePlayer;
 
 public class MatchScreen extends BaseScreen {
     private SinglePlayer singlePlayer;
-    private OnlinePlay onlinePlay;
     private MultiPlayLocal multiPlayLocal;
 
     public MatchScreen(RodaImpian rodaImpian) {
@@ -23,12 +22,12 @@ public class MatchScreen extends BaseScreen {
         if (rodaImpian.getGameModes().equals(GameModes.SINGLE)) {
             singlePlayer = new SinglePlayer(rodaImpian, stage);
         } else if (rodaImpian.getGameModes().equals(GameModes.ONLINE)) {
-            onlinePlay = new OnlinePlay(rodaImpian, stage);
+
         } else if (rodaImpian.getGameModes().equals(GameModes.LOCALMULTI)) {
             multiPlayLocal = new MultiPlayLocal(rodaImpian, stage);
         }
         Gdx.input.setCatchKey(Input.Keys.BACK, true);
-
+        rodaImpian.setMatchScreen(this);
     }
 
 

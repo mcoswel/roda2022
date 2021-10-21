@@ -17,12 +17,11 @@ import com.somboi.rodaimpian.gdx.entities.Bonus;
 import com.somboi.rodaimpian.gdx.entities.Moves;
 import com.somboi.rodaimpian.gdx.entities.Player;
 import com.somboi.rodaimpian.gdx.entities.PlayerGui;
-import com.somboi.rodaimpian.gdx.online.BonusIndex;
-import com.somboi.rodaimpian.gdx.online.ChatOnline;
-import com.somboi.rodaimpian.gdx.online.GameState;
-import com.somboi.rodaimpian.gdx.online.PlayerState;
+import com.somboi.rodaimpian.gdx.online.entities.ChatOnline;
+import com.somboi.rodaimpian.gdx.online.entities.GameState;
+import com.somboi.rodaimpian.gdx.online.entities.PlayerState;
 import com.somboi.rodaimpian.gdx.online.RodaClient;
-import com.somboi.rodaimpian.gdx.online.SessionRoom;
+import com.somboi.rodaimpian.gdx.online.newentities.SessionRoom;
 
 public class OnlinePlay extends ModeBase {
     private GameState gameState;
@@ -84,15 +83,15 @@ public class OnlinePlay extends ModeBase {
             playerImageGroup.addActor(playerGui.getImage());
         }
 
-        ChatBtn chat = new ChatBtn(StringRes.CHAT, skin, rodaImpian.getPlayer().guiIndex);
+      /*  ChatBtn chat = new ChatBtn(StringRes.CHAT, skin, rodaImpian.getPlayer().guiIndex);
         chat.pack();
         chat.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 rodaImpian.chat(rodaImpian.getPlayer().guiIndex, OnlinePlay.this);
             }
-        });
-        playerImageGroup.addActor(chat);
+        });*/
+       // playerImageGroup.addActor(chat);
         Gdx.input.setInputProcessor(stage);
         setActivePlayer(0);
         logger.debug("Active Player " + activePlayer.name);
@@ -204,10 +203,7 @@ public class OnlinePlay extends ModeBase {
 
     }
 
-    @Override
-    public RodaClient getRodaClient() {
-        return rodaClient;
-    }
+
 
     public void showInfo(String text) {
         matchRound.showInfo(text);

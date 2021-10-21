@@ -10,6 +10,7 @@ import com.somboi.rodaimpian.android.PlayerOnline;
 import com.somboi.rodaimpian.gdx.assets.AssetDesc;
 import com.somboi.rodaimpian.gdx.assets.QuestionsGenerator;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
+import com.somboi.rodaimpian.gdx.config.GameConfig;
 import com.somboi.rodaimpian.gdx.entities.Player;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
 import com.somboi.rodaimpian.saves.PlayerSaves;
@@ -93,6 +94,8 @@ public class LoadingScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
+        GameConfig.clearScreen();
+
         if (rodaImpian.getAssetManager().update()) {
             rodaImpian.setMenuScreen(new MenuScreen(rodaImpian));
             rodaImpian.gotoMenu();

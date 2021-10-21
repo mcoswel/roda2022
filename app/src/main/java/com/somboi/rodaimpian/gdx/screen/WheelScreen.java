@@ -29,8 +29,8 @@ import com.somboi.rodaimpian.gdx.entities.Bonus;
 import com.somboi.rodaimpian.gdx.entities.WheelParam;
 import com.somboi.rodaimpian.gdx.listener.WorldContact;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
-import com.somboi.rodaimpian.gdx.online.BonusIndex;
-import com.somboi.rodaimpian.gdx.online.GameState;
+import com.somboi.rodaimpian.gdx.online.entities.BonusIndex;
+import com.somboi.rodaimpian.gdx.online.entities.GameState;
 import com.somboi.rodaimpian.gdx.utils.BodyEditorLoader;
 
 public class WheelScreen extends BaseScreen {

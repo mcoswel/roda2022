@@ -59,7 +59,6 @@ public class MultiPlayLocal extends ModeBase {
             flipCpu = true;
             flipCpu();
         }
-
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {

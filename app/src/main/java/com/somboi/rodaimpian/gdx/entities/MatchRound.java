@@ -16,7 +16,7 @@ import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdx.base.ModeBase;
 import com.somboi.rodaimpian.gdx.config.GameConfig;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
-import com.somboi.rodaimpian.gdx.online.BonusHolder;
+import com.somboi.rodaimpian.gdx.online.entities.BonusHolder;
 
 import java.util.ArrayList;
 import java.util.List;

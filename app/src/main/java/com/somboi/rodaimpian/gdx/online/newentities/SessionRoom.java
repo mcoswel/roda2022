@@ -1,4 +1,4 @@
-package com.somboi.rodaimpian.gdx.online;
+package com.somboi.rodaimpian.gdx.online.newentities;
 
 import com.somboi.rodaimpian.gdx.assets.QuestionsReady;
 import com.somboi.rodaimpian.gdx.entities.Player;
@@ -7,40 +7,14 @@ import com.somboi.rodaimpian.gdx.entities.WheelParam;
 import java.util.List;
 
 public class SessionRoom {
-    private List<Player> playerList;
     private String roomID;
+    private List<Player> playerList;
     private QuestionsReady questionsReady;
     private String roomName;
     private boolean isPlaying;
 
     public List<Player> getPlayerList() {
         return playerList;
-    }
-
-    public Player getHostPlayer(){
-        for (Player p: playerList){
-            if (p.id.equals(roomID)){
-                return p;
-            }
-        }
-        return null;
-    }
-
-    public Player getPlayerOne(){
-        for (Player p: playerList){
-            if (p.guiIndex == 1){
-                return p;
-            }
-        }
-        return null;
-    }
-    public Player getPlayerTwo(){
-        for (Player p: playerList){
-            if (p.guiIndex == 2){
-                return p;
-            }
-        }
-        return null;
     }
 
     public void setPlayerList(List<Player> playerList) {

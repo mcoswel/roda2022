@@ -1,7 +1,5 @@
 package com.somboi.rodaimpian.gdx.base;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -12,7 +10,6 @@ import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.somboi.rodaimpian.RodaImpian;
-import com.somboi.rodaimpian.gdx.actor.MenuPrompt;
 import com.somboi.rodaimpian.gdx.assets.AssetDesc;
 import com.somboi.rodaimpian.gdx.assets.GameSound;
 import com.somboi.rodaimpian.gdx.config.GameConfig;
@@ -33,6 +30,8 @@ public class BaseScreen extends ScreenAdapter {
     protected final GameSound gameSound;
     protected final Player player;
     protected final BgImg bgImg;
+    protected boolean playing = true;
+
     public BaseScreen(RodaImpian rodaImpian) {
         this.rodaImpian = rodaImpian;
         this.player = rodaImpian.getPlayer();
@@ -48,13 +47,14 @@ public class BaseScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         GameConfig.clearScreen();
-        update(delta);
-        stage.draw();
-        stage.act();
+        if (playing) {
+            update(delta);
+            stage.draw();
+            stage.act();
 
-        worldStage.draw();
-        worldStage.act();
-
+            worldStage.draw();
+            worldStage.act();
+        }
     }
 
     public void update(float delta) {
@@ -72,5 +72,9 @@ public class BaseScreen extends ScreenAdapter {
     public void dispose() {
         stage.dispose();
         worldStage.dispose();
+    }
+
+    public void stop(){
+        playing = false;
     }
 }

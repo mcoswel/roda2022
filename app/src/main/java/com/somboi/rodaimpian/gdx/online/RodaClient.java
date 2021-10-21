@@ -4,16 +4,25 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Logger;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
-import com.esotericsoftware.kryonet.FrameworkMessage;
 import com.esotericsoftware.kryonet.Listener;
 import com.somboi.rodaimpian.RodaImpian;
 import com.somboi.rodaimpian.gdx.assets.GameSound;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
-import com.somboi.rodaimpian.gdx.entities.Bonus;
 import com.somboi.rodaimpian.gdx.entities.Player;
 import com.somboi.rodaimpian.gdx.entities.PlayerGui;
 import com.somboi.rodaimpian.gdx.entities.WheelParam;
 import com.somboi.rodaimpian.gdx.modes.OnlinePlay;
+import com.somboi.rodaimpian.gdx.online.entities.BonusHolder;
+import com.somboi.rodaimpian.gdx.online.entities.BonusIndex;
+import com.somboi.rodaimpian.gdx.online.entities.ChatOnline;
+import com.somboi.rodaimpian.gdx.online.entities.CheckAnswer;
+import com.somboi.rodaimpian.gdx.online.entities.DisconnectPlayer;
+import com.somboi.rodaimpian.gdx.online.entities.EnvelopeIndex;
+import com.somboi.rodaimpian.gdx.online.entities.GameState;
+import com.somboi.rodaimpian.gdx.online.entities.PlayerState;
+import com.somboi.rodaimpian.gdx.online.entities.SessionList;
+import com.somboi.rodaimpian.gdx.online.newentities.SessionRoom;
+import com.somboi.rodaimpian.gdx.online.entities.StatusText;
 import com.somboi.rodaimpian.gdx.screen.RoomScreen;
 
 public class RodaClient extends Client {
@@ -56,10 +65,9 @@ public class RodaClient extends Client {
 
 
                 if (o instanceof SessionList) {
+                    if (!rodaImpian.getRoomScreen().isPlaying()) {
                     SessionList sessionList = (SessionList) o;
                     onlinePlay.getDebugStatus().setText(StringRes.ONLINE + " (Ping: "+ connection.getReturnTripTime()+"ms)");
-
-                    if (!rodaImpian.getRoomScreen().isPlaying()) {
                         rodaImpian.updateSessionList(sessionList);
                         for (SessionRoom sessionRoom0 : sessionList.sessionRoomList) {
                             if (sessionRoom != null) {

@@ -20,11 +20,11 @@ import com.somboi.rodaimpian.gdx.entities.Player;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
 import com.somboi.rodaimpian.gdx.modes.OnlinePlay;
 import com.somboi.rodaimpian.gdx.online.Network;
-import com.somboi.rodaimpian.gdx.online.PlayerState;
-import com.somboi.rodaimpian.gdx.online.RegisterPlayer;
+import com.somboi.rodaimpian.gdx.online.entities.PlayerState;
+import com.somboi.rodaimpian.gdx.online.newentities.RegisterPlayer;
 import com.somboi.rodaimpian.gdx.online.RodaClient;
-import com.somboi.rodaimpian.gdx.online.SessionList;
-import com.somboi.rodaimpian.gdx.online.SessionRoom;
+import com.somboi.rodaimpian.gdx.online.entities.SessionList;
+import com.somboi.rodaimpian.gdx.online.newentities.SessionRoom;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -102,11 +102,7 @@ public class RoomScreen extends BaseScreen {
             for (SessionRoom sessionRoom : sessionList.sessionRoomList) {
                 // logger.debug("session list player size "+sessionRoom.getPlayerList().size());
                 for (Player player : sessionRoom.getPlayerList()) {
-                    if (player.id.equals(this.player.id)) {
-                        rodaImpian.setSessionRoom(sessionRoom);
-                    } else {
-                        rodaImpian.setSessionRoom(null);
-                    }
+                   
                 }
                 SessionListTable sessionListTable = new SessionListTable(sessionRoom, skin, textureAtlas.findRegion("default_avatar"), rodaImpian, rodaClient);
                 Table sessionTable = new Table();

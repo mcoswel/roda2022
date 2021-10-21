@@ -1,4 +1,4 @@
-package com.somboi.rodaimpian.gdx.online;
+package com.somboi.rodaimpian.gdx.online.entities;
 
 import com.esotericsoftware.kryonet.Connection;
 
