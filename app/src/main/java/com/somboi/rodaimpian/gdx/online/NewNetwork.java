@@ -18,10 +18,13 @@ import com.somboi.rodaimpian.gdx.online.entities.SessionList;
 import com.somboi.rodaimpian.gdx.online.entities.StatusText;
 import com.somboi.rodaimpian.gdx.online.entities.TilesOnline;
 import com.somboi.rodaimpian.gdx.online.newentities.CreateSessions;
+import com.somboi.rodaimpian.gdx.online.newentities.FinishSpin;
 import com.somboi.rodaimpian.gdx.online.newentities.RegisterPlayer;
+import com.somboi.rodaimpian.gdx.online.newentities.RemovePlayer;
 import com.somboi.rodaimpian.gdx.online.newentities.RemoveSession;
 import com.somboi.rodaimpian.gdx.online.newentities.RodaSession;
 import com.somboi.rodaimpian.gdx.online.newentities.SessionRoom;
+import com.somboi.rodaimpian.gdx.online.newentities.SetActivePlayer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,8 +54,11 @@ public class NewNetwork {
         kryo.register(BonusIndex.class);
         kryo.register(TilesOnline.class);
         kryo.register(CreateSessions.class);
-        kryo.register(RemoveSession.class);
         kryo.register(RegisterPlayer.class);
         kryo.register(RodaSession.class);
+        kryo.register(RemoveSession.class);
+        kryo.register(SetActivePlayer.class);
+        kryo.register(RemovePlayer.class);
+        kryo.register(FinishSpin.class);
     }
 }

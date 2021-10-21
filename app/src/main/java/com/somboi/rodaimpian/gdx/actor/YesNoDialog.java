@@ -5,11 +5,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 
-public class ErrorDialog extends Dialog {
-
-    public ErrorDialog(String errorText, Skin skin) {
-        super(StringRes.ERRORTITLE, skin);
-        Label text = new Label(errorText, skin, "whitearial"){
+public class YesNoDialog extends Dialog {
+    public YesNoDialog(String infoText, Skin skin) {
+        super(StringRes.INFO, skin);
+        Label text = new Label(infoText, skin, "whitearial"){
             @Override
             public float getPrefWidth() {
                 return 600f;
@@ -17,12 +16,9 @@ public class ErrorDialog extends Dialog {
         };
 
         text.setWrap(true);
+        text.pack();
         this.text(text);
-        this.button(StringRes.OK);
-    }
-
-    @Override
-    public float getPrefWidth() {
-        return 650f;
+        this.button(StringRes.YES, true);
+        this.button(StringRes.NOTWO, false);
     }
 }

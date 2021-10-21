@@ -50,9 +50,8 @@ public class BaseScreen extends ScreenAdapter {
         if (playing) {
             update(delta);
             stage.draw();
-            stage.act();
-
             worldStage.draw();
+            stage.act();
             worldStage.act();
         }
     }

@@ -10,7 +10,6 @@ import java.util.List;
 public class RodaSession {
     public String id;
     public QuestionsReady questionsReady;
-    public WheelParam wheelParam;
     public List<Player> playerList;
     public List<TilesOnline>tilesOnlineList;
 }

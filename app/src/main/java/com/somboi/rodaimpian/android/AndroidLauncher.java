@@ -294,7 +294,13 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
                             chatOnline = new ChatOnline();
                             chatOnline.content = content;
                             chatOnline.guiIndex = guiIndex;
-                            onlinePlay.sendChat(chatOnline);
+                            new Thread(){
+                                @Override
+                                public void run() {
+                                    onlinePlay.sendChat(chatOnline);
+                                }
+                            };
+
                             //     return new ChatBubble(content,skin,guiIndex);
                         } else {
                             dialog.dismiss();

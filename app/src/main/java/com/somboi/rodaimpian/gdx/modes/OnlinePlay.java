@@ -1,12 +1,9 @@
 package com.somboi.rodaimpian.gdx.modes;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Timer;
 import com.somboi.rodaimpian.RodaImpian;
-import com.somboi.rodaimpian.gdx.actor.ChatBtn;
 import com.somboi.rodaimpian.gdx.actor.EnvelopeSubject;
 import com.somboi.rodaimpian.gdx.actor.Envelopes;
 import com.somboi.rodaimpian.gdx.actor.PlayerImage;
@@ -96,7 +93,6 @@ public class OnlinePlay extends ModeBase {
         setActivePlayer(0);
         logger.debug("Active Player " + activePlayer.name);
         setRound();
-        matchRound.setOnlinePlay(true);
         showPlayerBoard();
         stage.addActor(playerImageGroup);
         stage.addActor(giftsBonusGroup);

@@ -12,6 +12,7 @@ import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdx.base.ModeBase;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
 import com.somboi.rodaimpian.gdx.online.entities.GameState;
+import com.somboi.rodaimpian.gdx.online.entities.PlayerState;
 
 public class MenuButtons {
     private final RodaImpian rodaImpian;
@@ -52,7 +53,7 @@ public class MenuButtons {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if (rodaImpian.getGameModes().equals(GameModes.ONLINE)){
-                    modeBase.sendObject(GameState.SPIN);
+                    modeBase.sendObject(PlayerState.SPIN);
                 }else {
                     modeBase.spinWheel();
                 }

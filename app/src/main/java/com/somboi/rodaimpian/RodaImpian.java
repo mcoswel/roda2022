@@ -11,6 +11,7 @@ import com.somboi.rodaimpian.gdx.entities.MainMenuCreator;
 import com.somboi.rodaimpian.gdx.entities.Player;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
 import com.somboi.rodaimpian.gdx.modes.OnlinePlay;
+import com.somboi.rodaimpian.gdx.online.NewClient;
 import com.somboi.rodaimpian.gdx.online.NewOnline;
 import com.somboi.rodaimpian.gdx.online.RodaClient;
 import com.somboi.rodaimpian.gdx.online.entities.SessionList;
@@ -35,12 +36,12 @@ public class RodaImpian extends Game {
     private SessionRoom sessionRoom;
     private RoomScreen roomScreen;
     private SessionList sessionList = new SessionList();
-    private RodaClient rodaClient;
     private int bestScore;
     private Player PlayerTwo;
     private Player PlayerThree;
     private PlayerImage PlayerTwoImage;
     private PlayerImage PlayerThreeImage;
+    private NewClient.OnlineScreen onlineScreen;
     public RodaImpian(AndroidInterface androidInterface) {
         this.androidInterface = androidInterface;
     }
@@ -149,7 +150,7 @@ public class RodaImpian extends Game {
         return playerOnline;
     }
 
-    public void startOnline() {
+    public void startOnlineChat() {
         androidInterface.onlineChat();
     }
 
@@ -179,7 +180,7 @@ public class RodaImpian extends Game {
         this.sessionList = sessionList;
     }
 
-    public void gotoRoom() {
+    public void gotoRoomScreen() {
         setScreen(roomScreen);
     }
 
@@ -245,5 +246,13 @@ public class RodaImpian extends Game {
     }
 
     public void stop() {
+    }
+
+    public void setOnlineScreen(NewClient.OnlineScreen onlineScreen) {
+        this.onlineScreen = onlineScreen;
+    }
+
+    public void gotoOnlineScreen(){
+        setScreen(onlineScreen);
     }
 }

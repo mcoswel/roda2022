@@ -48,6 +48,7 @@ public class MatchRound {
         this.correctScore = new CorrectScore("SCORES", skin);
         this.consonants = "BCDFGHJKLMNPQRSTVWXYZ";
         this.vocals = "AEIOU";
+        if (rodaImpian.getGameModes().equals(GameModes.ONLINE)){isOnlinePlay = true;}
     }
 
     public void setQuestion() {
@@ -465,9 +466,6 @@ public class MatchRound {
         return isOnlinePlay;
     }
 
-    public void setOnlinePlay(boolean onlinePlay) {
-        isOnlinePlay = onlinePlay;
-    }
 
     public RodaImpian getRodaImpian() {
         return rodaImpian;

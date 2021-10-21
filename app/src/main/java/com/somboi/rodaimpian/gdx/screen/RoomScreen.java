@@ -50,7 +50,7 @@ public class RoomScreen extends BaseScreen {
         chatBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                rodaImpian.startOnline();
+                rodaImpian.startOnlineChat();
             }
         });
 

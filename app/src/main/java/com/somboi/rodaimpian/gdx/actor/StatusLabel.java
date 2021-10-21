@@ -12,6 +12,8 @@ public class StatusLabel extends Label {
         super(text, skin);
         this.setPosition(450f-this.getWidth()/2f, 800f);
         this.setColor(new Color(1f,1f,1f,0.3f));
+        this.setWidth(800f);
+        this.setWrap(true);
         //SequenceAction sequenceAction = new SequenceAction(Actions.color(new Color(1f,1f,1f,0f),0.5f), Actions.color(Color.GREEN,0.5f));
 //        this.addAction(Actions.forever(sequenceAction));
     }

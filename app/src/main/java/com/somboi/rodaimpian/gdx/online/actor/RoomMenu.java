@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.somboi.rodaimpian.RodaImpian;
 import com.somboi.rodaimpian.gdx.actor.LargeButton;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdx.online.NewClient;
@@ -11,11 +12,15 @@ import com.somboi.rodaimpian.gdx.online.NewClient;
 public class RoomMenu extends Table {
     private final LargeButton chat;
     private final LargeButton createRoom;
-    private final NewClient newClient;
 
-    public RoomMenu(NewClient newClient, Skin skin) {
-        this.newClient = newClient;
+    public RoomMenu(NewClient newClient, RodaImpian rodaImpian, Skin skin) {
         chat = new LargeButton(StringRes.CHAT, skin);
+        chat.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                rodaImpian.startOnlineChat();
+            }
+        });
         createRoom = new LargeButton(StringRes.CREATEROOM, skin);
         createRoom.addListener(new ChangeListener() {
             @Override

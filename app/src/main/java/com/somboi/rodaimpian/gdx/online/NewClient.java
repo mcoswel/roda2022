@@ -11,7 +11,9 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.somboi.rodaimpian.RodaImpian;
+import com.somboi.rodaimpian.gdx.actor.ErrorDialog;
 import com.somboi.rodaimpian.gdx.actor.StatusLabel;
+import com.somboi.rodaimpian.gdx.actor.YesNoDialog;
 import com.somboi.rodaimpian.gdx.assets.AssetDesc;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdx.base.BaseScreen;
@@ -20,10 +22,14 @@ import com.somboi.rodaimpian.gdx.entities.WheelParam;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
 import com.somboi.rodaimpian.gdx.online.actor.RoomMenu;
 import com.somboi.rodaimpian.gdx.online.actor.SessionTable;
+import com.somboi.rodaimpian.gdx.online.entities.GameState;
+import com.somboi.rodaimpian.gdx.online.entities.PlayerState;
 import com.somboi.rodaimpian.gdx.online.newentities.CreateSessions;
+import com.somboi.rodaimpian.gdx.online.newentities.FinishSpin;
 import com.somboi.rodaimpian.gdx.online.newentities.RegisterPlayer;
 import com.somboi.rodaimpian.gdx.online.newentities.RemoveSession;
 import com.somboi.rodaimpian.gdx.online.newentities.RodaSession;
+import com.somboi.rodaimpian.gdx.online.newentities.SetActivePlayer;
 import com.somboi.rodaimpian.gdx.screen.WheelScreen;
 
 import java.io.IOException;
@@ -37,8 +43,9 @@ public class NewClient {
     OnlineScreen onlineScreen;
     private StatusLabel connectionStatus;
     private RodaSession rodaSession;
-
+    private WheelParam wheelParam;
     public NewClient(RodaImpian rodaImpian) {
+        rodaImpian.setGameModes(GameModes.ONLINE);
         this.rodaImpian = rodaImpian;
         onlineScreen = new OnlineScreen(rodaImpian);
         client = new Client(1000000, 1000000);
@@ -53,6 +60,10 @@ public class NewClient {
 
             @Override
             public void received(Connection connection, Object o) {
+                if (o instanceof WheelParam){
+                    wheelParam = (WheelParam)o;
+                    onlineScreen.newOnline.setWheelParam(wheelParam);
+                }
                 if (o instanceof CreateSessions) {
                     CreateSessions createSessions = (CreateSessions) o;
                     if (createSessions.sessionID != null) {
@@ -68,7 +79,50 @@ public class NewClient {
 
                 if (o instanceof RodaSession) {
                     rodaSession = (RodaSession) o;
+                    rodaImpian.setQuestionsReady(rodaSession.questionsReady);
                     onlineScreen.updateOwnSession();
+                }
+
+                if (o instanceof SetActivePlayer) {
+                    SetActivePlayer setActivePlayer = (SetActivePlayer) o;
+                    onlineScreen.newOnline.setActivePlayer(setActivePlayer.index);
+                    sendObject(PlayerState.SHOWMENU);
+                }
+                if (o instanceof FinishSpin){
+                    FinishSpin finishSpin = (FinishSpin)o;
+                    rodaImpian.getWheelScreen().setWheelParamResults(finishSpin.wheelParam);
+                    sendObject(PlayerState.SHOWRESULT);
+                }
+                if (o instanceof PlayerState){
+                    sendObject(o);
+                }
+                if (o instanceof GameState) {
+                    GameState gameState = (GameState) o;
+                    if (gameState.equals(GameState.HOSTLOST)) {
+                        onlineScreen.hostLost();
+                    }
+                    if (gameState.equals(GameState.START)) {
+                        onlineScreen.newOnline.startPlays();
+                    }
+
+                    if (gameState.equals(GameState.SHOWMENU)) {
+                        onlineScreen.newOnline.showMenu();
+                    }
+                    if (gameState.equals(GameState.SPIN)) {
+                        rodaImpian.spinWheel();
+                    }
+                    if (gameState.equals(GameState.ROOMFULL)){
+                        onlineScreen.roomFull();
+                    }
+                    if (gameState.equals(GameState.KICKOUT)){
+                        onlineScreen.kickedOut();
+                    }
+                    if (gameState.equals(GameState.SHOWRESULT)){
+                        rodaImpian.getWheelScreen().showResult();
+                    }
+                    if (gameState.equals(GameState.GOTOMATCH)){
+                        rodaImpian.gotoOnlineScreen();
+                    }
                 }
             }
 
@@ -76,7 +130,7 @@ public class NewClient {
             public void disconnected(Connection connection) {
                 logger.debug("Disconnected");
                 isConnected = false;
-                connectionStatus.setText(StringRes.FAILSERVER);
+                // connectionStatus.setText(StringRes.FAILSERVER);
             }
         });
 
@@ -95,7 +149,8 @@ public class NewClient {
                 }
             }
         });
-        rodaImpian.setScreen(onlineScreen);
+        rodaImpian.setOnlineScreen(onlineScreen);
+        rodaImpian.gotoOnlineScreen();
 
     }
 
@@ -119,7 +174,6 @@ public class NewClient {
         rodaSession.id = rodaImpian.getPlayer().id;
         rodaSession.playerList = new ArrayList<>();
         rodaSession.questionsReady = rodaImpian.getQuestionsReady();
-        rodaSession.wheelParam = new WheelParam();
         rodaSession.tilesOnlineList = new ArrayList<>();
         rodaSession.playerList.add(rodaImpian.getPlayer());
         sendObject(rodaSession);
@@ -127,8 +181,12 @@ public class NewClient {
 
     }
 
+    public void disconnect() {
+        client.stop();
+    }
 
-    private class OnlineScreen extends BaseScreen {
+
+    public class OnlineScreen extends BaseScreen {
 
         private Group roomGroup = new Group();
         private NewOnline newOnline;
@@ -142,11 +200,11 @@ public class NewClient {
             sessionListTable.setPosition(0, 100f);
             connectionStatus = new StatusLabel(StringRes.CONNECTING, skin);
             Gdx.input.setCatchKey(Input.Keys.BACK, true);
+            stage.addActor(roomGroup);
         }
 
         @Override
         public void show() {
-            stage.addActor(roomGroup);
             Gdx.input.setInputProcessor(stage);
         }
 
@@ -208,16 +266,53 @@ public class NewClient {
         @Override
         public void update(float delta) {
             if (NewClient.this.isConnected) {
-                roomGroup.addActor(new RoomMenu(NewClient.this, skin));
+                roomGroup.addActor(new RoomMenu(NewClient.this, rodaImpian,skin));
                 roomGroup.addActor(sessionListTable);
                 connectionStatus.remove();
             } else {
                 stage.addActor(connectionStatus);
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.BACK)) {
-                client.stop();
-                rodaImpian.gotoMenu();
+                YesNoDialog promptExit = new YesNoDialog(StringRes.EXIT + "?", skin) {
+                    @Override
+                    protected void result(Object object) {
+                        if (object.equals(true)) {
+                            client.stop();
+                            rodaImpian.gotoMenu();
+                        }
+                    }
+                };
+                promptExit.show(stage);
+
+
             }
+        }
+
+        public void hostLost() {
+            ErrorDialog errorDialog = new ErrorDialog(StringRes.HOSTLOST, skin) {
+                @Override
+                protected void result(Object object) {
+                    NewClient.this.disconnect();
+                    rodaImpian.gotoMenu();
+                }
+            };
+            errorDialog.show(stage);
+
+        }
+
+        public void roomFull() {
+            ErrorDialog errorDialog = new ErrorDialog(StringRes.ROOMFULL, skin);
+            errorDialog.show(stage);
+        }
+
+        public void kickedOut(){
+            ErrorDialog errorDialog = new ErrorDialog(StringRes.YOUBEENKICK, skin){
+                @Override
+                protected void result(Object object) {
+                    NewClient newClient = new NewClient(rodaImpian);
+                }
+            };
+            errorDialog.show(stage);
         }
     }
 

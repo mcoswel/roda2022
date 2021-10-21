@@ -17,6 +17,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import com.somboi.rodaimpian.RodaImpian;
+import com.somboi.rodaimpian.gdx.actor.DummyPointer;
+import com.somboi.rodaimpian.gdx.actor.DummyWheel;
 import com.somboi.rodaimpian.gdx.actor.Fingers;
 import com.somboi.rodaimpian.gdx.actor.Pointer;
 import com.somboi.rodaimpian.gdx.actor.ResultLabel;
@@ -31,6 +33,8 @@ import com.somboi.rodaimpian.gdx.listener.WorldContact;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
 import com.somboi.rodaimpian.gdx.online.entities.BonusIndex;
 import com.somboi.rodaimpian.gdx.online.entities.GameState;
+import com.somboi.rodaimpian.gdx.online.entities.PlayerState;
+import com.somboi.rodaimpian.gdx.online.newentities.FinishSpin;
 import com.somboi.rodaimpian.gdx.utils.BodyEditorLoader;
 
 public class WheelScreen extends BaseScreen {
@@ -44,7 +48,7 @@ public class WheelScreen extends BaseScreen {
     private Body wheelBody;
     private final Array<Body> wheelSlots = new Array<>();
     private Body centerJoint;
-    private final WheelParam wheelParam;
+    private WheelParam wheelParam;
     private final Image centerlogo;
     private final WorldContact contact;
     private final ModeBase modeBase;
@@ -59,6 +63,8 @@ public class WheelScreen extends BaseScreen {
     private boolean showingResult;
     private boolean finishSpin;
     //private Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
+    private DummyWheel dummyWheel;
+    private DummyPointer dummyPointer;
 
     public WheelScreen(RodaImpian rodaImpian, ModeBase modeBase) {
         super(rodaImpian);
@@ -77,6 +83,16 @@ public class WheelScreen extends BaseScreen {
         for (int i = 0; i < 26; i++) {
             loadWheelSlots("n" + i);
         }
+
+        worldStage.addActor(centerlogo);
+        worldStage.addActor(wheelActor);
+        wheelActor.setPosition(4.5f - wheelActor.getWidth() / 2, 8f - wheelActor.getHeight() / 2 - 0.08f);
+        worldStage.addActor(pointer);
+
+        if (rodaImpian.getGameModes().equals(GameModes.ONLINE)) {
+            dummyWheel = new DummyWheel(textureAtlas.findRegion("wheel"));
+            dummyPointer = new DummyPointer(textureAtlas.findRegion("pointer"));
+        }
     }
 
     @Override
@@ -89,10 +105,7 @@ public class WheelScreen extends BaseScreen {
         wheelActor.resetDeltaY();
         //wheelParam.wheelImpulse = 0;
         wheelImpulse = 0;
-        worldStage.addActor(centerlogo);
-        worldStage.addActor(wheelActor);
-        wheelActor.setPosition(4.5f - wheelActor.getWidth() / 2, 8f - wheelActor.getHeight() / 2 - 0.08f);
-        worldStage.addActor(pointer);
+
         if (modeBase.getGameRound() == 3) {
             wheelActor.setDrawable(new SpriteDrawable(new Sprite(textureAtlas.findRegion("wheelbonus"))));
         }
@@ -108,6 +121,19 @@ public class WheelScreen extends BaseScreen {
         }*/
         //  wheelBody.setTransform(wheelBody.getPosition(), modeBase.getWheelParam().wheelangle);
 
+        if (rodaImpian.getGameModes().equals(GameModes.ONLINE)) {
+            if (!rodaImpian.getPlayer().turn) {
+                wheelActor.remove();
+                pointer.remove();
+                worldStage.addActor(dummyWheel);
+                worldStage.addActor(dummyPointer);
+            } else {
+                dummyWheel.remove();
+                dummyPointer.remove();
+                worldStage.addActor(wheelActor);
+                worldStage.addActor(pointer);
+            }
+        }
 
         readyToSpin();
     }
@@ -268,13 +294,9 @@ public class WheelScreen extends BaseScreen {
         idleTimer -= delta;
         if (!startRotate && rodaImpian.getPlayer().turn) {
             if (idleTimer <= 0) {
-                if (rodaImpian.getGameModes().equals(GameModes.ONLINE)) {
-                    if (rodaImpian.getPlayer().turn) {
-                        onlineRotate(-MathUtils.random(150f, 250f));
-                    }
-                } else {
-                    wheelActor.setDeltaY(MathUtils.random(150f, 250f));
-                }
+
+                wheelActor.setDeltaY(-MathUtils.random(150f, 250f));
+
                 idleTimer = 20f;
             }
         }
@@ -292,14 +314,10 @@ public class WheelScreen extends BaseScreen {
         if (wheelActor.getDeltaY() > 2f && !startRotate) {
             fingers.remove();
             float impulse = -MathUtils.random(49f, 69f) * wheelActor.getDeltaY();
-            if (!rodaImpian.getGameModes().equals(GameModes.ONLINE)) {
-                wheelBody.applyAngularImpulse(impulse, false);
-                wheelActor.resetDeltaY();
-                startRotate = true;
-                contact.setSpinning(true);
-            } else {
-                onlineRotate(impulse);
-            }
+            wheelBody.applyAngularImpulse(impulse, false);
+            wheelActor.resetDeltaY();
+            startRotate = true;
+            contact.setSpinning(true);
         }
 
         //  logger.debug("Wheel impulse "+wheelBody.isActive());
@@ -337,7 +355,6 @@ public class WheelScreen extends BaseScreen {
                     Timer.schedule(new Timer.Task() {
                         @Override
                         public void run() {
-
                             if (!showingResult) {
                                 if (modeBase.getGameRound() == 3) {
                                     Bonus bonus = new Bonus(textureAtlas);
@@ -346,8 +363,7 @@ public class WheelScreen extends BaseScreen {
                                     bonusIndex.index = bonus.getBonusIndex();
                                     modeBase.sendObject(bonusIndex);
                                 } else {
-                                    modeBase.sendObject(GameState.WHEELSTOP);
-                                    modeBase.sendObject(GameState.CHECKCONTACT);
+                                    checkContact();
                                 }
                                 showingResult = true;
                             }
@@ -363,18 +379,11 @@ public class WheelScreen extends BaseScreen {
 
                     finishSpin = true;
                 }
-            } else {
-                wheelBody.setTransform(wheelBody.getPosition(), modeBase.getWheelParam().wheelangle);
-                if ((int) wheelBody.getAngularVelocity() == 0) {
-                    Timer.schedule(new Timer.Task() {
-                        @Override
-                        public void run() {
-                            rodaImpian.gotoRoom();
-                        }
-                    }, 1f);
-
-                }
             }
+        }
+        if (rodaImpian.getGameModes().equals(GameModes.ONLINE) && !rodaImpian.getPlayer().turn){
+            wheelBody.setTransform(wheelBody.getPosition(), modeBase.getWheelParam().wheelangle);
+            dummyWheel.setRotation((float) (wheelBody.getAngle() * (180 / Math.PI)));
         }
 
         ///////////online
@@ -383,17 +392,6 @@ public class WheelScreen extends BaseScreen {
 
     }
 
-    private void onlineRotate(float wheelImpulse) {
-        if (this.wheelImpulse == 0) {
-            this.wheelImpulse = wheelImpulse;
-            wheelParam.results = "";
-            wheelParam.resultValue = 0;
-            wheelParam.wheelImpulse = wheelImpulse;
-            modeBase.sendObject(wheelParam);
-            modeBase.sendObject(GameState.WHEELIMPULSE);
-            wheelActor.resetDeltaY();
-        }
-    }
 
     public void checkContact() {
 
@@ -482,13 +480,13 @@ public class WheelScreen extends BaseScreen {
         }
         if (rodaImpian.getGameModes().equals(GameModes.ONLINE)) {
             if (rodaImpian.getPlayer().turn) {
-                modeBase.sendObject(wheelParam);
-                Timer.schedule(new Timer.Task() {
-                    @Override
-                    public void run() {
-                        modeBase.sendObject(GameState.SHOWRESULT);
-                    }
-                }, 1f);
+                WheelParam tobeSend = new WheelParam();
+                tobeSend.results = wheelParam.results;
+                tobeSend.wheelangle = wheelBody.getAngle();
+                tobeSend.resultValue = wheelParam.resultValue;
+                FinishSpin finishSpin = new FinishSpin();
+                finishSpin.wheelParam = tobeSend;
+                modeBase.sendObject(finishSpin);
             }
         } else {
             showResult();
@@ -505,11 +503,14 @@ public class WheelScreen extends BaseScreen {
 
     }
 
+    public void setWheelParamResults(WheelParam wheelParam){
+        this.wheelParam.results = wheelParam.results;
+        this.wheelParam.resultValue = wheelParam.resultValue;
+    }
     public void showResult() {
 
 
         final ResultLabel resultLabel = new ResultLabel(wheelParam.results, skin);
-        // wheelParam = modeBase.getWheelParam();
         if (wheelParam.resultValue == 5000) {
             resultLabel.setColor(Color.GOLDENROD);
             modeBase.getVanna().hostThumbsUp();
@@ -525,6 +526,7 @@ public class WheelScreen extends BaseScreen {
         }
 
         stage.addActor(resultLabel);
+
         if (wheelParam.results.equals(StringRes.BANKRUPT) || wheelParam.results.equals(StringRes.LOSTTURN)) {
             gameSound.playAww();
             modeBase.getVanna().hostWrong();
@@ -562,13 +564,10 @@ public class WheelScreen extends BaseScreen {
                     rodaImpian.gotoMatch();
                 } else {
                     modeBase.hideMenu();
-                    modeBase.sendObject(GameState.GOTOMATCH);
+                    modeBase.sendObject(PlayerState.GOTOMATCH);
                 }
             }
         }, 2f);
     }
 
-    public Body getWheelBody() {
-        return wheelBody;
-    }
 }

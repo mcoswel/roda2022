@@ -155,7 +155,7 @@ public class RodaClient extends Client {
                     }
                     if (gameState.equals(GameState.WHEELALMOSTSTOP)) {
                         if (!rodaImpian.getPlayer().turn) {
-                            rodaImpian.gotoRoom();
+                            rodaImpian.gotoRoomScreen();
                         }
                     }
                     if (gameState.equals(GameState.WHEELIMPULSE)) {
@@ -168,7 +168,7 @@ public class RodaClient extends Client {
                         if (rodaImpian.getPlayer().turn) {
                             rodaImpian.getWheelScreen().checkContact();
                         } else {
-                            rodaImpian.gotoRoom();
+                            rodaImpian.gotoRoomScreen();
                         }
                     }
 
@@ -189,7 +189,7 @@ public class RodaClient extends Client {
 
                     if (gameState.equals(GameState.GOTOMATCH)) {
                         if (!playerState.equals(PlayerState.GOTOMATCH)) {
-                            rodaImpian.gotoRoom();
+                            rodaImpian.gotoRoomScreen();
                         }
                     }
 

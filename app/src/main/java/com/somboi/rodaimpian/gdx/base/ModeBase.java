@@ -132,7 +132,9 @@ public class ModeBase {
 
 
     public void setRound() {
-        rodaImpian.setWheelScreen(new WheelScreen(rodaImpian, this));
+        if (!rodaImpian.getGameModes().equals(GameModes.ONLINE)) {
+            rodaImpian.setWheelScreen(new WheelScreen(rodaImpian, this));
+        }
         menuButtons = new MenuButtons(menuGroup, rodaImpian, this);
         matchRound = new MatchRound(rodaImpian, gameSound, textureAtlas, tilesGroup, skin, gameRound, this);
         consonantKeyboard = new ConsonantKeyboard(skin, matchRound, stage);

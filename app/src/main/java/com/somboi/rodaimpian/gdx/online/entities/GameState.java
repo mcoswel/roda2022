@@ -2,6 +2,7 @@ package com.somboi.rodaimpian.gdx.online.entities;
 
 public enum GameState {
    START,
+   HOSTLOST,
    SHOWMENU,
    SPIN,
    WHEELALMOSTSTOP,
@@ -11,5 +12,7 @@ public enum GameState {
    SHOWRESULT,
    GOTOMATCH,
    REVEALALL,
+   ROOMFULL,
+   KICKOUT,
    CHANGETURN;
 }
