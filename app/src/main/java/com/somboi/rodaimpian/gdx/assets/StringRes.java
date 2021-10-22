@@ -104,6 +104,10 @@ public class StringRes {
     public static final String ROOMFULL = "Maaf, bilik dah penuh";
     public static final String YOUBEENKICK = "Anda telah ditendang keluar oleh hos";
     public static final String DISCONNECTED = "Terputus Hubungan";
+    public static final String WATCHADS = "Lihat iklan";
+    public static final String ADSPROMPT = "Admin minta maaf, disebabkan sewa server mahal dan admin pula cuma seorang yang miskin, hina serta hensem, admin terpaksa letak" +
+            " Ads yang harus ditonton hingga habis, baru lah boleh cipta bilik online. Permainan online ini boleh menyokong hingga tiga pemain.. :(" ;
+    public static final String BESTSCORE = "Markah Terbaik:" ;
 
 /*    public static final String HONDABIKE = "Motorsikal Honda";
     public static final String NESKOPI = "Motorsikal Honda";

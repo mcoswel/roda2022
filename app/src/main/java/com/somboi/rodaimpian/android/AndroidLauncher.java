@@ -30,16 +30,24 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
+import com.facebook.ads.Ad;
+import com.facebook.ads.AdError;
 import com.facebook.ads.AudienceNetworkAds;
+import com.facebook.ads.RewardedVideoAd;
+import com.facebook.ads.RewardedVideoAdListener;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.OnUserEarnedRewardListener;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+import com.google.android.gms.ads.rewarded.RewardItem;
+import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd;
+import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoadCallback;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -52,6 +60,7 @@ import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.mopub.common.MoPub;
+import com.mopub.common.MoPubReward;
 import com.mopub.common.SdkConfiguration;
 import com.mopub.common.SdkInitializationListener;
 import com.mopub.common.logging.MoPubLog;
@@ -59,13 +68,14 @@ import com.mopub.common.privacy.ConsentDialogListener;
 import com.mopub.common.privacy.PersonalInfoManager;
 import com.mopub.mobileads.MoPubErrorCode;
 import com.mopub.mobileads.MoPubInterstitial;
+import com.mopub.mobileads.MoPubRewardedAdListener;
+import com.mopub.mobileads.MoPubRewardedAds;
 import com.somboi.rodaimpian.R;
 import com.somboi.rodaimpian.RodaImpian;
 import com.somboi.rodaimpian.TargetGlide;
 import com.somboi.rodaimpian.gdx.entities.MainMenuCreator;
 import com.somboi.rodaimpian.gdx.entities.Player;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
-import com.somboi.rodaimpian.gdx.modes.OnlinePlay;
 import com.somboi.rodaimpian.gdx.online.NewOnline;
 import com.somboi.rodaimpian.gdx.online.entities.ChatOnline;
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -76,10 +86,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import barsoosayque.libgdxoboe.OboeAudio;
 
-public class AndroidLauncher extends AndroidApplication implements AndroidInterface {
+public class AndroidLauncher extends AndroidApplication implements AndroidInterface, OnUserEarnedRewardListener, MoPubRewardedAdListener {
     private static final int REQUEST_GALLERY_IMAGE = 3;
     private String filename;
     private MainMenuCreator mainMenuCreator;
@@ -93,6 +104,8 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
     private FirebaseAnalytics mFirebaseAnalytics;
     private com.facebook.ads.InterstitialAd facebookInter;
     private MoPubInterstitial moPubInterstitial;
+    private RewardedInterstitialAd rewardedInterstitialAd;
+    private RewardedVideoAd rewardedVideoAd;
 
     @Override
     public AndroidAudio createAudio(Context context, AndroidApplicationConfiguration config) {
@@ -113,7 +126,6 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
         rodaImpian = new RodaImpian(this);
         rodaImpian.setGameModes(GameModes.SINGLE);
 
-
         View gameView = initializeForView(rodaImpian, config);
         setContentView(gameView);
 
@@ -125,6 +137,7 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
 
         AudienceNetworkAds.initialize(this);
         facebookInter = new com.facebook.ads.InterstitialAd(this, getString(R.string.fb_inter_ads));
+        rewardedVideoAd = new RewardedVideoAd(AndroidLauncher.this, getString(R.string.fb_rewarded_ads));
 
 
         final SdkConfiguration.Builder configBuilder = new SdkConfiguration.Builder(getString(R.string.mopub_inter));
@@ -148,6 +161,9 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
                     }
                 }
         );
+
+
+        loadRewardedAds();
 
     }
 
@@ -303,7 +319,6 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
                             });
 
 
-
                             //     return new ChatBubble(content,skin,guiIndex);
                         } else {
                             dialog.dismiss();
@@ -377,7 +392,9 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
         player.logged = true;
         mainMenuCreator.savePlayer(player);
         mainMenuCreator.savePlayerOnline(playerOnline);
-        rodaImpian.create();
+        finish();
+        Intent intent = getIntent();
+        startActivity(intent);
     }
 
 
@@ -429,6 +446,76 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
     public void uploadScore(PlayerOnline playerOnline) {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Offline").child("2022");
         databaseReference.child(playerOnline.id).setValue(playerOnline);
+    }
+
+    @Override
+    public void loadRewardedAds() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                if (rewardedInterstitialAd == null) {
+                    RewardedInterstitialAd.load(AndroidLauncher.this, getString(R.string.google_rewarded_id),
+                            new AdRequest.Builder().build(), new RewardedInterstitialAdLoadCallback() {
+                                @Override
+                                public void onAdLoaded(RewardedInterstitialAd ad) {
+                                    rewardedInterstitialAd = ad;
+                                }
+
+                                @Override
+                                public void onAdFailedToLoad(LoadAdError loadAdError) {
+                                    rewardedInterstitialAd = null;
+                                }
+                            });
+                }
+
+
+                if (!rewardedVideoAd.isAdLoaded()) {
+                    RewardedVideoAdListener rewardedVideoAdListener = new RewardedVideoAdListener() {
+
+                        @Override
+                        public void onError(Ad ad, AdError adError) {
+
+                        }
+
+                        @Override
+                        public void onAdLoaded(Ad ad) {
+
+                        }
+
+                        @Override
+                        public void onAdClicked(Ad ad) {
+
+                        }
+
+                        @Override
+                        public void onLoggingImpression(Ad ad) {
+
+                        }
+
+                        @Override
+                        public void onRewardedVideoCompleted() {
+                            rodaImpian.setRewarded(true);
+                        }
+
+                        @Override
+                        public void onRewardedVideoClosed() {
+                            // The Rewarded Video ad was closed - this can occur during the video
+                            // by closing the app, or closing the end card.
+                        }
+                    };
+                    rewardedVideoAd.loadAd(
+                            rewardedVideoAd.buildLoadAdConfig()
+                                    .withAdListener(rewardedVideoAdListener)
+                                    .build());
+                }
+                MoPubRewardedAds.setRewardedAdListener(AndroidLauncher.this);
+                if (!MoPubRewardedAds.hasRewardedAd(getString(R.string.mopub_rewarded))) {
+                    MoPubRewardedAds.loadRewardedAd(getString(R.string.mopub_rewarded));
+                }
+            }
+        });
+
     }
 
     @Override
@@ -520,14 +607,19 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
                 googleInter = null;
             }
         });
+
+
     }
 
     private void loadFacebookAds() {
         facebookInter.loadAd();
+
+
     }
 
     private void loadMopubAds() {
         moPubInterstitial.loadAd();
+
     }
 
 
@@ -539,4 +631,91 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
         };
     }
 
+    @Override
+    public void showRewarded() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (rewardedInterstitialAd!=null){
+                    rewardedInterstitialAd.show(AndroidLauncher.this,AndroidLauncher.this);
+                }else if (rewardedVideoAd.isAdLoaded()){
+                        rewardedVideoAd.show();
+                }else if (MoPubRewardedAds.hasRewardedAd(getString(R.string.mopub_rewarded))){
+                    MoPubRewardedAds.showRewardedAd(getString(R.string.mopub_rewarded));
+                }else{
+                    rodaImpian.setRewarded(true);
+                }
+
+            }
+        });
+
+    }
+
+    @Override
+    public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
+        rodaImpian.setRewarded(true);
+    }
+
+    @Override
+    public void onRewardedAdCompleted(@NonNull Set<String> set, @NonNull MoPubReward moPubReward) {
+        rodaImpian.setRewarded(true);
+    }
+
+    @Override
+    public void onRewardedAdClicked(@NonNull String s) {
+
+    }
+
+    @Override
+    public void onRewardedAdClosed(@NonNull String s) {
+
+    }
+
+    @Override
+    public void onRewardedAdLoadFailure(@NonNull String s, @NonNull MoPubErrorCode moPubErrorCode) {
+
+    }
+
+    @Override
+    public void onRewardedAdLoadSuccess(@NonNull String s) {
+
+    }
+
+    @Override
+    public void onRewardedAdShowError(@NonNull String s, @NonNull MoPubErrorCode moPubErrorCode) {
+
+    }
+
+    @Override
+    public void onRewardedAdStarted(@NonNull String s) {
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        rodaImpian.dispose();
+        if (moPubInterstitial!=null) {
+            moPubInterstitial.destroy();
+        }
+        if (facebookInter!=null) {
+            facebookInter.destroy();
+        }
+        if (rewardedVideoAd!=null){
+            rewardedVideoAd.destroy();
+        }
+
+    }
+
+    @Override
+    public void logoutFacebook(String playerID) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Offline").child("2022");
+        if (playerID!=null) {
+            databaseReference.child(playerOnline.id).removeValue();
+        }
+
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
+    }
 }

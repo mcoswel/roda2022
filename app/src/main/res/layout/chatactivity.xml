@@ -28,8 +28,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constrainedHeight="true"
-        app:layout_constraintTop_toBottomOf="@id/bilOnline" />
-
+        app:layout_constraintTop_toBottomOf="@id/bilOnline"
+        app:layout_constraintBottom_toTopOf="@id/banner_container"/>
+    <LinearLayout
+        android:id="@+id/banner_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/chatLayout"
+        android:paddingBottom="5dp"
+        />
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/chatLayout"
         android:layout_width="match_parent"
@@ -50,6 +59,9 @@
             android:layout_weight="1"
             android:text="@string/kirim"
             android:textAlignment="center" />
+
+
+
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 

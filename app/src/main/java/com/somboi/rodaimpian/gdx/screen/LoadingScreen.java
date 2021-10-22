@@ -4,7 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Logger;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.somboi.rodaimpian.RodaImpian;
 import com.somboi.rodaimpian.android.PlayerOnline;
 import com.somboi.rodaimpian.gdx.assets.AssetDesc;
@@ -16,6 +20,7 @@ import com.somboi.rodaimpian.gdx.modes.GameModes;
 import com.somboi.rodaimpian.saves.PlayerSaves;
 import com.somboi.rodaimpian.saves.QuestionsSaves;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class LoadingScreen extends ScreenAdapter {
@@ -23,11 +28,14 @@ public class LoadingScreen extends ScreenAdapter {
     private final AssetManager assetManager;
     private final PlayerSaves playerSaves = new PlayerSaves();
     private final Logger logger = new Logger(this.getClass().getName(), 3);
-
+    private final Texture loading = new Texture(Gdx.files.internal("textures/loading.png"));
+    private final Viewport viewport = new FitViewport(GameConfig.SCWIDTH, GameConfig.SCHEIGHT);
+    private final SpriteBatch batch = new SpriteBatch();
     public LoadingScreen(RodaImpian rodaImpian) {
         this.rodaImpian = rodaImpian;
         this.assetManager = rodaImpian.getAssetManager();
         Gdx.app.setLogLevel(3);
+       // rodaImpian.loadRewardedAds();
         QuestionsSaves questionsSaves = new QuestionsSaves();
 
         /**
@@ -54,6 +62,8 @@ public class LoadingScreen extends ScreenAdapter {
             playerOnline = new PlayerOnline();
             playerOnline.name = player.name;
             playerOnline.id = player.id;
+            playerOnline.giftsList = new ArrayList<>();
+            playerOnline.bonusList = new ArrayList<>();
             rodaImpian.setPlayerOnline(playerOnline);
             playerSaves.savePlayerOnline(playerOnline);
         }
@@ -83,8 +93,6 @@ public class LoadingScreen extends ScreenAdapter {
 
         questionsSaves.saveQuestion(questionsGenerator);
         rodaImpian.setQuestionsReady(questionsGenerator.run());
-        rodaImpian.getQuestionsReady().getRoundOne().remove(2);
-      //  rodaImpian.getQuestionsReady().getRoundOne().add("MUNCHY'S");
     }
 
     @Override
@@ -96,6 +104,10 @@ public class LoadingScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         GameConfig.clearScreen();
+        viewport.apply();
+        batch.begin();
+        batch.draw(loading, 305f,(450f),550f,301f);
+        batch.end();
 
         if (rodaImpian.getAssetManager().update()) {
             rodaImpian.setMenuScreen(new MenuScreen(rodaImpian));
@@ -103,6 +115,10 @@ public class LoadingScreen extends ScreenAdapter {
         }
     }
 
+    @Override
+    public void resize(int width, int height) {
+        viewport.update(width, height,true);
+    }
 }
 
 

@@ -363,6 +363,10 @@ com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
 		background: window
 		titleFont: arial22
 		titleFontColor: selection
+	},
+	clear: {
+		titleFont: arial22
+		titleFontColor: selection
 	}
 }
 }

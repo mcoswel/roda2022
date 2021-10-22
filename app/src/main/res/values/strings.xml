@@ -27,7 +27,10 @@
     <string name="chat">Chat</string>
     <string name="app_ads_id">ca-app-pub-1637458225245574~8553588969</string>
     <string name="google_inter_id">ca-app-pub-1637458225245574/3301262286</string>
+    <string name="google_rewarded_id">ca-app-pub-1637458225245574/3739460180</string>
     <string name="fb_inter_ads">986438558802383_986440272135545</string>
-
+    <string name ="fb_rewarded_ads">986438558802383_1015904462522459</string>
+    <string name="mopub_rewarded">667a0fed066041a3a3a0f78872cdcfb5</string>
+<string name="facebook_banner">986438558802383_1015952322517673</string>
 
 </resources>

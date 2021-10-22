@@ -48,12 +48,9 @@ import com.somboi.rodaimpian.gdx.entities.WheelParam;
 import com.somboi.rodaimpian.gdx.listener.InputCompleteKey;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
 import com.somboi.rodaimpian.gdx.online.entities.ChatOnline;
-import com.somboi.rodaimpian.gdx.online.entities.EnvelopeIndex;
-import com.somboi.rodaimpian.gdx.online.entities.GameState;
 import com.somboi.rodaimpian.gdx.online.entities.PlayerState;
 import com.somboi.rodaimpian.gdx.online.newentities.SetActivePlayer;
 import com.somboi.rodaimpian.gdx.screen.WheelScreen;
-import com.somboi.rodaimpian.gdx.utils.CopyPlayer;
 import com.somboi.rodaimpian.saves.PlayerSaves;
 
 import java.util.ArrayList;
@@ -546,25 +543,35 @@ public class ModeBase {
         gameEnds = true;
         timerLimit.stop();
         if (rodaImpian.getGameModes().equals(GameModes.SINGLE)) {
-            if (activePlayer.id != null) {
-                if (activePlayer.id.equals(rodaImpian.getPlayer().id)) {
-                    PlayerOnline playerOnline = CopyPlayer.getPlayerOnline(rodaImpian.getPlayerOnline(), activePlayer);
-                    playerOnline.timesplayed += 1;
-                    rodaImpian.setPlayerOnline(playerOnline);
-                    PlayerSaves playerSaves = new PlayerSaves();
-                    playerSaves.save(activePlayer);
-                    if (rodaImpian.getPlayer().logged) {
-                        if (winBonus) {
-                            playerOnline.bonusList.add(bonus.getBonusIndex());
-                        }
-                        if (activePlayer.fullScore > playerOnline.bestScore) {
-                            playerOnline.bestScore = activePlayer.fullScore;
-                        }
-                        playerOnline.logged = true;
-                        playerSaves.savePlayerOnline(playerOnline);
-                        rodaImpian.uploadScore(playerOnline);
+            if (rodaImpian.getPlayer().id != null) {
+                Player finalPlayer = rodaImpian.getPlayer();
+                PlayerOnline playerOnline = rodaImpian.getPlayerOnline();
+                playerOnline.name = finalPlayer.name;
+                playerOnline.picUri = finalPlayer.picUri;
+                playerOnline.timesplayed += 1;
+                playerOnline.id = finalPlayer.id;
+                playerOnline.bankrupt += finalPlayer.bankrupt;
+                PlayerSaves playerSaves = new PlayerSaves();
+                if (rodaImpian.getPlayer().logged) {
+                    if (winBonus) {
+                        playerOnline.bonusList.add(bonus.getBonusIndex());
                     }
+                    if (finalPlayer.fullScore > playerOnline.bestScore) {
+                        playerOnline.bestScore = finalPlayer.fullScore;
+                    }
+                    if (finalPlayer.gifts.size() > 0) {
+                        for (Integer integer : finalPlayer.gifts) {
+                            if (integer != 0) {
+                                playerOnline.giftsList.add(integer);
+                            }
+                        }
+                    }
+                    playerOnline.logged = true;
+                    rodaImpian.uploadScore(playerOnline);
                 }
+                playerSaves.savePlayerOnline(playerOnline);
+                playerSaves.save(finalPlayer);
+
             }
         }
 
@@ -606,10 +613,10 @@ public class ModeBase {
             if (gameRound == 3) {
                 endGame();
             } else {
-                if(rodaImpian.getGameModes().equals(GameModes.ONLINE)){
+                if (rodaImpian.getGameModes().equals(GameModes.ONLINE)) {
                     sendObject(PlayerState.COMPLETEWRONG);
                     menuButtons.hideMenu();
-                }else {
+                } else {
                     changeTurn();
                 }
             }
@@ -728,9 +735,9 @@ public class ModeBase {
             envelopes.addListener(new DragListener() {
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                        if (!envelopeClicked) {
-                            clickEnveloped(envelopes);
-                        }
+                    if (!envelopeClicked) {
+                        clickEnveloped(envelopes);
+                    }
                     return super.touchDown(event, x, y, pointer, button);
                 }
             });

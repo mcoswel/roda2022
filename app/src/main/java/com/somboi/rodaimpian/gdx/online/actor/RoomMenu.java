@@ -7,6 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.somboi.rodaimpian.RodaImpian;
 import com.somboi.rodaimpian.gdx.actor.ErrorDialog;
 import com.somboi.rodaimpian.gdx.actor.LargeButton;
+import com.somboi.rodaimpian.gdx.actor.PromptAds;
+import com.somboi.rodaimpian.gdx.actor.YesNoDialog;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdx.online.NewClient;
 
@@ -27,7 +29,21 @@ public class RoomMenu extends Table {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if (newClient.isConnected()) {
-                    newClient.createRoom();
+                    if (!rodaImpian.isRewarded()){
+                        PromptAds promptAds = new PromptAds(skin){
+                            @Override
+                            protected void result(Object object) {
+                                if (object.equals(true)){
+                                    newClient.createRoom();
+                                    rodaImpian.showRewardedAds();
+                                  //  newClient.tryConnect();
+                                }
+                            }
+                        };
+                        promptAds.show(getStage());
+                    }else {
+                        newClient.createRoom();
+                    }
                 }else{
                     ErrorDialog errorDialog = new ErrorDialog(StringRes.FAILSERVER,skin){
                         @Override

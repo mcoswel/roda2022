@@ -43,13 +43,15 @@ public class RodaImpian extends Game {
     private PlayerImage PlayerTwoImage;
     private PlayerImage PlayerThreeImage;
     private NewClient.OnlineScreen onlineScreen;
+    private boolean rewarded;
+
     public RodaImpian(AndroidInterface androidInterface) {
         this.androidInterface = androidInterface;
     }
 
     @Override
     public void create() {
-        // PopulateQuestions populateQuestions = new PopulateQuestions();
+   //  PopulateQuestions populateQuestions = new PopulateQuestions();
 
        setScreen(new LoadingScreen(this));
         Gdx.app.setLogLevel(3);
@@ -263,6 +265,29 @@ public class RodaImpian extends Game {
 
     @Override
     public void dispose() {
+
         assetManager.dispose();
+        Gdx.app.log("dispose ","dispose");
     }
+
+    public void setRewarded(boolean b) {
+        this.rewarded = b;
+    }
+
+    public boolean isRewarded() {
+        return rewarded;
+    }
+
+    public void loadRewardedAds() {
+        androidInterface.loadRewardedAds();
+    }
+
+    public void showRewardedAds(){
+        androidInterface.showRewarded();
+    }
+
+    public void logoutFB(String playerID) {
+        androidInterface.logoutFacebook(playerID);
+    }
+
 }

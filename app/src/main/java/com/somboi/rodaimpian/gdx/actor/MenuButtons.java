@@ -1,8 +1,10 @@
 package com.somboi.rodaimpian.gdx.actor;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -35,7 +37,9 @@ public class MenuButtons {
             public void changed(ChangeEvent event, Actor actor) {
                 if (modeBase.getActivePlayer().currentScore >= 250) {
                     if (rodaImpian.getGameModes().equals(GameModes.ONLINE)){
-                        modeBase.sendObject(PlayerState.SHOWVOCAL);
+                        if(rodaImpian.getPlayer().currentScore>=250) {
+                            modeBase.sendObject(PlayerState.SHOWVOCAL);
+                        }
                     }else{
                         modeBase.showVocals();
                         modeBase.getActivePlayer().currentScore -= 250;
@@ -74,6 +78,7 @@ public class MenuButtons {
         menuTable.add(complete);
         menuTable.setPosition(450f, 732f);
         menuTable.center();
+
 
         MenuBtn resetPuzzle = new MenuBtn(StringRes.RESET, skin);
         resetPuzzle.addListener(new ChangeListener() {

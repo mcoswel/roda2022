@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -55,6 +56,10 @@ public class ChatAdapter extends RecyclerView.Adapter {
         PlayerOnline player = chats.getPlayer();
         TextView chatContent = holder.itemView.findViewById(R.id.chat_content);
         CircleImageView playerImg = holder.itemView.findViewById(R.id.player_img);
+        ConstraintLayout constraintLayout = holder.itemView.findViewById(R.id.chatlayoutforadapter);
+        if(player.id.equals("8026")) {
+            constraintLayout.setBackgroundColor(Color.GREEN);
+        }
         if (chats.getPlayer().picUri!=null){
             Glide.with(context).load(chats.getPlayer().picUri).into(playerImg);
         }

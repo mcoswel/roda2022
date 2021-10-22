@@ -30,4 +30,9 @@ public interface AndroidInterface {
     void showAds(int i);
 
     void openPlayStore(String uri);
+
+    void showRewarded();
+
+    void loadRewardedAds();
+    void logoutFacebook(String playerID);
 }

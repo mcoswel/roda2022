@@ -56,6 +56,7 @@ public class NewClient {
     public NewClient(RodaImpian rodaImpian) {
         rodaImpian.setGameModes(GameModes.ONLINE);
         this.rodaImpian = rodaImpian;
+        rodaImpian.loadRewardedAds();
         onlineScreen = new OnlineScreen(rodaImpian);
         client = new Client(1000000, 1000000);
         client.start();
@@ -200,17 +201,23 @@ public class NewClient {
                 logger.debug("Disconnected");
                 isConnected = false;
                 rodaImpian.gotoOnlineScreen();
+                DisconnectPlayer disconnectPlayer = new DisconnectPlayer();
+                disconnectPlayer.player = rodaImpian.getPlayer();
+                sendObject(disconnectPlayer);
                 // connectionStatus.setText(StringRes.FAILSERVER);
             }
         });
+
+
+        //rodaImpian.setRewarded(true);
 
         Gdx.app.postRunnable(new Runnable() {
             @Override
             public void run() {
                 try {
-                    client.connect(5001, "10.1.19.2", Network.port);
-
-                    client.setTimeout(10000);
+                    client.connect(5001, "159.223.73.205", 5001);
+//192.168.42.213
+                    client.setTimeout(20000);
                 } catch (IOException e) {
                     e.printStackTrace();
                     if (connectionStatus != null) {
@@ -229,9 +236,9 @@ public class NewClient {
             @Override
             public void run() {
                 try {
-                    client.connect(5001, "192.168.0.132", Network.port);
+                    client.connect(5001, "159.223.73.205", 5001);
 
-                    client.setTimeout(10000);
+                    client.setTimeout(20000);
                 } catch (IOException e) {
                     e.printStackTrace();
                     if (connectionStatus != null) {

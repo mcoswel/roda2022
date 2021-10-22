@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.badlogic.gdx.utils.Json;
+import com.facebook.ads.AdSize;
+import com.facebook.ads.AdView;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -41,7 +44,7 @@ public class ChatActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ChatListener chatListener = new ChatListener();
     private ValueEventListener bilOnlineListener;
-    private Intent intent;
+   private  AdView adView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,6 +60,17 @@ public class ChatActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycleView);
         send = findViewById(R.id.kirimBtn);
         editText = findViewById(R.id.chatInput);
+        adView = new AdView(this, getString(R.string.facebook_banner), AdSize.BANNER_HEIGHT_50);
+        LinearLayout adContainer = (LinearLayout) findViewById(R.id.banner_container);
+        adContainer.addView(adView);
+        adView.loadAd();
+
+
+/*
+        player.name = "Lelex Games";
+        player.id = "8026";
+        */
+
 
 
 
@@ -138,6 +152,10 @@ public class ChatActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         removeChats();
+        if (adView != null) {
+            adView.destroy();
+        }
+        super.onDestroy();
     }
 
     private void removeChats() {
@@ -145,5 +163,7 @@ public class ChatActivity extends AppCompatActivity {
         bilOnline.removeEventListener(bilOnlineListener);
         bilOnline.child(player.id).removeValue();
     }
+
+
 
 }

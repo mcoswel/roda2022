@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.somboi.rodaimpian.RodaImpian;
+import com.somboi.rodaimpian.gdx.actor.PromoDialog;
 import com.somboi.rodaimpian.gdx.assets.AssetDesc;
 import com.somboi.rodaimpian.gdx.base.BaseScreen;
 import com.somboi.rodaimpian.gdx.entities.LocalPlayMenu;
@@ -29,6 +30,18 @@ public class MenuScreen extends BaseScreen {
         stage.addActor(bg);
         stage.addActor(titleBg);
         stage.addActor(mainMenuGroup);
+
+        if (rodaImpian.getPlayerOnline().timesplayed%10==0 && rodaImpian.getPlayerOnline().timesplayed>0) {
+            PromoDialog promoDialog = new PromoDialog(skin, rodaImpian.getAssetManager().get(AssetDesc.TEXTUREATLAS).findRegion("sahiba")){
+                @Override
+                protected void result(Object object) {
+                    if (object.equals(true)){
+                        rodaImpian.openPlayStore("com.somboi.melayuscrabble");
+                    }
+                }
+            };
+            promoDialog.show(stage);
+        }
     }
 
     @Override
