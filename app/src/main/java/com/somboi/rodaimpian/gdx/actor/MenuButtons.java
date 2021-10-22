@@ -34,11 +34,12 @@ public class MenuButtons {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if (modeBase.getActivePlayer().currentScore >= 250) {
-                    modeBase.showVocals();
-                    if (!rodaImpian.getGameModes().equals(GameModes.ONLINE)){
+                    if (rodaImpian.getGameModes().equals(GameModes.ONLINE)){
+                        modeBase.sendObject(PlayerState.SHOWVOCAL);
+                    }else{
+                        modeBase.showVocals();
                         modeBase.getActivePlayer().currentScore -= 250;
                     }
-
                     hideMenu();
                 } else {
                     ErrorDialog errorDialog = new ErrorDialog(StringRes.NOTENOUGHMONEY, skin);

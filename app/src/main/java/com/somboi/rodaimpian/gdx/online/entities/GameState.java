@@ -14,5 +14,8 @@ public enum GameState {
    REVEALALL,
    ROOMFULL,
    KICKOUT,
+   SHOWVOCAL,
+   BANKRUPT,
+   NEWROUND,
    CHANGETURN;
 }

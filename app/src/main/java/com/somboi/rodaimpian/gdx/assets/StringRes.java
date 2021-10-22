@@ -103,6 +103,7 @@ public class StringRes {
     public static final String WAITINGHOST = "Menunggu hos memulakan permainan";
     public static final String ROOMFULL = "Maaf, bilik dah penuh";
     public static final String YOUBEENKICK = "Anda telah ditendang keluar oleh hos";
+    public static final String DISCONNECTED = "Terputus Hubungan";
 
 /*    public static final String HONDABIKE = "Motorsikal Honda";
     public static final String NESKOPI = "Motorsikal Honda";

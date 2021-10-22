@@ -17,6 +17,7 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.backends.android.AndroidAudio;
@@ -278,7 +279,7 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
     }
 
     @Override
-    public void chat(int guiIndex, NewOnline onlinePlay) {
+    public void chat(int guiIndex, NewOnline newOnline) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -294,12 +295,14 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
                             chatOnline = new ChatOnline();
                             chatOnline.content = content;
                             chatOnline.guiIndex = guiIndex;
-                            new Thread(){
+                            Gdx.app.postRunnable(new Runnable() {
                                 @Override
                                 public void run() {
-                                    onlinePlay.sendChat(chatOnline);
+                                    newOnline.sendChat(chatOnline);
                                 }
-                            };
+                            });
+
+
 
                             //     return new ChatBubble(content,skin,guiIndex);
                         } else {
@@ -457,8 +460,17 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
 
     }
 
+    @Override
+    public void openPlayStore(String uri) {
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + uri)));
+        } catch (android.content.ActivityNotFoundException anfe) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + uri)));
+        }
+    }
+
     private void chooseAds(int gameRound) {
-        if (gameRound == 0) {
+        if (gameRound == 1) {
             if (googleInter != null) {
                 googleInter.show(AndroidLauncher.this);
             } else if (facebookInter.isAdLoaded()) {
@@ -466,7 +478,7 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
             } else if (moPubInterstitial.isReady()) {
                 moPubInterstitial.show();
             }
-        } else if (gameRound == 1) {
+        } else if (gameRound == 2) {
             if (facebookInter.isAdLoaded()) {
                 facebookInter.show();
             } else if (moPubInterstitial.isReady()) {
@@ -474,7 +486,7 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
             } else if (googleInter != null) {
                 googleInter.show(AndroidLauncher.this);
             }
-        } else if (gameRound == 2) {
+        } else if (gameRound == 3) {
             if (moPubInterstitial.isReady()) {
                 moPubInterstitial.show();
             } else if (googleInter != null) {

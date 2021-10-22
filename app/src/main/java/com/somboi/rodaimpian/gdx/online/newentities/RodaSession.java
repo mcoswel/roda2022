@@ -10,6 +10,7 @@ import java.util.List;
 public class RodaSession {
     public String id;
     public QuestionsReady questionsReady;
+    public int activePlayerIndex;
     public List<Player> playerList;
     public List<TilesOnline>tilesOnlineList;
 }

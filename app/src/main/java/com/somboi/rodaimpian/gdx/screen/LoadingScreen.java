@@ -83,7 +83,8 @@ public class LoadingScreen extends ScreenAdapter {
 
         questionsSaves.saveQuestion(questionsGenerator);
         rodaImpian.setQuestionsReady(questionsGenerator.run());
-
+        rodaImpian.getQuestionsReady().getRoundOne().remove(2);
+      //  rodaImpian.getQuestionsReady().getRoundOne().add("MUNCHY'S");
     }
 
     @Override

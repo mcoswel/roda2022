@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 public class ChatBtn extends TextButton {
     public ChatBtn(String text, Skin skin, int index) {
         super(text, skin);
-        this.pack();
         if (index == 0){
             this.setPosition(0f-20f,376f);
         }else if (index == 1){

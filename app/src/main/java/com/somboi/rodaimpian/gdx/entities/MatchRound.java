@@ -1,5 +1,6 @@
 package com.somboi.rodaimpian.gdx.entities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -17,6 +18,7 @@ import com.somboi.rodaimpian.gdx.base.ModeBase;
 import com.somboi.rodaimpian.gdx.config.GameConfig;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
 import com.somboi.rodaimpian.gdx.online.entities.BonusHolder;
+import com.somboi.rodaimpian.gdx.online.entities.PlayerState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +50,9 @@ public class MatchRound {
         this.correctScore = new CorrectScore("SCORES", skin);
         this.consonants = "BCDFGHJKLMNPQRSTVWXYZ";
         this.vocals = "AEIOU";
-        if (rodaImpian.getGameModes().equals(GameModes.ONLINE)){isOnlinePlay = true;}
+        if (rodaImpian.getGameModes().equals(GameModes.ONLINE)) {
+            isOnlinePlay = true;
+        }
     }
 
     public void setQuestion() {
@@ -168,7 +172,11 @@ public class MatchRound {
             gameSound.playCorrect();
 
             if (!checkRevealAll() && gameRound != 3) {
-                modeBase.startPlays();
+                if (!rodaImpian.getGameModes().equals(GameModes.ONLINE)) {
+                    modeBase.startPlays();
+                } else {
+                    modeBase.showMenu();
+                }
             } else if (checkRevealAll()) {
                 revealAll();
             }
@@ -189,6 +197,7 @@ public class MatchRound {
             }
             gameSound.playWrong();
             if (gameRound != 3) {
+                Gdx.app.log("change turn", "matchround change turn");
                 modeBase.changeTurn();
             }
         }
@@ -343,7 +352,11 @@ public class MatchRound {
 
         } else {
             modeBase.removeHourGlass();
-            modeBase.newRound();
+            if (!rodaImpian.getGameModes().equals(GameModes.ONLINE)) {
+                modeBase.newRound();
+            }else{
+                modeBase.sendObject(PlayerState.NEWROUND);
+            }
         }
 
 
@@ -400,10 +413,11 @@ public class MatchRound {
             bonusHolder.holder = bonusStringHolder.toString();
             modeBase.sendObject(bonusHolder);
         } else {
-          checkBonusStringOffline();
+            checkBonusStringOffline();
         }
     }
-    public void checkBonusStringOnline(String holder){
+
+    public void checkBonusStringOnline(String holder) {
         StringBuilder bonusHolder = new StringBuilder(holder);
         correctScore.setText(bonusHolder);
         correctScore.showBonusString(tilesGroup);
@@ -430,7 +444,7 @@ public class MatchRound {
         }, 2f, 2f, bonusHolder.length());
     }
 
-    private void checkBonusStringOffline(){
+    private void checkBonusStringOffline() {
         correctScore.setText(bonusStringHolder);
         correctScore.showBonusString(tilesGroup);
         Timer.schedule(new Timer.Task() {

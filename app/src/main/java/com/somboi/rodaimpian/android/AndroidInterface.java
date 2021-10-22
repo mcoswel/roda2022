@@ -28,4 +28,6 @@ public interface AndroidInterface {
     void loadAllAds();
 
     void showAds(int i);
+
+    void openPlayStore(String uri);
 }

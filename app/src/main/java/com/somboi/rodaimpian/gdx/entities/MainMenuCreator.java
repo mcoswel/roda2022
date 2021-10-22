@@ -156,6 +156,7 @@ public class MainMenuCreator {
     }
 
     public void show() {
+
         menuGroup.addActor(menuTable);
         menuGroup.addActor(playerTable);
         FBPrompt fbPrompt = new FBPrompt(skin) {

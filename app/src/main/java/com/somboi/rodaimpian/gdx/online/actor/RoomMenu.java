@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.somboi.rodaimpian.RodaImpian;
+import com.somboi.rodaimpian.gdx.actor.ErrorDialog;
 import com.somboi.rodaimpian.gdx.actor.LargeButton;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdx.online.NewClient;
@@ -25,7 +26,17 @@ public class RoomMenu extends Table {
         createRoom.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                newClient.createRoom();
+                if (newClient.isConnected()) {
+                    newClient.createRoom();
+                }else{
+                    ErrorDialog errorDialog = new ErrorDialog(StringRes.FAILSERVER,skin){
+                        @Override
+                        protected void result(Object object) {
+                            newClient.tryConnect();
+                        }
+                    };
+                    errorDialog.show(getStage());
+                }
             }
         });
         this.add(chat);

@@ -17,6 +17,7 @@ import com.somboi.rodaimpian.gdx.online.entities.PlayerState;
 import com.somboi.rodaimpian.gdx.online.entities.SessionList;
 import com.somboi.rodaimpian.gdx.online.entities.StatusText;
 import com.somboi.rodaimpian.gdx.online.entities.TilesOnline;
+import com.somboi.rodaimpian.gdx.online.newentities.ClearSession;
 import com.somboi.rodaimpian.gdx.online.newentities.CreateSessions;
 import com.somboi.rodaimpian.gdx.online.newentities.FinishSpin;
 import com.somboi.rodaimpian.gdx.online.newentities.RegisterPlayer;
@@ -60,5 +61,6 @@ public class NewNetwork {
         kryo.register(SetActivePlayer.class);
         kryo.register(RemovePlayer.class);
         kryo.register(FinishSpin.class);
+        kryo.register(ClearSession.class);
     }
 }

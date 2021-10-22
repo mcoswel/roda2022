@@ -11,7 +11,7 @@ public class DummyWheel extends Image {
     public DummyWheel(TextureRegion textureRegion) {
         super(textureRegion);
         this.textureRegion = textureRegion;
-        this.setPosition(25f*0.01f,375f*0.01f);
+        this.setPosition(25f*0.01f,375f*0.01f-0.1f);
         this.setSize(850f*0.01f,850f*0.01f);
         this.setOrigin((850f/2)*0.01f,(850f/2)*0.01f);
 

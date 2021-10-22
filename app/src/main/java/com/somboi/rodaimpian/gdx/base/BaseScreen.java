@@ -73,7 +73,4 @@ public class BaseScreen extends ScreenAdapter {
         worldStage.dispose();
     }
 
-    public void stop(){
-        playing = false;
-    }
 }

@@ -1,12 +1,26 @@
 package com.somboi.rodaimpian.gdx.online;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Timer;
 import com.somboi.rodaimpian.RodaImpian;
+import com.somboi.rodaimpian.gdx.actor.Confetti;
+import com.somboi.rodaimpian.gdx.actor.EnvelopeSubject;
+import com.somboi.rodaimpian.gdx.actor.Envelopes;
+import com.somboi.rodaimpian.gdx.actor.Sparkling;
+import com.somboi.rodaimpian.gdx.assets.AssetDesc;
+import com.somboi.rodaimpian.gdx.entities.Bonus;
+import com.somboi.rodaimpian.gdx.entities.WheelParam;
+import com.somboi.rodaimpian.gdx.modes.GameModes;
 import com.somboi.rodaimpian.gdx.online.actor.ChatBtn;
 import com.somboi.rodaimpian.gdx.actor.ErrorDialog;
 import com.somboi.rodaimpian.gdx.actor.LargeButton;
@@ -18,6 +32,7 @@ import com.somboi.rodaimpian.gdx.entities.Player;
 import com.somboi.rodaimpian.gdx.entities.PlayerGui;
 import com.somboi.rodaimpian.gdx.online.actor.KickBtn;
 import com.somboi.rodaimpian.gdx.online.entities.ChatOnline;
+import com.somboi.rodaimpian.gdx.online.entities.EnvelopeIndex;
 import com.somboi.rodaimpian.gdx.online.entities.PlayerState;
 import com.somboi.rodaimpian.gdx.online.newentities.RemovePlayer;
 import com.somboi.rodaimpian.gdx.online.newentities.RemoveSession;
@@ -32,6 +47,9 @@ public class NewOnline extends ModeBase {
     private Table statusMenu = new Table();
     private final NewClient newClient;
     private final RodaSession rodaSession;
+    private boolean isHost;
+    private boolean stopped;
+    private ChatBtn chatBtn;
 
     public NewOnline(RodaImpian rodaImpian, NewClient newClient, Stage stage, RodaSession rodaSession) {
         super(rodaImpian, stage);
@@ -39,7 +57,7 @@ public class NewOnline extends ModeBase {
         this.rodaSession = rodaSession;
 
         statusLabel = new StatusLabel(StringRes.WAITINGENTRY, skin);
-        if (rodaSession.playerList.size()>1){
+        if (rodaSession.playerList.size() > 1) {
             statusLabel.setText(StringRes.WAITINGHOST);
         }
 
@@ -88,21 +106,22 @@ public class NewOnline extends ModeBase {
             playerImageGroup.addActor(playerGui.getImage());
             playerGui.setPlayerBoard(skin, playerBoardGroup);
             playerGuis.add(playerGui);
-            if (player.id.equals(rodaImpian.getPlayer().id)){
+            if (player.id.equals(rodaImpian.getPlayer().id)) {
                 rodaImpian.setPlayer(player);
                 thisPlayer = player;
-                ChatBtn chat = new ChatBtn(StringRes.CHAT, skin, player.guiIndex);
-                chat.pack();
-                chat.addListener(new ChangeListener() {
+                chatBtn = new ChatBtn(StringRes.CHAT, skin, player.guiIndex);
+                chatBtn.pack();
+                chatBtn.addListener(new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
                         rodaImpian.chat(player.guiIndex, NewOnline.this);
                     }
                 });
-                playerImageGroup.addActor(chat);
+                playerImageGroup.addActor(chatBtn);
             }
-            if (rodaImpian.getPlayer().id.equals(rodaSession.id)){
-                if (!player.id.equals(rodaImpian.getPlayer().id)){
+            if (rodaImpian.getPlayer().id.equals(rodaSession.id)) {
+                isHost = true;
+                if (!player.id.equals(rodaImpian.getPlayer().id)) {
                     KickBtn kickBtn = new KickBtn(StringRes.KICK, skin, player.guiIndex);
                     kickBtn.pack();
                     kickBtn.addListener(new ChangeListener() {
@@ -120,6 +139,7 @@ public class NewOnline extends ModeBase {
             index++;
 
         }
+
 
         if (!rodaSession.id.equals(rodaImpian.getPlayer().id)) {
             sendObject(PlayerState.START);
@@ -139,6 +159,44 @@ public class NewOnline extends ModeBase {
         });*/
     }
 
+    @Override
+    public void newRound() {
+        logger.debug("new round");
+        gameRound++;
+        tilesGroup.addActor(new Confetti(assetManager.get(AssetDesc.CONFETTI), activePlayer.guiIndex));
+        for (PlayerGui p : playerGuis) {
+            p.getPlayer().currentScore = 0;
+            p.getPlayer().freeTurn = false;
+            p.removeFreeTurn();
+        }
+
+        if (!rodaImpian.getGameModes().equals(GameModes.ONLINE)) {
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    rodaImpian.showAds(gameRound);
+                }
+            }, 2.5f);
+        }
+
+
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                tilesGroup.clear();
+                PlayerGui winnerGui = playerGuis.get(activePlayer.guiIndex);
+                winnerGui.getImage().addAction(Actions.moveTo(winnerGui.getPlayerPos().x, winnerGui.getPlayerPos().y, 2f));
+                if (gameRound == 3) {
+                    checkWinner();
+                } else {
+                    stage.addActor(hourGlass);
+                    sendObject(PlayerState.START);
+                    //  startRound();
+                }
+            }
+        }, 5f);
+    }
+
 
     @Override
     public void sendObject(Object o) {
@@ -148,11 +206,37 @@ public class NewOnline extends ModeBase {
     @Override
     public void showMenu() {
         Gdx.input.setInputProcessor(stage);
-        logger.debug("my turn "+thisPlayer.turn);
         if (thisPlayer.turn) {
             menuButtons.showMenu(matchRound.stillHaveConsonants(), matchRound.stillHaveVocals());
         }
     }
+
+    @Override
+    public void changeTurn() {
+        if (activePlayer.freeTurn && !activePlayer.disconnect) {
+            playerGuis.get(activePlayer.guiIndex).removeFreeTurn();
+            activePlayer.freeTurn = false;
+            sendObject(PlayerState.SHOWMENU);
+        } else {
+            sendObject(PlayerState.CHANGETURN);
+        }
+    }
+
+    @Override
+    public void setActivePlayer(int i) {
+
+        Player player = playerGuis.get(i).getPlayer();
+        player.turn = true;
+        activePlayer = player;
+        if (!thisPlayer.id.equals(activePlayer.id)) {
+            thisPlayer.turn = false;
+        }
+        stage.addActor(hourGlass);
+        hourGlass.changePos(playerGuis.get(activePlayer.guiIndex));
+
+        logger.debug("active player " + activePlayer.name);
+    }
+
 
     @Override
     public void startPlays() {
@@ -162,15 +246,166 @@ public class NewOnline extends ModeBase {
         statusGroup.remove();
         statusLabel.setText(StringRes.ONLINE);
         tilesGroup.addActor(statusLabel);
-        if (thisPlayer.id.equals(rodaSession.id)){
-            SetActivePlayer setActivePlayer = new SetActivePlayer();
-            setActivePlayer.index = 0;
-            sendObject(setActivePlayer);
+        sendObject(PlayerState.SETACTIVEPLAYER);
+        gameSound.playCorrect();
+        infoLabel.setText(StringRes.ROUND + (1 + gameRound));
+        if (gameRound != 3) {
+            infoLabel.show(tilesGroup);
         }
-      //  sendObject(PlayerState.SHOWMENU);
+        //  sendObject(PlayerState.SHOWMENU);
+    }
+
+    public void checkChar(Character c) {
+        matchRound.checkAnswer(c);
     }
 
     public void sendChat(ChatOnline chatOnline) {
         newClient.sendObject(chatOnline);
+    }
+
+    public void checkDisconnected(String id) {
+
+        for (PlayerGui playerGui : playerGuis) {
+            if (playerGui.getPlayer().id.equals(id)) {
+                playerGui.getPlayer().disconnect = true;
+                playerGui.getImage().setColor(Color.BLUE);
+                if (playerGui.getPlayer().turn) {
+                    changeTurn();
+                }
+                statusLabel.setText(playerGui.getPlayer().name + StringRes.DISCONNECTED);
+
+            }
+        }
+    }
+
+    @Override
+    public void setGiftOnline(int giftIndex) {
+        gifts.setGiftsOnline(giftIndex);
+    }
+
+    @Override
+    public void showVocals() {
+        activePlayer.currentScore -= 250;
+        if (thisPlayer.id.equals(activePlayer.id)) {
+            vocalKeyboard.show();
+        }
+    }
+
+    public void setWheelParamResults(WheelParam wheelParam) {
+        this.wheelParam.results = wheelParam.results;
+        this.wheelParam.resultValue = wheelParam.resultValue;
+    }
+
+    @Override
+    public void update(float delta) {
+        if (!newClient.isConnected() && !stopped) {
+            statusLabel.setText(StringRes.FAILSERVER);
+            ErrorDialog errorDialog = new ErrorDialog(StringRes.FAILSERVER, skin) {
+                @Override
+                protected void result(Object object) {
+                    rodaImpian.gotoMenu();
+                    stopped = true;
+                }
+            };
+            errorDialog.show(stage);
+            Gdx.input.setInputProcessor(stage);
+            stopped = true;
+
+        }
+    }
+
+    public void setBonusOnline(int index) {
+        Bonus bonus = new Bonus(textureAtlas, index);
+        setBonus(bonus);
+    }
+
+    @Override
+    public void bonusRound() {
+        bonusRound = true;
+        Array<Integer> integers = new Array<>(new Integer[]{0, 1, 2});
+        integers.shuffle();
+        rodaImpian.loadAds();
+        for (int i = 0; i < 3; i++) {
+            final Envelopes envelopes = new Envelopes(textureAtlas, integers.get(i));
+            envelopes.setPosition(150 + (300 * i) - envelopes.getWidth() / 2f, 674f);
+            int finalI = i;
+            envelopes.addListener(new DragListener() {
+                @Override
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    if (rodaImpian.getPlayer().turn) {
+                        if (!envelopeClicked) {
+                            EnvelopeIndex envelopeIndex = new EnvelopeIndex();
+                            envelopeIndex.index = finalI;
+                            sendObject(envelopeIndex);
+                        }
+                    }
+                    return super.touchDown(event, x, y, pointer, button);
+                }
+            });
+            tilesGroup.addActor(envelopes);
+            envelopesOnline.add(envelopes);
+        }
+        playerBoardGroup.addActor(bonus.getBonusImage());
+        tilesGroup.addActor(new Sparkling(assetManager.get(AssetDesc.SPARKLE)));
+        infoLabel.setText(StringRes.CHOOSEENVELOPE);
+        infoLabel.show(tilesGroup);
+    }
+
+    @Override
+    public void showGifts() {
+        super.showGifts();
+        chatBtn.remove();
+        stage.addActor(chatBtn);
+    }
+
+    public void openEnvelopes(EnvelopeIndex envelopeIndex) {
+        Envelopes envelopes = envelopesOnline.get(envelopeIndex.index);
+        envelopes.opened();
+        float xPosition = envelopes.getX() + envelopes.getWidth() / 2f;
+        tilesGroup.addActor(new EnvelopeSubject(skin, rodaImpian.getQuestionsReady().getSubjectRoundFour(), xPosition));
+        envelopeClicked = true;
+        gameRound = 3;
+        setRound();
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                tilesGroup.clear();
+                matchRound.setQuestion();
+                rodaImpian.showAds(3);
+                if (rodaImpian.getPlayer().turn) {
+                    chooseBonusConsonant();
+                } else {
+                    infoLabel.setText(StringRes.CHOOSE5CONS);
+                    infoLabel.show(tilesGroup);
+                }
+            }
+        }, 3f);
+    }
+
+    public void checkBonusString(String holder) {
+        matchRound.checkBonusStringOnline(holder);
+    }
+    // TODO: 22/10/2021 connection url/ip firebase, dev dialog, rewarded ads
+
+    @Override
+    public void completeBonus() {
+        if (activePlayer.id.equals(rodaImpian.getPlayer().id)) {
+            completePuzzle();
+            menuButtons.showCompleteMenu();
+            stage.addActor(timerLimit);
+            timerLimit.start();
+        } else {
+            rodaImpian.showAds(1);
+        }
+    }
+
+    public boolean checkFreeTurn() {
+        boolean free = false;
+        if (activePlayer.freeTurn) {
+            free = true;
+            activePlayer.freeTurn = false;
+            playerGuis.get(activePlayer.guiIndex).removeFreeTurn();
+        }
+        return free;
     }
 }

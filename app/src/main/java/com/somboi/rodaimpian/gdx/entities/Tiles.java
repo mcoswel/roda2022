@@ -79,17 +79,13 @@ public class Tiles extends Image implements Cloneable {
         }, 1f);
     }
 
-    public void doReveal(){
-        setImage(textureAtlas.findRegion(String.valueOf(letter).toLowerCase()));
-    }
-
     public char getLetter() {
         return letter;
     }
 
     public void setLetter(char letter) {
         this.letter = letter;
-        if (letter == '\'') {
+        if (letter == '\'' || letter==39) {
             setImage(textureAtlas.findRegion("oppost"));
             revealed = true;
         }

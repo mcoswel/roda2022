@@ -38,7 +38,7 @@ public class TimerLimit extends Label {
             if (limitInt==0 && playClock) {
                 gameSound.stopClockSound();
                 gameSound.playWrong();
-                playClock = true;
+                playClock = false;
                 changeTurn = true;
             }
         }

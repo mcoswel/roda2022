@@ -15,7 +15,7 @@ public class ConsonantKeyboard {
     private final Skin skin;
     private final MatchRound matchRound;
     private int count;
-
+    private boolean bonusRound;
     public ConsonantKeyboard(Skin skin, MatchRound matchRound, Stage stage) {
         this.skin = skin;
         this.stage = stage;
@@ -38,7 +38,7 @@ public class ConsonantKeyboard {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
 
-                    if (matchRound.getGameRound() == 3) {
+                    if (bonusRound) {
                         textButton.remove();
                         matchRound.addBonusString(cFinal);
                         count++;
@@ -53,7 +53,7 @@ public class ConsonantKeyboard {
                     matchRound.setConsonants(builder.toString());*/
                     consonantTable.remove();
 
-                    if (matchRound.isOnlinePlay()) {
+                    if (matchRound.isOnlinePlay() && !bonusRound) {
                         CheckAnswer checkAnswer = new CheckAnswer();
                         checkAnswer.character = cFinal;
                         matchRound.getModeBase().sendObject(checkAnswer);
@@ -85,4 +85,7 @@ public class ConsonantKeyboard {
         consonantTable.remove();
     }
 
+    public void setBonusRound(boolean bonusRound) {
+        this.bonusRound = bonusRound;
+    }
 }

@@ -17,7 +17,7 @@ public class VocalKeyboard {
     private final Stage stage;
     private final MatchRound matchRound;
     private int count;
-
+    private boolean bonusRound;
     public VocalKeyboard(Skin skin, MatchRound matchRound, Stage stage) {
         this.skin = skin;
         this.stage = stage;
@@ -39,7 +39,7 @@ public class VocalKeyboard {
             textButton.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
-                    if (matchRound.getGameRound() == 3) {
+                    if (bonusRound) {
                         textButton.remove();
                         matchRound.addBonusString(cFinal);
                         count++;
@@ -58,7 +58,7 @@ public class VocalKeyboard {
                     StringBuilder builder = new StringBuilder(vocals);
                     builder.deleteCharAt(iFinal);
                     matchRound.setVocals(builder.toString());
-                    if (matchRound.getRodaImpian().getGameModes().equals(GameModes.ONLINE)) {
+                    if (matchRound.getRodaImpian().getGameModes().equals(GameModes.ONLINE) && !bonusRound) {
                         CheckAnswer checkAnswer = new CheckAnswer();
                         checkAnswer.character = cFinal;
                       //  matchRound.getModeBase().sendObject(GameState.BUYVOCAL);
@@ -89,4 +89,7 @@ public class VocalKeyboard {
         vocalTable.remove();
     }
 
+    public void setBonusRound(boolean bonusRound) {
+        this.bonusRound = bonusRound;
+    }
 }

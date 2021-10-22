@@ -196,7 +196,7 @@ public class RodaClient extends Client {
 
                     if (gameState.equals(GameState.CHANGETURN)) {
                         if (!playerState.equals(PlayerState.CHANGETURN)) {
-                            onlinePlay.changeTurnOffline();
+                           // onlinePlay.changeTurnOffline();
                             setPlayerState(PlayerState.CHANGETURN);
                         }
                     }

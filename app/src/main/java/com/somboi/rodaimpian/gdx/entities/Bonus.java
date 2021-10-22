@@ -15,6 +15,7 @@ public class Bonus {
     public Bonus(TextureAtlas textureAtlas, int index) {
         this.textureAtlas = textureAtlas;
         bonusImage = BonusGiftImg.getBonus(textureAtlas, index);
+
     }
     public void getWheelResult(WheelParam wheelParam, String lastContact) {
 

@@ -6,6 +6,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.somboi.rodaimpian.android.AndroidInterface;
 import com.somboi.rodaimpian.android.PlayerOnline;
 import com.somboi.rodaimpian.gdx.actor.PlayerImage;
+import com.somboi.rodaimpian.gdx.assets.PopulateQuestions;
 import com.somboi.rodaimpian.gdx.assets.QuestionsReady;
 import com.somboi.rodaimpian.gdx.entities.MainMenuCreator;
 import com.somboi.rodaimpian.gdx.entities.Player;
@@ -48,9 +49,9 @@ public class RodaImpian extends Game {
 
     @Override
     public void create() {
-        //   PopulateQuestions populateQuestions = new PopulateQuestions();
+        // PopulateQuestions populateQuestions = new PopulateQuestions();
 
-        setScreen(new LoadingScreen(this));
+       setScreen(new LoadingScreen(this));
         Gdx.app.setLogLevel(3);
 
     }
@@ -254,5 +255,14 @@ public class RodaImpian extends Game {
 
     public void gotoOnlineScreen(){
         setScreen(onlineScreen);
+    }
+
+    public void openPlayStore(String uri){
+        androidInterface.openPlayStore(uri);
+    }
+
+    @Override
+    public void dispose() {
+        assetManager.dispose();
     }
 }
