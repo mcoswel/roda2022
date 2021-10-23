@@ -155,7 +155,14 @@ public class ChatActivity extends AppCompatActivity {
         if (adView != null) {
             adView.destroy();
         }
-        super.onDestroy();
+        finish();
+
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 
     private void removeChats() {

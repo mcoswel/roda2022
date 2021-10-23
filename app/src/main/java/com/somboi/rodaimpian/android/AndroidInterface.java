@@ -35,4 +35,7 @@ public interface AndroidInterface {
 
     void loadRewardedAds();
     void logoutFacebook(String playerID);
+    void finishAct();
+
+    void getUpdateNews();
 }

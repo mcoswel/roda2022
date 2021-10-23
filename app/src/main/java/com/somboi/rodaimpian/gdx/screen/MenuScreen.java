@@ -5,19 +5,44 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.somboi.rodaimpian.RodaImpian;
+import com.somboi.rodaimpian.android.onlinemsg.UpdateNews;
 import com.somboi.rodaimpian.gdx.actor.PromoDialog;
 import com.somboi.rodaimpian.gdx.assets.AssetDesc;
 import com.somboi.rodaimpian.gdx.base.BaseScreen;
 import com.somboi.rodaimpian.gdx.entities.LocalPlayMenu;
 import com.somboi.rodaimpian.gdx.entities.MainMenuCreator;
+import com.somboi.rodaimpian.gdx.actor.UpdateMsg;
 
 public class MenuScreen extends BaseScreen {
-    private final MainMenuCreator mainMenuCreator;
-    private final LocalPlayMenu localPlayMenu;
+    private  MainMenuCreator mainMenuCreator;
+    private  LocalPlayMenu localPlayMenu;
     private final Group mainMenuGroup = new Group();
     private final Group localGroup = new Group();
     public MenuScreen(RodaImpian rodaImpian) {
         super(rodaImpian);
+
+
+        if (rodaImpian.getPlayerOnline().timesplayed%10==0 && rodaImpian.getPlayerOnline().timesplayed>0) {
+            PromoDialog promoDialog = new PromoDialog(skin, rodaImpian.getAssetManager().get(AssetDesc.TEXTUREATLAS).findRegion("sahiba")){
+                @Override
+                protected void result(Object object) {
+                    if (object.equals(true)){
+                        rodaImpian.openPlayStore("com.somboi.melayuscrabble");
+                    }
+                }
+            };
+            promoDialog.show(stage);
+        }
+
+        rodaImpian.getUpdate();
+    }
+
+    @Override
+    public void show() {
+        stage.clear();
+        mainMenuGroup.clear();
+        localGroup.clear();
+        Gdx.input.setInputProcessor(stage);
         mainMenuCreator = new MainMenuCreator(rodaImpian, mainMenuGroup, stage, this);
         localPlayMenu = new LocalPlayMenu(rodaImpian, localGroup,skin,textureAtlas, this);
         rodaImpian.setMenuCreator(mainMenuCreator);
@@ -31,22 +56,7 @@ public class MenuScreen extends BaseScreen {
         stage.addActor(titleBg);
         stage.addActor(mainMenuGroup);
 
-        if (rodaImpian.getPlayerOnline().timesplayed%10==0 && rodaImpian.getPlayerOnline().timesplayed>0) {
-            PromoDialog promoDialog = new PromoDialog(skin, rodaImpian.getAssetManager().get(AssetDesc.TEXTUREATLAS).findRegion("sahiba")){
-                @Override
-                protected void result(Object object) {
-                    if (object.equals(true)){
-                        rodaImpian.openPlayStore("com.somboi.melayuscrabble");
-                    }
-                }
-            };
-            promoDialog.show(stage);
-        }
-    }
 
-    @Override
-    public void show() {
-        Gdx.input.setInputProcessor(stage);
         localGroup.remove();
         mainMenuCreator.show();
         stage.addActor(mainMenuGroup);
@@ -65,7 +75,14 @@ public class MenuScreen extends BaseScreen {
         localPlayMenu.loadLocalPic();
         localPlayMenu.update();
         if (Gdx.input.isKeyJustPressed(Input.Keys.BACK)){
+            rodaImpian.exitAll();
             Gdx.app.exit();
+
         }
+    }
+
+    public void showUpdate(UpdateNews updateNews) {
+        UpdateMsg updateMsg = new UpdateMsg(rodaImpian, updateNews.getMessages(), skin);
+        updateMsg.show(stage);
     }
 }

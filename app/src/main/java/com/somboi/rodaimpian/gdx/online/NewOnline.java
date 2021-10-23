@@ -273,7 +273,6 @@ public class NewOnline extends ModeBase {
                     changeTurn();
                 }
                 statusLabel.setText(playerGui.getPlayer().name + StringRes.DISCONNECTED);
-
             }
         }
     }
@@ -308,9 +307,8 @@ public class NewOnline extends ModeBase {
                 }
             };
             errorDialog.show(stage);
-            Gdx.input.setInputProcessor(stage);
+            Gdx.input.setInputProcessor(completeKeyMultiplex);
             stopped = true;
-
         }
     }
 
@@ -385,7 +383,6 @@ public class NewOnline extends ModeBase {
     public void checkBonusString(String holder) {
         matchRound.checkBonusStringOnline(holder);
     }
-    // TODO: 22/10/2021 connection url/ip firebase, dev dialog, rewarded ads
 
     @Override
     public void completeBonus() {
@@ -399,13 +396,5 @@ public class NewOnline extends ModeBase {
         }
     }
 
-    public boolean checkFreeTurn() {
-        boolean free = false;
-        if (activePlayer.freeTurn) {
-            free = true;
-            activePlayer.freeTurn = false;
-            playerGuis.get(activePlayer.guiIndex).removeFreeTurn();
-        }
-        return free;
-    }
+
 }

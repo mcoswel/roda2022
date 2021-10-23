@@ -49,8 +49,11 @@ import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd;
 import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoadCallback;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -73,6 +76,7 @@ import com.mopub.mobileads.MoPubRewardedAds;
 import com.somboi.rodaimpian.R;
 import com.somboi.rodaimpian.RodaImpian;
 import com.somboi.rodaimpian.TargetGlide;
+import com.somboi.rodaimpian.android.onlinemsg.UpdateNews;
 import com.somboi.rodaimpian.gdx.entities.MainMenuCreator;
 import com.somboi.rodaimpian.gdx.entities.Player;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
@@ -392,9 +396,7 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
         player.logged = true;
         mainMenuCreator.savePlayer(player);
         mainMenuCreator.savePlayerOnline(playerOnline);
-        finish();
-        Intent intent = getIntent();
-        startActivity(intent);
+        rodaImpian.reloadMainMenu();
     }
 
 
@@ -636,13 +638,13 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (rewardedInterstitialAd!=null){
-                    rewardedInterstitialAd.show(AndroidLauncher.this,AndroidLauncher.this);
-                }else if (rewardedVideoAd.isAdLoaded()){
-                        rewardedVideoAd.show();
-                }else if (MoPubRewardedAds.hasRewardedAd(getString(R.string.mopub_rewarded))){
+                if (rewardedInterstitialAd != null) {
+                    rewardedInterstitialAd.show(AndroidLauncher.this, AndroidLauncher.this);
+                } else if (rewardedVideoAd.isAdLoaded()) {
+                    rewardedVideoAd.show();
+                } else if (MoPubRewardedAds.hasRewardedAd(getString(R.string.mopub_rewarded))) {
                     MoPubRewardedAds.showRewardedAd(getString(R.string.mopub_rewarded));
-                }else{
+                } else {
                     rodaImpian.setRewarded(true);
                 }
 
@@ -695,27 +697,53 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
     protected void onDestroy() {
         super.onDestroy();
         rodaImpian.dispose();
-        if (moPubInterstitial!=null) {
+        if (moPubInterstitial != null) {
             moPubInterstitial.destroy();
         }
-        if (facebookInter!=null) {
+        if (facebookInter != null) {
             facebookInter.destroy();
         }
-        if (rewardedVideoAd!=null){
+        if (rewardedVideoAd != null) {
             rewardedVideoAd.destroy();
         }
 
     }
 
     @Override
+    public void getUpdateNews() {
+        DatabaseReference updateData = FirebaseDatabase.getInstance().getReference().child("Debug").child("news");
+        FirebaseDatabase.getInstance().getReference().child("Debug").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                final UpdateNews newUpdate = snapshot.child("news").getValue(UpdateNews.class);
+                if (newUpdate != null) {
+                    if (newUpdate.isShow()) {
+                        rodaImpian.showUpdateNews(newUpdate);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    @Override
     public void logoutFacebook(String playerID) {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Offline").child("2022");
-        if (playerID!=null) {
+        if (playerID != null) {
             databaseReference.child(playerOnline.id).removeValue();
         }
 
         Intent intent = getIntent();
         finish();
         startActivity(intent);
+    }
+
+    @Override
+    public void finishAct() {
+        finish();
     }
 }

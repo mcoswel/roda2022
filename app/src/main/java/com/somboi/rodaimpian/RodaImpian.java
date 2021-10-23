@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.somboi.rodaimpian.android.AndroidInterface;
 import com.somboi.rodaimpian.android.PlayerOnline;
+import com.somboi.rodaimpian.android.onlinemsg.UpdateNews;
 import com.somboi.rodaimpian.gdx.actor.PlayerImage;
 import com.somboi.rodaimpian.gdx.assets.PopulateQuestions;
 import com.somboi.rodaimpian.gdx.assets.QuestionsReady;
@@ -70,6 +71,9 @@ public class RodaImpian extends Game {
         androidInterface.chat(guiIndex, onlinePlay);
     }
 
+    public void exitAll(){
+        androidInterface.finishAct();
+    }
     public void setWheelScreen(WheelScreen wheelScreen) {
         this.wheelScreen = wheelScreen;
     }
@@ -289,5 +293,16 @@ public class RodaImpian extends Game {
     public void logoutFB(String playerID) {
         androidInterface.logoutFacebook(playerID);
     }
+    public void getUpdate(){
+        androidInterface.getUpdateNews();
+    }
 
+    public void showUpdateNews(UpdateNews updateNews){
+        menuScreen.showUpdate(updateNews);
+    }
+
+
+    public void reloadMainMenu() {
+        menuScreen.show();
+    }
 }

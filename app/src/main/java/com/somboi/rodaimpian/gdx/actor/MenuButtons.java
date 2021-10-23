@@ -101,6 +101,7 @@ public class MenuButtons {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 modeBase.checkCompleteAnswer();
+                modeBase.setKeyboardOn(false);
             }
         });
 
@@ -128,6 +129,7 @@ public class MenuButtons {
         if (modeBase.getGameRound()==3){
             rodaImpian.showAds(3);
         }
+        modeBase.setKeyboardOn(true);
     }
 
     public void hideMenu() {

@@ -95,7 +95,8 @@ public class ModeBase {
     protected float adsLoadCounter = 60f;
     private final float ADSCOUNTER = 60f;
     protected final Array<Envelopes> envelopesOnline = new Array<>();
-
+    protected boolean keyboardOn;
+    protected InputMultiplexer completeKeyMultiplex;
     public ModeBase(RodaImpian rodaImpian, Stage stage) {
         this.rodaImpian = rodaImpian;
         this.thisPlayer = rodaImpian.getPlayer();
@@ -530,10 +531,11 @@ public class ModeBase {
             t.setColor(GameConfig.VISIBLE);
         }
 
-        InputMultiplexer inputMultiplexer = new InputMultiplexer();
-        inputMultiplexer.addProcessor(stage);
-        inputMultiplexer.addProcessor(new InputCompleteKey(completeList, this));
-        Gdx.input.setInputProcessor(inputMultiplexer);
+
+        completeKeyMultiplex = new InputMultiplexer();
+        completeKeyMultiplex.addProcessor(stage);
+        completeKeyMultiplex.addProcessor(new InputCompleteKey(completeList, this));
+        Gdx.input.setInputProcessor(completeKeyMultiplex);
         Gdx.input.setOnscreenKeyboardVisible(true);
         stage.addActor(completeGroup);
     }
@@ -892,6 +894,14 @@ public class ModeBase {
 
     public void setWinBonus(boolean winBonus) {
         this.winBonus = winBonus;
+    }
+
+    public boolean isKeyboardOn() {
+        return keyboardOn;
+    }
+
+    public void setKeyboardOn(boolean keyboardOn) {
+        this.keyboardOn = keyboardOn;
     }
 }
 
