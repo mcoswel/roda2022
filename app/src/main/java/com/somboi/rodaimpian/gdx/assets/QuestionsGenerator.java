@@ -8,7 +8,7 @@ import java.util.List;
 public class QuestionsGenerator {
     private final Array<String> subjects = new Array<>();
     private final Array<QuestionSingle> questionSingles = new Array<>();
-
+    private boolean complete;
     public QuestionsReady run() {
         QuestionsReady questionsReady = new QuestionsReady();
         subjects.shuffle();
@@ -24,24 +24,75 @@ public class QuestionsGenerator {
         questionsReady.setSubjectRoundThree(subjects.get(2));
         questionsReady.setSubjectRoundFour(subjects.get(3));
 
-        for (int i = 0; i < 3; i++) {
-            while (allRounds.get(i).size() != 3) {
-                for (QuestionSingle questionSingle : questionSingles) {
-                    if (questionSingle.getSubject().equals(subjects.get(i))) {
-                        String question = questionSingle.getQuestion();
-                        if (allRounds.get(i).isEmpty() && question.length() <= 12 &&question.length()>0) {
-                            allRounds.get(i).add(question);
-                        }
-                        if (allRounds.get(i).size() == 1 && question.length() <= 14 && question.length()>0 && !question.equals(allRounds.get(i).get(0))) {
-                            allRounds.get(i).add(question);
-                        }
-                        if (allRounds.get(i).size() == 2 && question.length() <= 14&& question.length()>0 && !question.equals(allRounds.get(i).get(1))) {
-                            allRounds.get(i).add(question);
-                        }
+
+        int i = 0;
+        while(!complete) {
+            for (QuestionSingle questionSingle : questionSingles) {
+                String question = questionSingle.getQuestion();
+                if (questionSingle.getSubject().equals(subjects.get(i))) {
+                    if (allRounds.get(i).isEmpty() && question.length() <= 12 && question.length() > 0) {
+                        allRounds.get(i).add(question);
+                    }
+                    if (allRounds.get(i).size() == 1 && question.length() <= 14 && question.length() > 0 && !question.equals(allRounds.get(i).get(0))) {
+                        allRounds.get(i).add(question);
+                    }
+                    if (allRounds.get(i).size() == 2 && question.length() <= 14 && question.length() > 0
+                            && !question.equals(allRounds.get(i).get(0))
+                            && !question.equals(allRounds.get(i).get(1))
+                    ) {
+                        allRounds.get(i).add(question);
+                    }
+                    if (allRounds.get(i).size() == 3 && question.length() <= 12 && question.length() > 0
+                            && !question.equals(allRounds.get(i).get(1))
+                            && !question.equals(allRounds.get(i).get(2))
+                    ) {
+                        allRounds.get(i).add(question);
+                        complete = true;
                     }
                 }
             }
         }
+
+        complete =false;
+        i =1;
+        while(!complete) {
+            for (QuestionSingle questionSingle : questionSingles) {
+                String question = questionSingle.getQuestion();
+                if (questionSingle.getSubject().equals(subjects.get(i))) {
+                    if (allRounds.get(i).isEmpty() && question.length() <= 12 && question.length() > 0) {
+                        allRounds.get(i).add(question);
+                    }
+                    if (allRounds.get(i).size() == 1 && question.length() <= 14 && question.length() > 0 && !question.equals(allRounds.get(i).get(0))) {
+                        allRounds.get(i).add(question);
+                    }
+                    if (allRounds.get(i).size() == 2 && question.length() <= 14 && question.length() > 0
+                            && !question.equals(allRounds.get(i).get(0))
+                            && !question.equals(allRounds.get(i).get(1))
+                    ) {
+                        allRounds.get(i).add(question);
+                        complete = true;
+                    }
+                }
+            }
+        }
+        complete =false;
+        i =2;
+        while (!complete) {
+            for (QuestionSingle questionSingle : questionSingles) {
+                String question = questionSingle.getQuestion();
+                if (questionSingle.getSubject().equals(subjects.get(i))) {
+                    if (allRounds.get(i).isEmpty() && question.length() <= 12 && question.length() > 0) {
+                        allRounds.get(i).add(question);
+                    }
+                    if (allRounds.get(i).size() == 1 && question.length() <= 14 && question.length() > 0 && !question.equals(allRounds.get(i).get(0))) {
+                        allRounds.get(i).add(question);
+                        complete = true;
+                    }
+                }
+            }
+        }
+
+
 
         questionsReady.setRoundOne(allRounds.get(0));
         questionsReady.setRoundTwo(allRounds.get(1));

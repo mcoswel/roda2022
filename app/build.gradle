@@ -19,8 +19,8 @@ android {
         applicationId "com.somboi.rodaimpian"
         minSdk 21
         targetSdk 30
-        versionCode 84
-        versionName "4.0"
+        versionCode 88
+        versionName "5.1"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

@@ -80,7 +80,7 @@ import com.somboi.rodaimpian.android.onlinemsg.UpdateNews;
 import com.somboi.rodaimpian.gdx.entities.MainMenuCreator;
 import com.somboi.rodaimpian.gdx.entities.Player;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
-import com.somboi.rodaimpian.gdx.online.NewOnline;
+import com.somboi.rodaimpian.gdx.online.OnlinePlay;
 import com.somboi.rodaimpian.gdx.online.entities.ChatOnline;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -299,7 +299,7 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
     }
 
     @Override
-    public void chat(int guiIndex, NewOnline newOnline) {
+    public void chat(int guiIndex, OnlinePlay onlinePlay) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -318,7 +318,7 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
                             Gdx.app.postRunnable(new Runnable() {
                                 @Override
                                 public void run() {
-                                    newOnline.sendChat(chatOnline);
+                                    onlinePlay.sendChat(chatOnline);
                                 }
                             });
 

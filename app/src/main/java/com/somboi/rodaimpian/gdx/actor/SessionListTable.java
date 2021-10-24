@@ -36,12 +36,12 @@ public class SessionListTable extends Window {
         join.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                rodaClient.sendTCP(PlayerState.EXITROOM);
+                rodaClient.sendObject(PlayerState.EXITROOM);
                 RegisterPlayer registerPlayer = new RegisterPlayer();
                 registerPlayer.roomID = sessionRoom.getRoomID();
                 registerPlayer.player = rodaImpian.getPlayer();
                 rodaClient.setSessionID(sessionRoom.getRoomID());
-                rodaClient.sendTCP(registerPlayer);
+                rodaClient.sendObject(registerPlayer);
 
             }
         });
@@ -98,7 +98,7 @@ public class SessionListTable extends Window {
         delete.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                rodaClient.sendTCP(PlayerState.EXITROOM);
+                rodaClient.sendObject(PlayerState.EXITROOM);
             }
         });
         MenuBtn exit = new MenuBtn(StringRes.EXIT, skin);
@@ -106,14 +106,14 @@ public class SessionListTable extends Window {
         start.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                rodaClient.sendTCP(GameState.START);
+                rodaClient.sendObject(GameState.START);
             }
         });
 
         exit.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                rodaClient.sendTCP(PlayerState.EXITROOM);
+                rodaClient.sendObject(PlayerState.EXITROOM);
                 rodaClient.setSessionID(null);
             }
         });

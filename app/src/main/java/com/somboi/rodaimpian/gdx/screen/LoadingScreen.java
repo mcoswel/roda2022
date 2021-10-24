@@ -31,6 +31,8 @@ public class LoadingScreen extends ScreenAdapter {
     private final Texture loading = new Texture(Gdx.files.internal("textures/loading.png"));
     private final Viewport viewport = new FitViewport(GameConfig.SCWIDTH, GameConfig.SCHEIGHT);
     private final SpriteBatch batch = new SpriteBatch();
+    private boolean generateQuestion;
+    private QuestionsGenerator questionsGenerator;
     public LoadingScreen(RodaImpian rodaImpian) {
         this.rodaImpian = rodaImpian;
         this.assetManager = rodaImpian.getAssetManager();
@@ -41,7 +43,8 @@ public class LoadingScreen extends ScreenAdapter {
         /**
          * online sideload here
          */
-        QuestionsGenerator questionsGenerator = questionsSaves.loadFromLocal();
+
+        questionsGenerator = questionsSaves.loadFromLocal();
         FileHandle fileHandle = Gdx.files.internal(StringRes.QUESTIONS);
         if (fileHandle.exists()) {
             questionsGenerator = questionsSaves.loadFromInternal(fileHandle);
@@ -92,7 +95,6 @@ public class LoadingScreen extends ScreenAdapter {
         assetManager.load(AssetDesc.HOURGLASS);
 
         questionsSaves.saveQuestion(questionsGenerator);
-        rodaImpian.setQuestionsReady(questionsGenerator.run());
     }
 
     @Override
@@ -109,7 +111,11 @@ public class LoadingScreen extends ScreenAdapter {
         batch.draw(loading, 305f,(450f),550f,301f);
         batch.end();
 
-        if (rodaImpian.getAssetManager().update()) {
+        if (!generateQuestion){
+            rodaImpian.setQuestionsReady(questionsGenerator.run());
+            generateQuestion = true;
+        }
+        if (rodaImpian.getAssetManager().update() && generateQuestion) {
             rodaImpian.setMenuScreen(new MenuScreen(rodaImpian));
             rodaImpian.gotoMenu();
         }

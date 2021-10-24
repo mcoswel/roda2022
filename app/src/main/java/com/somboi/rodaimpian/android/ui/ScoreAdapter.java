@@ -162,9 +162,8 @@ public class ScoreAdapter extends RecyclerView.Adapter {
         deleteThis.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Offline").child("september2021");
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Offline").child("2022");
                 databaseReference.child(player.id).removeValue();
-                context.startActivity(new Intent(context, AndroidLauncher.class));
             }
         });
 

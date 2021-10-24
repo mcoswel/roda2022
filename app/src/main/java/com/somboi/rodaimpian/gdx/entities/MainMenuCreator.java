@@ -27,9 +27,9 @@ import com.somboi.rodaimpian.gdx.actor.PlayerImage;
 import com.somboi.rodaimpian.gdx.assets.AssetDesc;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
-import com.somboi.rodaimpian.gdx.online.NewClient;
 import com.somboi.rodaimpian.gdx.screen.LoadingScreen;
 import com.somboi.rodaimpian.gdx.screen.MenuScreen;
+import com.somboi.rodaimpian.gdx.screen.OnlineMatchScreen;
 import com.somboi.rodaimpian.gdx.utils.RoundMap;
 import com.somboi.rodaimpian.saves.PlayerSaves;
 
@@ -97,7 +97,7 @@ public class MainMenuCreator {
                 if (rodaImpian.getPlayer().logged) {
                     //rodaImpian.setScreen(new RoomScreen(rodaImpian));
                     changeName();
-                    new NewClient(rodaImpian);
+                    rodaImpian.setScreen(new OnlineMatchScreen(rodaImpian));
                 } else {
                     FBPrompt fbPrompt = new FBPrompt(skin){
                         @Override

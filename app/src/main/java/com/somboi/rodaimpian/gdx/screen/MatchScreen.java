@@ -9,7 +9,6 @@ import com.somboi.rodaimpian.gdx.base.BaseScreen;
 import com.somboi.rodaimpian.gdx.entities.BgImg;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
 import com.somboi.rodaimpian.gdx.modes.MultiPlayLocal;
-import com.somboi.rodaimpian.gdx.modes.OnlinePlay;
 import com.somboi.rodaimpian.gdx.modes.SinglePlayer;
 
 public class MatchScreen extends BaseScreen {

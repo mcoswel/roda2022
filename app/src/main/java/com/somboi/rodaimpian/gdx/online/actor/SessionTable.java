@@ -11,13 +11,13 @@ import com.somboi.rodaimpian.gdx.actor.MenuBtn;
 import com.somboi.rodaimpian.gdx.actor.PlayerImage;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdx.entities.Player;
-import com.somboi.rodaimpian.gdx.online.NewClient;
+import com.somboi.rodaimpian.gdx.online.RodaClient;
 import com.somboi.rodaimpian.gdx.online.newentities.CreateSessions;
 import com.somboi.rodaimpian.gdx.online.newentities.RegisterPlayer;
 
 public class SessionTable extends Table {
     private final CreateSessions createSessions;
-    public SessionTable(CreateSessions createSessions, NewClient newClient, Skin skin, TextureRegion defaultAvatar, Player thisplayer) {
+    public SessionTable(CreateSessions createSessions, RodaClient newClient, Skin skin, TextureRegion defaultAvatar, Player thisplayer) {
         this.createSessions = createSessions;
         PlayerImage playerImage = new PlayerImage(createSessions.picUri,defaultAvatar);
         Label name = new Label(createSessions.name, skin);

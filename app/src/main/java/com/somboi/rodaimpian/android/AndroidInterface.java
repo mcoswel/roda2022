@@ -2,7 +2,7 @@ package com.somboi.rodaimpian.android;
 
 import com.somboi.rodaimpian.gdx.entities.MainMenuCreator;
 import com.somboi.rodaimpian.gdx.entities.Player;
-import com.somboi.rodaimpian.gdx.online.NewOnline;
+import com.somboi.rodaimpian.gdx.online.OnlinePlay;
 
 public interface AndroidInterface {
     void choosePhoto(int playerInt);
@@ -19,7 +19,7 @@ public interface AndroidInterface {
 
     void onlineChat();
 
-    void chat(int guiIndex, NewOnline onlinePlay);
+    void chat(int guiIndex, OnlinePlay onlinePlay);
 
     void uploadScore(PlayerOnline playerOnline);
 

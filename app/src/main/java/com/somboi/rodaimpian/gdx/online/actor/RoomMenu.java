@@ -10,13 +10,13 @@ import com.somboi.rodaimpian.gdx.actor.LargeButton;
 import com.somboi.rodaimpian.gdx.actor.PromptAds;
 import com.somboi.rodaimpian.gdx.actor.YesNoDialog;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
-import com.somboi.rodaimpian.gdx.online.NewClient;
+import com.somboi.rodaimpian.gdx.online.RodaClient;
 
 public class RoomMenu extends Table {
     private final LargeButton chat;
     private final LargeButton createRoom;
 
-    public RoomMenu(NewClient newClient, RodaImpian rodaImpian, Skin skin) {
+    public RoomMenu(RodaClient newClient, RodaImpian rodaImpian, Skin skin) {
         chat = new LargeButton(StringRes.CHAT, skin);
         chat.addListener(new ChangeListener() {
             @Override

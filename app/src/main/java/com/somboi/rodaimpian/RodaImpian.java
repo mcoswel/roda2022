@@ -7,21 +7,17 @@ import com.somboi.rodaimpian.android.AndroidInterface;
 import com.somboi.rodaimpian.android.PlayerOnline;
 import com.somboi.rodaimpian.android.onlinemsg.UpdateNews;
 import com.somboi.rodaimpian.gdx.actor.PlayerImage;
-import com.somboi.rodaimpian.gdx.assets.PopulateQuestions;
 import com.somboi.rodaimpian.gdx.assets.QuestionsReady;
 import com.somboi.rodaimpian.gdx.entities.MainMenuCreator;
 import com.somboi.rodaimpian.gdx.entities.Player;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
-import com.somboi.rodaimpian.gdx.modes.OnlinePlay;
-import com.somboi.rodaimpian.gdx.online.NewClient;
-import com.somboi.rodaimpian.gdx.online.NewOnline;
-import com.somboi.rodaimpian.gdx.online.RodaClient;
+import com.somboi.rodaimpian.gdx.online.OnlinePlay;
 import com.somboi.rodaimpian.gdx.online.entities.SessionList;
 import com.somboi.rodaimpian.gdx.online.newentities.SessionRoom;
 import com.somboi.rodaimpian.gdx.screen.LoadingScreen;
 import com.somboi.rodaimpian.gdx.screen.MatchScreen;
 import com.somboi.rodaimpian.gdx.screen.MenuScreen;
-import com.somboi.rodaimpian.gdx.screen.RoomScreen;
+import com.somboi.rodaimpian.gdx.screen.OnlineMatchScreen;
 import com.somboi.rodaimpian.gdx.screen.WheelScreen;
 
 public class RodaImpian extends Game {
@@ -36,14 +32,13 @@ public class RodaImpian extends Game {
     private GameModes gameModes;
     private PlayerOnline playerOnline;
     private SessionRoom sessionRoom;
-    private RoomScreen roomScreen;
     private SessionList sessionList = new SessionList();
     private int bestScore;
     private Player PlayerTwo;
     private Player PlayerThree;
     private PlayerImage PlayerTwoImage;
     private PlayerImage PlayerThreeImage;
-    private NewClient.OnlineScreen onlineScreen;
+    private OnlineMatchScreen onlineScreen;
     private boolean rewarded;
 
     public RodaImpian(AndroidInterface androidInterface) {
@@ -52,9 +47,9 @@ public class RodaImpian extends Game {
 
     @Override
     public void create() {
-   //  PopulateQuestions populateQuestions = new PopulateQuestions();
+        //  PopulateQuestions populateQuestions = new PopulateQuestions();
 
-       setScreen(new LoadingScreen(this));
+        setScreen(new LoadingScreen(this));
         Gdx.app.setLogLevel(3);
 
     }
@@ -67,13 +62,14 @@ public class RodaImpian extends Game {
         this.setScreen(wheelScreen);
     }
 
-    public void chat(int guiIndex, NewOnline onlinePlay) {
+    public void chat(int guiIndex, OnlinePlay onlinePlay) {
         androidInterface.chat(guiIndex, onlinePlay);
     }
 
-    public void exitAll(){
+    public void exitAll() {
         androidInterface.finishAct();
     }
+
     public void setWheelScreen(WheelScreen wheelScreen) {
         this.wheelScreen = wheelScreen;
     }
@@ -173,38 +169,21 @@ public class RodaImpian extends Game {
         return sessionList;
     }
 
-    public RoomScreen getRoomScreen() {
-        return roomScreen;
-    }
 
-    public void setRoomScreen(RoomScreen roomScreen) {
-        this.roomScreen = roomScreen;
-    }
-
-    public void updateSessionList(SessionList sessionList) {
-
-        roomScreen.updateSessionList(sessionList);
-        this.sessionList = sessionList;
-    }
-
-    public void gotoRoomScreen() {
-        setScreen(roomScreen);
-    }
-
-    public void uploadScore(PlayerOnline playerOnline){
+    public void uploadScore(PlayerOnline playerOnline) {
         androidInterface.uploadScore(playerOnline);
     }
 
-    public void loadAds(){
+    public void loadAds() {
         androidInterface.loadAllAds();
     }
 
-    public void showAds(int gameRound){
+    public void showAds(int gameRound) {
         androidInterface.showAds(gameRound);
     }
 
 
-    public void gotoLeaderBoard(){
+    public void gotoLeaderBoard() {
         androidInterface.leaderBoard();
     }
 
@@ -255,15 +234,15 @@ public class RodaImpian extends Game {
     public void stop() {
     }
 
-    public void setOnlineScreen(NewClient.OnlineScreen onlineScreen) {
+    public void setOnlineScreen(OnlineMatchScreen onlineScreen) {
         this.onlineScreen = onlineScreen;
     }
 
-    public void gotoOnlineScreen(){
+    public void gotoOnlineScreen() {
         setScreen(onlineScreen);
     }
 
-    public void openPlayStore(String uri){
+    public void openPlayStore(String uri) {
         androidInterface.openPlayStore(uri);
     }
 
@@ -271,7 +250,7 @@ public class RodaImpian extends Game {
     public void dispose() {
 
         assetManager.dispose();
-        Gdx.app.log("dispose ","dispose");
+        Gdx.app.log("dispose ", "dispose");
     }
 
     public void setRewarded(boolean b) {
@@ -286,18 +265,19 @@ public class RodaImpian extends Game {
         androidInterface.loadRewardedAds();
     }
 
-    public void showRewardedAds(){
+    public void showRewardedAds() {
         androidInterface.showRewarded();
     }
 
     public void logoutFB(String playerID) {
         androidInterface.logoutFacebook(playerID);
     }
-    public void getUpdate(){
+
+    public void getUpdate() {
         androidInterface.getUpdateNews();
     }
 
-    public void showUpdateNews(UpdateNews updateNews){
+    public void showUpdateNews(UpdateNews updateNews) {
         menuScreen.showUpdate(updateNews);
     }
 

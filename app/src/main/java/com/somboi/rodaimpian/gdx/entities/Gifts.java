@@ -241,4 +241,9 @@ public class Gifts {
     public int getGiftIndex() {
         return giftIndex;
     }
+
+    public void removeBox() {
+        openedGift.remove();
+        unopenedGift.remove();
+    }
 }

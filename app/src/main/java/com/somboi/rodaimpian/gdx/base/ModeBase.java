@@ -117,6 +117,9 @@ public class ModeBase {
         stage.addActor(playerBoardGroup);
         stage.addActor(playerImageGroup);
 
+        /**Adjust questions ready, round 1 4 column, round 2 two cloum
+         *
+         */
 
         if (!rodaImpian.getGameModes().equals(GameModes.ONLINE)) {
             setPlayers();
@@ -563,13 +566,15 @@ public class ModeBase {
                     }
                     if (finalPlayer.gifts.size() > 0) {
                         for (Integer integer : finalPlayer.gifts) {
-                            if (integer != 0) {
+                            if (integer != 0 && !playerOnline.giftsList.contains(integer)) {
                                 playerOnline.giftsList.add(integer);
                             }
                         }
                     }
                     playerOnline.logged = true;
-                    rodaImpian.uploadScore(playerOnline);
+                    if (playerOnline.bestScore!=0) {
+                        rodaImpian.uploadScore(playerOnline);
+                    }
                 }
                 playerSaves.savePlayerOnline(playerOnline);
                 playerSaves.save(finalPlayer);
@@ -902,6 +907,10 @@ public class ModeBase {
 
     public void setKeyboardOn(boolean keyboardOn) {
         this.keyboardOn = keyboardOn;
+    }
+
+    public InputMultiplexer getCompleteKeyMultiplex() {
+        return completeKeyMultiplex;
     }
 }
 

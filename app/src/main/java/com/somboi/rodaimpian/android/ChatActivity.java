@@ -65,11 +65,13 @@ public class ChatActivity extends AppCompatActivity {
         adContainer.addView(adView);
         adView.loadAd();
 
-
 /*
+
+        player.picUri = "https://firebasestorage.googleapis.com/v0/b/roda-impian-acc41.appspot.com/o/avatar_lelex.png?alt=media&token=83d0bf7f-454b-49b7-a102-f030ab2a13df";
         player.name = "Lelex Games";
         player.id = "8026";
-        */
+*/
+
 
 
 

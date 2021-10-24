@@ -1,6 +1,7 @@
 package com.somboi.rodaimpian.gdx.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
@@ -20,6 +21,7 @@ import com.somboi.rodaimpian.RodaImpian;
 import com.somboi.rodaimpian.gdx.actor.DummyPointer;
 import com.somboi.rodaimpian.gdx.actor.DummyWheel;
 import com.somboi.rodaimpian.gdx.actor.Fingers;
+import com.somboi.rodaimpian.gdx.actor.MenuPrompt;
 import com.somboi.rodaimpian.gdx.actor.Pointer;
 import com.somboi.rodaimpian.gdx.actor.ResultLabel;
 import com.somboi.rodaimpian.gdx.actor.StatusLabel;
@@ -393,6 +395,12 @@ public class WheelScreen extends BaseScreen {
 
         // wheelParam.wheelangle = wheelBody.getAngle();
 
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.BACK)) {
+            MenuPrompt menuPrompt = new MenuPrompt(rodaImpian, skin);
+            menuPrompt.show(stage);
+        }
+
     }
 
 
@@ -402,17 +410,20 @@ public class WheelScreen extends BaseScreen {
             case "n0":
                 wheelParam.resultValue = 2500;
                 wheelParam.results = "$2500";
+                wheelParam.giftIndex = 0;
                 break;
             case "n1":
             case "n4":
             case "n24":
                 wheelParam.resultValue = 300;
                 wheelParam.results = "$300";
+                wheelParam.giftIndex = 0;
                 break;
             case "n2":
             case "n14":
                 wheelParam.resultValue = 900;
                 wheelParam.results = "$900";
+                wheelParam.giftIndex = 0;
                 break;
             case "n3":
                 wheelParam.results = StringRes.GIFT;
@@ -431,19 +442,22 @@ public class WheelScreen extends BaseScreen {
             case "n25":
                 wheelParam.resultValue = 0;
                 wheelParam.results = StringRes.BANKRUPT;
-
+                wheelParam.giftIndex = 0;
                 break;
             case "n6":
                 wheelParam.resultValue = 5000;
                 wheelParam.results = "Bonus $5000";
+                wheelParam.giftIndex = 0;
                 break;
             case "n8":
                 wheelParam.resultValue = 550;
                 wheelParam.results = "$550";
+                wheelParam.giftIndex = 0;
                 break;
             case "n9":
                 wheelParam.resultValue = 400;
                 wheelParam.results = "$400";
+                wheelParam.giftIndex = 0;
                 break;
             case "n10":
             case "n13":
@@ -451,38 +465,47 @@ public class WheelScreen extends BaseScreen {
             case "n23":
                 wheelParam.resultValue = 500;
                 wheelParam.results = "$500";
+                wheelParam.giftIndex = 0;
                 break;
             case "n11":
                 wheelParam.resultValue = 600;
                 wheelParam.results = "$600";
+                wheelParam.giftIndex = 0;
                 break;
             case "n12":
                 wheelParam.resultValue = 350;
                 wheelParam.results = "$350";
+                wheelParam.giftIndex = 0;
                 break;
             case "n16":
                 wheelParam.resultValue = 650;
-                wheelParam.results = "$650";
+                wheelParam.results = "$650";wheelParam.giftIndex = 0;
+
                 break;
             case "n17":
                 wheelParam.resultValue = 250;
                 wheelParam.results = StringRes.FREETURN;
+                wheelParam.giftIndex = 0;
                 break;
             case "n18":
                 wheelParam.resultValue = 700;
-                wheelParam.results = "$700";
+                wheelParam.results = "$700";wheelParam.giftIndex = 0;
+
                 break;
             case "n19":
                 wheelParam.resultValue = 0;
                 wheelParam.results = StringRes.LOSTTURN;
+                wheelParam.giftIndex = 0;
                 break;
             case "n20":
                 wheelParam.resultValue = 800;
                 wheelParam.results = "$800";
+                wheelParam.giftIndex = 0;
                 break;
             case "n22":
                 wheelParam.resultValue = 450;
                 wheelParam.results = "$450";
+                wheelParam.giftIndex = 0;
                 break;
         }
 
@@ -587,5 +610,6 @@ public class WheelScreen extends BaseScreen {
             }
         }, 2f);
     }
+
 
 }
