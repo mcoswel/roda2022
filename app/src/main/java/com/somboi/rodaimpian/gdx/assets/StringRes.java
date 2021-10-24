@@ -71,7 +71,7 @@ public class StringRes {
     public static final String MAINMENU = "Menu Utama";
     public static final String EXIT = "Keluar";
     public static final String LOGINFB = "Login";
-    public static final String LOGINFBFORONLINE = "Login menggunakan Facebook anda untuk mengakses permainan online dan merekod markah dalam Leaderboard?" ;
+    public static final String LOGINFBFORONLINE = "Daftar menggunakan Facebook untuk mengakses permainan online dan merekod markah ke leaderboard?" ;
     public static final String NO = "Tidak!";
     public static final String PLAYERONLINESAVE = "playeronline";
     public static final String ONLINE = "Online";
@@ -110,6 +110,9 @@ public class StringRes {
     public static final String BESTSCORE = "Markah Terbaik:" ;
     public static final String UPDATENEWS = "Update";
     public static final String NO3 = "Tak Nak!";
+    public static final String FACEBOOK = "Facebook";
+    public static final String GMAIL = "Google";
+
 
 
 

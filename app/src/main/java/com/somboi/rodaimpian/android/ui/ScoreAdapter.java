@@ -1,5 +1,6 @@
 package com.somboi.rodaimpian.android.ui;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -53,11 +54,13 @@ public class ScoreAdapter extends RecyclerView.Adapter {
     private TextView nameTxt;
     private LoadBadge loadbadge;
     private Button info;
-    public ScoreAdapter(Context context, List<PlayerOnline> playerlist, PlayerOnline thisPlayer) {
+    private final LeaderboardInterface leaderboardInterface;
+    public ScoreAdapter(Context context, List<PlayerOnline> playerlist, PlayerOnline thisPlayer, LeaderboardInterface leaderboardInterface) {
         this.context = context;
         this.playerlist = playerlist;
         this.thisPlayer = thisPlayer;
         loadbadge = new LoadBadge(context);
+        this.leaderboardInterface = leaderboardInterface;
 
     }
 
@@ -164,6 +167,7 @@ public class ScoreAdapter extends RecyclerView.Adapter {
             public void onClick(View view) {
                 DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Offline").child("2022");
                 databaseReference.child(player.id).removeValue();
+                leaderboardInterface.restartActivity();
             }
         });
 

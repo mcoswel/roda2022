@@ -26,17 +26,17 @@ import com.mopub.common.SdkInitializationListener;
 import com.mopub.common.logging.MoPubLog;
 import com.mopub.mobileads.MoPubView;
 import com.somboi.rodaimpian.R;
+import com.somboi.rodaimpian.android.ui.LeaderboardInterface;
 import com.somboi.rodaimpian.android.ui.ScoreAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class LeaderBoard extends AppCompatActivity {
+public class LeaderBoard extends AppCompatActivity implements LeaderboardInterface {
 
     private PlayerOnline thisPlayer;
     private List<PlayerOnline> playerList;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,7 +116,7 @@ public class LeaderBoard extends AppCompatActivity {
                         new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
                 linearLayoutManager.canScrollHorizontally();
                 recyclerView.setLayoutManager(linearLayoutManager);
-                ScoreAdapter scoreAdapter = new ScoreAdapter(LeaderBoard.this, playerList, thisPlayer);
+                ScoreAdapter scoreAdapter = new ScoreAdapter(LeaderBoard.this, playerList, thisPlayer, LeaderBoard.this);
                 recyclerView.setAdapter(scoreAdapter);
                 return;
             }
@@ -138,6 +138,11 @@ public class LeaderBoard extends AppCompatActivity {
         };
     }
 
-
-
+    @Override
+    public void restartActivity() {
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
+    }
 }
+

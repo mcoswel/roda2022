@@ -25,6 +25,7 @@ public class SessionTable extends Table {
         join.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+
                 RegisterPlayer registerPlayer = new RegisterPlayer()    ;
                 registerPlayer.player = thisplayer  ;
                 registerPlayer.roomID = createSessions.sessionID;

@@ -52,8 +52,8 @@ public class Tiles extends Image implements Cloneable {
         this.setDrawable(new SpriteDrawable(new Sprite(region)));
     }
 
-    public void typeLetter(String letter) {
-        setCompleteLetter(letter.toUpperCase().charAt(0));
+    public void typeLetter(String letter, Character typedCharacter) {
+        setCompleteLetter(typedCharacter);
         for (String s : textureName) {
             //   logger.debug("texture name "+s);
             if (s.equals(letter)) {

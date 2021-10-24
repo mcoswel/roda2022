@@ -131,6 +131,10 @@ public class RodaClient {
                     }
                     if (gameState.equals(GameState.ROOMFULL)) {
                         onlineScreen.roomFull();
+                        RegisterPlayer registerPlayer = new RegisterPlayer();
+                        registerPlayer.player = rodaImpian.getPlayer();
+                        registerPlayer.roomID = "empty";
+                        sendObject(registerPlayer);
                     }
                     if (gameState.equals(GameState.KICKOUT)) {
                         onlineScreen.kickedOut();

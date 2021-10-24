@@ -49,10 +49,11 @@ public class InputCompleteKey implements InputProcessor {
                 decreaseIndex();
                 return false;
             }
-            logger.debug("Complete char "+character);
+          //  logger.debug("Complete char "+character);
+            Character typedCharacther = Character.toUpperCase(character);
             String letter = String.valueOf(character);
             letter = checkDiacritic(letter.toLowerCase());
-            activeTiles.typeLetter(letter);
+            activeTiles.typeLetter(letter, typedCharacther);
             increaseIndex();
         }
         return false;
@@ -122,7 +123,7 @@ public class InputCompleteKey implements InputProcessor {
         else      if (letter.equals("û")){
             letter = "u_three";
         }
-        else       if (letter.equals("ü")){
+        else if (letter.equals("ü")){
             letter = "u_four";
         }
 

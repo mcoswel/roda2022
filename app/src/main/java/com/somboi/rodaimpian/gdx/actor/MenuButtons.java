@@ -35,6 +35,9 @@ public class MenuButtons {
         vocals.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                if (rodaImpian.getGameModes().equals(GameModes.ONLINE) && !rodaImpian.getPlayer().turn){
+                    return;
+                }
                 if (modeBase.getActivePlayer().currentScore >= 250) {
                     if (rodaImpian.getGameModes().equals(GameModes.ONLINE)){
                         if(rodaImpian.getPlayer().currentScore>=250) {
@@ -57,6 +60,9 @@ public class MenuButtons {
         spin.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                if (rodaImpian.getGameModes().equals(GameModes.ONLINE) && !rodaImpian.getPlayer().turn){
+                    return;
+                }
                 if (rodaImpian.getGameModes().equals(GameModes.ONLINE)){
                     modeBase.sendObject(PlayerState.SPIN);
                 }else {
@@ -69,6 +75,9 @@ public class MenuButtons {
         complete.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                if (rodaImpian.getGameModes().equals(GameModes.ONLINE) && !rodaImpian.getPlayer().turn){
+                    return;
+                }
                 modeBase.completePuzzle();
                 showCompleteMenu();
             }

@@ -19,7 +19,7 @@ public class FBPrompt extends Dialog {
         label.pack();
         label.setWrap(true);
         this.text(label);
-        this.button(StringRes.OK, true);
+        this.button(StringRes.OK, "facebook");
         this.button(StringRes.NO, false);
     }
 }

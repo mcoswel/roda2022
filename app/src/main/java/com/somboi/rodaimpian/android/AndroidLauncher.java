@@ -96,6 +96,7 @@ import barsoosayque.libgdxoboe.OboeAudio;
 
 public class AndroidLauncher extends AndroidApplication implements AndroidInterface, OnUserEarnedRewardListener, MoPubRewardedAdListener {
     private static final int REQUEST_GALLERY_IMAGE = 3;
+
     private String filename;
     private MainMenuCreator mainMenuCreator;
     private Player player;
@@ -208,6 +209,7 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
         if (callbackManager.onActivityResult(requestCode, resultCode, data)) {
             return;
         }
+
     }
 
 
@@ -746,4 +748,5 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
     public void finishAct() {
         finish();
     }
+
 }

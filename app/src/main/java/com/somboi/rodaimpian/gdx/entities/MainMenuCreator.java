@@ -102,7 +102,7 @@ public class MainMenuCreator {
                     FBPrompt fbPrompt = new FBPrompt(skin){
                         @Override
                         protected void result(Object object) {
-                            if (object.equals(true)){
+                            if (object.equals("facebook")){
                                 rodaImpian.loginFB();
                             }
                         }
@@ -197,7 +197,7 @@ public class MainMenuCreator {
         FBPrompt fbPrompt = new FBPrompt(skin) {
             @Override
             protected void result(Object object) {
-                if (object.equals(true)) {
+                if (object.equals("facebook")){
                     rodaImpian.loginFB();
                 }
             }

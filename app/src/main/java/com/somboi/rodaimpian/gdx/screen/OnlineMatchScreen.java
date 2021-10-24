@@ -139,6 +139,7 @@ public class OnlineMatchScreen extends BaseScreen implements OnlineInterface {
     public void roomFull() {
         ErrorDialog errorDialog = new ErrorDialog(StringRes.ROOMFULL, skin);
         errorDialog.show(stage);
+
     }
 
     @Override

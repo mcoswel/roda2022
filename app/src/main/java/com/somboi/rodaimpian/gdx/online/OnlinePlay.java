@@ -206,7 +206,7 @@ public class OnlinePlay extends ModeBase {
 
     @Override
     public void showMenu() {
-        if (thisPlayer.turn) {
+        if (thisPlayer.turn && rodaImpian.getPlayer().turn) {
             menuButtons.showMenu(matchRound.stillHaveConsonants(), matchRound.stillHaveVocals());
         }
     }
@@ -256,6 +256,7 @@ public class OnlinePlay extends ModeBase {
         if (gameRound != 3) {
             infoLabel.show(tilesGroup);
         }
+        stage.addActor(vanna);
         //  sendObject(PlayerState.SHOWMENU);
     }
 
@@ -317,7 +318,7 @@ public class OnlinePlay extends ModeBase {
 
         if (keyboardOn){
             Gdx.input.setInputProcessor(completeKeyMultiplex);
-        }else{
+        }else if (rodaImpian.getPlayer().turn){
             Gdx.input.setInputProcessor(stage);
         }
     }

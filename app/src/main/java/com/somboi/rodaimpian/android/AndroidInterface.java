@@ -38,4 +38,5 @@ public interface AndroidInterface {
     void finishAct();
 
     void getUpdateNews();
+
 }
