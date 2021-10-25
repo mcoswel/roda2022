@@ -39,4 +39,6 @@ public interface AndroidInterface {
 
     void getUpdateNews();
 
+void restartGame();
+    void loginGmail();
 }

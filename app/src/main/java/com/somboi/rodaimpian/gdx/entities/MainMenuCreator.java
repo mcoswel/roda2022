@@ -104,6 +104,8 @@ public class MainMenuCreator {
                         protected void result(Object object) {
                             if (object.equals("facebook")){
                                 rodaImpian.loginFB();
+                            } else if (object.equals("gmail")){
+                                rodaImpian.loginGoogle();
                             }
                         }
                     };
@@ -199,6 +201,8 @@ public class MainMenuCreator {
             protected void result(Object object) {
                 if (object.equals("facebook")){
                     rodaImpian.loginFB();
+                }else  if (object.equals("gmail")){
+                    rodaImpian.loginGoogle();
                 }
             }
         };

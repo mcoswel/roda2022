@@ -612,4 +612,7 @@ public class WheelScreen extends BaseScreen {
     }
 
 
+    public void stop() {
+        playing = false;
+    }
 }

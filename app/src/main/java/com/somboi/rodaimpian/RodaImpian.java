@@ -70,6 +70,10 @@ public class RodaImpian extends Game {
         androidInterface.finishAct();
     }
 
+    public void restart(){
+        androidInterface.restartGame();
+    }
+
     public void setWheelScreen(WheelScreen wheelScreen) {
         this.wheelScreen = wheelScreen;
     }
@@ -232,6 +236,12 @@ public class RodaImpian extends Game {
     }
 
     public void stop() {
+        if (matchScreen!=null){
+            matchScreen.stop();
+        }
+        if (wheelScreen!=null){
+            wheelScreen.stop();
+        }
     }
 
     public void setOnlineScreen(OnlineMatchScreen onlineScreen) {
@@ -248,9 +258,7 @@ public class RodaImpian extends Game {
 
     @Override
     public void dispose() {
-
         assetManager.dispose();
-        Gdx.app.log("dispose ", "dispose");
     }
 
     public void setRewarded(boolean b) {
@@ -281,9 +289,10 @@ public class RodaImpian extends Game {
         menuScreen.showUpdate(updateNews);
     }
 
-
     public void reloadMainMenu() {
         menuScreen.show();
     }
-
+    public void loginGoogle(){
+        androidInterface.loginGmail();
+    }
 }

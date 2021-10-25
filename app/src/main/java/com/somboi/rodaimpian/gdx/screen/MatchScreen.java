@@ -51,4 +51,7 @@ public class MatchScreen extends BaseScreen {
             menuPrompt.show(stage);
         }
     }
+    public void stop(){
+        playing = false;
+    }
 }

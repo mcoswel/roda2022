@@ -7,32 +7,40 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.somboi.rodaimpian.RodaImpian;
 import com.somboi.rodaimpian.android.onlinemsg.UpdateNews;
 import com.somboi.rodaimpian.gdx.actor.PromoDialog;
+import com.somboi.rodaimpian.gdx.actor.UpdateMsg;
 import com.somboi.rodaimpian.gdx.assets.AssetDesc;
+import com.somboi.rodaimpian.gdx.assets.QuestionsGenerator;
 import com.somboi.rodaimpian.gdx.base.BaseScreen;
 import com.somboi.rodaimpian.gdx.entities.LocalPlayMenu;
 import com.somboi.rodaimpian.gdx.entities.MainMenuCreator;
-import com.somboi.rodaimpian.gdx.actor.UpdateMsg;
+import com.somboi.rodaimpian.saves.QuestionsSaves;
 
 public class MenuScreen extends BaseScreen {
-    private  MainMenuCreator mainMenuCreator;
-    private  LocalPlayMenu localPlayMenu;
+    private MainMenuCreator mainMenuCreator;
+    private LocalPlayMenu localPlayMenu;
     private final Group mainMenuGroup = new Group();
     private final Group localGroup = new Group();
+    private QuestionsGenerator questionsGenerator;
+    private final QuestionsSaves questionsSaves = new QuestionsSaves();
+
     public MenuScreen(RodaImpian rodaImpian) {
         super(rodaImpian);
-
-
-        if (rodaImpian.getPlayerOnline().timesplayed%10==0 && rodaImpian.getPlayerOnline().timesplayed>0) {
-            PromoDialog promoDialog = new PromoDialog(skin, rodaImpian.getAssetManager().get(AssetDesc.TEXTUREATLAS).findRegion("sahiba")){
+        if (rodaImpian.getPlayerOnline().timesplayed % 15 == 0 && rodaImpian.getPlayerOnline().timesplayed > 0) {
+            PromoDialog promoDialog = new PromoDialog(skin, rodaImpian.getAssetManager().get(AssetDesc.TEXTUREATLAS).findRegion("sahiba")) {
                 @Override
                 protected void result(Object object) {
-                    if (object.equals(true)){
+                    if (object.equals(true)) {
                         rodaImpian.openPlayStore("com.somboi.melayuscrabble");
                     }
                 }
             };
             promoDialog.show(stage);
         }
+
+        //  logger.debug("load question ");
+        questionsGenerator = questionsSaves.loadFromInternal(Gdx.files.internal("questions"));
+        // logger.debug("run generator ");
+        rodaImpian.setQuestionsReady(questionsGenerator.run());
 
         rodaImpian.getUpdate();
     }
@@ -44,14 +52,14 @@ public class MenuScreen extends BaseScreen {
         localGroup.clear();
         Gdx.input.setInputProcessor(stage);
         mainMenuCreator = new MainMenuCreator(rodaImpian, mainMenuGroup, stage, this);
-        localPlayMenu = new LocalPlayMenu(rodaImpian, localGroup,skin,textureAtlas, this);
+        localPlayMenu = new LocalPlayMenu(rodaImpian, localGroup, skin, textureAtlas, this);
         rodaImpian.setMenuCreator(mainMenuCreator);
         Image bg = new Image(assetManager.get(AssetDesc.BLURBG));
-        bg.setSize(900f,1600f);
-        bg.setPosition(0,0);
+        bg.setSize(900f, 1600f);
+        bg.setPosition(0, 0);
         Image titleBg = new Image(textureAtlas.findRegion("title"));
-        titleBg.setSize(900f,365f);
-        titleBg.setPosition(0, 1200f );
+        titleBg.setSize(900f, 365f);
+        titleBg.setPosition(0, 1200f);
         stage.addActor(bg);
         stage.addActor(titleBg);
         stage.addActor(mainMenuGroup);
@@ -63,18 +71,19 @@ public class MenuScreen extends BaseScreen {
 
     }
 
-    public void showLocal(){
+    public void showLocal() {
         mainMenuGroup.remove();
         localPlayMenu.showFirstMenu();
         stage.addActor(localGroup);
     }
+
     @Override
     public void update(float delta) {
         super.update(delta);
         mainMenuCreator.loadLocalPic();
         localPlayMenu.loadLocalPic();
         localPlayMenu.update();
-        if (Gdx.input.isKeyJustPressed(Input.Keys.BACK)){
+        if (Gdx.input.isKeyJustPressed(Input.Keys.BACK)) {
             rodaImpian.exitAll();
             Gdx.app.exit();
 
