@@ -3,6 +3,7 @@ package com.somboi.rodaimpian.gdx.assets;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.Logger;
 import com.somboi.rodaimpian.saves.QuestionsSaves;
 
@@ -17,7 +18,7 @@ public class PopulateQuestions {
         QuestionsGenerator questionsGenerator = new QuestionsGenerator();
         Array<String> subjects = new Array<>(new String[]{"ADIWIRA", "NAMA ARTIS", "BARANGAN RUMAH", "BUAH-BUAHAN", "HAIWAN", "JENAMA",
                 "KELAB BOLA", "KEMENTERIAN", "KUGIRAN", "MAKANAN", "NAMA POKOK", "NAMA SYARIKAT", "NAMA TEMPAT", "NEGARA", "PEKERJAAN",
-                "PERISIAN", "SAINS & TEKNOLOGI", "ACARA SUKAN", "UNSUR KIMIA", "ATLET"
+                "PERISIAN", "SAINS & TEKNOLOGI", "ACARA SUKAN", "UNSUR KIMIA", "ATLET", "GALAKSI"
         });
         questionsGenerator.getSubjects().addAll(subjects);
 
@@ -44,10 +45,10 @@ public class PopulateQuestions {
             }
         }
 
-        /*Json json = new Json();
+        Json json = new Json();
         String qq = json.prettyPrint(questionsGenerator);
         FileHandle f = Gdx.files.local("qq.txt");
-        f.writeString(qq, false);*/
+        f.writeString(qq, false);
         questionsGenerator.getQuestionSingles().shuffle();
         questionsGenerator.getQuestionSingles().shuffle();
         questionsGenerator.getQuestionSingles().shuffle();

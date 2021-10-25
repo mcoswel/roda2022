@@ -26,7 +26,9 @@ public class QuestionsGenerator {
 
 
         int i = 0;
-        while(!complete) {
+        int count = 0;
+        while(allRounds.get(i).size()<3) {
+            questionSingles.shuffle();
             for (QuestionSingle questionSingle : questionSingles) {
                 String question = questionSingle.getQuestion();
                 if (questionSingle.getSubject().equals(subjects.get(i))) {
@@ -47,15 +49,19 @@ public class QuestionsGenerator {
                             && !question.equals(allRounds.get(i).get(2))
                     ) {
                         allRounds.get(i).add(question);
-                        complete = true;
                     }
                 }
+            }
+            count++;
+            if (count == 500){
+                run();
             }
         }
 
         complete =false;
         i =1;
-        while(!complete) {
+        while(allRounds.get(i).size()<2) {
+            questionSingles.shuffle();
             for (QuestionSingle questionSingle : questionSingles) {
                 String question = questionSingle.getQuestion();
                 if (questionSingle.getSubject().equals(subjects.get(i))) {
@@ -74,10 +80,15 @@ public class QuestionsGenerator {
                     }
                 }
             }
+            count++;
+            if (count == 500){
+                run();
+            }
         }
         complete =false;
         i =2;
-        while (!complete) {
+        while (allRounds.get(i).size()<1) {
+            questionSingles.shuffle();
             for (QuestionSingle questionSingle : questionSingles) {
                 String question = questionSingle.getQuestion();
                 if (questionSingle.getSubject().equals(subjects.get(i))) {
@@ -89,6 +100,10 @@ public class QuestionsGenerator {
                         complete = true;
                     }
                 }
+            }
+            count++;
+            if (count == 500){
+                run();
             }
         }
 
@@ -107,6 +122,8 @@ public class QuestionsGenerator {
 
         return questionsReady;
     }
+
+
 
     public Array<String> getSubjects() {
         return subjects;

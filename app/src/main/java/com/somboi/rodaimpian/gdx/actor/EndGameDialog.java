@@ -59,7 +59,7 @@ public class EndGameDialog extends Dialog {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
               //  rodaImpian.setMatchScreen(new MatchScreen(rodaImpian));
-                rodaImpian.setScreen(new LoadingScreen(rodaImpian));
+                rodaImpian.restart();
             }
         });
         MenuBtn leaderBoard = new MenuBtn(StringRes.LEADERBOARD,skin);

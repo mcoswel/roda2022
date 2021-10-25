@@ -20,8 +20,7 @@ public class MenuScreen extends BaseScreen {
     private LocalPlayMenu localPlayMenu;
     private final Group mainMenuGroup = new Group();
     private final Group localGroup = new Group();
-    private QuestionsGenerator questionsGenerator;
-    private final QuestionsSaves questionsSaves = new QuestionsSaves();
+
 
     public MenuScreen(RodaImpian rodaImpian) {
         super(rodaImpian);
@@ -38,9 +37,7 @@ public class MenuScreen extends BaseScreen {
         }
 
         //  logger.debug("load question ");
-        questionsGenerator = questionsSaves.loadFromInternal(Gdx.files.internal("questions"));
-        // logger.debug("run generator ");
-        rodaImpian.setQuestionsReady(questionsGenerator.run());
+
 
         rodaImpian.getUpdate();
     }

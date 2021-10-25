@@ -3,10 +3,13 @@ package com.somboi.rodaimpian.gdx.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Logger;
+import com.badlogic.gdx.utils.async.AsyncExecutor;
+import com.badlogic.gdx.utils.async.AsyncResult;
+import com.badlogic.gdx.utils.async.AsyncTask;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.somboi.rodaimpian.RodaImpian;
@@ -16,7 +19,6 @@ import com.somboi.rodaimpian.gdx.assets.QuestionsGenerator;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdx.config.GameConfig;
 import com.somboi.rodaimpian.gdx.entities.Player;
-import com.somboi.rodaimpian.gdx.modes.GameModes;
 import com.somboi.rodaimpian.saves.PlayerSaves;
 import com.somboi.rodaimpian.saves.QuestionsSaves;
 
@@ -29,26 +31,34 @@ public class LoadingScreen extends ScreenAdapter {
     private final PlayerSaves playerSaves = new PlayerSaves();
     private final Logger logger = new Logger(this.getClass().getName(), 3);
     private final Texture loading = new Texture(Gdx.files.internal("textures/loading.png"));
-    private final Viewport viewport = new FitViewport(GameConfig.SCWIDTH, GameConfig.SCHEIGHT);
+    private final Viewport viewport;
     private final SpriteBatch batch = new SpriteBatch();
-    private boolean generateQuestion;
     private QuestionsGenerator questionsGenerator;
+    private final QuestionsSaves questionsSaves = new QuestionsSaves();
+    private final AsyncExecutor asyncExecutor = new AsyncExecutor(2);
+    private final AsyncResult<Void> task;
+    private float rotation;
+    private final OrthographicCamera camera;
     public LoadingScreen(RodaImpian rodaImpian) {
         this.rodaImpian = rodaImpian;
         this.assetManager = rodaImpian.getAssetManager();
         Gdx.app.setLogLevel(3);
-       // rodaImpian.loadRewardedAds();
-        QuestionsSaves questionsSaves = new QuestionsSaves();
+        // rodaImpian.loadRewardedAds();
+        camera = new OrthographicCamera();
+        viewport = new FitViewport(GameConfig.SCWIDTH, GameConfig.SCHEIGHT,camera);
+        task = asyncExecutor.submit(new AsyncTask<Void>() {
+            @Override
+            public Void call() throws Exception {
+                logger.debug("read from file");
+                questionsGenerator = questionsSaves.loadFromInternal(Gdx.files.internal("questions"));
+                if (questionsGenerator!=null) {
+                    logger.debug("run generator "+questionsGenerator.getQuestionSingles().size);
+                    rodaImpian.setQuestionsReady(questionsGenerator.run());
+                }
+                return null;
+            }
+        });
 
-        /**
-         * online sideload here
-         */
-
-        questionsGenerator = questionsSaves.loadFromLocal();
-        FileHandle fileHandle = Gdx.files.internal(StringRes.QUESTIONS);
-        if (fileHandle.exists()) {
-            questionsGenerator = questionsSaves.loadFromInternal(fileHandle);
-        }
 
 
         Player player = playerSaves.load();
@@ -71,8 +81,8 @@ public class LoadingScreen extends ScreenAdapter {
             playerSaves.savePlayerOnline(playerOnline);
         }
         player.name = player.name.replaceAll("[^a-zA-Z0-9]", "");
-        if (player.name.length()>10){
-            player.name = player.name.substring(0,10);
+        if (player.name.length() > 10) {
+            player.name = player.name.substring(0, 10);
         }
         playerSaves.save(player);
         rodaImpian.setPlayer(player);
@@ -106,16 +116,14 @@ public class LoadingScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         GameConfig.clearScreen();
-        viewport.apply();
+        //viewport.apply();
+        batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        batch.draw(loading, 305f,(450f),550f,301f);
+        batch.draw(loading, 200f, 550, 250f, 250f,500f,500f,1,1,rotation-=delta*100,0,0,loading.getWidth(),
+                loading.getHeight(),false,false);
         batch.end();
 
-        if (!generateQuestion){
-            rodaImpian.setQuestionsReady(questionsGenerator.run());
-            generateQuestion = true;
-        }
-        if (rodaImpian.getAssetManager().update() && generateQuestion) {
+        if (rodaImpian.getAssetManager().update() && task.isDone()) {
             rodaImpian.setMenuScreen(new MenuScreen(rodaImpian));
             rodaImpian.gotoMenu();
         }
@@ -123,7 +131,8 @@ public class LoadingScreen extends ScreenAdapter {
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height,true);
+        viewport.update(width, height, true);
+        camera.update();
     }
 }
 

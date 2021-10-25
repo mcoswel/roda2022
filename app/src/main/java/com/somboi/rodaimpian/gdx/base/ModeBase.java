@@ -97,6 +97,7 @@ public class ModeBase {
     protected final Array<Envelopes> envelopesOnline = new Array<>();
     protected boolean keyboardOn;
     protected InputMultiplexer completeKeyMultiplex;
+
     public ModeBase(RodaImpian rodaImpian, Stage stage) {
         this.rodaImpian = rodaImpian;
         this.thisPlayer = rodaImpian.getPlayer();
@@ -572,7 +573,7 @@ public class ModeBase {
                         }
                     }
                     playerOnline.logged = true;
-                    if (playerOnline.bestScore!=0) {
+                    if (playerOnline.bestScore != 0) {
                         rodaImpian.uploadScore(playerOnline);
                     }
                 }
@@ -641,14 +642,6 @@ public class ModeBase {
             p.removeFreeTurn();
         }
 
-        if (!rodaImpian.getGameModes().equals(GameModes.ONLINE)) {
-            Timer.schedule(new Timer.Task() {
-                @Override
-                public void run() {
-                    rodaImpian.showAds(gameRound);
-                }
-            }, 2.5f);
-        }
 
         gameRound++;
 
@@ -656,6 +649,15 @@ public class ModeBase {
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
+                if (!rodaImpian.getGameModes().equals(GameModes.ONLINE)) {
+                    Timer.schedule(new Timer.Task() {
+                        @Override
+                        public void run() {
+                            rodaImpian.showAds(gameRound);
+                        }
+                    },1f);
+
+                }
                 tilesGroup.clear();
                 PlayerGui winnerGui = playerGuis.get(activePlayer.guiIndex);
                 winnerGui.getImage().addAction(Actions.moveTo(winnerGui.getPlayerPos().x, winnerGui.getPlayerPos().y, 2f));
