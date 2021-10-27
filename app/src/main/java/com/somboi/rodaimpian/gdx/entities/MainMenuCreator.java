@@ -182,6 +182,9 @@ public class MainMenuCreator {
         rodaImpian.getPlayer().bankrupt = 0;
         rodaImpian.getPlayer().currentScore = 0;
 
+        if (rodaImpian.isInvitation()){
+            rodaImpian.setScreen(new OnlineMatchScreen(rodaImpian));
+        }
 
     }
 

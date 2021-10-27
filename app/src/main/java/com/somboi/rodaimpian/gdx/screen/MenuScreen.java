@@ -24,7 +24,7 @@ public class MenuScreen extends BaseScreen {
 
     public MenuScreen(RodaImpian rodaImpian) {
         super(rodaImpian);
-        if (rodaImpian.getPlayerOnline().timesplayed % 15 == 0 && rodaImpian.getPlayerOnline().timesplayed > 0) {
+        if (rodaImpian.getPlayerOnline().timesplayed % 15 == 0 && rodaImpian.getPlayerOnline().timesplayed > 0 && !rodaImpian.isInvitation()) {
             PromoDialog promoDialog = new PromoDialog(skin, rodaImpian.getAssetManager().get(AssetDesc.TEXTUREATLAS).findRegion("sahiba")) {
                 @Override
                 protected void result(Object object) {
@@ -35,6 +35,8 @@ public class MenuScreen extends BaseScreen {
             };
             promoDialog.show(stage);
         }
+
+
 
         //  logger.debug("load question ");
 
@@ -60,12 +62,9 @@ public class MenuScreen extends BaseScreen {
         stage.addActor(bg);
         stage.addActor(titleBg);
         stage.addActor(mainMenuGroup);
-
-
         localGroup.remove();
         mainMenuCreator.show();
         stage.addActor(mainMenuGroup);
-
     }
 
     public void showLocal() {

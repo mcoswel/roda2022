@@ -576,7 +576,9 @@ public class WheelScreen extends BaseScreen {
                         modeBase.getActivePlayer().freeTurn = false;
                         modeBase.getPlayerGuis().get(modeBase.getActivePlayer().guiIndex).removeFreeTurn();
                     }
-                    modeBase.changeTurn();
+                    if (!rodaImpian.getGameModes().equals(GameModes.ONLINE)) {
+                        modeBase.changeTurn();
+                    }
                 } else if (wheelParam.results.equals(StringRes.LOSTTURN)) {
                     modeBase.changeTurn();
                 } else if (modeBase.getActivePlayer().isAi) {

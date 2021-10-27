@@ -41,7 +41,7 @@ public class RodaImpian extends Game {
     private PlayerImage PlayerThreeImage;
     private OnlineMatchScreen onlineScreen;
     private boolean rewarded;
-
+    private boolean invitation;
     public RodaImpian(AndroidInterface androidInterface) {
         this.androidInterface = androidInterface;
     }
@@ -88,7 +88,11 @@ public class RodaImpian extends Game {
     }
 
     public void gotoMenu() {
-        this.setScreen(menuScreen);
+        if (menuScreen!=null) {
+            this.setScreen(menuScreen);
+        }else{
+            Gdx.app.exit();
+        }
     }
 
     public QuestionsReady getQuestionsReady() {
@@ -295,5 +299,20 @@ public class RodaImpian extends Game {
     }
     public void loginGoogle(){
         androidInterface.loginGmail();
+    }
+
+    public void updatefcmToken(){
+        String fcm_token = androidInterface.updateToken(playerOnline);
+        if (fcm_token!=null){
+            playerOnline.fcm_token = fcm_token;
+        }
+    }
+
+    public boolean isInvitation() {
+        return invitation;
+    }
+
+    public void setInvitation(boolean invitation) {
+        this.invitation = invitation;
     }
 }

@@ -124,6 +124,21 @@ public class ChatAdapter extends RecyclerView.Adapter {
             }
         }
 
+        Button invite = (Button)holder.itemView.findViewById(R.id.invite_but);
+        if (thisPlayer.fcm_token!=null){
+            if (player.fcm_token!=null){
+                if (!thisPlayer.fcm_token.equals(player.fcm_token)){
+                    invite.setVisibility(View.VISIBLE);
+                }
+            }
+        }
+        invite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
     }
 
     @Override

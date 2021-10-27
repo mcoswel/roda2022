@@ -22,7 +22,7 @@ public class StringRes {
     public static final String ANON = "Tanpa Nama";
     public static final String CHOOSEPHOTO = "Pilih foto";
     public static final String LEADERBOARD = "Leaderboard";
-    public static final String LOGOUT = "Logout FB";
+    public static final String LOGOUT = "Logout";
     public static final CharSequence LOADING = "Loading";
     public static final String FAILED = "Gagal";
     public static final String COMPLETE = "Selesai";
@@ -73,7 +73,7 @@ public class StringRes {
     public static final String LOGINFB = "Login";
     public static final String LOGINFBFORONLINE = "Daftar menggunakan Facebook atau Google untuk mengakses permainan online dan merekod markah ke leaderboard?" ;
     public static final String NO = "Tidak!";
-    public static final String PLAYERONLINESAVE = "playeronline";
+    public static final String PLAYERONLINESAVE = "playeronlinesaves";
     public static final String ONLINE = "Online";
     public static final String CHAT = "Chat";
     public static final String WHEELRESULT = "Roda: ";
@@ -112,6 +112,8 @@ public class StringRes {
     public static final String NO3 = "Tak Nak!";
     public static final String FACEBOOK = "Facebook";
     public static final String GMAIL = "Google";
+    public static final String RODARODA = "10.1.19.2";
+    //159.223.73.205
 
 
 

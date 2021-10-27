@@ -34,11 +34,16 @@ public interface AndroidInterface {
     void showRewarded();
 
     void loadRewardedAds();
+
     void logoutFacebook(String playerID);
+
     void finishAct();
 
     void getUpdateNews();
 
-void restartGame();
+    void restartGame();
+
     void loginGmail();
+
+    String updateToken(PlayerOnline playerOnline);
 }

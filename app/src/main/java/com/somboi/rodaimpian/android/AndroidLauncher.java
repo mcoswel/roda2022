@@ -53,6 +53,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.DataSnapshot;
@@ -60,6 +61,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -118,7 +120,7 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
     private MoPubInterstitial moPubInterstitial;
     private RewardedInterstitialAd rewardedInterstitialAd;
     private RewardedVideoAd rewardedVideoAd;
-
+    private String fcm_token;
     @Override
     public AndroidAudio createAudio(Context context, AndroidApplicationConfiguration config) {
         return new OboeAudio(context.getAssets());
@@ -127,6 +129,8 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         callbackManager = CallbackManager.Factory.create();
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -135,9 +139,13 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
         config.useAccelerometer = false;
         config.useCompass = false;
         config.useGyroscope = false;
+        String invitation = getIntent().getStringExtra("invitation");
+        Log.d("invitation", "is null "+(invitation==null));
         rodaImpian = new RodaImpian(this);
         rodaImpian.setGameModes(GameModes.SINGLE);
-
+        if (invitation!=null){
+            rodaImpian.setInvitation(true);
+        }
         View gameView = initializeForView(rodaImpian, config);
         setContentView(gameView);
 
@@ -176,6 +184,17 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
 
 
         loadRewardedAds();
+
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            return;
+                        }
+                        fcm_token = task.getResult();
+                    }
+                });
 
     }
 
@@ -264,8 +283,7 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
             rodaImpian.reloadMainMenu();
 
         }
-
-
+        uploadToPlayerDatabase();
     }
 
 
@@ -454,6 +472,7 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
         player.logged = true;
         mainMenuCreator.savePlayer(player);
         mainMenuCreator.savePlayerOnline(playerOnline);
+        uploadToPlayerDatabase();
         rodaImpian.reloadMainMenu();
     }
 
@@ -822,4 +841,26 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
+    @Override
+    public String updateToken(PlayerOnline playerOnline) {
+        if (fcm_token!=null){
+            if (playerOnline.fcm_token==null){
+                return fcm_token;
+            }else {
+                if (!fcm_token.equals(playerOnline.fcm_token)){
+                    playerOnline.fcm_token = fcm_token;
+                    uploadToPlayerDatabase();
+                    return fcm_token;
+                }
+            }
+        }
+        return null;
+    }
+
+    private void uploadToPlayerDatabase(){
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Offline").child("player_database");
+        playerOnline.fcm_token = fcm_token;
+        Log.d("fcm_token","start*"+fcm_token+"*end");
+        databaseReference.child(playerOnline.id).setValue(playerOnline);
+    }
 }

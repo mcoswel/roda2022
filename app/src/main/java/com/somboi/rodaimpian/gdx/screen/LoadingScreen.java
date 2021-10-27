@@ -66,9 +66,10 @@ public class LoadingScreen extends ScreenAdapter {
         if (playerOnline != null) {
             rodaImpian.setPlayerOnline(playerOnline);
             rodaImpian.setBestScore(playerOnline.bestScore);
+            rodaImpian.updatefcmToken();
         }
 
-        if (player == null) {
+        if (player == null || playerOnline == null) {
             player = new Player();
             player.name = StringRes.ANON;
             player.id = UUID.randomUUID().toString();

@@ -51,7 +51,7 @@ public class RodaClient {
     public void startClient(){
         client = new Client(1000000, 1000000);
         client.start();
-        NewNetwork.register(client);
+        NetWork.register(client);
         client.addListener(new Listener() {
             @Override
             public void connected(Connection connection) {
@@ -213,8 +213,10 @@ public class RodaClient {
             @Override
             public void run() {
                 try {
-                    client.connect(5001, "159.223.73.205", 5001);
+                    client.connect(5001, StringRes.RODARODA, 5001);
 //192.168.42.213
+
+
                     client.setTimeout(20000);
                 } catch (IOException e) {
                     e.printStackTrace();

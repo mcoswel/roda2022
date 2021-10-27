@@ -16,6 +16,7 @@ public class PlayerOnline implements Comparable<PlayerOnline> {
     public int rank;
     public int bankrupt;
     public int timesplayed;
+    public String fcm_token;
     @Override
     public int compareTo(PlayerOnline o) {
         return (o.bestScore-this.bestScore);
