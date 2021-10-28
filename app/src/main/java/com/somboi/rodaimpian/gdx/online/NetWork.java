@@ -20,7 +20,6 @@ import com.somboi.rodaimpian.gdx.online.entities.TilesOnline;
 import com.somboi.rodaimpian.gdx.online.newentities.ClearSession;
 import com.somboi.rodaimpian.gdx.online.newentities.CreateSessions;
 import com.somboi.rodaimpian.gdx.online.newentities.FinishSpin;
-import com.somboi.rodaimpian.gdx.online.newentities.InvitePlayer;
 import com.somboi.rodaimpian.gdx.online.newentities.RegisterPlayer;
 import com.somboi.rodaimpian.gdx.online.newentities.RemovePlayer;
 import com.somboi.rodaimpian.gdx.online.newentities.RemoveSession;

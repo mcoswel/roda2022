@@ -28,6 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.somboi.rodaimpian.R;
 import com.somboi.rodaimpian.android.AndroidLauncher;
 import com.somboi.rodaimpian.android.PlayerOnline;
+import com.somboi.rodaimpian.gdx.utils.SendNotif;
 
 import java.util.List;
 
@@ -228,7 +229,15 @@ public class ScoreAdapter extends RecyclerView.Adapter {
                                 thisComment.setPicUri(thisPlayer.picUri);
                                 thisComment.setCommentID(thisCommentDB.push().getKey());
                                 thisComment.setPlayerWhoSendID(thisPlayer.id);
+                                if (thisPlayer.fcm_token!=null){
+                                    thisComment.setSenderFCM(thisPlayer.fcm_token);
+                                }
+                                if (player.fcm_token!=null){
+                                    SendNotif.send(thisComment, player.fcm_token, thisPlayer,false);
+                                }
                                 thisCommentDB.child(thisComment.getCommentID()).setValue(thisComment);
+
+
                             } else {
                                 dialog.dismiss();
                             }

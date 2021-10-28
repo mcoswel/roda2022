@@ -20,9 +20,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.somboi.rodaimpian.android.PlayerOnline;
-import com.somboi.rodaimpian.gdx.entities.Player;
 import com.somboi.rodaimpian.R;
+import com.somboi.rodaimpian.android.PlayerOnline;
+import com.somboi.rodaimpian.gdx.utils.SendNotif;
 
 import java.util.List;
 
@@ -57,10 +57,10 @@ public class ChatAdapter extends RecyclerView.Adapter {
         TextView chatContent = holder.itemView.findViewById(R.id.chat_content);
         CircleImageView playerImg = holder.itemView.findViewById(R.id.player_img);
         ConstraintLayout constraintLayout = holder.itemView.findViewById(R.id.chatlayoutforadapter);
-        if(player.id.equals("8026")) {
+        if (player.id.equals("8026")) {
             constraintLayout.setBackgroundColor(Color.GREEN);
         }
-        if (chats.getPlayer().picUri!=null){
+        if (chats.getPlayer().picUri != null) {
             Glide.with(context).load(chats.getPlayer().picUri).into(playerImg);
         }
         if (thisPlayer.id.equals(player.id)) {
@@ -109,25 +109,25 @@ public class ChatAdapter extends RecyclerView.Adapter {
         TextView name = holder.itemView.findViewById(R.id.chatname);
         chatContent.setText(chats.getContent());
         name.setText(chats.getPlayer().name);
-        if (chats.getReplyToId()!=null) {
+        if (chats.getReplyToId() != null) {
             if (chats.getReplyToId().equals(thisPlayer.id)) {
                 chatContent.setTextColor(Color.BLUE);
                 name.setTextColor(Color.MAGENTA);
-                name.setText(chats.getPlayer().name + " " + context.getString(R.string.replyto) +" "+ thisPlayer.name);
+                name.setText(chats.getPlayer().name + " " + context.getString(R.string.replyto) + " " + thisPlayer.name);
             }
         }
-        if (chats.getSenderId()!=null) {
+        if (chats.getSenderId() != null) {
             if (chats.getSenderId().equals(thisPlayer.id)) {
                 chatContent.setTextColor(Color.parseColor("#FF6347"));
                 name.setTextColor(Color.MAGENTA);
-                name.setText(thisPlayer.name + " " + context.getString(R.string.replyto) +" "+ chats.getReplierName());
+                name.setText(thisPlayer.name + " " + context.getString(R.string.replyto) + " " + chats.getReplierName());
             }
         }
 
-        Button invite = (Button)holder.itemView.findViewById(R.id.invite_but);
-        if (thisPlayer.fcm_token!=null){
-            if (player.fcm_token!=null){
-                if (!thisPlayer.fcm_token.equals(player.fcm_token)){
+        Button invite = (Button) holder.itemView.findViewById(R.id.invite_but);
+        if (thisPlayer.fcm_token != null) {
+            if (player.fcm_token != null) {
+                if (!thisPlayer.id.equals(player.id)) {
                     invite.setVisibility(View.VISIBLE);
                 }
             }
@@ -135,7 +135,41 @@ public class ChatAdapter extends RecyclerView.Adapter {
         invite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                AlertDialog.Builder alert = new AlertDialog.Builder(context);
+                final EditText editChat = new EditText(context);
+                alert.setTitle(R.string.invite);
+                alert.setView(editChat);
+                alert.setPositiveButton(R.string.kirim, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        //What ever you want to do with the value
+                        String content = editChat.getText().toString();
+                        if (content.length() > 0) {
+                            DatabaseReference dataComment = FirebaseDatabase.getInstance().getReference().child("Offline").child("Comment2022");
 
+                            Comment comment = new Comment();
+                            comment.setComment(content);
+
+                            comment.setPicUri(thisPlayer.picUri);
+                            comment.setName(thisPlayer.name);
+                            comment.setPlayerWhoSendID(thisPlayer.id);
+                            String pushKey = dataComment.push().getKey();
+                            comment.setCommentID(pushKey);
+
+                            if (thisPlayer.fcm_token != null) {
+                                comment.setSenderFCM(thisPlayer.fcm_token);
+                            }
+
+                            if (player.fcm_token != null) {
+                                SendNotif.send(comment, player.fcm_token, thisPlayer,true);
+                            }
+
+                            dataComment.child(player.id).child(comment.getCommentID()).setValue(comment);
+
+                        } else {
+                            dialog.dismiss();
+                        }
+                    }
+                }).show();
             }
         });
 

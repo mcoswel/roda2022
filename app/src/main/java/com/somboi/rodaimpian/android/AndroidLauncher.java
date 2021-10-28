@@ -85,6 +85,7 @@ import com.somboi.rodaimpian.R;
 import com.somboi.rodaimpian.RodaImpian;
 import com.somboi.rodaimpian.TargetGlide;
 import com.somboi.rodaimpian.android.onlinemsg.UpdateNews;
+import com.somboi.rodaimpian.android.ui.Chats;
 import com.somboi.rodaimpian.gdx.entities.MainMenuCreator;
 import com.somboi.rodaimpian.gdx.entities.Player;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
@@ -96,6 +97,7 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -813,10 +815,31 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
         if (playerID != null) {
             databaseReference.child(playerOnline.id).removeValue();
         }
+        DatabaseReference chatDatabase = FirebaseDatabase.getInstance().getReference().getDatabase().getReference().child("Online").child("chats");
+        chatDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    Chats chats = ds.getValue(Chats.class);
+                    if (playerID!=null){
+                        if (chats.getPlayer().id.equals(playerID)){
+                            chatDatabase.child(chats.getPushKey()).removeValue();
+                        }
+                    }
+                }
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
+            }
 
-        Intent intent = getIntent();
-        finish();
-        startActivity(intent);
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
+            }
+        });
+
     }
 
     @Override
@@ -860,7 +883,6 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
     private void uploadToPlayerDatabase(){
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Offline").child("player_database");
         playerOnline.fcm_token = fcm_token;
-        Log.d("fcm_token","start*"+fcm_token+"*end");
         databaseReference.child(playerOnline.id).setValue(playerOnline);
     }
 }

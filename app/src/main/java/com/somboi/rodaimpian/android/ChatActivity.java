@@ -128,7 +128,6 @@ public class ChatActivity extends AppCompatActivity {
                 chatsList.add(chats);
             }
 
-
             LinearLayoutManager linearLayoutManager =
                     new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
             linearLayoutManager.canScrollHorizontally();

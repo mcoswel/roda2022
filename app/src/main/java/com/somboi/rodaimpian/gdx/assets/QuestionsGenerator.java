@@ -45,6 +45,7 @@ public class QuestionsGenerator {
                         allRounds.get(i).add(question);
                     }
                     if (allRounds.get(i).size() == 3 && question.length() <= 12 && question.length() > 0
+                            && !question.equals(allRounds.get(i).get(0))
                             && !question.equals(allRounds.get(i).get(1))
                             && !question.equals(allRounds.get(i).get(2))
                     ) {

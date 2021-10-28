@@ -59,7 +59,10 @@ public class FireService extends FirebaseMessagingService {
         }
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
-        Bitmap image = getBitmapfromUrl(message.getImageUrl().toString());
+        Bitmap image = getBitmapfromUrl("https://firebasestorage.googleapis.com/v0/b/roda-impian-acc41.appspot.com/o/avatar_lelex.png?alt=media&token=83d0bf7f-454b-49b7-a102-f030ab2a13df");
+        if (message.getImageUrl()!=null) {
+             image = getBitmapfromUrl(message.getImageUrl().toString());
+        }
         notificationBuilder.setAutoCancel(true)
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setWhen(System.currentTimeMillis())

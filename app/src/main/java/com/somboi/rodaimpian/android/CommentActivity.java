@@ -2,6 +2,7 @@ package com.somboi.rodaimpian.android;
 
 
 import android.os.Bundle;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
@@ -9,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.badlogic.gdx.utils.Json;
+import com.facebook.ads.AdSize;
+import com.facebook.ads.AdView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,6 +32,7 @@ import java.util.List;
 
 public class CommentActivity extends AppCompatActivity {
     PlayerOnline thisPlayer;
+    private  AdView adView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,16 +42,14 @@ public class CommentActivity extends AppCompatActivity {
             Json json = new Json();
             thisPlayer = json.fromJson(PlayerOnline.class, extra.getString("player"));
         }
+
         DatabaseReference komenData = FirebaseDatabase.getInstance().getReference().child("Offline").child("Comment2022").child(thisPlayer.id);
 
 
-        final SdkConfiguration.Builder configBuilder = new SdkConfiguration.Builder(getString(R.string.mopubbanner));
-        configBuilder.withLogLevel(MoPubLog.LogLevel.INFO);
-        MoPub.initializeSdk(this, configBuilder.build(), initSdkListener());
-
-        MoPubView moPubView = (MoPubView) findViewById(R.id.adView2);
-        moPubView.setAdUnitId(getString(R.string.mopubbanner));
-        moPubView.loadAd();
+        adView = new AdView(this, getString(R.string.facebook_banner), AdSize.BANNER_HEIGHT_50);
+        LinearLayout adContainer = (LinearLayout) findViewById(R.id.banner_container);
+        adContainer.addView(adView);
+        adView.loadAd();
 
         ListView komenList = (ListView)findViewById(R.id.komenList);
         komenData.addValueEventListener(new ValueEventListener() {

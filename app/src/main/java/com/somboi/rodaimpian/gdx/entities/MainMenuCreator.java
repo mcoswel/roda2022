@@ -20,6 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Timer;
 import com.somboi.rodaimpian.RodaImpian;
 import com.somboi.rodaimpian.android.PlayerOnline;
+import com.somboi.rodaimpian.gdx.actor.ErrorDialog;
 import com.somboi.rodaimpian.gdx.actor.FBPrompt;
 import com.somboi.rodaimpian.gdx.actor.LargeButton;
 import com.somboi.rodaimpian.gdx.actor.NameField;
@@ -68,7 +69,12 @@ public class MainMenuCreator {
             public void changed(ChangeEvent event, Actor actor) {
                 Player player = rodaImpian.getPlayer();
                 player.name = removeSymbols(player.name);
-                savePlayer(player);
+                inputName.setText(player.name);
+                if (player.name.length()<=0){
+                    ErrorDialog errorDialog = new ErrorDialog(StringRes.ENTERNAME, skin);
+                    errorDialog.show(stage);
+                    return;
+                }
                 player.fullScore = 0;
                 player.currentScore = 0;
                 player.freeTurn = false;
@@ -78,6 +84,9 @@ public class MainMenuCreator {
                 rodaImpian.setPlayerImage(playerImage);
                 menuScreen.showLocal();
                 changeName();
+                savePlayer(player);
+                rodaImpian.getPlayerOnline().picUri = player.picUri;
+                savePlayerOnline(rodaImpian.getPlayerOnline());
             }
         });
 
@@ -97,6 +106,13 @@ public class MainMenuCreator {
                 if (rodaImpian.getPlayer().logged) {
                     //rodaImpian.setScreen(new RoomScreen(rodaImpian));
                     changeName();
+                    rodaImpian.getPlayerOnline().picUri = rodaImpian.getPlayer().picUri;
+                    savePlayerOnline(rodaImpian.getPlayerOnline());
+                    if (inputName.getText().length()<=0){
+                        ErrorDialog errorDialog = new ErrorDialog(StringRes.ENTERNAME, skin);
+                        errorDialog.show(stage);
+                        return;
+                    }
                     rodaImpian.setScreen(new OnlineMatchScreen(rodaImpian));
                 } else {
                     FBPrompt fbPrompt = new FBPrompt(skin){
@@ -183,7 +199,7 @@ public class MainMenuCreator {
         rodaImpian.getPlayer().currentScore = 0;
 
         if (rodaImpian.isInvitation()){
-            rodaImpian.setScreen(new OnlineMatchScreen(rodaImpian));
+            rodaImpian.openComment();
         }
 
     }

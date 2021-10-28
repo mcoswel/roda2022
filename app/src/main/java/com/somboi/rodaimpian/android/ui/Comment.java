@@ -7,7 +7,7 @@ public class Comment {
     String name;
     String commentID;
     String playerWhoSendID;
-
+    String senderFCM;
     public String getPlayerWhoSendID() {
         return playerWhoSendID;
     }
@@ -46,5 +46,13 @@ public class Comment {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getSenderFCM() {
+        return senderFCM;
+    }
+
+    public void setSenderFCM(String senderFCM) {
+        this.senderFCM = senderFCM;
     }
 }

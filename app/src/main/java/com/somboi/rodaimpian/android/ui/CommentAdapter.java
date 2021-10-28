@@ -23,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.somboi.rodaimpian.R;
 import com.somboi.rodaimpian.android.PlayerOnline;
 import com.somboi.rodaimpian.gdx.entities.Player;
+import com.somboi.rodaimpian.gdx.utils.SendNotif;
 
 import java.util.List;
 
@@ -52,7 +53,9 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
         CircleImageView profileImage = myView.findViewById(R.id.player1_image);
         Button reply = myView.findViewById(R.id.reply);
         Button delete = myView.findViewById(R.id.delete);
-        Glide.with(context).load(Uri.parse(comment.getPicUri())).placeholder(R.drawable.default_avatar).into(profileImage);
+        if (comment.getPicUri()!=null) {
+            Glide.with(context).load(Uri.parse(comment.getPicUri())).placeholder(R.drawable.default_avatar).into(profileImage);
+        }
         commentTxt.setText("\"" + comment.getComment() + "\"");
         nameTxt.setText(comment.getName());
         DatabaseReference dataComment = FirebaseDatabase.getInstance().getReference().child("Offline").child("Comment2022");
@@ -83,7 +86,16 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
                             thisComment.setPicUri(thisPlayer.picUri);
                             thisComment.setCommentID(dataComment.push().getKey());
                             thisComment.setPlayerWhoSendID(thisPlayer.id);
+                            if (thisPlayer.fcm_token!=null){
+                                thisComment.setSenderFCM(thisPlayer.fcm_token);
+                            }
+                            if (thisComment.getSenderFCM()!=null){
+                                SendNotif.send(thisComment,comment.getSenderFCM(),thisPlayer,false);
+                            }
+
                             dataComment.child(comment.getPlayerWhoSendID()).child(thisComment.getCommentID()).setValue(thisComment);
+
+
                         } else {
                             dialog.dismiss();
                         }
