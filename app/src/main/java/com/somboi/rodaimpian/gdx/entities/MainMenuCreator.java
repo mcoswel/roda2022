@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.Timer;
 import com.somboi.rodaimpian.RodaImpian;
 import com.somboi.rodaimpian.android.PlayerOnline;
@@ -51,7 +52,7 @@ public class MainMenuCreator {
     private final Stage stage;
     private final MenuScreen menuScreen;
     private boolean promptFb;
-
+    private final Logger logger = new Logger(this.getClass().getName(), 3);
     public MainMenuCreator(RodaImpian rodaImpian, Group menuGroup, Stage stage, MenuScreen menuScreen) {
         this.rodaImpian = rodaImpian;
         this.menuGroup = menuGroup;
@@ -68,8 +69,7 @@ public class MainMenuCreator {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 Player player = rodaImpian.getPlayer();
-                player.name = removeSymbols(player.name);
-                inputName.setText(player.name);
+                changeName();
                 if (player.name.length()<=0){
                     ErrorDialog errorDialog = new ErrorDialog(StringRes.ENTERNAME, skin);
                     errorDialog.show(stage);
@@ -83,8 +83,9 @@ public class MainMenuCreator {
                 rodaImpian.setGameModes(GameModes.SINGLE);
                 rodaImpian.setPlayerImage(playerImage);
                 menuScreen.showLocal();
-                changeName();
-                savePlayer(player);
+                rodaImpian.setPlayer(player);
+                logger.debug(rodaImpian.getPlayer().name);
+                playerSaves.save(rodaImpian.getPlayer());
                 rodaImpian.getPlayerOnline().picUri = player.picUri;
                 savePlayerOnline(rodaImpian.getPlayerOnline());
             }
@@ -105,14 +106,21 @@ public class MainMenuCreator {
             public void changed(ChangeEvent event, Actor actor) {
                 if (rodaImpian.getPlayer().logged) {
                     //rodaImpian.setScreen(new RoomScreen(rodaImpian));
+                    Player player = rodaImpian.getPlayer();
                     changeName();
-                    rodaImpian.getPlayerOnline().picUri = rodaImpian.getPlayer().picUri;
-                    savePlayerOnline(rodaImpian.getPlayerOnline());
-                    if (inputName.getText().length()<=0){
+                    if (player.name.length()<=0){
                         ErrorDialog errorDialog = new ErrorDialog(StringRes.ENTERNAME, skin);
                         errorDialog.show(stage);
                         return;
                     }
+                    player.fullScore = 0;
+                    player.currentScore = 0;
+                    player.freeTurn = false;
+                    player.gifts.clear();
+                    player.bonusIndex = 0;
+                    playerSaves.save(rodaImpian.getPlayer());
+                    rodaImpian.getPlayerOnline().picUri = rodaImpian.getPlayer().picUri;
+                    savePlayerOnline(rodaImpian.getPlayerOnline());
                     rodaImpian.setScreen(new OnlineMatchScreen(rodaImpian));
                 } else {
                     FBPrompt fbPrompt = new FBPrompt(skin){
