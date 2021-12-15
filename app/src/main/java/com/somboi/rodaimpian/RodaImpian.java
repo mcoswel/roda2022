@@ -7,7 +7,6 @@ import com.somboi.rodaimpian.android.AndroidInterface;
 import com.somboi.rodaimpian.android.PlayerOnline;
 import com.somboi.rodaimpian.android.onlinemsg.UpdateNews;
 import com.somboi.rodaimpian.gdx.actor.PlayerImage;
-import com.somboi.rodaimpian.gdx.assets.PopulateQuestions;
 import com.somboi.rodaimpian.gdx.assets.QuestionsReady;
 import com.somboi.rodaimpian.gdx.entities.MainMenuCreator;
 import com.somboi.rodaimpian.gdx.entities.Player;
@@ -42,14 +41,14 @@ public class RodaImpian extends Game {
     private OnlineMatchScreen onlineScreen;
     private boolean rewarded;
     private boolean invitation;
+
     public RodaImpian(AndroidInterface androidInterface) {
         this.androidInterface = androidInterface;
     }
 
     @Override
     public void create() {
-       // PopulateQuestions populateQuestions = new PopulateQuestions();
-
+        //PopulateQuestions populateQuestions = new PopulateQuestions();
         setScreen(new LoadingScreen(this));
         Gdx.app.setLogLevel(3);
 
@@ -71,7 +70,7 @@ public class RodaImpian extends Game {
         androidInterface.finishAct();
     }
 
-    public void restart(){
+    public void restart() {
         androidInterface.restartGame();
     }
 
@@ -88,9 +87,9 @@ public class RodaImpian extends Game {
     }
 
     public void gotoMenu() {
-        if (menuScreen!=null) {
+        if (menuScreen != null) {
             this.setScreen(menuScreen);
-        }else{
+        } else {
             Gdx.app.exit();
         }
     }
@@ -241,10 +240,10 @@ public class RodaImpian extends Game {
     }
 
     public void stop() {
-        if (matchScreen!=null){
+        if (matchScreen != null) {
             matchScreen.stop();
         }
-        if (wheelScreen!=null){
+        if (wheelScreen != null) {
             wheelScreen.stop();
         }
     }
@@ -297,13 +296,14 @@ public class RodaImpian extends Game {
     public void reloadMainMenu() {
         menuScreen.show();
     }
-    public void loginGoogle(){
+
+    public void loginGoogle() {
         androidInterface.loginGmail();
     }
 
-    public void updatefcmToken(){
+    public void updatefcmToken() {
         String fcm_token = androidInterface.updateToken(playerOnline);
-        if (fcm_token!=null){
+        if (fcm_token != null) {
             playerOnline.fcm_token = fcm_token;
         }
     }

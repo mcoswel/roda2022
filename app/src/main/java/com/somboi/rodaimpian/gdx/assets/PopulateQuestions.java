@@ -18,7 +18,7 @@ public class PopulateQuestions {
         QuestionsGenerator questionsGenerator = new QuestionsGenerator();
         Array<String> subjects = new Array<>(new String[]{"ADIWIRA", "NAMA ARTIS", "BARANGAN RUMAH", "BUAH-BUAHAN", "HAIWAN", "JENAMA",
                 "KELAB BOLA", "KEMENTERIAN", "KUGIRAN", "MAKANAN", "NAMA POKOK", "NAMA SYARIKAT", "NAMA TEMPAT", "NEGARA", "PEKERJAAN",
-                "PERISIAN", "SAINS & TEKNOLOGI", "ACARA SUKAN", "UNSUR KIMIA", "ATLET", "GALAKSI"
+                "PERISIAN", "SAINS & TEKNOLOGI", "ACARA SUKAN", "UNSUR KIMIA", "ATLET"
         });
         questionsGenerator.getSubjects().addAll(subjects);
 

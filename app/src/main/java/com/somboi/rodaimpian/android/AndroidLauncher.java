@@ -132,7 +132,6 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         callbackManager = CallbackManager.Factory.create();
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -694,8 +693,6 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
 
     private void loadFacebookAds() {
         facebookInter.loadAd();
-
-
     }
 
     private void loadMopubAds() {

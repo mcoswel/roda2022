@@ -17,6 +17,9 @@ public class AssetPath {
     public static final String BG = "textures/bg.png";
     public static final String CORRECTSOUND = "sounds/correct.mp3";
     public static final String HOURGLASS = "effects/hourglass.png";
+    public static final String ATLAS = "atlas.atlas";
+
+    public static final String NEWSKIN = "skins/skin.json";
 }
 
 

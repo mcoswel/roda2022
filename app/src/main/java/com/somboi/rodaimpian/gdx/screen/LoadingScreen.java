@@ -104,7 +104,7 @@ public class LoadingScreen extends ScreenAdapter {
         assetManager.load(AssetDesc.SLAPSOUND);
         assetManager.load(AssetDesc.BG);
         assetManager.load(AssetDesc.HOURGLASS);
-
+        assetManager.load(AssetDesc.ATLAS);
         questionsSaves.saveQuestion(questionsGenerator);
     }
 
