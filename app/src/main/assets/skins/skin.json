@@ -1,16 +1,13 @@
 {
 com.badlogic.gdx.graphics.g2d.BitmapFont: {
-	arial24: {
-		file: arial24.fnt
-	}
 	arial24white: {
 		file: arial24white.fnt
 	}
 	arial44: {
 		file: arial44.fnt
 	}
-	minstrel48: {
-		file: minstrel48.fnt
+	comic48: {
+		file: comic48.fnt
 	}
 }
 com.badlogic.gdx.graphics.Color: {
@@ -39,16 +36,13 @@ com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 		fontColor: white
 	}
 	big: {
-		font: minstrel48
+		font: comic48
 		fontColor: white
-	}
-	small: {
-		font: arial24white
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 	default: {
-		font: minstrel48
+		font: comic48
 		fontColor: white
 		up: menubutnormal
 		down: menubutclicked
@@ -69,7 +63,7 @@ com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
 	default: {
 		background: window
-		titleFont: arial24
+		titleFont: comic48
 		titleFontColor: white
 	}
 }

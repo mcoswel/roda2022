@@ -68,9 +68,7 @@ public class GameScreen extends BaseScreenNew {
                 }
             }
         });
-        Dialog dialog = new Dialog("test", skin);
-        dialog.text(new Label("test 123 test 123 ",skin,"small"));
-        dialog.show(stage);
+
     }
 
     @Override
@@ -78,7 +76,7 @@ public class GameScreen extends BaseScreenNew {
         actorFactory.createWheel(wheelBody);
         actorFactory.createNeedle(needleBody);
         actorFactory.createLogo(wheelBody);
-        actorFactory.createWheelBonus();
+        //actorFactory.createWheelBonus();
     }
 
     @Override

@@ -4,37 +4,51 @@ size: 2048,2048
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-arial24
-  rotate: false
-  xy: 1, 102
-  size: 512, 512
-  orig: 512, 512
-  offset: 0, 0
-  index: -1
 arial24white
   rotate: false
-  xy: 515, 616
+  xy: 515, 1183
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
   index: -1
 arial441
   rotate: false
-  xy: 1, 616
+  xy: 1, 1183
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
   index: -1
 arial442
   rotate: false
-  xy: 515, 1130
+  xy: 1, 669
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+comic481
+  rotate: false
+  xy: 1, 155
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+comic482
+  rotate: false
+  xy: 515, 669
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+comic483
+  rotate: false
+  xy: 1029, 1183
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
   index: -1
 menubutclicked
   rotate: false
-  xy: 515, 515
+  xy: 1029, 1082
   size: 74, 99
   split: 28, 28, 20, 34
   pad: 23, 23, 11, 29
@@ -43,23 +57,16 @@ menubutclicked
   index: -1
 menubutnormal
   rotate: false
-  xy: 1, 1
+  xy: 515, 568
   size: 74, 99
   split: 28, 28, 20, 34
   pad: 23, 23, 11, 29
   orig: 74, 99
   offset: 0, 0
   index: -1
-minstrel48
-  rotate: false
-  xy: 1, 1130
-  size: 512, 512
-  orig: 512, 512
-  offset: 0, 0
-  index: -1
 smallclicked
   rotate: false
-  xy: 1107, 1585
+  xy: 1, 1
   size: 74, 57
   split: 27, 27, 16, 23
   pad: 16, 15, 13, 19
@@ -68,7 +75,7 @@ smallclicked
   index: -1
 smallnormal
   rotate: false
-  xy: 1029, 1510
+  xy: 1543, 1638
   size: 74, 57
   split: 27, 27, 16, 23
   pad: 16, 15, 13, 19
@@ -77,10 +84,10 @@ smallnormal
   index: -1
 window
   rotate: false
-  xy: 1029, 1569
-  size: 76, 73
-  split: 23, 20, 36, 30
-  pad: 20, 18, 37, 26
-  orig: 76, 73
+  xy: 1, 60
+  size: 76, 93
+  split: 24, 24, 56, 28
+  pad: 24, 24, 56, 19
+  orig: 76, 93
   offset: 0, 0
   index: -1

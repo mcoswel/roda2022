@@ -6,6 +6,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.async.AsyncExecutor;
 import com.badlogic.gdx.utils.async.AsyncResult;
@@ -83,7 +84,8 @@ public class LoadingScreenNew extends ScreenAdapter {
         batch.end();
 
         if (rodaImpian.getAssetManager().update()) {
-            rodaImpian.setScreen(new GameScreen(rodaImpian));
+            //rodaImpian.setScreen(new GameScreen(rodaImpian));
+            rodaImpian.setScreen(new SkinTest(rodaImpian));
         }
     }
 

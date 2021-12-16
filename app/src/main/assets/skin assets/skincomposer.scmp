@@ -78,6 +78,25 @@ atlasData: {
 			type: NINE_PATCH
 			hidden: false
 		}
+		{
+			file: E:/roda2022/app/src/main/assets/skin assets/window.9.png
+			bgColor: {
+				r: 0
+				g: 0
+				b: 0
+				a: 1
+			}
+			tint: null
+			tintName: null
+			name: window
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: null
+			type: NINE_PATCH
+			hidden: false
+		}
 	]
 	fontDrawables: [
 		{
@@ -137,6 +156,25 @@ atlasData: {
 			type: FONT
 			hidden: false
 		}
+		{
+			file: E:/roda2022/app/src/main/assets/skin assets/arial24white.png
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: null
+			tintName: null
+			name: arial24white
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: null
+			type: FONT
+			hidden: false
+		}
 	]
 }
 jsonData: {
@@ -173,6 +211,11 @@ jsonData: {
 		}
 	]
 	fonts: [
+		{
+			class: com.ray3k.skincomposer.data.FontData
+			name: arial24white
+			file: E:/roda2022/app/src/main/assets/skin assets/arial24white.fnt
+		}
 		{
 			class: com.ray3k.skincomposer.data.FontData
 			name: arial44
@@ -1737,19 +1780,19 @@ jsonData: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 						name: background
 						optional: true
-						value: null
+						value: window
 					}
 					titleFont: {
 						type: com.badlogic.gdx.graphics.g2d.BitmapFont
 						name: titleFont
 						optional: false
-						value: null
+						value: minstrel48
 					}
 					titleFontColor: {
 						type: com.badlogic.gdx.graphics.Color
 						name: titleFontColor
 						optional: true
-						value: null
+						value: white
 					}
 					stageBackground: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
@@ -1769,6 +1812,10 @@ preferences: {
 	id: {
 		class: java.lang.Integer
 		value: 814040634
+	}
+	last-import-export-path: {
+		class: java.lang.String
+		value: E:/roda2022/app/src/main/assets/skins/skin.json
 	}
 	resources-relative: {
 		class: java.lang.Boolean
