@@ -65,6 +65,10 @@ public class LoadingScreenNew extends ScreenAdapter {
         assetManager.load(AssetDesc.HOURGLASS);
         assetManager.load(AssetDesc.ATLAS);
         assetManager.load(AssetDesc.NEWSKIN);
+        assetManager.load(AssetDesc.GAMEBG);
+        assetManager.load(AssetDesc.WHEELBG);
+        assetManager.load(AssetDesc.GAMEBGRED);
+
     }
 
     @Override
@@ -85,7 +89,9 @@ public class LoadingScreenNew extends ScreenAdapter {
 
         if (rodaImpian.getAssetManager().update()) {
             //rodaImpian.setScreen(new GameScreen(rodaImpian));
-            rodaImpian.setScreen(new SkinTest(rodaImpian));
+            //rodaImpian.setScreen(new SkinTest(rodaImpian));
+            //rodaImpian.setScreen(new GameScreen(rodaImpian));
+            rodaImpian.setScreen(new SpinScreen(rodaImpian));
         }
     }
 

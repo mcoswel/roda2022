@@ -20,6 +20,9 @@ public class AssetPath {
     public static final String ATLAS = "atlas.atlas";
 
     public static final String NEWSKIN = "skins/skin.json";
+    public static final String GAMEBG = "gamebg.png";
+    public static final String WHEELBG = "wheelbg.png";
+    public static final String GAMEBGRED = "gamebgred.png";
 }
 
 

@@ -2,13 +2,9 @@ package com.somboi.rodaimpian.gdxnew.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.somboi.rodaimpian.RodaImpianNew;
-import com.somboi.rodaimpian.gdx.actor.MenuButtons;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdxnew.actors.MenuButton;
 import com.somboi.rodaimpian.gdxnew.actors.SmallButton;
@@ -30,7 +26,7 @@ public class SkinTest extends BaseScreenNew {
         stwo.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                rodaImpianNew.setScreen(new GameScreen(rodaImpianNew));
+                rodaImpianNew.setScreen(new SpinScreen(rodaImpianNew));
             }
         });
         SmallButton sthree = new SmallButton(StringRes.LENGKAPKAN, skin);

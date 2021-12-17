@@ -1,11 +1,17 @@
 package com.somboi.rodaimpian.gdxnew.actors;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.somboi.rodaimpian.gdx.assets.AssetDesc;
+import com.somboi.rodaimpian.gdx.config.GameConfig;
 
 public class ActorFactory {
     private final TextureAtlas atlas;
@@ -14,19 +20,46 @@ public class ActorFactory {
     private Image centerLogo;
     private BodyImage needleImg;
     private boolean isWheelBonus;
-
-    public ActorFactory(TextureAtlas atlas, Stage worldStage) {
-        this.atlas = atlas;
+    private final Stage stage;
+    private final AssetManager assetManager;
+    public ActorFactory(AssetManager assetManager, Stage worldStage, Stage stage) {
+        this.atlas = assetManager.get(AssetDesc.ATLAS);
         this.worldStage = worldStage;
+        this.stage = stage;
+        this.assetManager = assetManager;
     }
 
+    public void createGameBg(){
+        int random = MathUtils.random(0,1);
+        if (random==1){
+            stage.addActor(new Image(assetManager.get(AssetDesc.GAMEBGRED)));
+        }else{
+            stage.addActor(new Image(assetManager.get(AssetDesc.GAMEBG)));
+        }
+    }
+
+    public void createGameTables(){
+        GameConfig.TABLECOLOR.shuffle();
+        for (int i=0; i<3; i++){
+            Image image = new Image(atlas.findRegion(GameConfig.TABLECOLOR.get(i)));
+            image.setPosition(i*300,0);
+            stage.addActor(image);
+        }
+    }
+
+
+
+
     public void createWheel(Body wheelBody) {
+        Image wheelShadow = new Image(atlas.findRegion("wheelshadow"));
+        wheelShadow.setSize(11.5f, 11.5f);
+        wheelShadow.setPosition(wheelBody.getPosition().x - 5.75f, wheelBody.getPosition().y - 5.75f);
+        worldStage.addActor(wheelShadow);
         wheelImg = new BodyImage(atlas.findRegion("wheel"), wheelBody);
         wheelImg.setOrigin(5.75f, 5.75f);
         wheelImg.setSize(11.5f, 11.5f);
         wheelImg.setPosition(wheelBody.getPosition().x - 5.75f, wheelBody.getPosition().y - 5.75f);
         worldStage.addActor(wheelImg);
-
     }
 
     public void createWheelBonus() {

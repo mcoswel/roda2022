@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.somboi.rodaimpian.RodaImpianNew;
 import com.somboi.rodaimpian.gdx.assets.AssetDesc;
 import com.somboi.rodaimpian.gdx.config.GameConfig;
+import com.somboi.rodaimpian.gdxnew.actors.ActorFactory;
 
 public class BaseScreenNew extends ScreenAdapter {
     protected final FitViewport worldViewport = new FitViewport(9f, 16f);
@@ -25,13 +26,15 @@ public class BaseScreenNew extends ScreenAdapter {
     protected final Skin skin;
     protected final TextureAtlas atlas;
     protected final Logger logger = new Logger(this.getClass().getName(), 3);
-
+    protected final ActorFactory actorFactory;
     public BaseScreenNew(RodaImpianNew rodaImpianNew) {
         Gdx.app.setLogLevel(3);
         this.rodaImpianNew = rodaImpianNew;
         this.assetManager = rodaImpianNew.getAssetManager();
         this.atlas = assetManager.get(AssetDesc.ATLAS);
         this.skin = assetManager.get(AssetDesc.NEWSKIN);
+        this.actorFactory = new ActorFactory(assetManager, worldStage,stage);
+
     }
 
     @Override
@@ -39,11 +42,11 @@ public class BaseScreenNew extends ScreenAdapter {
         GameConfig.clearScreen();
         update(delta);
         world.step(1 / 60f, 6, 2);
-        worldStage.act();
-        worldStage.draw();
+
         stage.act();
         stage.draw();
-
+        worldStage.act();
+        worldStage.draw();
     }
 
     public void update(float delta) {

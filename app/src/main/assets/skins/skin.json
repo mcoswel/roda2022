@@ -39,6 +39,10 @@ com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 		font: comic48
 		fontColor: white
 	}
+	spin: {
+		font: arial44
+		background: label
+	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 	default: {

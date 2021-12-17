@@ -100,25 +100,6 @@ atlasData: {
 	]
 	fontDrawables: [
 		{
-			file: E:/roda2022/app/src/main/assets/skin assets/minstrel48.png
-			bgColor: {
-				r: 0
-				g: 0
-				b: 0
-				a: 1
-			}
-			tint: null
-			tintName: null
-			name: minstrel48
-			tiled: false
-			minWidth: -1
-			minHeight: -1
-			customized: false
-			tenPatchData: null
-			type: FONT
-			hidden: false
-		}
-		{
 			file: E:/roda2022/app/src/main/assets/skin assets/arial441.png
 			bgColor: {
 				r: 1
@@ -175,6 +156,63 @@ atlasData: {
 			type: FONT
 			hidden: false
 		}
+		{
+			file: E:/roda2022/app/src/main/assets/skin assets/comic481.png
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: null
+			tintName: null
+			name: comic481
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: null
+			type: FONT
+			hidden: false
+		}
+		{
+			file: E:/roda2022/app/src/main/assets/skin assets/comic482.png
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: null
+			tintName: null
+			name: comic482
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: null
+			type: FONT
+			hidden: false
+		}
+		{
+			file: E:/roda2022/app/src/main/assets/skin assets/comic483.png
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: null
+			tintName: null
+			name: comic483
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: null
+			type: FONT
+			hidden: false
+		}
 	]
 }
 jsonData: {
@@ -223,8 +261,8 @@ jsonData: {
 		}
 		{
 			class: com.ray3k.skincomposer.data.FontData
-			name: minstrel48
-			file: E:/roda2022/app/src/main/assets/skin assets/minstrel48.fnt
+			name: comic48
+			file: E:/roda2022/app/src/main/assets/skin assets/comic48.fnt
 		}
 	]
 	freeTypeFonts: []
@@ -838,7 +876,7 @@ jsonData: {
 						type: com.badlogic.gdx.graphics.g2d.BitmapFont
 						name: font
 						optional: false
-						value: minstrel48
+						value: comic48
 					}
 					fontColor: {
 						type: com.badlogic.gdx.graphics.Color
@@ -1326,7 +1364,7 @@ jsonData: {
 						type: com.badlogic.gdx.graphics.g2d.BitmapFont
 						name: font
 						optional: false
-						value: minstrel48
+						value: comic48
 					}
 					fontColor: {
 						type: com.badlogic.gdx.graphics.Color
@@ -1786,7 +1824,7 @@ jsonData: {
 						type: com.badlogic.gdx.graphics.g2d.BitmapFont
 						name: titleFont
 						optional: false
-						value: minstrel48
+						value: comic48
 					}
 					titleFontColor: {
 						type: com.badlogic.gdx.graphics.Color

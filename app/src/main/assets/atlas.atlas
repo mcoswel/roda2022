@@ -4,11 +4,263 @@ size: 2048, 2048
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
+blank
+  rotate: false
+  xy: 824, 262
+  size: 100, 137
+  orig: 100, 137
+  offset: 0, 0
+  index: -1
 logocenter
   rotate: false
-  xy: 2, 2
+  xy: 2, 855
   size: 1150, 1150
   orig: 1150, 1150
+  offset: 0, 0
+  index: -1
+relax1
+  rotate: false
+  xy: 722, 628
+  size: 114, 225
+  orig: 114, 225
+  offset: 0, 0
+  index: -1
+relax2
+  rotate: false
+  xy: 1386, 1154
+  size: 114, 225
+  orig: 114, 225
+  offset: 0, 0
+  index: -1
+relax3
+  rotate: false
+  xy: 1874, 1780
+  size: 114, 225
+  orig: 114, 225
+  offset: 0, 0
+  index: -1
+relax4
+  rotate: false
+  xy: 606, 628
+  size: 114, 225
+  orig: 114, 225
+  offset: 0, 0
+  index: -1
+side1
+  rotate: false
+  xy: 606, 174
+  size: 114, 225
+  orig: 114, 225
+  offset: 0, 0
+  index: -1
+side2
+  rotate: false
+  xy: 1270, 927
+  size: 114, 225
+  orig: 114, 225
+  offset: 0, 0
+  index: -1
+sidehand1
+  rotate: false
+  xy: 838, 401
+  size: 114, 225
+  orig: 114, 225
+  offset: 0, 0
+  index: -1
+sidehand2
+  rotate: false
+  xy: 1154, 927
+  size: 114, 225
+  orig: 114, 225
+  offset: 0, 0
+  index: -1
+sidehand3
+  rotate: false
+  xy: 1688, 1467
+  size: 114, 225
+  orig: 114, 225
+  offset: 0, 0
+  index: -1
+sidehand4
+  rotate: false
+  xy: 722, 401
+  size: 114, 225
+  orig: 114, 225
+  offset: 0, 0
+  index: -1
+sidehandl1
+  rotate: false
+  xy: 234, 2
+  size: 114, 225
+  orig: 114, 225
+  offset: 0, 0
+  index: -1
+sidehandl2
+  rotate: false
+  xy: 1154, 1154
+  size: 114, 225
+  orig: 114, 225
+  offset: 0, 0
+  index: -1
+sidehandl3
+  rotate: false
+  xy: 954, 401
+  size: 114, 225
+  orig: 114, 225
+  offset: 0, 0
+  index: -1
+sidehandl4
+  rotate: false
+  xy: 1572, 1467
+  size: 114, 225
+  orig: 114, 225
+  offset: 0, 0
+  index: -1
+sidel1
+  rotate: false
+  xy: 1456, 1467
+  size: 114, 225
+  orig: 114, 225
+  offset: 0, 0
+  index: -1
+sidel2
+  rotate: false
+  xy: 466, 2
+  size: 114, 225
+  orig: 114, 225
+  offset: 0, 0
+  index: -1
+tableblue
+  rotate: false
+  xy: 2, 542
+  size: 300, 311
+  orig: 300, 311
+  offset: 0, 0
+  index: -1
+tablegold
+  rotate: false
+  xy: 1154, 1694
+  size: 300, 311
+  orig: 300, 311
+  offset: 0, 0
+  index: -1
+tablegreen
+  rotate: false
+  xy: 304, 542
+  size: 300, 311
+  orig: 300, 311
+  offset: 0, 0
+  index: -1
+tablepink
+  rotate: false
+  xy: 304, 229
+  size: 300, 311
+  orig: 300, 311
+  offset: 0, 0
+  index: -1
+tablepurple
+  rotate: false
+  xy: 2, 229
+  size: 300, 311
+  orig: 300, 311
+  offset: 0, 0
+  index: -1
+tablered
+  rotate: false
+  xy: 1456, 1694
+  size: 300, 311
+  orig: 300, 311
+  offset: 0, 0
+  index: -1
+tableyellow
+  rotate: false
+  xy: 1154, 1381
+  size: 300, 311
+  orig: 300, 311
+  offset: 0, 0
+  index: -1
+thumbsup1
+  rotate: false
+  xy: 1758, 1780
+  size: 114, 225
+  orig: 114, 225
+  offset: 0, 0
+  index: -1
+thumbsup2
+  rotate: false
+  xy: 954, 628
+  size: 114, 225
+  orig: 114, 225
+  offset: 0, 0
+  index: -1
+thumbsup3
+  rotate: false
+  xy: 1270, 1154
+  size: 114, 225
+  orig: 114, 225
+  offset: 0, 0
+  index: -1
+tilea
+  rotate: false
+  xy: 722, 262
+  size: 100, 137
+  orig: 100, 137
+  offset: 0, 0
+  index: -1
+walk1
+  rotate: false
+  xy: 2, 2
+  size: 114, 225
+  orig: 114, 225
+  offset: 0, 0
+  index: -1
+walk2
+  rotate: false
+  xy: 350, 2
+  size: 114, 225
+  orig: 114, 225
+  offset: 0, 0
+  index: -1
+walkl1
+  rotate: false
+  xy: 118, 2
+  size: 114, 225
+  orig: 114, 225
+  offset: 0, 0
+  index: -1
+walkl2
+  rotate: false
+  xy: 1070, 628
+  size: 114, 225
+  orig: 114, 225
+  offset: 0, 0
+  index: -1
+wrong1
+  rotate: false
+  xy: 1386, 927
+  size: 114, 225
+  orig: 114, 225
+  offset: 0, 0
+  index: -1
+wrong2
+  rotate: false
+  xy: 838, 628
+  size: 114, 225
+  orig: 114, 225
+  offset: 0, 0
+  index: -1
+wrong3
+  rotate: false
+  xy: 606, 401
+  size: 114, 225
+  orig: 114, 225
+  offset: 0, 0
+  index: -1
+wrong4
+  rotate: false
+  xy: 1070, 401
+  size: 114, 225
+  orig: 114, 225
   offset: 0, 0
   index: -1
 
@@ -30,7 +282,7 @@ size: 2048, 2048
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
-wheelbonus
+wheelshadow
   rotate: false
   xy: 2, 2
   size: 1150, 1150
@@ -43,7 +295,7 @@ size: 2048, 2048
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
-needle
+wheelbonus
   rotate: false
   xy: 2, 2
   size: 1150, 1150
@@ -52,6 +304,19 @@ needle
   index: -1
 
 atlas5.png
+size: 2048, 2048
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+needle
+  rotate: false
+  xy: 2, 2
+  size: 1150, 1150
+  orig: 1150, 1150
+  offset: 0, 0
+  index: -1
+
+atlas6.png
 size: 2048, 2048
 format: RGBA8888
 filter: Nearest, Nearest
