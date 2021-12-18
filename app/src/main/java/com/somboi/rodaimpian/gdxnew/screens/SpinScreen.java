@@ -7,6 +7,8 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -78,7 +80,6 @@ public class SpinScreen extends BaseScreenNew {
     @Override
     public void show() {
         stage.addActor(new Image(assetManager.get(AssetDesc.WHEELBG)));
-        stage.addActor(slotResult);
         actorFactory.createWheel(wheelBody);
         actorFactory.createNeedle(needleBody);
         actorFactory.createLogo(wheelBody);
@@ -100,15 +101,7 @@ public class SpinScreen extends BaseScreenNew {
         }
         rodaImpianNew.getWheelParams().setAngle(wheelBody.getAngle()* MathUtils.radDeg);
 
-        if (worldContact.getLastContact()!=null) {
-            if (actorFactory.isWheelBonus()) {
-                rodaImpianNew.getWheelParams().getBonusResult(worldContact.getLastContact());
-            } else {
-                rodaImpianNew.getWheelParams().getResult(worldContact.getLastContact());
-            }
 
-            slotResult.setText(rodaImpianNew.getWheelParams().getScoreStrings());
-        }
 
         if (startRotation) {
             if ((int) wheelBody.getAngularVelocity() == 0) {
@@ -119,10 +112,23 @@ public class SpinScreen extends BaseScreenNew {
                     needleJoint.setMotorSpeed(0);
                 }
                 startRotation = false;
+
+
                 Timer.schedule(new Timer.Task() {
                     @Override
                     public void run() {
                        ////after spin
+                        if (worldContact.getLastContact()!=null) {
+                            slotResult.addAction(new SequenceAction(Actions.fadeOut(0f),Actions.fadeIn(1f)));
+                            stage.addActor(slotResult);
+                            if (actorFactory.isWheelBonus()) {
+                                rodaImpianNew.getWheelParams().getBonusResult(worldContact.getLastContact());
+                            } else {
+                                rodaImpianNew.getWheelParams().getResult(worldContact.getLastContact());
+                            }
+                            slotResult.setText(rodaImpianNew.getWheelParams().getScoreStrings());
+                        }
+
                         logger.debug(
                                 "last contact "+
                                         worldContact.getLastContact()+

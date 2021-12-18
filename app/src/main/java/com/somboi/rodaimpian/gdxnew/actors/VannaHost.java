@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.AddListenerAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Array;
@@ -34,10 +35,12 @@ public class VannaHost extends Image {
     private float randomTimer = 10f;
     private Animation<Sprite> currentAnimation;
     private boolean leftSide;
+    private boolean walking;
+
     public VannaHost(TextureAtlas atlas) {
         super(atlas.findRegion("relax1"));
-        setPosition(800f,1149f);
-        setSize(126f,249f);
+        setPosition(800f, 1149f);
+        setSize(126f, 249f);
         thumbsUp = new Animation<Sprite>(duration,
                 new Array<>(new Sprite[]{
                         atlas.createSprite("thumbsup1"), atlas.createSprite("thumbsup2"), atlas.createSprite("thumbsup3")
@@ -111,49 +114,106 @@ public class VannaHost extends Image {
     @Override
     public void act(float delta) {
         super.act(delta);
-        if (randomTimer>0){
-            randomTimer-=delta;
-            if (randomTimer<=0){
+        if (randomTimer > 0) {
+            randomTimer -= delta;
+            if (randomTimer <= 0) {
                 randomTimer = 10f;
                 randomize();
             }
         }
-        stateTime+=delta;
+        stateTime += delta;
         setDrawable(new SpriteDrawable(currentAnimation.getKeyFrame(stateTime)));
-        if (getX()<450f){
+        if (getX() < 450f) {
             leftSide = true;
-        }else{
+        } else {
             leftSide = false;
         }
     }
 
-
-    public void walk(){
-        if (leftSide){
-            currentAnimation = walkL;
-            addAction(Actions.moveTo(800f,1149f, 5f));
-        }else{
-            currentAnimation = walkR;
-            addAction(Actions.moveTo(-30f,1149f, 5f));
+    public void correct() {
+        if (!walking) {
+            if (leftSide) {
+                currentAnimation = sideHandL();
+            } else {
+                currentAnimation = sideHandR();
+            }
         }
+    }
+
+    public void relax() {
+        if (!walking) {
+            if (randomNo == 0) {
+                currentAnimation = relaxOne;
+            } else {
+                currentAnimation = relaxTwo;
+            }
+        }
+    }
+
+    public void wrong() {
+        if (!walking) {
+            if (randomNo == 0) {
+                currentAnimation = wrongOne;
+            } else {
+                currentAnimation = wrongTwo;
+            }
+        }
+    }
+
+    public void waitingAnswer() {
+        if (!walking) {
+            if (leftSide) {
+                currentAnimation = sideL;
+            } else {
+                currentAnimation = sideR;
+            }
+        }
+    }
+
+    public void dance() {
+        if (!walking) {
+            currentAnimation = thumbsUp;
+        }
+    }
+
+    public void walk() {
+        walking = true;
+        if (leftSide) {
+            currentAnimation = walkL;
+            addAction(Actions.moveTo(800f, 1149f, 5f));
+        } else {
+            currentAnimation = walkR;
+            addAction(Actions.moveTo(-30f, 1149f, 5f));
+        }
+
 
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
-                currentAnimation = relax();
+                walking = false;
+                relax();
             }
-        },5f);
+        }, 5f);
     }
 
-    public Animation relax(){
-        if (randomNo == 0){
-            return relaxOne;
+
+    private Animation sideHandL() {
+        if (randomNo == 0) {
+            return sideHandOneL;
         }
-        return relaxTwo;
+        return sideHandTwoL;
     }
 
-    private void randomize(){
-        randomNo = MathUtils.random(0,1);
+    private Animation sideHandR() {
+        if (randomNo == 0) {
+            return sideHandOneR;
+        }
+        return sideHandTwoR;
+    }
+
+
+    private void randomize() {
+        randomNo = MathUtils.random(0, 1);
     }
 
 }

@@ -88,10 +88,10 @@ public class LoadingScreenNew extends ScreenAdapter {
         batch.end();
 
         if (rodaImpian.getAssetManager().update()) {
-            //rodaImpian.setScreen(new GameScreen(rodaImpian));
+            rodaImpian.setScreen(new GameScreen(rodaImpian));
             //rodaImpian.setScreen(new SkinTest(rodaImpian));
             //rodaImpian.setScreen(new GameScreen(rodaImpian));
-            rodaImpian.setScreen(new SpinScreen(rodaImpian));
+            //rodaImpian.setScreen(new SpinScreen(rodaImpian));
         }
     }
 

@@ -19,7 +19,7 @@ public class GameConfig {
     public static final Color INVISIBLE = new Color(1f,1f,1f,0f);
     public static final SequenceAction BLINKS = new SequenceAction(Actions.color(INVISIBLE,0.3f), Actions.color(VISIBLE,0.3f));
     public static final Array<String> TABLECOLOR = new Array<>(new String[]{"tableblue","tablegold","tablegreen","tablepurple","tablered","tableyellow"});
-
+    public static final String ALLOWEDCHAR = "abcdefghijklmnopqrstuvwxyz";
 
     public static void clearScreen(){
         Gdx.gl.glClearColor(0,0,0,0);
