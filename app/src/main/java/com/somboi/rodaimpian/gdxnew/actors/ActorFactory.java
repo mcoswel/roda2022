@@ -7,8 +7,6 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.somboi.rodaimpian.gdx.assets.AssetDesc;
 import com.somboi.rodaimpian.gdx.config.GameConfig;
@@ -22,6 +20,7 @@ public class ActorFactory {
     private boolean isWheelBonus;
     private final Stage stage;
     private final AssetManager assetManager;
+
     public ActorFactory(AssetManager assetManager, Stage worldStage, Stage stage) {
         this.atlas = assetManager.get(AssetDesc.ATLAS);
         this.worldStage = worldStage;
@@ -29,25 +28,22 @@ public class ActorFactory {
         this.assetManager = assetManager;
     }
 
-    public void createGameBg(){
-        int random = MathUtils.random(0,1);
-        if (random==1){
+    public void createGameBg(boolean isGoldTheme) {
+        if (isGoldTheme) {
+            stage.addActor(new Image(assetManager.get(AssetDesc.GAMEBGGOLD)));
+        } else {
             stage.addActor(new Image(assetManager.get(AssetDesc.GAMEBGRED)));
-        }else{
-            stage.addActor(new Image(assetManager.get(AssetDesc.GAMEBG)));
         }
     }
 
-    public void createGameTables(){
+    public void createGameTables() {
         GameConfig.TABLECOLOR.shuffle();
-        for (int i=0; i<3; i++){
+        for (int i = 0; i < 3; i++) {
             Image image = new Image(atlas.findRegion(GameConfig.TABLECOLOR.get(i)));
-            image.setPosition(i*300,0);
+            image.setPosition(i * 300, 0);
             stage.addActor(image);
         }
     }
-
-
 
 
     public void createWheel(Body wheelBody) {
@@ -70,7 +66,7 @@ public class ActorFactory {
     }
 
     public void createNeedle(Body needleBody) {
-         needleImg = new BodyImage(atlas.findRegion("needle"), needleBody);
+        needleImg = new BodyImage(atlas.findRegion("needle"), needleBody);
         needleImg.setOrigin(5.75f, 11.4f);
         needleImg.setPosition(needleBody.getPosition().x, needleBody.getPosition().y);
         needleImg.setSize(needleImg.getWidth() / 100, needleImg.getHeight() / 100);

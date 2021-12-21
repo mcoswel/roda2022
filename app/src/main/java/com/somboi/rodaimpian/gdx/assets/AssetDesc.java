@@ -25,8 +25,10 @@ public class AssetDesc {
     public static final AssetDescriptor<Texture> HOURGLASS = new AssetDescriptor<Texture>(AssetPath.HOURGLASS, Texture.class);
     public static final AssetDescriptor<TextureAtlas> ATLAS = new AssetDescriptor<TextureAtlas>(AssetPath.ATLAS, TextureAtlas.class);
     public static final AssetDescriptor<Skin> NEWSKIN =  new AssetDescriptor<Skin>(AssetPath.NEWSKIN, Skin.class);
-    public static final AssetDescriptor<Texture> GAMEBG = new AssetDescriptor<Texture>(AssetPath.GAMEBG, Texture.class);
+    public static final AssetDescriptor<Texture> GAMEBGGOLD = new AssetDescriptor<Texture>(AssetPath.GAMEBGGOLD, Texture.class);
     public static final AssetDescriptor<Texture> GAMEBGRED = new AssetDescriptor<Texture>(AssetPath.GAMEBGRED, Texture.class);
     public static final AssetDescriptor<Texture> WHEELBG = new AssetDescriptor<Texture>(AssetPath.WHEELBG, Texture.class);
+    public static final AssetDescriptor<Texture> BLURRED = new AssetDescriptor<Texture>(AssetPath.BLURRED, Texture.class);
+    public static final AssetDescriptor<Texture> BLURGOLD = new AssetDescriptor<Texture>(AssetPath.BLURGOLD, Texture.class);
 }
 

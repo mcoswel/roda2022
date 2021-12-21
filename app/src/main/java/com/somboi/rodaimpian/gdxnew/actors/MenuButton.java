@@ -15,6 +15,6 @@ public class MenuButton extends TextButton {
 
     @Override
     public float getPrefHeight() {
-        return 120f;
+        return 100f;
     }
 }

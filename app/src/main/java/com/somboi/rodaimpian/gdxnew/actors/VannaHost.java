@@ -107,7 +107,7 @@ public class VannaHost extends Image {
                         atlas.createSprite("walkl1"), atlas.createSprite("walkl2")
                 }), Animation.PlayMode.LOOP);
 
-        currentAnimation = relaxOne;
+        currentAnimation = thumbsUp;
 
     }
 

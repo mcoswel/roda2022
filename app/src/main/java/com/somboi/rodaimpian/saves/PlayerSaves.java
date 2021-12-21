@@ -10,6 +10,7 @@ import com.somboi.rodaimpian.android.PlayerOnline;
 import com.somboi.rodaimpian.gdx.actor.PlayerImage;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdx.entities.Player;
+import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
 
 public class PlayerSaves {
     private Save save;
@@ -34,12 +35,22 @@ public class PlayerSaves {
         save.data.put(StringRes.PLAYERSAVE, player);
         saveToJson(); //Save the data immediately
     }
+    public void savePlayerNew(PlayerNew playerNew) {
+        save.data.put(StringRes.PLAYERSAVENEW, playerNew);
+        saveToJson(); //Save the data immediately
+    }
 
     public void savePlayerOnline(PlayerOnline playerOnline){
         save.data.put(StringRes.PLAYERONLINESAVE, playerOnline);
         saveToJson(); //Save the data immediately
     }
-
+    public PlayerNew loadPlayerNew() {
+        //Return data if the data contains key, otherwise return null
+        if (save.data.containsKey(StringRes.PLAYERSAVENEW))
+            return (PlayerNew) save.data.get(StringRes.PLAYERSAVENEW);
+        else
+            return null;
+    }
     public Player load() {
         //Return data if the data contains key, otherwise return null
         if (save.data.containsKey(StringRes.PLAYERSAVE))

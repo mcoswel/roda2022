@@ -5,6 +5,7 @@ import com.badlogic.gdx.utils.Array;
 public class StringRes {
     public static final String QUESTIONS = "questions";
     public static final String PLAYERSAVE = "playersave";
+    public static final String PLAYERSAVENEW = "savenew";
     public static final String START = "Mula";
     public static final String Offline = "Offline";
 
@@ -115,6 +116,10 @@ public class StringRes {
     public static final String RODARODA = "159.223.73.205";
     public static final String ENTERNAME = "Taipkan nama anda";
     public static final String LETSPLAY = " Mengajak Bermain";
+    public static final String SINGLEPLAYER = "1 Pemain";
+    public static final String MULTIPLAYER = "Multi-Pemain";
+    public static final String CHANGENAME = "Tukar Nama";
+
     //159.223.73.205
 
 

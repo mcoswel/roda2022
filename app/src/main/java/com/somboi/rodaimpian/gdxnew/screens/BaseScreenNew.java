@@ -14,6 +14,7 @@ import com.somboi.rodaimpian.RodaImpianNew;
 import com.somboi.rodaimpian.gdx.assets.AssetDesc;
 import com.somboi.rodaimpian.gdx.config.GameConfig;
 import com.somboi.rodaimpian.gdxnew.actors.ActorFactory;
+import com.somboi.rodaimpian.saves.PlayerSaves;
 
 public class BaseScreenNew extends ScreenAdapter {
     protected final FitViewport worldViewport = new FitViewport(9f, 16f);
@@ -27,6 +28,7 @@ public class BaseScreenNew extends ScreenAdapter {
     protected final TextureAtlas atlas;
     protected final Logger logger = new Logger(this.getClass().getName(), 3);
     protected final ActorFactory actorFactory;
+    protected final PlayerSaves saves = new PlayerSaves();
     public BaseScreenNew(RodaImpianNew rodaImpianNew) {
         Gdx.app.setLogLevel(3);
         this.rodaImpianNew = rodaImpianNew;
@@ -51,5 +53,12 @@ public class BaseScreenNew extends ScreenAdapter {
 
     public void update(float delta) {
 
+    }
+
+    @Override
+    public void dispose() {
+        stage.dispose();
+        worldStage.dispose();
+        world.dispose();
     }
 }

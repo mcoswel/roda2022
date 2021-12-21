@@ -6,26 +6,17 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Logger;
-import com.badlogic.gdx.utils.async.AsyncExecutor;
-import com.badlogic.gdx.utils.async.AsyncResult;
-import com.badlogic.gdx.utils.async.AsyncTask;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.somboi.rodaimpian.RodaImpian;
 import com.somboi.rodaimpian.RodaImpianNew;
-import com.somboi.rodaimpian.android.PlayerOnline;
 import com.somboi.rodaimpian.gdx.assets.AssetDesc;
-import com.somboi.rodaimpian.gdx.assets.QuestionsGenerator;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdx.config.GameConfig;
-import com.somboi.rodaimpian.gdx.entities.Player;
-import com.somboi.rodaimpian.gdx.screen.MenuScreen;
+import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
 import com.somboi.rodaimpian.saves.PlayerSaves;
-import com.somboi.rodaimpian.saves.QuestionsSaves;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.UUID;
 
 public class LoadingScreenNew extends ScreenAdapter {
@@ -38,6 +29,7 @@ public class LoadingScreenNew extends ScreenAdapter {
     private final SpriteBatch batch = new SpriteBatch();
     private float rotation;
     private final OrthographicCamera camera;
+
     public LoadingScreenNew(RodaImpianNew rodaImpian) {
         this.rodaImpian = rodaImpian;
         this.assetManager = rodaImpian.getAssetManager();
@@ -45,8 +37,19 @@ public class LoadingScreenNew extends ScreenAdapter {
         // rodaImpian.loadRewardedAds();
         camera = new OrthographicCamera();
         viewport = new FitViewport(GameConfig.SCWIDTH, GameConfig.SCHEIGHT,camera);
-
-
+        PlayerNew player = playerSaves.loadPlayerNew();
+        if (player==null){
+            player = new PlayerNew();
+            player.setName(StringRes.ANON);
+            player.setPlayerBonus(new HashMap<>());
+            player.setPlayerGifts(new HashMap<>());
+            player.setUid(UUID.randomUUID().toString());
+            if (rodaImpian.getFcmToken()!=null){
+                player.setFcmToken(rodaImpian.getFcmToken());
+            }
+            playerSaves.savePlayerNew(player);
+        }
+        rodaImpian.setPlayer(player);
         assetManager.load(AssetDesc.TEXTUREATLAS);
         assetManager.load(AssetDesc.CONFETTI);
         assetManager.load(AssetDesc.WINANIMATION);
@@ -65,9 +68,12 @@ public class LoadingScreenNew extends ScreenAdapter {
         assetManager.load(AssetDesc.HOURGLASS);
         assetManager.load(AssetDesc.ATLAS);
         assetManager.load(AssetDesc.NEWSKIN);
-        assetManager.load(AssetDesc.GAMEBG);
+        assetManager.load(AssetDesc.GAMEBGGOLD);
         assetManager.load(AssetDesc.WHEELBG);
         assetManager.load(AssetDesc.GAMEBGRED);
+        assetManager.load(AssetDesc.BLURRED);
+        assetManager.load(AssetDesc.BLURGOLD);
+
 
     }
 
@@ -88,7 +94,9 @@ public class LoadingScreenNew extends ScreenAdapter {
         batch.end();
 
         if (rodaImpian.getAssetManager().update()) {
-            rodaImpian.setScreen(new GameScreen(rodaImpian));
+            rodaImpian.setMainScreen(new MainScreen(rodaImpian));
+            rodaImpian.mainMenu();
+            //rodaImpian.setScreen(new GameScreen(rodaImpian));
             //rodaImpian.setScreen(new SkinTest(rodaImpian));
             //rodaImpian.setScreen(new GameScreen(rodaImpian));
             //rodaImpian.setScreen(new SpinScreen(rodaImpian));
