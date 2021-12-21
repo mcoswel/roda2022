@@ -9,11 +9,8 @@ import com.somboi.rodaimpian.gdxnew.actors.VannaHost;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
 
 public class GameScreen extends BaseScreenNew {
-    private final VannaHost vannaHost;
-    private final Array<PlayerNew> players = new Array<>();
     public GameScreen(RodaImpianNew rodaImpianNew) {
         super(rodaImpianNew);
-        vannaHost = new VannaHost(atlas);
 
         if (rodaImpianNew.getGameModes() != null) {
             if (!rodaImpianNew.getGameModes().equals(GameModes.ONLINE)) {
@@ -24,8 +21,6 @@ public class GameScreen extends BaseScreenNew {
             }
         }
 
-
-
     }
 
     @Override
@@ -33,7 +28,6 @@ public class GameScreen extends BaseScreenNew {
         Gdx.input.setInputProcessor(stage);
         actorFactory.createGameBg(rodaImpianNew.isGoldTheme());
         actorFactory.createGameTables();
-        stage.addActor(vannaHost);
     }
 
     @Override
