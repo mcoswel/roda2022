@@ -22,7 +22,6 @@ public class FirstTurnWheel extends Image {
         this.setOrigin((850f/2),(850f/2));
         this.setPosition(25f,375f);
         this.playerGuis = modeBase.getPlayerGuis();
-
         pointer = new Image(textureAtlas.findRegion("pointer"));
         pointer.setSize(65f,120f);
         pointer.setPosition(450f-(65f/2f),1150f);

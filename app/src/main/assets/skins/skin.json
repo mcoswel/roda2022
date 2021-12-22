@@ -3,11 +3,20 @@ com.badlogic.gdx.graphics.g2d.BitmapFont: {
 	arial24white: {
 		file: arial24white.fnt
 	}
+	arial32: {
+		file: arial32.fnt
+	}
+	arial36: {
+		file: arial36.fnt
+	}
 	arial44: {
 		file: arial44.fnt
 	}
 	comic48: {
 		file: comic48.fnt
+	}
+	digital: {
+		file: digital.fnt
 	}
 }
 com.badlogic.gdx.graphics.Color: {
@@ -15,6 +24,12 @@ com.badlogic.gdx.graphics.Color: {
 		r: 0
 		g: 0
 		b: 0
+		a: 1
+	}
+	blue: {
+		r: 0.08586663
+		g: 0.11177062
+		b: 0.92
 		a: 1
 	}
 	red: {
@@ -42,6 +57,20 @@ com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	spin: {
 		font: arial44
 		background: label
+	}
+	arial36: {
+		font: arial36
+	}
+	free: {
+		font: arial24white
+		background: smallnormal
+	}
+	score: {
+		font: digital
+	}
+	name: {
+		font: arial32
+		fontColor: white
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {

@@ -48,7 +48,7 @@ public class MenuFactory {
         singlePlayer.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                mainScreen.startGame();
+                mainScreen.singlePlay();
             }
         });
         MenuButton multiPlayer = new MenuButton(StringRes.MULTIPLAYER, skin);
@@ -71,6 +71,7 @@ public class MenuFactory {
         mainButtons.setPosition(450f - mainButtons.getWidth() / 2f, buttonposition.y - mainButtons.getWidth() + 10f);
         stage.addActor(mainButtons);
     }
+
 
     public void createPlayerProfile(PlayerNew playerNew, boolean isGold, MainScreen mainScreen) {
         if (playerProfile != null) {

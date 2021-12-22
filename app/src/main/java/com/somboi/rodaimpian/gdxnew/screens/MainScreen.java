@@ -2,15 +2,14 @@ package com.somboi.rodaimpian.gdxnew.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.somboi.rodaimpian.RodaImpianNew;
+import com.somboi.rodaimpian.gdx.modes.GameModes;
 import com.somboi.rodaimpian.gdxnew.actors.DialogChangeName;
 import com.somboi.rodaimpian.gdxnew.actors.MenuFactory;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
 
 public class MainScreen extends BaseScreenNew{
-    private final MenuFactory menuFactory;
     public MainScreen(RodaImpianNew rodaImpianNew) {
         super(rodaImpianNew);
-        this.menuFactory = new MenuFactory(assetManager, skin, stage);
     }
 
     @Override
@@ -34,8 +33,8 @@ public class MainScreen extends BaseScreenNew{
     public void savePlayer(PlayerNew playerNew){
         saves.savePlayerNew(playerNew);
     }
-    public void startGame(){
-        rodaImpianNew.setScreen(new GameScreen(rodaImpianNew));
+    public void singlePlay(){
+        rodaImpianNew.setScreen(new GameScreen(rodaImpianNew, GameModes.SINGLE));
     }
 
 }

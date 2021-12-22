@@ -14,6 +14,7 @@ import com.somboi.rodaimpian.RodaImpianNew;
 import com.somboi.rodaimpian.gdx.assets.AssetDesc;
 import com.somboi.rodaimpian.gdx.config.GameConfig;
 import com.somboi.rodaimpian.gdxnew.actors.ActorFactory;
+import com.somboi.rodaimpian.gdxnew.actors.MenuFactory;
 import com.somboi.rodaimpian.saves.PlayerSaves;
 
 public class BaseScreenNew extends ScreenAdapter {
@@ -29,14 +30,16 @@ public class BaseScreenNew extends ScreenAdapter {
     protected final Logger logger = new Logger(this.getClass().getName(), 3);
     protected final ActorFactory actorFactory;
     protected final PlayerSaves saves = new PlayerSaves();
+    protected final MenuFactory menuFactory;
+
     public BaseScreenNew(RodaImpianNew rodaImpianNew) {
         Gdx.app.setLogLevel(3);
         this.rodaImpianNew = rodaImpianNew;
         this.assetManager = rodaImpianNew.getAssetManager();
         this.atlas = assetManager.get(AssetDesc.ATLAS);
         this.skin = assetManager.get(AssetDesc.NEWSKIN);
-        this.actorFactory = new ActorFactory(assetManager, worldStage,stage);
-
+        this.actorFactory = new ActorFactory(assetManager, worldStage, stage);
+        this.menuFactory = new MenuFactory(assetManager, skin, stage);
     }
 
     @Override

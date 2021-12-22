@@ -13,11 +13,12 @@ import com.somboi.rodaimpian.gdxnew.wheels.WheelParams;
 public class RodaImpianNew extends Game {
     private final AssetManager assetManager = new AssetManager();
     private final WheelParams wheelParams = new WheelParams();
-    private int humanPlayerCount = 1;
     private MainScreen mainScreen;
     private GameModes gameModes;
     private boolean goldTheme;
     private PlayerNew player;
+    private PlayerNew playerTwo;
+    private PlayerNew playerThree;
     private String fcmToken;
     private final AndroInterface androInterface;
 
@@ -57,13 +58,7 @@ public class RodaImpianNew extends Game {
         this.player = player;
     }
 
-    public int getHumanPlayerCount() {
-        return humanPlayerCount;
-    }
 
-    public void setHumanPlayerCount(int humanPlayerCount) {
-        this.humanPlayerCount = humanPlayerCount;
-    }
 
     public String getFcmToken() {
         return fcmToken;
@@ -84,6 +79,23 @@ public class RodaImpianNew extends Game {
     public void setMainScreen(MainScreen mainScreen) {
         this.mainScreen = mainScreen;
     }
+
+    public PlayerNew getPlayerTwo() {
+        return playerTwo;
+    }
+
+    public void setPlayerTwo(PlayerNew playerTwo) {
+        this.playerTwo = playerTwo;
+    }
+
+    public PlayerNew getPlayerThree() {
+        return playerThree;
+    }
+
+    public void setPlayerThree(PlayerNew playerThree) {
+        this.playerThree = playerThree;
+    }
+
     public void mainMenu(){
         if (mainScreen!=null) {
             setScreen(mainScreen);
