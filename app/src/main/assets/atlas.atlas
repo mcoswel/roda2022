@@ -6,303 +6,289 @@ filter: Nearest, Nearest
 repeat: none
 adam
   rotate: false
-  xy: 1808, 1193
+  xy: 1758, 1389
+  size: 216, 215
+  orig: 216, 215
+  offset: 0, 0
+  index: -1
+adamtwo
+  rotate: false
+  xy: 1076, 543
   size: 216, 215
   orig: 216, 215
   offset: 0, 0
   index: -1
 argelico
   rotate: false
-  xy: 1758, 542
+  xy: 1758, 738
   size: 216, 215
   orig: 216, 215
   offset: 0, 0
   index: -1
 catalina
   rotate: false
-  xy: 1814, 108
+  xy: 1758, 304
   size: 216, 215
   orig: 216, 215
   offset: 0, 0
   index: -1
 defaultavatar
   rotate: false
-  xy: 908, 565
+  xy: 1512, 3
   size: 300, 299
   orig: 300, 299
   offset: 0, 0
   index: -1
 diana
   rotate: false
-  xy: 1210, 649
+  xy: 1814, 87
+  size: 216, 215
+  orig: 216, 215
+  offset: 0, 0
+  index: -1
+dianatwo
+  rotate: false
+  xy: 858, 444
   size: 216, 215
   orig: 216, 215
   offset: 0, 0
   index: -1
 joe
   rotate: false
-  xy: 2, 564
+  xy: 1456, 480
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: -1
 joetwo
   rotate: false
-  xy: 1210, 240
+  xy: 1456, 1084
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: -1
 lizzy
   rotate: false
-  xy: 1512, 240
+  xy: 1456, 782
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: -1
 lizzytwo
   rotate: false
-  xy: 304, 564
+  xy: 908, 2
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: -1
 logocenter
   rotate: false
-  xy: 2, 890
+  xy: 2, 888
   size: 1150, 1150
   orig: 1150, 1150
   offset: 0, 0
   index: -1
 nabilah
   rotate: false
-  xy: 1814, 325
+  xy: 1758, 521
   size: 216, 215
   orig: 216, 215
   offset: 0, 0
   index: -1
 nabilahtwo
   rotate: false
-  xy: 1808, 1627
+  xy: 1808, 1823
   size: 216, 215
   orig: 216, 215
   offset: 0, 0
   index: -1
 nur
   rotate: false
-  xy: 606, 240
+  xy: 1154, 760
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: -1
 nurtwo
   rotate: false
-  xy: 908, 240
+  xy: 1456, 1386
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: -1
+pointer
+  rotate: false
+  xy: 606, 331
+  size: 250, 357
+  orig: 250, 357
+  offset: 0, 0
+  index: -1
 rajan
   rotate: false
-  xy: 1758, 759
+  xy: 1758, 955
   size: 216, 215
   orig: 216, 215
   offset: 0, 0
   index: -1
 rajantwo
   rotate: false
-  xy: 1808, 1410
+  xy: 1808, 1606
   size: 216, 215
   orig: 216, 215
   offset: 0, 0
   index: -1
-relax1
-  rotate: false
-  xy: 814, 13
-  size: 114, 225
-  orig: 114, 225
-  offset: 0, 0
-  index: -1
-relax3
-  rotate: false
-  xy: 1278, 13
-  size: 114, 225
-  orig: 114, 225
-  offset: 0, 0
-  index: -1
 relax4
   rotate: false
-  xy: 234, 2
+  xy: 1076, 316
   size: 114, 225
   orig: 114, 225
   offset: 0, 0
   index: -1
 selena
   rotate: false
-  xy: 1758, 976
+  xy: 1758, 1172
   size: 216, 215
   orig: 216, 215
   offset: 0, 0
   index: -1
-sidehand2
-  rotate: false
-  xy: 930, 13
-  size: 114, 225
-  orig: 114, 225
-  offset: 0, 0
-  index: -1
-sidehand4
-  rotate: false
-  xy: 1510, 13
-  size: 114, 225
-  orig: 114, 225
-  offset: 0, 0
-  index: -1
-sidehandl1
-  rotate: false
-  xy: 1394, 13
-  size: 114, 225
-  orig: 114, 225
-  offset: 0, 0
-  index: -1
-sidehandl2
-  rotate: false
-  xy: 466, 13
-  size: 114, 225
-  orig: 114, 225
-  offset: 0, 0
-  index: -1
-sidehandl4
-  rotate: false
-  xy: 1162, 13
-  size: 114, 225
-  orig: 114, 225
-  offset: 0, 0
-  index: -1
 sidel1
   rotate: false
-  xy: 350, 13
+  xy: 1294, 306
   size: 114, 225
   orig: 114, 225
   offset: 0, 0
   index: -1
 tableblue
   rotate: false
-  xy: 1506, 1218
+  xy: 1154, 1375
   size: 300, 311
   orig: 300, 311
   offset: 0, 0
   index: -1
 tablegold
   rotate: false
-  xy: 1506, 1531
+  xy: 2, 377
   size: 300, 311
   orig: 300, 311
   offset: 0, 0
   index: -1
 tablegreen
   rotate: false
-  xy: 1456, 905
+  xy: 2, 64
   size: 300, 311
   orig: 300, 311
   offset: 0, 0
   index: -1
 tablepink
   rotate: false
-  xy: 2, 229
+  xy: 304, 64
   size: 300, 311
   orig: 300, 311
   offset: 0, 0
   index: -1
 tablepurple
   rotate: false
-  xy: 1154, 1179
+  xy: 1506, 1727
   size: 300, 311
   orig: 300, 311
   offset: 0, 0
   index: -1
 tablered
   rotate: false
-  xy: 1456, 592
+  xy: 1154, 1062
   size: 300, 311
   orig: 300, 311
   offset: 0, 0
   index: -1
 tableyellow
   rotate: false
-  xy: 1154, 866
+  xy: 304, 377
   size: 300, 311
   orig: 300, 311
   offset: 0, 0
   index: -1
 thumbsup1
   rotate: false
-  xy: 118, 2
+  xy: 1294, 533
   size: 114, 225
   orig: 114, 225
   offset: 0, 0
   index: -1
-thumbsup3
+tileb
   rotate: false
-  xy: 1046, 13
-  size: 114, 225
-  orig: 114, 225
+  xy: 1614, 341
+  size: 100, 137
+  orig: 100, 137
+  offset: 0, 0
+  index: -1
+tilej
+  rotate: false
+  xy: 841, 749
+  size: 100, 137
+  orig: 100, 137
+  offset: 0, 0
+  index: -1
+tileminus
+  rotate: false
+  xy: 1410, 341
+  size: 100, 137
+  orig: 100, 137
+  offset: 0, 0
+  index: -1
+tileofive
+  rotate: false
+  xy: 908, 305
+  size: 100, 137
+  orig: 100, 137
+  offset: 0, 0
+  index: -1
+tileutwo
+  rotate: false
+  xy: 1192, 404
+  size: 100, 137
+  orig: 100, 137
+  offset: 0, 0
+  index: -1
+tilew
+  rotate: false
+  xy: 1512, 341
+  size: 100, 137
+  orig: 100, 137
   offset: 0, 0
   index: -1
 titlelogo
   rotate: false
-  xy: 1154, 1844
+  xy: 2, 690
   size: 837, 196
   orig: 837, 196
   offset: 0, 0
   index: -1
 walk1
   rotate: false
-  xy: 2, 2
-  size: 114, 225
-  orig: 114, 225
-  offset: 0, 0
-  index: -1
-walkl1
-  rotate: false
-  xy: 582, 13
+  xy: 943, 661
   size: 114, 225
   orig: 114, 225
   offset: 0, 0
   index: -1
 wati
   rotate: false
-  xy: 606, 564
+  xy: 1210, 2
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: -1
 watitwo
   rotate: false
-  xy: 304, 240
+  xy: 606, 29
   size: 300, 300
   orig: 300, 300
   offset: 0, 0
   index: -1
 wheelturn
   rotate: false
-  xy: 1154, 1492
+  xy: 1154, 1688
   size: 350, 350
   orig: 350, 350
-  offset: 0, 0
-  index: -1
-wrong2
-  rotate: false
-  xy: 1626, 13
-  size: 114, 225
-  orig: 114, 225
-  offset: 0, 0
-  index: -1
-wrong3
-  rotate: false
-  xy: 698, 13
-  size: 114, 225
-  orig: 114, 225
   offset: 0, 0
   index: -1
 
@@ -311,72 +297,107 @@ size: 2048, 2048
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
-adamtwo
-  rotate: false
-  xy: 1154, 1747
-  size: 216, 215
-  orig: 216, 215
-  offset: 0, 0
-  index: -1
 blank
   rotate: false
-  xy: 1780, 1686
+  xy: 1910, 1557
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
-dianatwo
-  rotate: false
-  xy: 2, 595
-  size: 216, 215
-  orig: 216, 215
-  offset: 0, 0
-  index: -1
 logobonus
   rotate: false
-  xy: 2, 812
+  xy: 2, 822
   size: 1150, 1150
   orig: 1150, 1150
   offset: 0, 0
   index: -1
+relax1
+  rotate: false
+  xy: 118, 595
+  size: 114, 225
+  orig: 114, 225
+  offset: 0, 0
+  index: -1
 relax2
   rotate: false
-  xy: 452, 585
+  xy: 234, 141
+  size: 114, 225
+  orig: 114, 225
+  offset: 0, 0
+  index: -1
+relax3
+  rotate: false
+  xy: 118, 368
   size: 114, 225
   orig: 114, 225
   offset: 0, 0
   index: -1
 side1
   rotate: false
-  xy: 800, 585
+  xy: 1154, 839
   size: 114, 225
   orig: 114, 225
   offset: 0, 0
   index: -1
 side2
   rotate: false
-  xy: 2, 368
+  xy: 1386, 1747
   size: 114, 225
   orig: 114, 225
   offset: 0, 0
   index: -1
 sidehand1
   rotate: false
-  xy: 2, 141
+  xy: 234, 368
+  size: 114, 225
+  orig: 114, 225
+  offset: 0, 0
+  index: -1
+sidehand2
+  rotate: false
+  xy: 1154, 1520
   size: 114, 225
   orig: 114, 225
   offset: 0, 0
   index: -1
 sidehand3
   rotate: false
-  xy: 684, 585
+  xy: 466, 595
+  size: 114, 225
+  orig: 114, 225
+  offset: 0, 0
+  index: -1
+sidehand4
+  rotate: false
+  xy: 1154, 1293
+  size: 114, 225
+  orig: 114, 225
+  offset: 0, 0
+  index: -1
+sidehandl1
+  rotate: false
+  xy: 234, 595
+  size: 114, 225
+  orig: 114, 225
+  offset: 0, 0
+  index: -1
+sidehandl2
+  rotate: false
+  xy: 2, 595
   size: 114, 225
   orig: 114, 225
   offset: 0, 0
   index: -1
 sidehandl3
   rotate: false
-  xy: 220, 585
+  xy: 1386, 1520
+  size: 114, 225
+  orig: 114, 225
+  offset: 0, 0
+  index: -1
+sidehandl4
+  rotate: false
+  xy: 2, 141
   size: 114, 225
   orig: 114, 225
   offset: 0, 0
@@ -390,385 +411,371 @@ sidel2
   index: -1
 thumbsup2
   rotate: false
-  xy: 1154, 1293
+  xy: 350, 595
+  size: 114, 225
+  orig: 114, 225
+  offset: 0, 0
+  index: -1
+thumbsup3
+  rotate: false
+  xy: 1270, 1747
   size: 114, 225
   orig: 114, 225
   offset: 0, 0
   index: -1
 tilea
   rotate: false
-  xy: 1270, 1191
+  xy: 990, 683
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tileafour
   rotate: false
-  xy: 322, 307
+  xy: 206, 2
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tileaone
   rotate: false
-  xy: 1474, 1269
+  xy: 1604, 1557
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tileathree
   rotate: false
-  xy: 526, 307
+  xy: 1720, 1696
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tileatwo
   rotate: false
-  xy: 730, 307
-  size: 100, 137
-  orig: 100, 137
-  offset: 0, 0
-  index: -1
-tileb
-  rotate: false
-  xy: 916, 673
+  xy: 568, 405
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tilec
   rotate: false
-  xy: 628, 446
+  xy: 1822, 1696
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tilecone
   rotate: false
-  xy: 1678, 1825
+  xy: 888, 683
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tiled
   rotate: false
-  xy: 1474, 1686
+  xy: 1270, 1015
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tilee
   rotate: false
-  xy: 1780, 1547
+  xy: 1092, 544
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tileefour
   rotate: false
-  xy: 1372, 991
+  xy: 684, 544
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tileeone
   rotate: false
-  xy: 1474, 1825
+  xy: 1386, 1381
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tileethree
   rotate: false
-  xy: 220, 307
+  xy: 466, 456
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tileetwo
   rotate: false
-  xy: 1372, 1408
+  xy: 1822, 1835
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tilef
   rotate: false
-  xy: 1372, 1269
+  xy: 1386, 1242
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tileg
   rotate: false
-  xy: 1018, 673
+  xy: 1618, 1835
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tileh
   rotate: false
-  xy: 1882, 1825
+  xy: 350, 90
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tilei
   rotate: false
-  xy: 424, 446
+  xy: 1270, 876
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tileifour
   rotate: false
-  xy: 1576, 1825
+  xy: 1720, 1835
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tileione
   rotate: false
-  xy: 1474, 1408
+  xy: 1372, 1103
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tileithree
   rotate: false
-  xy: 1270, 913
+  xy: 466, 317
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tileitwo
   rotate: false
-  xy: 628, 307
-  size: 100, 137
-  orig: 100, 137
-  offset: 0, 0
-  index: -1
-tilej
-  rotate: false
-  xy: 118, 456
+  xy: 452, 178
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tilek
   rotate: false
-  xy: 1678, 1686
+  xy: 1502, 1469
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tilel
   rotate: false
-  xy: 322, 446
+  xy: 582, 683
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tilem
   rotate: false
-  xy: 1474, 1130
-  size: 100, 137
-  orig: 100, 137
-  offset: 0, 0
-  index: -1
-tileminus
-  rotate: false
-  xy: 1270, 1608
+  xy: 786, 544
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tilen
   rotate: false
-  xy: 424, 307
+  xy: 1092, 683
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tileo
   rotate: false
-  xy: 220, 446
-  size: 100, 137
-  orig: 100, 137
-  offset: 0, 0
-  index: -1
-tileofive
-  rotate: false
-  xy: 118, 317
+  xy: 2, 2
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tileofour
   rotate: false
-  xy: 526, 446
+  xy: 1194, 700
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tileoone
   rotate: false
-  xy: 1780, 1825
+  xy: 1488, 1330
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tileoppost
   rotate: false
-  xy: 1270, 1469
+  xy: 1502, 1608
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tileothree
   rotate: false
-  xy: 1372, 1686
+  xy: 1270, 1154
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tileotwo
   rotate: false
-  xy: 1678, 1408
+  xy: 990, 544
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tilep
   rotate: false
-  xy: 1372, 1130
+  xy: 1924, 1696
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tileq
   rotate: false
-  xy: 1270, 1330
+  xy: 684, 683
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tiler
   rotate: false
-  xy: 1882, 1686
+  xy: 1194, 561
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tiles
   rotate: false
-  xy: 1576, 1547
+  xy: 1372, 964
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tilet
   rotate: false
-  xy: 118, 178
+  xy: 350, 229
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tileu
   rotate: false
-  xy: 730, 446
+  xy: 582, 544
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tileufour
   rotate: false
-  xy: 1576, 1408
+  xy: 1706, 1557
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tileuone
   rotate: false
-  xy: 1678, 1547
+  xy: 1808, 1557
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tileuthree
   rotate: false
-  xy: 1474, 1547
-  size: 100, 137
-  orig: 100, 137
-  offset: 0, 0
-  index: -1
-tileutwo
-  rotate: false
-  xy: 1372, 1825
+  xy: 786, 683
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tilev
   rotate: false
-  xy: 1576, 1686
-  size: 100, 137
-  orig: 100, 137
-  offset: 0, 0
-  index: -1
-tilew
-  rotate: false
-  xy: 2, 2
+  xy: 1924, 1835
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tilex
   rotate: false
-  xy: 1270, 1052
+  xy: 1618, 1696
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tiley
   rotate: false
-  xy: 1372, 1547
+  xy: 104, 2
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 tilez
   rotate: false
-  xy: 1576, 1269
+  xy: 888, 544
   size: 100, 137
   orig: 100, 137
   offset: 0, 0
   index: -1
 walk2
   rotate: false
-  xy: 1154, 1520
+  xy: 118, 141
+  size: 114, 225
+  orig: 114, 225
+  offset: 0, 0
+  index: -1
+walkl1
+  rotate: false
+  xy: 1154, 1747
   size: 114, 225
   orig: 114, 225
   offset: 0, 0
   index: -1
 walkl2
   rotate: false
-  xy: 1154, 839
+  xy: 1270, 1293
   size: 114, 225
   orig: 114, 225
   offset: 0, 0
   index: -1
 wrong1
   rotate: false
-  xy: 568, 585
+  xy: 350, 368
+  size: 114, 225
+  orig: 114, 225
+  offset: 0, 0
+  index: -1
+wrong2
+  rotate: false
+  xy: 1270, 1520
+  size: 114, 225
+  orig: 114, 225
+  offset: 0, 0
+  index: -1
+wrong3
+  rotate: false
+  xy: 2, 368
   size: 114, 225
   orig: 114, 225
   offset: 0, 0
   index: -1
 wrong4
   rotate: false
-  xy: 336, 585
+  xy: 1502, 1747
   size: 114, 225
   orig: 114, 225
   offset: 0, 0

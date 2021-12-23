@@ -2,6 +2,7 @@ package com.somboi.rodaimpian.saves;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Base64Coder;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter;
@@ -10,6 +11,7 @@ import com.somboi.rodaimpian.android.PlayerOnline;
 import com.somboi.rodaimpian.gdx.actor.PlayerImage;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdx.entities.Player;
+import com.somboi.rodaimpian.gdxnew.assets.QuestionNew;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
 
 public class PlayerSaves {
@@ -39,6 +41,8 @@ public class PlayerSaves {
         save.data.put(StringRes.PLAYERSAVENEW, playerNew);
         saveToJson(); //Save the data immediately
     }
+
+
 
     public void savePlayerOnline(PlayerOnline playerOnline){
         save.data.put(StringRes.PLAYERONLINESAVE, playerOnline);

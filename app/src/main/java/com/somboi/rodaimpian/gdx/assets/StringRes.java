@@ -119,6 +119,7 @@ public class StringRes {
     public static final String SINGLEPLAYER = "1 Pemain";
     public static final String MULTIPLAYER = "Multi-Pemain";
     public static final String CHANGENAME = "Tukar Nama";
+    public static final String QUESTIONNEW = "newquestion";
 
     //159.223.73.205
 

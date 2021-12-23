@@ -2,16 +2,18 @@ package com.somboi.rodaimpian.saves;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Base64Coder;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.somboi.rodaimpian.gdx.assets.QuestionsGenerator;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
+import com.somboi.rodaimpian.gdxnew.assets.QuestionNew;
 
 public class QuestionsSaves {
     private Save save;
-    private FileHandle file = Gdx.files.local(StringRes.QUESTIONS);
+    private FileHandle file = Gdx.files.local(StringRes.QUESTIONNEW);
 
     public QuestionsSaves() {
         save = getSave();
@@ -26,6 +28,18 @@ public class QuestionsSaves {
             save = json.fromJson(Save.class, Base64Coder.decodeString(file.readString()));
         }
         return save;
+    }
+
+    public void saveQuestionsNew(Array<QuestionNew> questionArrays){
+        save.data.put(StringRes.QUESTIONNEW, questionArrays);
+        saveToJson();
+    }
+
+    public Array<QuestionNew> loadQuestionsNew(){
+        if (save.data.containsKey(StringRes.QUESTIONNEW))
+            return (Array<QuestionNew> ) save.data.get(StringRes.QUESTIONNEW);
+        else
+            return null;
     }
 
     public void saveQuestion(QuestionsGenerator questionsGenerator) {

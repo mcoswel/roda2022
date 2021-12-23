@@ -1,6 +1,7 @@
 package com.somboi.rodaimpian.gdxnew.games;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Timer;
 import com.somboi.rodaimpian.RodaImpianNew;
 
 public class SinglePlayer extends BaseGame {
@@ -8,6 +9,4 @@ public class SinglePlayer extends BaseGame {
         super(stage, rodaImpianNew);
         addPlayers();
     }
-
-
 }

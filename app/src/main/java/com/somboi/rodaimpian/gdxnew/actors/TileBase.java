@@ -1,8 +1,12 @@
 package com.somboi.rodaimpian.gdxnew.actors;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.utils.Timer;
 import com.somboi.rodaimpian.gdx.config.GameConfig;
 
 public class TileBase extends Image {
@@ -13,14 +17,26 @@ public class TileBase extends Image {
         super(atlas.findRegion("blank"));
         this.atlas = atlas;
         this.letter = letter;
-        changeSprite(letter);
         setSize(57f, 78f);
     }
 
-    public void changeSprite(String letter) {
+    public void reveal() {
+        addAction(new SequenceAction(
+                        new ParallelAction(Actions.moveBy(30f, 0, 1f),
+                                Actions.sizeTo(0, 78f, 1f)),
+                        new ParallelAction(Actions.sizeTo(57f, 78f, 1f),
+                                Actions.moveBy(-57f / 2f, 0, 1f))
+                )
+        );
         String region = getRegionString(letter);
         if (region != null) {
-            this.setDrawable(new SpriteDrawable(atlas.createSprite(region)));
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    setDrawable(new SpriteDrawable(atlas.createSprite(region)));
+                }
+            }, 1f);
+
         }
     }
 
