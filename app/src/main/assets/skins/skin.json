@@ -15,6 +15,9 @@ com.badlogic.gdx.graphics.g2d.BitmapFont: {
 	comic48: {
 		file: comic48.fnt
 	}
+	comicsmall: {
+		file: comicsmall.fnt
+	}
 	digital: {
 		file: digital.fnt
 	}
@@ -71,6 +74,10 @@ com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	name: {
 		font: arial32
 		fontColor: white
+	}
+	chat: {
+		font: comicsmall
+		background: bubble
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {

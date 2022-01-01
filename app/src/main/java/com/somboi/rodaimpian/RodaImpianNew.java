@@ -1,13 +1,13 @@
 package com.somboi.rodaimpian;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
 import com.somboi.rodaimpian.gdxnew.assets.QuestionNew;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
+import com.somboi.rodaimpian.gdxnew.screens.GameScreen;
 import com.somboi.rodaimpian.gdxnew.screens.LoadingScreenNew;
 import com.somboi.rodaimpian.gdxnew.screens.MainScreen;
 import com.somboi.rodaimpian.gdxnew.wheels.WheelParams;
@@ -23,22 +23,24 @@ public class RodaImpianNew extends Game {
     private PlayerNew playerThree;
     private String fcmToken;
     private final AndroInterface androInterface;
-    private final Array<QuestionNew>preparedQuestions = new Array<>();
+    private final Array<QuestionNew> preparedQuestions = new Array<>();
+    private GameScreen gameScreen;
+
     public RodaImpianNew(AndroInterface androInterface) {
         this.androInterface = androInterface;
     }
 
     @Override
     public void create() {
-        if (MathUtils.random(0,1)==0){
+        if (MathUtils.random(0, 1) == 0) {
             goldTheme = true;
         }
         setScreen(new LoadingScreenNew(this));
     }
 
 
-    public void loginFacebook(){
-        if (mainScreen == null){
+    public void loginFacebook() {
+        if (mainScreen == null) {
             return;
         }
         androInterface.loginFacebook(mainScreen);
@@ -59,7 +61,6 @@ public class RodaImpianNew extends Game {
     public void setPlayer(PlayerNew player) {
         this.player = player;
     }
-
 
 
     public String getFcmToken() {
@@ -98,16 +99,28 @@ public class RodaImpianNew extends Game {
         this.playerThree = playerThree;
     }
 
-    public void mainMenu(){
-        if (mainScreen!=null) {
+    public void mainMenu() {
+        if (mainScreen != null) {
             setScreen(mainScreen);
-        }else{
+        } else {
             setScreen(new MainScreen(this));
         }
     }
 
     public boolean isGoldTheme() {
-        return goldTheme; }
+        return goldTheme;
+    }
+
+    public void setGameScreen(GameScreen gameScreen) {
+        this.gameScreen = gameScreen;
+    }
+
+    public void finishSpin() {
+        if (gameScreen != null) {
+            setScreen(gameScreen);
+            gameScreen.spinResult();
+        }
+    }
 
     public Array<QuestionNew> getPreparedQuestions() {
         return preparedQuestions;
@@ -117,4 +130,6 @@ public class RodaImpianNew extends Game {
     public void dispose() {
         assetManager.dispose();
     }
+
+
 }

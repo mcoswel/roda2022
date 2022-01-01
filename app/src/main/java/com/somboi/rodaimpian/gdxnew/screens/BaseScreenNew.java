@@ -47,7 +47,6 @@ public class BaseScreenNew extends ScreenAdapter {
         GameConfig.clearScreen();
         update(delta);
         world.step(1 / 60f, 6, 2);
-
         stage.act();
         stage.draw();
         worldStage.act();

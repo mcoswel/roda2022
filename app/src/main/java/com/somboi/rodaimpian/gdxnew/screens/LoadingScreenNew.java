@@ -17,6 +17,7 @@ import com.somboi.rodaimpian.RodaImpianNew;
 import com.somboi.rodaimpian.gdx.assets.AssetDesc;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdx.config.GameConfig;
+import com.somboi.rodaimpian.gdxnew.assets.LoadFromCSV;
 import com.somboi.rodaimpian.gdxnew.assets.QuestionNew;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
 import com.somboi.rodaimpian.saves.PlayerSaves;
@@ -97,7 +98,7 @@ public class LoadingScreenNew extends ScreenAdapter {
     @Override
     public void show() {
 
-        // LoadFromCSV.execute();
+       // LoadFromCSV.execute();
 
 
     }
@@ -115,7 +116,7 @@ public class LoadingScreenNew extends ScreenAdapter {
 
         if (rodaImpian.getAssetManager().update() && task.isDone()) {
             rodaImpian.setMainScreen(new MainScreen(rodaImpian));
-            rodaImpian.mainMenu();
+           rodaImpian.mainMenu();
 
             //rodaImpian.setScreen(new GameScreen(rodaImpian));
             //rodaImpian.setScreen(new SkinTest(rodaImpian));

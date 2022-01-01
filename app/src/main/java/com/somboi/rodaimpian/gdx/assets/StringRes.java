@@ -70,7 +70,7 @@ public class StringRes {
     public static final String PEMENANGIALAH = "Pemenang keseluruhan ialah ";
     public static final String MATCHFINISHED =  "Permainan Tamat";
     public static final String MAINMENU = "Menu Utama";
-    public static final String EXIT = "Keluar";
+    public static final String EXIT = "KELUAR";
     public static final String LOGINFB = "Login";
     public static final String LOGINFBFORONLINE = "Daftar menggunakan Facebook atau Google untuk mengakses permainan online dan merekod markah ke leaderboard?" ;
     public static final String NO = "Tidak!";
@@ -120,6 +120,7 @@ public class StringRes {
     public static final String MULTIPLAYER = "Multi-Pemain";
     public static final String CHANGENAME = "Tukar Nama";
     public static final String QUESTIONNEW = "newquestion";
+    public static final String CONSONANTS = "Konsonan";
 
     //159.223.73.205
 

@@ -1,8 +1,11 @@
 package com.somboi.rodaimpian.gdxnew.games;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -11,20 +14,22 @@ import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.Timer;
 import com.somboi.rodaimpian.RodaImpianNew;
 import com.somboi.rodaimpian.gdx.assets.AssetDesc;
+import com.somboi.rodaimpian.gdx.assets.GameSound;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdxnew.actors.CpuFactory;
 import com.somboi.rodaimpian.gdxnew.actors.PlayerGuis;
+import com.somboi.rodaimpian.gdxnew.actors.PlayerMenu;
 import com.somboi.rodaimpian.gdxnew.actors.ProfilePic;
 import com.somboi.rodaimpian.gdxnew.actors.TileBase;
 import com.somboi.rodaimpian.gdxnew.actors.VannaHost;
 import com.somboi.rodaimpian.gdxnew.actors.WheelTurns;
 import com.somboi.rodaimpian.gdxnew.assets.QuestionNew;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
+import com.somboi.rodaimpian.gdxnew.screens.SpinScreen;
 
 public class BaseGame {
     protected final Stage stage;
     protected final RodaImpianNew rodaImpianNew;
-    protected final Array<PlayerNew> players = new Array<>();
     protected final Array<PlayerGuis> playerGuis = new Array<>();
     protected final VannaHost vannaHost;
     protected final TextureAtlas atlas;
@@ -34,6 +39,12 @@ public class BaseGame {
     protected int gameRound;
     protected QuestionNew currentQuestion;
     protected final Array<TileBase> tileBases = new Array<>();
+    protected final GameSound gameSound;
+    protected PlayerNew activePlayer;
+    protected int currentIndex;
+    protected final Label subjectLabel;
+    protected Group tilesGroup = new Group();
+    protected final PlayerMenu playerMenu;
 
     public BaseGame(Stage stage, RodaImpianNew rodaImpianNew) {
         this.stage = stage;
@@ -42,9 +53,14 @@ public class BaseGame {
         this.skin = rodaImpianNew.getAssetManager().get(AssetDesc.NEWSKIN);
         this.cpuFactory = new CpuFactory(atlas);
         this.vannaHost = new VannaHost(rodaImpianNew.getAssetManager().get(AssetDesc.ATLAS));
+        this.gameSound = new GameSound(rodaImpianNew.getAssetManager());
+        this.subjectLabel = new Label("", skin);
+        this.playerMenu = new PlayerMenu(stage, this, skin);
         currentQuestion = rodaImpianNew.getPreparedQuestions().get(gameRound);
         setTile();
         stage.addActor(vannaHost);
+        stage.addActor(subjectLabel);
+        stage.addActor(tilesGroup);
     }
 
     public void setTile() {
@@ -58,33 +74,33 @@ public class BaseGame {
             initialY = 1481f;
         }
         if (currentQuestion.getLine1() != null) {
-            addTileBase(currentQuestion.getLine1(), 12, initialY,initialX);
+            addTileBase(currentQuestion.getLine1(), 12, initialY, initialX);
         }
         if (currentQuestion.getLine2() != null) {
-            addTileBase(currentQuestion.getLine2(), 14, initialY - 78f - 2,37f);
+            addTileBase(currentQuestion.getLine2(), 14, initialY - 78f - 2, 37f);
         }
         if (currentQuestion.getLine3() != null) {
-            addTileBase(currentQuestion.getLine3(), 14, initialY - 78f * 2 - 4,37f);
+            addTileBase(currentQuestion.getLine3(), 14, initialY - 78f * 2 - 4, 37f);
         }
         if (currentQuestion.getLine4() != null) {
-            addTileBase(currentQuestion.getLine4(), 12, initialY - 78f * 3 - 6,96f);
+            addTileBase(currentQuestion.getLine4(), 12, initialY - 78f * 3 - 6, 96f);
         }
 
     }
 
     private void addTileBase(String questionLine, int lineMaxLength, float positionY, float positionX) {
-      if (lineMaxLength>12){
-          if ((lineMaxLength-questionLine.length())>=1){
-              positionX+=59f;
-          }
-      }
-        if (lineMaxLength==12 && currentQuestion.getTotalline()<=2){
-            if ((lineMaxLength-questionLine.length())>=1){
-                positionX+=59f;
+        if (lineMaxLength > 12) {
+            if ((lineMaxLength - questionLine.length()) >= 1) {
+                positionX += 59f;
+            }
+        }
+        if (lineMaxLength == 12 && currentQuestion.getTotalline() <= 2) {
+            if ((lineMaxLength - questionLine.length()) >= 1) {
+                positionX += 59f;
             }
         }
         for (int i = 0; i < questionLine.length(); i++) {
-            if (questionLine.charAt(i)!=' '){
+            if (questionLine.charAt(i) != ' ') {
                 TileBase tileBase = new TileBase(atlas, String.valueOf(questionLine.charAt(i)));
                 tileBase.setPosition(positionX + 57 * i + 2 * i, positionY);
                 tileBases.add(tileBase);
@@ -99,7 +115,6 @@ public class BaseGame {
         PlayerGuis playerThreeGuis;
 
         if (rodaImpianNew.getPlayerTwo() != null) {
-            players.add(rodaImpianNew.getPlayerTwo());
             playerTwoGuis = setHumanGui(rodaImpianNew.getPlayerTwo());
         } else {
             playerTwoGuis = cpuFactory.createCpu(skin);
@@ -121,8 +136,8 @@ public class BaseGame {
     public void wheelTurn() {
         final WheelTurns wheelTurns = new WheelTurns(atlas.findRegion("wheelturn"),
                 atlas.findRegion("pointer"), playerGuis, this);
-
         stage.addActor(wheelTurns);
+        gameSound.playCheer();
 
         for (int i = 0; i < playerGuis.size; i++) {
             playerGuis.get(i).setPlayerIndex(i);
@@ -140,10 +155,10 @@ public class BaseGame {
         for (int i = 0; i < playerGuis.size; i++) {
             playerGuis.get(i).animateShowBoard();
             // stage.addActor(playerGuis.get(i).getProfilePic());
-            stage.addActor(playerGuis.get(i).getScoreLabel());
-            stage.addActor(playerGuis.get(i).getFulLScoreLabel());
-            stage.addActor(playerGuis.get(i).getFreeTurn());
-            stage.addActor(playerGuis.get(i).getNameLabel());
+            tilesGroup.addActor(playerGuis.get(i).getScoreLabel());
+            tilesGroup.addActor(playerGuis.get(i).getFulLScoreLabel());
+            tilesGroup.addActor(playerGuis.get(i).getFreeTurn());
+            tilesGroup.addActor(playerGuis.get(i).getNameLabel());
         }
     }
 
@@ -159,18 +174,102 @@ public class BaseGame {
     }
 
     public void showQuestions() {
+        gameSound.playCorrect();
         for (TileBase tileBase : tileBases) {
-            tileBase.addAction(new SequenceAction(
-                    Actions.fadeOut(0),
-                    Actions.fadeIn(1f)
-            ));
-            stage.addActor(tileBase);
+            tileBase.addAction(
+                    new ParallelAction(
+                            new SequenceAction(Actions.fadeOut(0),
+                                    Actions.fadeIn(1f)),
+                            new SequenceAction(Actions.color(Color.RED, 1f), Actions.color(new Color(1f, 1f, 1f, 1f), 1f)))
+            );
+            tilesGroup.addActor(tileBase);
+        }
+        setSubject();
+    }
+
+    public void startRound() {
+        showQuestions();
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                startTurn();
+            }
+        }, 1f);
+    }
+
+    public void startTurn() {
+        for (PlayerGuis playerGui : playerGuis) {
+            if (playerGui.getPlayerNew().isTurn()) {
+                currentIndex = playerGui.getPlayerIndex();
+            }
+        }
+
+        activePlayer = playerGuis.get(currentIndex).getPlayerNew();
+        if (activePlayer.isAi()) {
+            //
+        } else {
+            //
+        }
+        showPlayerMenu();
+
+    }
+
+    public void changeTurn() {
+        currentIndex = (currentIndex + 1) % (playerGuis.size - 1);
+        for (PlayerGuis playerGui : playerGuis) {
+            playerGui.getPlayerNew().setTurn(false);
+        }
+        playerGuis.get(currentIndex).getPlayerNew().setTurn(true);
+    }
+
+    private void setSubject() {
+        subjectLabel.setText(currentQuestion.getSubject());
+        subjectLabel.pack();
+        subjectLabel.setPosition(450f - subjectLabel.getWidth() / 2f, 888f);
+    }
+
+    public void showPlayerMenu() {
+        playerMenu.show();
+    }
+
+    public void spinWheel() {
+        rodaImpianNew.setScreen(new SpinScreen(rodaImpianNew));
+    }
+
+    public void checkAnswer(String c) {
+        boolean correct = false;
+        for (TileBase tileBase : tileBases) {
+            if (tileBase.getLetter().contains(c)) {
+                tileBase.reveal();
+                correct = true;
+            }
+        }
+
+        if (correct) {
+            gameSound.playCorrect();
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    if (!activePlayer.isAi()){
+                        playerMenu.show();
+                    }
+                }
+            },1f);
+        } else {
+            gameSound.playWrong();
         }
     }
 
-    public void startRound(){
-        showQuestions();
+
+    public void showConsonants() {
+        if (rodaImpianNew.getWheelParams().getScores()>0){
+            playerMenu.createConsonantsTable();
+        }else{
+            gameSound.playAww();
+        }
     }
 
-
+    public PlayerNew getActivePlayer() {
+        return activePlayer;
+    }
 }

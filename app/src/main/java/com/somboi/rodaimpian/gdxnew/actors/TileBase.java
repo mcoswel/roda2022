@@ -12,7 +12,7 @@ import com.somboi.rodaimpian.gdx.config.GameConfig;
 public class TileBase extends Image {
     private String letter;
     private final TextureAtlas atlas;
-
+    private boolean revealed;
     public TileBase(TextureAtlas atlas, String letter) {
         super(atlas.findRegion("blank"));
         this.atlas = atlas;
@@ -21,6 +21,7 @@ public class TileBase extends Image {
     }
 
     public void reveal() {
+        revealed = true;
         addAction(new SequenceAction(
                         new ParallelAction(Actions.moveBy(30f, 0, 1f),
                                 Actions.sizeTo(0, 78f, 1f)),
@@ -100,5 +101,9 @@ public class TileBase extends Image {
             }
         }
         return "tile" + region;
+    }
+
+    public String getLetter() {
+        return letter;
     }
 }

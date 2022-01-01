@@ -4,21 +4,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import com.somboi.rodaimpian.RodaImpianNew;
 import com.somboi.rodaimpian.gdx.assets.AssetDesc;
-import com.somboi.rodaimpian.gdxnew.actors.ActorFactory;
-import com.somboi.rodaimpian.gdxnew.actors.BodyImage;
+import com.somboi.rodaimpian.gdx.assets.GameSound;
 import com.somboi.rodaimpian.gdxnew.actors.SlotResultLabel;
 import com.somboi.rodaimpian.gdxnew.box2d.WorldFactory;
 import com.somboi.rodaimpian.gdxnew.interfaces.WorldContact;
@@ -34,11 +30,15 @@ public class SpinScreen extends BaseScreenNew {
     private float yInitial, yFinal;
     private boolean startRotation;
     private final Array<Body>slotSensors;
-    private final WorldContact worldContact = new WorldContact();
+    private final WorldContact worldContact;
     private final SlotResultLabel slotResult;
+    private boolean rotated;
+    private final GameSound gameSound;
     public SpinScreen(RodaImpianNew rodaImpianNew) {
         super(rodaImpianNew);
         Gdx.input.setInputProcessor(stage);
+        gameSound = new GameSound(assetManager);
+        worldContact = new WorldContact(gameSound);
         world.setContactListener(worldContact);
         slotResult = new SlotResultLabel(skin);
         worldFactory = new WorldFactory(world);
@@ -54,7 +54,6 @@ public class SpinScreen extends BaseScreenNew {
                         new Vector2(Gdx.input.getX(), Gdx.input.getY())
                 );
                 yInitial = vector2.y;
-                logger.debug("stage coordinate "+vector2);
                 return super.touchDown(event, x, y, pointer, button);
             }
 
@@ -66,10 +65,11 @@ public class SpinScreen extends BaseScreenNew {
                 );
                 yFinal = vector2.y;
                 angularForce = (yInitial - yFinal);
-                if (angularForce > 500f) {
+                if (angularForce > 500f && !rotated) {
                   //  wheelJoint.setMotorSpeed(angularForce);
                     wheelBody.applyAngularImpulse(-(angularForce+MathUtils.random(10f,30f)), true);
                     startRotation = true;
+                    rotated = true;
                     needleJoint.setMotorSpeed(60f);
                 }
             }
@@ -127,6 +127,9 @@ public class SpinScreen extends BaseScreenNew {
                                 rodaImpianNew.getWheelParams().getResult(worldContact.getLastContact());
                             }
                             slotResult.setText(rodaImpianNew.getWheelParams().getScoreStrings());
+                            if (rodaImpianNew.getWheelParams().getScores()==0){
+                                gameSound.playAww();
+                            }
                         }
 
                         logger.debug(
@@ -134,6 +137,12 @@ public class SpinScreen extends BaseScreenNew {
                                         worldContact.getLastContact()+
                                         ", wheel params "+
                                         rodaImpianNew.getWheelParams().getScores()+", "+rodaImpianNew.getWheelParams().getScoreStrings());
+                        Timer.schedule(new Timer.Task() {
+                            @Override
+                            public void run() {
+                               rodaImpianNew.finishSpin();
+                            }
+                        },1.5f);
                     }
                 },2f);
 
