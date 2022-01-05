@@ -21,7 +21,7 @@ import com.somboi.rodaimpian.gdxnew.interfaces.WorldContact;
 
 public class SpinScreen extends BaseScreenNew {
     private final WorldFactory worldFactory;
-   // private final Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
+    // private final Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
     private final Body wheelBody;
     private final Body needleBody;
     private final RevoluteJoint needleJoint;
@@ -29,14 +29,16 @@ public class SpinScreen extends BaseScreenNew {
     private float angularForce;
     private float yInitial, yFinal;
     private boolean startRotation;
-    private final Array<Body>slotSensors;
+    private final Array<Body> slotSensors;
     private final WorldContact worldContact;
     private final SlotResultLabel slotResult;
     private boolean rotated;
     private final GameSound gameSound;
-    public SpinScreen(RodaImpianNew rodaImpianNew) {
+    private final boolean cpuMoves;
+
+    public SpinScreen(RodaImpianNew rodaImpianNew, boolean cpuMoves) {
         super(rodaImpianNew);
-        Gdx.input.setInputProcessor(stage);
+        this.cpuMoves = cpuMoves;
         gameSound = new GameSound(assetManager);
         worldContact = new WorldContact(gameSound);
         world.setContactListener(worldContact);
@@ -47,38 +49,52 @@ public class SpinScreen extends BaseScreenNew {
         needleBody = worldFactory.createNeedle();
         needleJoint = worldFactory.createNeedleJoint(needleBody);
         slotSensors = worldFactory.createWheelSlotSensor();
-        stage.addListener(new DragListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                Vector2 vector2 = stage.screenToStageCoordinates(
-                        new Vector2(Gdx.input.getX(), Gdx.input.getY())
-                );
-                yInitial = vector2.y;
-                return super.touchDown(event, x, y, pointer, button);
-            }
 
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                super.touchUp(event, x, y, pointer, button);
-                Vector2 vector2 = stage.screenToStageCoordinates(
-                        new Vector2(Gdx.input.getX(), Gdx.input.getY())
-                );
-                yFinal = vector2.y;
-                angularForce = (yInitial - yFinal);
-                if (angularForce > 500f && !rotated) {
-                  //  wheelJoint.setMotorSpeed(angularForce);
-                    wheelBody.applyAngularImpulse(-(angularForce+MathUtils.random(10f,30f)), true);
-                    startRotation = true;
-                    rotated = true;
-                    needleJoint.setMotorSpeed(60f);
-                }
-            }
-        });
 
     }
 
     @Override
     public void show() {
+        if (!cpuMoves) {
+            Gdx.input.setInputProcessor(stage);
+            stage.addListener(new DragListener() {
+                @Override
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    Vector2 vector2 = stage.screenToStageCoordinates(
+                            new Vector2(Gdx.input.getX(), Gdx.input.getY())
+                    );
+                    yInitial = vector2.y;
+                    return super.touchDown(event, x, y, pointer, button);
+                }
+
+                @Override
+                public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                    super.touchUp(event, x, y, pointer, button);
+                    Vector2 vector2 = stage.screenToStageCoordinates(
+                            new Vector2(Gdx.input.getX(), Gdx.input.getY())
+                    );
+                    yFinal = vector2.y;
+                    angularForce = (yInitial - yFinal);
+                    if (angularForce > 500f && !rotated) {
+                        //  wheelJoint.setMotorSpeed(angularForce);
+                        wheelBody.applyAngularImpulse(-(angularForce + MathUtils.random(10f, 30f)), true);
+                        startRotation = true;
+                        rotated = true;
+                        needleJoint.setMotorSpeed(60f);
+                    }
+                }
+            });
+        }else{
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    wheelBody.applyAngularImpulse(-(MathUtils.random(900,2800)),true);
+                    startRotation = true;
+                    rotated = true;
+                    needleJoint.setMotorSpeed(60f);
+                }
+            },1f);
+        }
         stage.addActor(new Image(assetManager.get(AssetDesc.WHEELBG)));
         actorFactory.createWheel(wheelBody);
         actorFactory.createNeedle(needleBody);
@@ -89,26 +105,25 @@ public class SpinScreen extends BaseScreenNew {
     @Override
     public void render(float delta) {
         super.render(delta);
-      //  debugRenderer.render(world, worldStage.getCamera().combined);
+        //  debugRenderer.render(world, worldStage.getCamera().combined);
         //logger.debug("wheel rev speed "+wheelBody.getAngularVelocity());
         //logger.debug("angle "+revoluteJoint.getJointAngle());
     }
 
     @Override
     public void update(float delta) {
-        for (Body body: slotSensors){
-            body.setTransform(body.getPosition(),wheelBody.getAngle());
+        for (Body body : slotSensors) {
+            body.setTransform(body.getPosition(), wheelBody.getAngle());
         }
-        rodaImpianNew.getWheelParams().setAngle(wheelBody.getAngle()* MathUtils.radDeg);
-
+        rodaImpianNew.getWheelParams().setAngle(wheelBody.getAngle() * MathUtils.radDeg);
 
 
         if (startRotation) {
             if ((int) wheelBody.getAngularVelocity() == 0) {
-                if (needleJoint.getJointAngle()<=-0.5){
+                if (needleJoint.getJointAngle() <= -0.5) {
                     needleJoint.setMotorSpeed(1f);
-                    needleJoint.setLimits(0,0);
-                }else{
+                    needleJoint.setLimits(0, 0);
+                } else {
                     needleJoint.setMotorSpeed(0);
                 }
                 startRotation = false;
@@ -117,9 +132,9 @@ public class SpinScreen extends BaseScreenNew {
                 Timer.schedule(new Timer.Task() {
                     @Override
                     public void run() {
-                       ////after spin
-                        if (worldContact.getLastContact()!=null) {
-                            slotResult.addAction(new SequenceAction(Actions.fadeOut(0f),Actions.fadeIn(1f)));
+                        ////after spin
+                        if (worldContact.getLastContact() != null) {
+                            slotResult.addAction(new SequenceAction(Actions.fadeOut(0f), Actions.fadeIn(1f)));
                             stage.addActor(slotResult);
                             if (actorFactory.isWheelBonus()) {
                                 rodaImpianNew.getWheelParams().getBonusResult(worldContact.getLastContact());
@@ -127,24 +142,24 @@ public class SpinScreen extends BaseScreenNew {
                                 rodaImpianNew.getWheelParams().getResult(worldContact.getLastContact());
                             }
                             slotResult.setText(rodaImpianNew.getWheelParams().getScoreStrings());
-                            if (rodaImpianNew.getWheelParams().getScores()==0){
+                            if (rodaImpianNew.getWheelParams().getScores() == 0) {
                                 gameSound.playAww();
                             }
                         }
 
                         logger.debug(
-                                "last contact "+
-                                        worldContact.getLastContact()+
-                                        ", wheel params "+
-                                        rodaImpianNew.getWheelParams().getScores()+", "+rodaImpianNew.getWheelParams().getScoreStrings());
+                                "last contact " +
+                                        worldContact.getLastContact() +
+                                        ", wheel params " +
+                                        rodaImpianNew.getWheelParams().getScores() + ", " + rodaImpianNew.getWheelParams().getScoreStrings());
                         Timer.schedule(new Timer.Task() {
                             @Override
                             public void run() {
-                               rodaImpianNew.finishSpin();
+                                rodaImpianNew.finishSpin();
                             }
-                        },1.5f);
+                        }, 1.5f);
                     }
-                },2f);
+                }, 2f);
 
             }
         }

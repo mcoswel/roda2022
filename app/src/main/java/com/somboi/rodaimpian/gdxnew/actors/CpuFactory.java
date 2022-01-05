@@ -59,7 +59,6 @@ public class CpuFactory {
         playerGuis.setScoreLabel(new Label("$"+playerNew.getScore(), skin, "score"));
         playerGuis.setFulLScoreLabel(new Label("$"+playerNew.getFullScore(), skin, "arial36"));
         playerGuis.setFreeTurn(new Label(StringRes.FREETURN, skin, "free"));
-
         count++;
         if (count>=cpuName.size){
             count = 0;

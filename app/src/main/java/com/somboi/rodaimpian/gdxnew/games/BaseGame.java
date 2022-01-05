@@ -16,6 +16,7 @@ import com.somboi.rodaimpian.RodaImpianNew;
 import com.somboi.rodaimpian.gdx.assets.AssetDesc;
 import com.somboi.rodaimpian.gdx.assets.GameSound;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
+import com.somboi.rodaimpian.gdxnew.actors.ChatBubble;
 import com.somboi.rodaimpian.gdxnew.actors.CpuFactory;
 import com.somboi.rodaimpian.gdxnew.actors.PlayerGuis;
 import com.somboi.rodaimpian.gdxnew.actors.PlayerMenu;
@@ -24,6 +25,7 @@ import com.somboi.rodaimpian.gdxnew.actors.TileBase;
 import com.somboi.rodaimpian.gdxnew.actors.VannaHost;
 import com.somboi.rodaimpian.gdxnew.actors.WheelTurns;
 import com.somboi.rodaimpian.gdxnew.assets.QuestionNew;
+import com.somboi.rodaimpian.gdxnew.entitiesnew.AiMoves;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
 import com.somboi.rodaimpian.gdxnew.screens.SpinScreen;
 
@@ -45,6 +47,8 @@ public class BaseGame {
     protected final Label subjectLabel;
     protected Group tilesGroup = new Group();
     protected final PlayerMenu playerMenu;
+    protected PlayerGuis currentGui;
+    protected AiMoves aiMoves;
 
     public BaseGame(Stage stage, RodaImpianNew rodaImpianNew) {
         this.stage = stage;
@@ -141,6 +145,7 @@ public class BaseGame {
 
         for (int i = 0; i < playerGuis.size; i++) {
             playerGuis.get(i).setPlayerIndex(i);
+            playerGuis.get(i).setChatBubble(new ChatBubble(i, stage, skin));
             stage.addActor(playerGuis.get(i).getProfilePic());
         }
         Timer.schedule(new Timer.Task() {
@@ -154,7 +159,6 @@ public class BaseGame {
     public void animatePicture() {
         for (int i = 0; i < playerGuis.size; i++) {
             playerGuis.get(i).animateShowBoard();
-            // stage.addActor(playerGuis.get(i).getProfilePic());
             tilesGroup.addActor(playerGuis.get(i).getScoreLabel());
             tilesGroup.addActor(playerGuis.get(i).getFulLScoreLabel());
             tilesGroup.addActor(playerGuis.get(i).getFreeTurn());
@@ -189,30 +193,38 @@ public class BaseGame {
 
     public void startRound() {
         showQuestions();
-        Timer.schedule(new Timer.Task() {
-            @Override
-            public void run() {
-                startTurn();
-            }
-        }, 1f);
+        startTurn();
     }
 
     public void startTurn() {
-        for (PlayerGuis playerGui : playerGuis) {
-            if (playerGui.getPlayerNew().isTurn()) {
-                currentIndex = playerGui.getPlayerIndex();
-            }
-        }
 
-        activePlayer = playerGuis.get(currentIndex).getPlayerNew();
-        if (activePlayer.isAi()) {
-            //
-        } else {
-            //
-        }
-        showPlayerMenu();
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                for (PlayerGuis playerGui : playerGuis) {
+                    if (playerGui.getPlayerNew().isTurn()) {
+                        currentIndex = playerGui.getPlayerIndex();
+                    }
+                }
+
+                currentGui = playerGuis.get(currentIndex);
+                activePlayer = currentGui.getPlayerNew();
+
+                if (activePlayer.isAi()) {
+                    cpuMove();
+                } else {
+                    showPlayerMenu();
+                }
+            }
+        }, 2f);
 
     }
+
+    private void cpuMove() {
+        aiMoves = new AiMoves(this);
+        aiMoves.execute(tileBases, playerMenu, activePlayer, currentGui);
+    }
+
 
     public void changeTurn() {
         currentIndex = (currentIndex + 1) % (playerGuis.size - 1);
@@ -220,6 +232,10 @@ public class BaseGame {
             playerGui.getPlayerNew().setTurn(false);
         }
         playerGuis.get(currentIndex).getPlayerNew().setTurn(true);
+
+        startTurn();
+
+
     }
 
     private void setSubject() {
@@ -232,8 +248,8 @@ public class BaseGame {
         playerMenu.show();
     }
 
-    public void spinWheel() {
-        rodaImpianNew.setScreen(new SpinScreen(rodaImpianNew));
+    public void spinWheel(boolean cpuMoves) {
+        rodaImpianNew.setScreen(new SpinScreen(rodaImpianNew, cpuMoves));
     }
 
     public void checkAnswer(String c) {
@@ -250,11 +266,14 @@ public class BaseGame {
             Timer.schedule(new Timer.Task() {
                 @Override
                 public void run() {
-                    if (!activePlayer.isAi()){
+                    if (!activePlayer.isAi()) {
                         playerMenu.show();
+                    } else {
+                        cpuMove();
                     }
                 }
-            },1f);
+            }, 2f);
+
         } else {
             gameSound.playWrong();
         }
@@ -262,14 +281,31 @@ public class BaseGame {
 
 
     public void showConsonants() {
-        if (rodaImpianNew.getWheelParams().getScores()>0){
-            playerMenu.createConsonantsTable();
-        }else{
-            gameSound.playAww();
+
+        if (rodaImpianNew.getWheelParams().getScores() > 0) {
+            if (activePlayer.isAi()) {
+                aiMoves.chooseConsonants();
+            } else {
+                playerMenu.createConsonantsTable();
+            }
+        } else {
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    changeTurn();
+                }
+            }, 1f);
         }
     }
 
     public PlayerNew getActivePlayer() {
         return activePlayer;
     }
+
+    public void update(float delta) {
+        for (PlayerGuis playerGui : playerGuis) {
+            playerGui.update(delta);
+        }
+    }
+
 }

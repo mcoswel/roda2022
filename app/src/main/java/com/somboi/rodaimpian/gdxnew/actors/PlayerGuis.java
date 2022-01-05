@@ -15,8 +15,8 @@ public class PlayerGuis {
     private Label nameLabel;
     private Label fulLScoreLabel;
     private Label freeTurn;
+    private ChatBubble chatBubble;
     public PlayerGuis() {
-
     }
 
     public PlayerNew getPlayerNew() {
@@ -100,5 +100,23 @@ public class PlayerGuis {
 
     public void setFreeTurn(Label freeTurn) {
         this.freeTurn = freeTurn;
+    }
+
+    public ChatBubble getChatBubble() {
+        return chatBubble;
+    }
+
+    public void chat(String text){
+        chatBubble.createBubble(text);
+    }
+
+    public void setChatBubble(ChatBubble chatBubble) {
+        this.chatBubble = chatBubble;
+    }
+
+    public void update(float delta) {
+        if (chatBubble!=null){
+            chatBubble.updateChat(delta);
+        }
     }
 }

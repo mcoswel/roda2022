@@ -22,7 +22,7 @@ public class GameScreen extends BaseScreenNew implements GameInterface {
         }
     }
 
-    public void spinResult() {
+    public void spinResult( ) {
         if (baseGame != null) {
             baseGame.showConsonants();
         }
@@ -35,7 +35,9 @@ public class GameScreen extends BaseScreenNew implements GameInterface {
 
     @Override
     public void update(float delta) {
-
+        if (baseGame!=null){
+            baseGame.update(delta);
+        }
     }
 
     @Override

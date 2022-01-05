@@ -115,7 +115,7 @@ public class RodaImpianNew extends Game {
         this.gameScreen = gameScreen;
     }
 
-    public void finishSpin() {
+    public void finishSpin( ) {
         if (gameScreen != null) {
             setScreen(gameScreen);
             gameScreen.spinResult();

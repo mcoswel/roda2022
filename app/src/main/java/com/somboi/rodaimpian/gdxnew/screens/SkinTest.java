@@ -26,7 +26,7 @@ public class SkinTest extends BaseScreenNew {
         stwo.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                rodaImpianNew.setScreen(new SpinScreen(rodaImpianNew));
+              //  rodaImpianNew.setScreen(new SpinScreen(rodaImpianNew));
             }
         });
         SmallButton sthree = new SmallButton(StringRes.LENGKAPKAN, skin);

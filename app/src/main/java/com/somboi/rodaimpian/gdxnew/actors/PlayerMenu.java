@@ -14,34 +14,37 @@ public class PlayerMenu {
     private final BaseGame baseGame;
     private final Skin skin;
     private final Table menuTable = new Table();
-    private final Table vocalKey = new Table();
     private StringBuilder vocalLetter = new StringBuilder("AEIOU");
     private StringBuilder consonantLetter = new StringBuilder("BCDFGHJKLMNPQRSTVWXYZ");
+    private final SmallButton vocal;
+    private final SmallButton spin;
 
     public PlayerMenu(Stage stage, BaseGame baseGame, Skin skin) {
         this.stage = stage;
         this.baseGame = baseGame;
         this.skin = skin;
-        SmallButton vocal = new SmallButton(StringRes.VOKAL, skin);
+
+
+        vocal = new SmallButton(StringRes.VOKAL, skin);
         vocal.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if (baseGame.getActivePlayer().getScore()>=250) {
+                if (baseGame.getActivePlayer().getScore() >= 250) {
                     clear();
-                    baseGame.getActivePlayer().setScore(baseGame.getActivePlayer().getScore()-250);
+                    baseGame.getActivePlayer().setScore(baseGame.getActivePlayer().getScore() - 250);
                     createVocalTable();
-                }else{
+                } else {
                     ErrDiag errDiag = new ErrDiag(StringRes.NOTENOUGHMONEY, skin);
                     errDiag.show(stage);
                 }
             }
         });
-        SmallButton spin = new SmallButton(StringRes.PUTAR, skin);
+        spin = new SmallButton(StringRes.PUTAR, skin);
         spin.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 clear();
-                baseGame.spinWheel();
+                baseGame.spinWheel(false);
             }
         });
         SmallButton complete = new SmallButton(StringRes.LENGKAPKAN, skin);
@@ -60,6 +63,14 @@ public class PlayerMenu {
         menuTable.pack();
         menuTable.setPosition(450f - menuTable.getWidth() / 2f, 630f);
 
+    }
+
+    public boolean vocalAvailable() {
+        return vocalLetter.length() > 0;
+    }
+
+    public boolean consonantAvailable() {
+        return consonantLetter.length() > 0;
     }
 
 
@@ -126,6 +137,21 @@ public class PlayerMenu {
     }
 
     public void show() {
+        if (!vocalAvailable()) {
+            vocal.remove();
+        }
+
+        if (!consonantAvailable()) {
+            spin.remove();
+        }
         stage.addActor(menuTable);
+    }
+
+    public StringBuilder getVocalLetter() {
+        return vocalLetter;
+    }
+
+    public StringBuilder getConsonantLetter() {
+        return consonantLetter;
     }
 }

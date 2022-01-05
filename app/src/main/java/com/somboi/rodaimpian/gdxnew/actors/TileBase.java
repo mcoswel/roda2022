@@ -103,6 +103,10 @@ public class TileBase extends Image {
         return "tile" + region;
     }
 
+    public boolean isRevealed() {
+        return revealed;
+    }
+
     public String getLetter() {
         return letter;
     }
