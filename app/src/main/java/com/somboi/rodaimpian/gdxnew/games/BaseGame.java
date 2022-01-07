@@ -35,9 +35,6 @@ import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
 import com.somboi.rodaimpian.gdxnew.interfaces.KeyListen;
 import com.somboi.rodaimpian.gdxnew.screens.SpinScreen;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class BaseGame {
     protected final Stage stage;
     protected final RodaImpianNew rodaImpianNew;
@@ -55,6 +52,7 @@ public class BaseGame {
     protected int currentIndex;
     protected final Label subjectLabel;
     protected Group tilesGroup = new Group();
+    protected Group incompleteGroup = new Group();
     protected final PlayerMenu playerMenu;
     protected PlayerGuis currentGui;
     protected AiMoves aiMoves;
@@ -64,8 +62,9 @@ public class BaseGame {
     protected final GiftBonuses giftBonuses;
     protected final Array<Integer> giftsIndexes = new Array<>(new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23});
     protected final GiftsNew giftsNew = new GiftsNew();
-    protected final Array<TileBase>incompleteTiles = new Array<>();
+    protected final Array<TileBase> incompleteTiles = new Array<>();
     protected KeyListen keyListen;
+    protected String answerHolder;
     public BaseGame(Stage stage, RodaImpianNew rodaImpianNew) {
         this.stage = stage;
         this.rodaImpianNew = rodaImpianNew;
@@ -83,6 +82,7 @@ public class BaseGame {
         setTile();
         stage.addActor(subjectLabel);
         stage.addActor(tilesGroup);
+        stage.addActor(incompleteGroup);
         stage.addActor(vannaHost);
 
 
@@ -218,11 +218,13 @@ public class BaseGame {
     }
 
     public void startRound() {
+        vannaHost.relax();
         showQuestions();
         startTurn();
     }
 
     public void startTurn() {
+        vannaHost.increaseCount();
         hourGlass.remove();
         Timer.schedule(new Timer.Task() {
             @Override
@@ -289,7 +291,7 @@ public class BaseGame {
         }
 
         if (correct) {
-
+            vannaHost.correct();
             gameSound.playCorrect();
             if (rodaImpianNew.getWheelParams().getScores() > 0) {
                 correctLabel = new CorrectLabel("$" + rodaImpianNew.getWheelParams().getScores() + " x " + multiplier, skin);
@@ -324,6 +326,7 @@ public class BaseGame {
             }, 2f);
 
         } else {
+            vannaHost.wrong();
             if (giftBonuses.isPrepareGift()) {
                 giftBonuses.setPrepareGift(false);
             }
@@ -347,7 +350,7 @@ public class BaseGame {
 
 
     public void showConsonants() {
-
+        vannaHost.waitingAnswer();
         if (rodaImpianNew.getWheelParams().getScores() > 0) {
 
             if (rodaImpianNew.getWheelParams().getScoreStrings().equals(StringRes.GIFT)) {
@@ -374,15 +377,17 @@ public class BaseGame {
     }
 
     public void completePuzzle() throws CloneNotSupportedException {
-        for (TileBase t: tileBases){
-            if (!t.isRevealed()){
+        answerHolder = "";
+        for (TileBase t : tileBases) {
+            if (!t.isRevealed()) {
+                answerHolder+=t.getLetter();
                 incompleteTiles.add((TileBase) t.clone());
             }
         }
-        if (!incompleteTiles.isEmpty()){
-            for (TileBase t: incompleteTiles){
-                t.setColor(Color.RED);
-                tilesGroup.addActor(t);
+        if (!incompleteTiles.isEmpty() && answerHolder!=null) {
+            logger.debug("Incomplete size " + incompleteTiles.size);
+            for (TileBase t : incompleteTiles) {
+                incompleteGroup.addActor(t);
             }
             Gdx.input.setOnscreenKeyboardVisible(true);
             playerMenu.showCompleteMenu();
@@ -393,12 +398,21 @@ public class BaseGame {
     }
 
 
-    public void checkCompleteAnswer(){
+    public void checkCompleteAnswer() {
 
     }
 
     public void finishGame() {
-
+        gameSound.playCheer();
+        if (!incompleteTiles.isEmpty()) {
+            tilesGroup.clear();
+            incompleteTiles.clear();
+        }
+        for (TileBase t : tileBases) {
+            if (!t.isRevealed()) {
+                t.reveal();
+            }
+        }
     }
 
     public PlayerNew getActivePlayer() {

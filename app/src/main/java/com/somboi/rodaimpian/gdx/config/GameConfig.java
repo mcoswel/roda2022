@@ -20,6 +20,7 @@ public class GameConfig {
     public static final SequenceAction BLINKS = new SequenceAction(Actions.color(INVISIBLE,0.3f), Actions.color(VISIBLE,0.3f));
     public static final Array<String> TABLECOLOR = new Array<>(new String[]{"tableblue","tablegold","tablegreen","tablepurple","tablered","tableyellow"});
     public static final String ALLOWEDCHAR = "abcdefghijklmnopqrstuvwxyz";
+    public static final Color NORMAL_COLOR = new Color(1f,1f,1f,1f);
 
     public static void clearScreen(){
         Gdx.gl.glClearColor(0,0,0,0);

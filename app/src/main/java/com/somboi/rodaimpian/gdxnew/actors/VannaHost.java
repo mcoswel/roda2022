@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.AddListenerAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.Timer;
 
 public class VannaHost extends Image {
@@ -36,7 +37,7 @@ public class VannaHost extends Image {
     private Animation<Sprite> currentAnimation;
     private boolean leftSide;
     private boolean walking;
-
+    private int vannaCounter;
     public VannaHost(TextureAtlas atlas) {
         super(atlas.findRegion("relax1"));
         setPosition(800f, 1149f);
@@ -128,6 +129,14 @@ public class VannaHost extends Image {
         } else {
             leftSide = false;
         }
+
+        if (walking){
+            if (getX()==800f || getX() == -30f){
+                walking = false;
+                relax();
+            }
+        }
+
     }
 
     public void correct() {
@@ -180,20 +189,14 @@ public class VannaHost extends Image {
         walking = true;
         if (leftSide) {
             currentAnimation = walkL;
-            addAction(Actions.moveTo(800f, 1149f, 5f));
+            addAction(Actions.moveTo(800f, 1149f, 7f));
         } else {
             currentAnimation = walkR;
-            addAction(Actions.moveTo(-30f, 1149f, 5f));
+            addAction(Actions.moveTo(-30f, 1149f, 7f));
         }
 
 
-        Timer.schedule(new Timer.Task() {
-            @Override
-            public void run() {
-                walking = false;
-                relax();
-            }
-        }, 5f);
+
     }
 
 
@@ -214,6 +217,13 @@ public class VannaHost extends Image {
 
     private void randomize() {
         randomNo = MathUtils.random(0, 1);
+    }
+
+    public void increaseCount(){
+        vannaCounter++;
+        if (vannaCounter%2==0 && !walking){
+            walk();
+        }
     }
 
 }

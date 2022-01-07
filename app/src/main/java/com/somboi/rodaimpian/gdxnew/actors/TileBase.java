@@ -47,13 +47,13 @@ public class TileBase extends Image implements Cloneable{
 
     public boolean typeLetter(String letter){
         String region = getRegionString(letter);
-        logger.debug("region "+region);
         if (region!=null) {
             setDrawable(new SpriteDrawable(atlas.createSprite(region)));
             return true;
         }
         return false;
     }
+
 
     private String getRegionString(String letter) {
         String loLetter = letter.toLowerCase();
