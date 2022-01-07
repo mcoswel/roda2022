@@ -42,18 +42,13 @@ public class StringRes {
             "Saya dengan rendah hati memilih huruf ",
             "Huruf "});
     public static final Array<String> CPUBUYVOCALS = new Array<>(new String[]{
-            "Saya nak beli huruf vokal",
-            "Err.. nak beli huruf vokal ok tak?",
-            "Hmm... Saya pilih untuk membeli huruf vokal",
-            "Dengan bangganya saya memilih untuk membeli huruf vokal",
-            "Saya beli huruf vokal"
+            "Saya nak beli huruf vokal ",
+            "Err.. nak beli huruf vokal ok tak? Huruf ",
+            "Hmm... Saya pilih untuk membeli huruf vokal ",
+            "Dengan bangganya saya memilih untuk membeli huruf vokal ",
+            "Saya beli huruf vokal "
     });
-    public static final Array<String> CPUCHOOSEVOCALS = new Array<>(new String[]{
-            "Huruf yang saya pilih ialah ",
-            "Nak beli huruf... ",
-            "Saya pilih huruf ",
-            "Semoga wang beli vokal tak sia-sia. Saya pilih huruf "
-    });
+
     public static final String CPUCOMPLETE = "Saya ingin melengkapkan perkataan";
     public static final String ANSWERIS = "Jawapan saya ialah: ";
     public static final String RESET = "Reset";

@@ -8,6 +8,7 @@ public class PlayerNew implements Comparable<PlayerNew> {
     private String picUri;
     private String fcmToken;
     private int score;
+    private int animateScore;
     private int fullScore;
     private int bestScore;
     private int timesPlayed;
@@ -147,6 +148,14 @@ public class PlayerNew implements Comparable<PlayerNew> {
 
     public void setLogged(boolean logged) {
         this.logged = logged;
+    }
+
+    public int getAnimateScore() {
+        return animateScore;
+    }
+
+    public void setAnimateScore(int animateScore) {
+        this.animateScore = animateScore;
     }
 
     @Override

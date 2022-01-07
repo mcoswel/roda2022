@@ -3,7 +3,7 @@ atlasData: {
 	atlasCurrent: true
 	drawables: [
 		{
-			file: C:/roda2022/app/src/main/assets/skin assets/menubutnormal.9.png
+			file: E:/roda2022/app/src/main/assets/skin assets/menubutnormal.9.png
 			bgColor: {
 				r: 0
 				g: 0
@@ -22,7 +22,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: C:/roda2022/app/src/main/assets/skin assets/menubutclicked.9.png
+			file: E:/roda2022/app/src/main/assets/skin assets/menubutclicked.9.png
 			bgColor: {
 				r: 0
 				g: 0
@@ -41,7 +41,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: C:/roda2022/app/src/main/assets/skin assets/smallnormal.9.png
+			file: E:/roda2022/app/src/main/assets/skin assets/smallnormal.9.png
 			bgColor: {
 				r: 0
 				g: 0
@@ -60,7 +60,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: C:/roda2022/app/src/main/assets/skin assets/smallclicked.9.png
+			file: E:/roda2022/app/src/main/assets/skin assets/smallclicked.9.png
 			bgColor: {
 				r: 0
 				g: 0
@@ -79,7 +79,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: C:/roda2022/app/src/main/assets/skin assets/window.9.png
+			file: E:/roda2022/app/src/main/assets/skin assets/window.9.png
 			bgColor: {
 				r: 0
 				g: 0
@@ -98,7 +98,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: C:/roda2022/app/src/main/assets/skin assets/label.9.png
+			file: E:/roda2022/app/src/main/assets/skin assets/label.9.png
 			bgColor: {
 				r: 0
 				g: 0
@@ -117,7 +117,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: C:/roda2022/app/src/main/assets/skin assets/bubble.9.png
+			file: E:/roda2022/app/src/main/assets/skin assets/bubble.9.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -138,7 +138,7 @@ atlasData: {
 	]
 	fontDrawables: [
 		{
-			file: C:/roda2022/app/src/main/assets/skin assets/arial441.png
+			file: E:/roda2022/app/src/main/assets/skin assets/arial441.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -157,7 +157,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: C:/roda2022/app/src/main/assets/skin assets/arial442.png
+			file: E:/roda2022/app/src/main/assets/skin assets/arial442.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -176,7 +176,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: C:/roda2022/app/src/main/assets/skin assets/arial24white.png
+			file: E:/roda2022/app/src/main/assets/skin assets/arial24white.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -195,7 +195,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: C:/roda2022/app/src/main/assets/skin assets/comic481.png
+			file: E:/roda2022/app/src/main/assets/skin assets/comic481.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -214,7 +214,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: C:/roda2022/app/src/main/assets/skin assets/comic482.png
+			file: E:/roda2022/app/src/main/assets/skin assets/comic482.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -233,7 +233,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: C:/roda2022/app/src/main/assets/skin assets/comic483.png
+			file: E:/roda2022/app/src/main/assets/skin assets/comic483.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -252,7 +252,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: C:/roda2022/app/src/main/assets/skin assets/digital.png
+			file: E:/roda2022/app/src/main/assets/skin assets/digital.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -271,7 +271,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: C:/roda2022/app/src/main/assets/skin assets/arial36.png
+			file: E:/roda2022/app/src/main/assets/skin assets/arial36.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -290,7 +290,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: C:/roda2022/app/src/main/assets/skin assets/arial32.png
+			file: E:/roda2022/app/src/main/assets/skin assets/arial32.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -309,7 +309,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: C:/Users/root/Desktop/New folder/comicsmall.png
+			file: E:/Users/root/Desktop/New folder/comicsmall.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -376,37 +376,37 @@ jsonData: {
 		{
 			class: com.ray3k.skincomposer.data.FontData
 			name: arial24white
-			file: C:/roda2022/app/src/main/assets/skin assets/arial24white.fnt
+			file: E:/roda2022/app/src/main/assets/skin assets/arial24white.fnt
 		}
 		{
 			class: com.ray3k.skincomposer.data.FontData
 			name: arial32
-			file: C:/roda2022/app/src/main/assets/skin assets/arial32.fnt
+			file: E:/roda2022/app/src/main/assets/skin assets/arial32.fnt
 		}
 		{
 			class: com.ray3k.skincomposer.data.FontData
 			name: arial36
-			file: C:/roda2022/app/src/main/assets/skin assets/arial36.fnt
+			file: E:/roda2022/app/src/main/assets/skin assets/arial36.fnt
 		}
 		{
 			class: com.ray3k.skincomposer.data.FontData
 			name: arial44
-			file: C:/roda2022/app/src/main/assets/skin assets/arial44.fnt
+			file: E:/roda2022/app/src/main/assets/skin assets/arial44.fnt
 		}
 		{
 			class: com.ray3k.skincomposer.data.FontData
 			name: comic48
-			file: C:/roda2022/app/src/main/assets/skin assets/comic48.fnt
+			file: E:/roda2022/app/src/main/assets/skin assets/comic48.fnt
 		}
 		{
 			class: com.ray3k.skincomposer.data.FontData
 			name: comicsmall
-			file: C:/Users/root/Desktop/New folder/comicsmall.fnt
+			file: E:/Users/root/Desktop/New folder/comicsmall.fnt
 		}
 		{
 			class: com.ray3k.skincomposer.data.FontData
 			name: digital
-			file: C:/roda2022/app/src/main/assets/skin assets/digital.fnt
+			file: E:/roda2022/app/src/main/assets/skin assets/digital.fnt
 		}
 	]
 	freeTypeFonts: []
@@ -2159,7 +2159,7 @@ preferences: {
 	}
 	last-import-export-path: {
 		class: java.lang.String
-		value: C:/roda2022/app/src/main/assets/skins/skin.json
+		value: E:/roda2022/app/src/main/assets/skins/skin.json
 	}
 	resources-relative: {
 		class: java.lang.Boolean
@@ -2170,7 +2170,7 @@ preferences: {
 		value: 30
 	}
 }
-saveFile: C:/roda2022/app/src/main/assets/skin assets/skincomposer.scmp
+saveFile: E:/roda2022/app/src/main/assets/skin assets/skincomposer.scmp
 version: 45
 sceneComposer: null
 }

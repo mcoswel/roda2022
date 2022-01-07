@@ -50,7 +50,6 @@ public class SpinScreen extends BaseScreenNew {
         needleJoint = worldFactory.createNeedleJoint(needleBody);
         slotSensors = worldFactory.createWheelSlotSensor();
 
-
     }
 
     @Override
@@ -99,6 +98,7 @@ public class SpinScreen extends BaseScreenNew {
         actorFactory.createWheel(wheelBody);
         actorFactory.createNeedle(needleBody);
         actorFactory.createLogo(wheelBody);
+        wheelBody.setTransform(wheelBody.getPosition(),rodaImpianNew.getWheelParams().getAngle());
         //actorFactory.createWheelBonus();
     }
 
@@ -115,7 +115,7 @@ public class SpinScreen extends BaseScreenNew {
         for (Body body : slotSensors) {
             body.setTransform(body.getPosition(), wheelBody.getAngle());
         }
-        rodaImpianNew.getWheelParams().setAngle(wheelBody.getAngle() * MathUtils.radDeg);
+        rodaImpianNew.getWheelParams().setAngle(wheelBody.getAngle());
 
 
         if (startRotation) {

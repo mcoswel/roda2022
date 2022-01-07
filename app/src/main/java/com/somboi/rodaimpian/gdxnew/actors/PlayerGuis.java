@@ -17,6 +17,7 @@ public class PlayerGuis {
     private Label freeTurn;
     private ChatBubble chatBubble;
     public PlayerGuis() {
+
     }
 
     public PlayerNew getPlayerNew() {
@@ -60,6 +61,7 @@ public class PlayerGuis {
         scoreLabel.setPosition((150f+(300 * playerIndex))-scoreLabel.getWidth()/2f, 165);
         freeTurn.setPosition((150f+(300 * playerIndex))-freeTurn.getWidth()/2f, 75f);
         fulLScoreLabel.setPosition((150f+(300 * playerIndex))-fulLScoreLabel.getWidth()/2f, 11.2f);
+
     }
 
     public void animateShowBoard() {
@@ -117,6 +119,14 @@ public class PlayerGuis {
     public void update(float delta) {
         if (chatBubble!=null){
             chatBubble.updateChat(delta);
+        }
+        if (playerNew!=null && scoreLabel!=null){
+            if (playerNew.getAnimateScore()<playerNew.getScore()){
+                playerNew.setAnimateScore(playerNew.getAnimateScore()+10);
+            }else{
+                playerNew.setAnimateScore(playerNew.getScore());
+            }
+            scoreLabel.setText("$"+playerNew.getAnimateScore());
         }
     }
 }

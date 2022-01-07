@@ -94,7 +94,6 @@ public class PlayerMenu {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
                     baseGame.checkAnswer(c);
-                    consonantLetter.deleteCharAt(i2);
                     consDialog.hide();
                 }
             });
@@ -123,7 +122,6 @@ public class PlayerMenu {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
                     baseGame.checkAnswer(c);
-                    vocalLetter.deleteCharAt(i2);
                     vocalDiag.hide();
                 }
             });
@@ -153,5 +151,23 @@ public class PlayerMenu {
 
     public StringBuilder getConsonantLetter() {
         return consonantLetter;
+    }
+
+    public void removeLetter(Character c){
+
+        for (int i=0; i<vocalLetter.length(); i++){
+            if (vocalLetter.charAt(i)==c){
+                vocalLetter.deleteCharAt(i);
+                return;
+            }
+        }
+
+        for (int i=0; i<consonantLetter.length(); i++){
+            if (consonantLetter.charAt(i)==c){
+                consonantLetter.deleteCharAt(i);
+                return;
+            }
+        }
+
     }
 }

@@ -17,6 +17,7 @@ import com.somboi.rodaimpian.gdx.assets.AssetDesc;
 import com.somboi.rodaimpian.gdx.assets.GameSound;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdxnew.actors.ChatBubble;
+import com.somboi.rodaimpian.gdxnew.actors.CorrectLabel;
 import com.somboi.rodaimpian.gdxnew.actors.CpuFactory;
 import com.somboi.rodaimpian.gdxnew.actors.PlayerGuis;
 import com.somboi.rodaimpian.gdxnew.actors.PlayerMenu;
@@ -49,6 +50,7 @@ public class BaseGame {
     protected final PlayerMenu playerMenu;
     protected PlayerGuis currentGui;
     protected AiMoves aiMoves;
+    protected CorrectLabel correctLabel;
 
     public BaseGame(Stage stage, RodaImpianNew rodaImpianNew) {
         this.stage = stage;
@@ -161,7 +163,7 @@ public class BaseGame {
             playerGuis.get(i).animateShowBoard();
             tilesGroup.addActor(playerGuis.get(i).getScoreLabel());
             tilesGroup.addActor(playerGuis.get(i).getFulLScoreLabel());
-            tilesGroup.addActor(playerGuis.get(i).getFreeTurn());
+            //tilesGroup.addActor(playerGuis.get(i).getFreeTurn());
             tilesGroup.addActor(playerGuis.get(i).getNameLabel());
         }
     }
@@ -227,15 +229,12 @@ public class BaseGame {
 
 
     public void changeTurn() {
-        currentIndex = (currentIndex + 1) % (playerGuis.size - 1);
+        currentIndex = (currentIndex + 1) % playerGuis.size;
         for (PlayerGuis playerGui : playerGuis) {
             playerGui.getPlayerNew().setTurn(false);
         }
         playerGuis.get(currentIndex).getPlayerNew().setTurn(true);
-
         startTurn();
-
-
     }
 
     private void setSubject() {
@@ -254,15 +253,25 @@ public class BaseGame {
 
     public void checkAnswer(String c) {
         boolean correct = false;
+        int multiplier = 0;
+
         for (TileBase tileBase : tileBases) {
             if (tileBase.getLetter().contains(c)) {
                 tileBase.reveal();
+                multiplier++;
                 correct = true;
             }
         }
 
         if (correct) {
+
             gameSound.playCorrect();
+            if (rodaImpianNew.getWheelParams().getScores() > 0) {
+                correctLabel = new CorrectLabel("$" + rodaImpianNew.getWheelParams().getScores() + "x" + multiplier, skin);
+                stage.addActor(correctLabel);
+            }
+
+
             Timer.schedule(new Timer.Task() {
                 @Override
                 public void run() {
@@ -275,8 +284,15 @@ public class BaseGame {
             }, 2f);
 
         } else {
+
             gameSound.playWrong();
+            changeTurn();
+
         }
+        playerMenu.removeLetter(c.charAt(0));
+        logger.debug("correct score " + (multiplier * rodaImpianNew.getWheelParams().getScores()));
+        activePlayer.setScore(activePlayer.getScore() + (multiplier * rodaImpianNew.getWheelParams().getScores()));
+        rodaImpianNew.getWheelParams().setScores(0);
     }
 
 

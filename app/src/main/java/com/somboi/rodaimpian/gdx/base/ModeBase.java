@@ -473,7 +473,7 @@ public class ModeBase {
                     }
                 }
                 final char cFinal = c;
-                queueChat(StringRes.CPUCHOOSEVOCALS.random() + c);
+              //  queueChat(StringRes.CPUCHOOSEVOCALS.random() + c);
                 Timer.schedule(new Timer.Task() {
                     @Override
                     public void run() {
