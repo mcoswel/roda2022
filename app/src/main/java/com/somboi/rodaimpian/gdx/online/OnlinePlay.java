@@ -16,7 +16,7 @@ import com.somboi.rodaimpian.RodaImpian;
 import com.somboi.rodaimpian.gdx.actor.Confetti;
 import com.somboi.rodaimpian.gdx.actor.EnvelopeSubject;
 import com.somboi.rodaimpian.gdx.actor.Envelopes;
-import com.somboi.rodaimpian.gdx.actor.Sparkling;
+import com.somboi.rodaimpian.gdxnew.actors.Sparkling;
 import com.somboi.rodaimpian.gdx.assets.AssetDesc;
 import com.somboi.rodaimpian.gdx.entities.Bonus;
 import com.somboi.rodaimpian.gdx.entities.WheelParam;
@@ -236,7 +236,7 @@ public class OnlinePlay extends ModeBase {
             rodaImpian.getPlayer().turn = true;
         }
         stage.addActor(hourGlass);
-        hourGlass.changePos(playerGuis.get(activePlayer.guiIndex));
+      //  hourGlass.changePos(playerGuis.get(activePlayer.guiIndex));
 
         logger.debug("active player " + activePlayer.name);
     }

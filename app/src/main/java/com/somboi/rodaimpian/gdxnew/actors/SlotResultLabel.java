@@ -12,6 +12,6 @@ public class SlotResultLabel extends Label {
     public void act(float delta) {
         super.act(delta);
         pack();
-        setPosition(450f-getWidth()/2f, 1400f);
+        setPosition(450f-getWidth()/2f, 1300f);
     }
 }

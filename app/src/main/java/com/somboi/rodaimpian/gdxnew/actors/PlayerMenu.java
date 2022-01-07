@@ -1,5 +1,6 @@
 package com.somboi.rodaimpian.gdxnew.actors;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
@@ -14,6 +15,7 @@ public class PlayerMenu {
     private final BaseGame baseGame;
     private final Skin skin;
     private final Table menuTable = new Table();
+    private final Table completeTable = new Table();
     private StringBuilder vocalLetter = new StringBuilder("AEIOU");
     private StringBuilder consonantLetter = new StringBuilder("BCDFGHJKLMNPQRSTVWXYZ");
     private final SmallButton vocal;
@@ -48,6 +50,17 @@ public class PlayerMenu {
             }
         });
         SmallButton complete = new SmallButton(StringRes.LENGKAPKAN, skin);
+        complete.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                clear();
+                try {
+                    baseGame.completePuzzle();
+                } catch (CloneNotSupportedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         SmallButton exit = new SmallButton(StringRes.EXIT, skin);
         Table first = new Table();
         first.defaults().pad(5f);
@@ -57,13 +70,39 @@ public class PlayerMenu {
         second.defaults().pad(5f);
         second.add(complete).size(850f / 2f, 75f);
         second.add(exit).size(850f / 2f, 75f);
+        createCompleteTable();
 
         menuTable.add(first).row();
         menuTable.add(second).row();
         menuTable.pack();
         menuTable.setPosition(450f - menuTable.getWidth() / 2f, 630f);
-
     }
+
+    private void createCompleteTable(){
+        Table first = new Table();
+        first.defaults().pad(5f);
+        SmallButton submitAnswer = new SmallButton(StringRes.SUBMIT,skin);
+        submitAnswer.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                baseGame.checkCompleteAnswer();
+            }
+        });
+        SmallButton keyboard = new SmallButton(StringRes.SHOWKEYBOARD,skin);
+        keyboard.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                Gdx.input.setOnscreenKeyboardVisible(true);
+            }
+        });
+        first.add(keyboard).size(850f / 2f, 75f);
+        first.add(submitAnswer).size(850f / 2f, 75f);
+
+        completeTable.add(first);
+        completeTable.setPosition(450f - menuTable.getWidth() / 2f, 630f);
+    }
+
+
 
     public boolean vocalAvailable() {
         return vocalLetter.length() > 0;
@@ -132,6 +171,10 @@ public class PlayerMenu {
 
     public void clear() {
         menuTable.remove();
+    }
+
+    public void showCompleteMenu(){
+        stage.addActor(completeTable);
     }
 
     public void show() {

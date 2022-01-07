@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.utils.Timer;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
 
 public class PlayerGuis {
@@ -16,6 +17,7 @@ public class PlayerGuis {
     private Label fulLScoreLabel;
     private Label freeTurn;
     private ChatBubble chatBubble;
+    private boolean free;
     public PlayerGuis() {
 
     }
@@ -116,17 +118,55 @@ public class PlayerGuis {
         this.chatBubble = chatBubble;
     }
 
+    public void updateFullScore(){
+        fulLScoreLabel.setText("$"+playerNew.getFullScore());
+        fulLScoreLabel.pack();
+        fulLScoreLabel.setPosition((150f+(300 * playerIndex))-fulLScoreLabel.getWidth()/2f, 11.2f);
+    }
+
     public void update(float delta) {
         if (chatBubble!=null){
             chatBubble.updateChat(delta);
         }
         if (playerNew!=null && scoreLabel!=null){
             if (playerNew.getAnimateScore()<playerNew.getScore()){
-                playerNew.setAnimateScore(playerNew.getAnimateScore()+10);
+
+                if (playerNew.getScore()-playerNew.getAnimateScore() >= 10000 ){
+                    playerNew.setAnimateScore(playerNew.getAnimateScore()+1000);
+                }else if (playerNew.getScore()-playerNew.getAnimateScore() >= 1000 ){
+                    playerNew.setAnimateScore(playerNew.getAnimateScore()+100);
+                }else if (playerNew.getScore()-playerNew.getAnimateScore() >= 100 ){
+                    playerNew.setAnimateScore(playerNew.getAnimateScore()+10);
+                }else{
+                    playerNew.setAnimateScore(playerNew.getAnimateScore()+1);
+                }
+
             }else{
                 playerNew.setAnimateScore(playerNew.getScore());
             }
             scoreLabel.setText("$"+playerNew.getAnimateScore());
+            scoreLabel.setPosition((150f+(300 * playerIndex))-scoreLabel.getWidth()/2f, 165);
         }
+    }
+
+
+    public boolean isFree() {
+        return free;
+    }
+
+    public void setFree(boolean free) {
+        if (!free){
+            freeTurn.addAction(new ParallelAction(
+                    Actions.moveBy(0,200f,2f),
+                    Actions.fadeOut(3f)
+            ));
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    freeTurn.remove();
+                }
+            },2f);
+        }
+        this.free = free;
     }
 }

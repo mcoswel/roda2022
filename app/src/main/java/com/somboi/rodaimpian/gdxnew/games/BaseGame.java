@@ -1,5 +1,6 @@
 package com.somboi.rodaimpian.gdxnew.games;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -19,6 +20,8 @@ import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdxnew.actors.ChatBubble;
 import com.somboi.rodaimpian.gdxnew.actors.CorrectLabel;
 import com.somboi.rodaimpian.gdxnew.actors.CpuFactory;
+import com.somboi.rodaimpian.gdxnew.actors.GiftBonuses;
+import com.somboi.rodaimpian.gdxnew.actors.HourGlass;
 import com.somboi.rodaimpian.gdxnew.actors.PlayerGuis;
 import com.somboi.rodaimpian.gdxnew.actors.PlayerMenu;
 import com.somboi.rodaimpian.gdxnew.actors.ProfilePic;
@@ -27,8 +30,13 @@ import com.somboi.rodaimpian.gdxnew.actors.VannaHost;
 import com.somboi.rodaimpian.gdxnew.actors.WheelTurns;
 import com.somboi.rodaimpian.gdxnew.assets.QuestionNew;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.AiMoves;
+import com.somboi.rodaimpian.gdxnew.entitiesnew.GiftsNew;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
+import com.somboi.rodaimpian.gdxnew.interfaces.KeyListen;
 import com.somboi.rodaimpian.gdxnew.screens.SpinScreen;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class BaseGame {
     protected final Stage stage;
@@ -51,7 +59,13 @@ public class BaseGame {
     protected PlayerGuis currentGui;
     protected AiMoves aiMoves;
     protected CorrectLabel correctLabel;
-
+    protected final HourGlass hourGlass;
+    protected String answerString;
+    protected final GiftBonuses giftBonuses;
+    protected final Array<Integer> giftsIndexes = new Array<>(new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23});
+    protected final GiftsNew giftsNew = new GiftsNew();
+    protected final Array<TileBase>incompleteTiles = new Array<>();
+    protected KeyListen keyListen;
     public BaseGame(Stage stage, RodaImpianNew rodaImpianNew) {
         this.stage = stage;
         this.rodaImpianNew = rodaImpianNew;
@@ -62,16 +76,22 @@ public class BaseGame {
         this.gameSound = new GameSound(rodaImpianNew.getAssetManager());
         this.subjectLabel = new Label("", skin);
         this.playerMenu = new PlayerMenu(stage, this, skin);
+        this.hourGlass = new HourGlass(rodaImpianNew.getAssetManager().get(AssetDesc.HOURGLASS));
+        this.giftBonuses = new GiftBonuses(atlas, rodaImpianNew.getAssetManager().get(AssetDesc.SPARKLE));
+        this.giftsIndexes.shuffle();
         currentQuestion = rodaImpianNew.getPreparedQuestions().get(gameRound);
         setTile();
-        stage.addActor(vannaHost);
         stage.addActor(subjectLabel);
         stage.addActor(tilesGroup);
+        stage.addActor(vannaHost);
+
+
     }
 
+
     public void setTile() {
-        float initialY = 0;
-        float initialX = 0;
+        float initialY;
+        float initialX;
         if (currentQuestion.getTotalline() <= 2) {
             initialY = 1401f;
             initialX = 37f;
@@ -80,15 +100,19 @@ public class BaseGame {
             initialY = 1481f;
         }
         if (currentQuestion.getLine1() != null) {
+            answerString = currentQuestion.getLine1();
             addTileBase(currentQuestion.getLine1(), 12, initialY, initialX);
         }
         if (currentQuestion.getLine2() != null) {
+            answerString += (" " + currentQuestion.getLine2());
             addTileBase(currentQuestion.getLine2(), 14, initialY - 78f - 2, 37f);
         }
         if (currentQuestion.getLine3() != null) {
+            answerString += (" " + currentQuestion.getLine3());
             addTileBase(currentQuestion.getLine3(), 14, initialY - 78f * 2 - 4, 37f);
         }
         if (currentQuestion.getLine4() != null) {
+            answerString += (" " + currentQuestion.getLine4());
             addTileBase(currentQuestion.getLine4(), 12, initialY - 78f * 3 - 6, 96f);
         }
 
@@ -199,7 +223,7 @@ public class BaseGame {
     }
 
     public void startTurn() {
-
+        hourGlass.remove();
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
@@ -208,10 +232,10 @@ public class BaseGame {
                         currentIndex = playerGui.getPlayerIndex();
                     }
                 }
-
                 currentGui = playerGuis.get(currentIndex);
                 activePlayer = currentGui.getPlayerNew();
-
+                hourGlass.changePos(currentGui);
+                stage.addActor(hourGlass);
                 if (activePlayer.isAi()) {
                     cpuMove();
                 } else {
@@ -221,6 +245,7 @@ public class BaseGame {
         }, 2f);
 
     }
+
 
     private void cpuMove() {
         aiMoves = new AiMoves(this);
@@ -267,7 +292,22 @@ public class BaseGame {
 
             gameSound.playCorrect();
             if (rodaImpianNew.getWheelParams().getScores() > 0) {
-                correctLabel = new CorrectLabel("$" + rodaImpianNew.getWheelParams().getScores() + "x" + multiplier, skin);
+                correctLabel = new CorrectLabel("$" + rodaImpianNew.getWheelParams().getScores() + " x " + multiplier, skin);
+                if (rodaImpianNew.getWheelParams().getScoreStrings().equals(StringRes.FREETURN)) {
+                    stage.addActor(currentGui.getFreeTurn());
+                    currentGui.setFree(true);
+                }
+                if (giftBonuses.isPrepareGift()) {
+                    giftBonuses.winGifts(giftsNew.getGiftIndex(), currentGui.getPosition(), stage);
+                    Timer.schedule(new Timer.Task() {
+                        @Override
+                        public void run() {
+
+                            giftBonuses.setPrepareGift(false);
+                        }
+                    }, 2f);
+
+                }
                 stage.addActor(correctLabel);
             }
 
@@ -284,21 +324,40 @@ public class BaseGame {
             }, 2f);
 
         } else {
-
+            if (giftBonuses.isPrepareGift()) {
+                giftBonuses.setPrepareGift(false);
+            }
             gameSound.playWrong();
-            changeTurn();
+            if (currentGui.isFree()) {
+                currentGui.setFree(false);
+
+                startTurn();
+            } else {
+                changeTurn();
+            }
 
         }
         playerMenu.removeLetter(c.charAt(0));
         logger.debug("correct score " + (multiplier * rodaImpianNew.getWheelParams().getScores()));
         activePlayer.setScore(activePlayer.getScore() + (multiplier * rodaImpianNew.getWheelParams().getScores()));
         rodaImpianNew.getWheelParams().setScores(0);
+
+
     }
 
 
     public void showConsonants() {
 
         if (rodaImpianNew.getWheelParams().getScores() > 0) {
+
+            if (rodaImpianNew.getWheelParams().getScoreStrings().equals(StringRes.GIFT)) {
+                giftBonuses.prepareGift(stage);
+                giftsIndexes.shuffle();
+                giftsNew.setGiftIndex(giftsIndexes.get(0));
+                giftsIndexes.removeIndex(0);
+                ///sendObject giftIndexNew
+            }
+
             if (activePlayer.isAi()) {
                 aiMoves.chooseConsonants();
             } else {
@@ -314,8 +373,39 @@ public class BaseGame {
         }
     }
 
+    public void completePuzzle() throws CloneNotSupportedException {
+        for (TileBase t: tileBases){
+            if (!t.isRevealed()){
+                incompleteTiles.add((TileBase) t.clone());
+            }
+        }
+        if (!incompleteTiles.isEmpty()){
+            for (TileBase t: incompleteTiles){
+                tilesGroup.addActor(t);
+            }
+            Gdx.input.setOnscreenKeyboardVisible(true);
+            playerMenu.showCompleteMenu();
+            keyListen = new KeyListen(incompleteTiles);
+            stage.addListener(keyListen);
+
+        }
+    }
+
+
+    public void checkCompleteAnswer(){
+
+    }
+
+    public void finishGame() {
+
+    }
+
     public PlayerNew getActivePlayer() {
         return activePlayer;
+    }
+
+    public String getAnswerString() {
+        return answerString;
     }
 
     public void update(float delta) {

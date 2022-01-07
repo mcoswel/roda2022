@@ -132,13 +132,16 @@ public class WheelParams {
                 setScoreStrings("$"+getScores());
                 break;
             case "s3":
+                setScores(650);
+                setScoreStrings("$"+getScores());
+                break;
             case "s19":
                 setScores(600);
                 setScoreStrings("$"+getScores());
                 break;
             case "s4":
-                setScores(650);
-                setScoreStrings("$"+getScores());
+                setScores(250);
+                setScoreStrings(StringRes.FREETURN);
                 break;
             case "s5":
             case "s18":

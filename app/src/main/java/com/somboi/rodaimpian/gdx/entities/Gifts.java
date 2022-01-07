@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.Timer;
 import com.somboi.rodaimpian.gdx.actor.BonusGiftImg;
-import com.somboi.rodaimpian.gdx.actor.Sparkling;
+import com.somboi.rodaimpian.gdxnew.actors.Sparkling;
 
 public class Gifts {
     private final TextureAtlas textureAtlas;

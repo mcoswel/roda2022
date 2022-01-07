@@ -1,5 +1,7 @@
 package com.somboi.rodaimpian.gdxnew.actors;
 
+import androidx.annotation.NonNull;
+
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
@@ -9,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Timer;
 import com.somboi.rodaimpian.gdx.config.GameConfig;
 
-public class TileBase extends Image {
+public class TileBase extends Image implements Cloneable{
     private String letter;
     private final TextureAtlas atlas;
     private boolean revealed;
@@ -39,6 +41,15 @@ public class TileBase extends Image {
             }, 1f);
 
         }
+    }
+
+    public boolean typeLetter(String letter){
+        String region = getRegionString(letter);
+        if (region!=null) {
+            setDrawable(new SpriteDrawable(atlas.createSprite(region)));
+            return true;
+        }
+        return false;
     }
 
     private String getRegionString(String letter) {
@@ -95,7 +106,6 @@ public class TileBase extends Image {
         } else {
             if (GameConfig.ALLOWEDCHAR.contains(loLetter)) {
                 region = loLetter;
-
             } else {
                 return null;
             }
@@ -109,5 +119,11 @@ public class TileBase extends Image {
 
     public String getLetter() {
         return letter;
+    }
+
+    @NonNull
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

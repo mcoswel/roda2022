@@ -134,8 +134,6 @@ public class PlayerGui {
         fullScoreLabel.setText("$" + player.fullScore);
         fullScoreLabel.pack();
         fullScoreLabel.setPosition(xPosition - fullScoreLabel.getWidth() / 2f, 40f);
-
-
     }
 
     public Vector2 getPlayerPos() {

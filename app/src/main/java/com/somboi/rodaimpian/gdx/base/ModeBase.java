@@ -26,9 +26,9 @@ import com.somboi.rodaimpian.gdx.actor.EnvelopeSubject;
 import com.somboi.rodaimpian.gdx.actor.Envelopes;
 import com.somboi.rodaimpian.gdx.actor.FirstTurnWheel;
 import com.somboi.rodaimpian.gdx.actor.FlyingMoney;
-import com.somboi.rodaimpian.gdx.actor.HourGlass;
+import com.somboi.rodaimpian.gdxnew.actors.HourGlass;
 import com.somboi.rodaimpian.gdx.actor.MenuButtons;
-import com.somboi.rodaimpian.gdx.actor.Sparkling;
+import com.somboi.rodaimpian.gdxnew.actors.Sparkling;
 import com.somboi.rodaimpian.gdx.actor.TimerLimit;
 import com.somboi.rodaimpian.gdx.actor.Trophy;
 import com.somboi.rodaimpian.gdx.actor.Vanna;
@@ -317,7 +317,7 @@ public class ModeBase {
     }
 
     public void startPlays() {
-        hourGlass.changePos(playerGuis.get(activePlayer.guiIndex));
+       // hourGlass.changePos(playerGuis.get(activePlayer.guiIndex));
         timerLimit.reset();
 
         //  bonusRound();

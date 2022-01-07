@@ -30,12 +30,12 @@ public class AiMoves {
 
     public void execute(Array<TileBase> tileBases, PlayerMenu playerMenu, PlayerNew playerNew, PlayerGuis playerGuis) {
         final Array<CpuMovement> availableMoves = new Array<>();
-        logger.debug("completeion percent " + completion);
         this.playerMenu = playerMenu;
         this.tileBases = tileBases;
         this.playerGuis = playerGuis;
         this.playerNew = playerNew;
-        completion = tilesLeft();
+        completion = tilesRevealed();
+
 
         if (playerNew.getScore() >= 250 && playerMenu.vocalAvailable()) {
             availableMoves.add(CpuMovement.CHOOSEVOCAL);
@@ -45,20 +45,27 @@ public class AiMoves {
             availableMoves.add(CpuMovement.SPIN);
         }
 
-        if (completion <= 2) {
+        float percentageComplete = (float)completion / (float)tileBases.size;
+
+        logger.debug("completion " + completion+" tile size "+tileBases.size+" percentage " + percentageComplete);
+        if (percentageComplete > 0.75f) {
             availableMoves.add(CpuMovement.COMPLETE);
         }
 
         availableMoves.shuffle();
         CpuMovement executeMove = availableMoves.first();
+
+        float greedyRandom = MathUtils.random(0, 1);
+        if (greedyRandom == 1) {
+            logger.debug("greedy");
+            if (availableMoves.contains(CpuMovement.SPIN, false) && questionHaveConsonants()) {
+                chooseSpin();
+                return;
+            }
+        }
+
         if (executeMove.equals(CpuMovement.SPIN)) {
-            playerGuis.chat(StringRes.CPUPUTAR.random());
-            Timer.schedule(new Timer.Task() {
-                @Override
-                public void run() {
-                    baseGame.spinWheel(true);
-                }
-            }, 1.7f);
+            chooseSpin();
         } else if (executeMove.equals(CpuMovement.CHOOSEVOCAL)) {
             chooseVocals();
         } else {
@@ -68,39 +75,79 @@ public class AiMoves {
 
     }
 
-    private void wrongComplete() {
+    private void chooseSpin() {
+        playerGuis.chat(StringRes.CPUPUTAR.random());
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                baseGame.spinWheel(true);
+            }
+        }, 1.7f);
+    }
 
+    private void wrongComplete() {
+        playerGuis.chat(StringRes.ANSWERIS + tileBases.get(0).getLetter() + tileBases.get(1).getLetter() +
+                tileBases.get(2).getLetter() +
+                " ...err... ");
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                baseGame.changeTurn();
+            }
+        }, 2f);
     }
 
     private void truComplete() {
-
+        playerGuis.chat(StringRes.ANSWERIS + baseGame.getAnswerString());
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                baseGame.finishGame();
+            }
+        }, 2f);
     }
 
     private void chooseComplete() {
-
+        playerGuis.chat(StringRes.CPUCOMPLETE);
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                if (randomize() < completion) {
+                    truComplete();
+                } else {
+                    wrongComplete();
+                }
+            }
+        }, 1.5f);
     }
 
     private void chooseVocals() {
-        logger.debug("choose vocals");
-        playerNew.setScore(playerNew.getScore()-250);
-        if (randomize() < completion && questionHaveVocals()) {
-           answerVocals(chooseCorrectVocals());
+        playerNew.setScore(playerNew.getScore() - 250);
+        int random = randomize();
+        logger.debug("random no " + random);
+        if (random < completion && questionHaveVocals()) {
+            answerVocals(chooseCorrectVocals());
         } else {
             answerVocals(chooseRandomVocals());
         }
     }
 
     private String chooseCorrectVocals() {
+        logger.debug("choose correct vocals");
 
         Array<String> vocals = new Array<>();
         for (TileBase t : tileBases) {
-            vocals.add(t.getLetter());
+            if (playerMenu.getVocalLetter().toString().contains(t.getLetter())) {
+                vocals.add(t.getLetter());
+            }
         }
         vocals.shuffle();
         return vocals.first();
     }
 
     private String chooseRandomVocals() {
+        logger.debug("choose random vocals");
+
         Array<Character> vocals = new Array<>(GameConfig.VOCALS);
         vocals.shuffle();
         for (Character c : vocals) {
@@ -112,7 +159,9 @@ public class AiMoves {
     }
 
     public void chooseConsonants() {
-        if (randomize() < completion && questionHaveConsonants()) {
+        int random = randomize();
+        logger.debug("random no " + random);
+        if (random < completion && questionHaveConsonants()) {
             answerConsonants(chooseCorrectConsonants());
         } else {
             answerConsonants(chooseRandomConsonants());
@@ -124,10 +173,13 @@ public class AiMoves {
     }
 
     private String chooseCorrectConsonants() {
+        logger.debug("choose correct consonants");
         Array<String> correctCons = new Array<>();
-        logger.debug("correct consonant");
+
         for (TileBase t : tileBases) {
-            correctCons.add(t.getLetter());
+            if (playerMenu.getConsonantLetter().toString().contains(t.getLetter())) {
+                correctCons.add(t.getLetter());
+            }
         }
         correctCons.shuffle();
         return correctCons.first();
@@ -169,7 +221,7 @@ public class AiMoves {
             public void run() {
                 baseGame.checkAnswer(answer);
             }
-        }, 1f);
+        }, 1.5f);
     }
 
     private void answerVocals(String answer) {
@@ -179,38 +231,40 @@ public class AiMoves {
             public void run() {
                 baseGame.checkAnswer(answer);
             }
-        }, 1f);
+        }, 1.5f);
     }
 
     private boolean questionHaveVocals() {
-        String questions = "";
-        for (TileBase t : tileBases) {
-            questions += t.getLetter();
-        }
         String vocals = "AEIOU";
-        if (questions.contains(vocals)) {
-            return true;
+        for (TileBase t : tileBases) {
+            if (!t.isRevealed()) {
+                if (vocals.contains(t.getLetter())) {
+                    return true;
+                }
+            }
         }
+
         return false;
     }
 
 
     private boolean questionHaveConsonants() {
-        String questions = "";
-        for (TileBase t : tileBases) {
-            questions += t.getLetter();
-        }
         String consonants = "BCDFGHJKLMNPQRSTVWXYZ";
-        if (questions.contains(consonants)) {
-            return true;
+        for (TileBase t : tileBases) {
+            if (!t.isRevealed()) {
+                if (consonants.contains(t.getLetter())) {
+                    return true;
+                }
+            }
         }
+
         return false;
     }
 
-    private int tilesLeft() {
+    private int tilesRevealed() {
         int left = 0;
         for (TileBase t : tileBases) {
-            if (!t.isRevealed()) {
+            if (t.isRevealed()) {
                 left++;
             }
         }

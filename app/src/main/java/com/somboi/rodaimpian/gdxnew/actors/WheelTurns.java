@@ -65,7 +65,8 @@ public class WheelTurns extends Image {
                     Timer.schedule(new Timer.Task() {
                         @Override
                         public void run() {
-                            baseGame.startRound();
+                           baseGame.startRound();
+
                         }
                     }, 1f);
                 }
