@@ -381,6 +381,7 @@ public class BaseGame {
         }
         if (!incompleteTiles.isEmpty()){
             for (TileBase t: incompleteTiles){
+                t.setColor(Color.RED);
                 tilesGroup.addActor(t);
             }
             Gdx.input.setOnscreenKeyboardVisible(true);

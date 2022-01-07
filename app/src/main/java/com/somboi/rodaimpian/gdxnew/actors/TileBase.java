@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.Timer;
 import com.somboi.rodaimpian.gdx.config.GameConfig;
 
@@ -15,6 +16,7 @@ public class TileBase extends Image implements Cloneable{
     private String letter;
     private final TextureAtlas atlas;
     private boolean revealed;
+    private final Logger logger = new Logger(this.getClass().getName(), 3);
     public TileBase(TextureAtlas atlas, String letter) {
         super(atlas.findRegion("blank"));
         this.atlas = atlas;
@@ -45,6 +47,7 @@ public class TileBase extends Image implements Cloneable{
 
     public boolean typeLetter(String letter){
         String region = getRegionString(letter);
+
         if (region!=null) {
             setDrawable(new SpriteDrawable(atlas.createSprite(region)));
             return true;
