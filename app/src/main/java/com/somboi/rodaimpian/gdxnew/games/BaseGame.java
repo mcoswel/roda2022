@@ -17,6 +17,7 @@ import com.somboi.rodaimpian.RodaImpianNew;
 import com.somboi.rodaimpian.gdx.assets.AssetDesc;
 import com.somboi.rodaimpian.gdx.assets.GameSound;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
+import com.somboi.rodaimpian.gdx.config.GameConfig;
 import com.somboi.rodaimpian.gdxnew.actors.ChatBubble;
 import com.somboi.rodaimpian.gdxnew.actors.CorrectLabel;
 import com.somboi.rodaimpian.gdxnew.actors.CpuFactory;
@@ -65,6 +66,7 @@ public class BaseGame {
     protected final Array<TileBase> incompleteTiles = new Array<>();
     protected KeyListen keyListen;
     protected String answerHolder;
+
     public BaseGame(Stage stage, RodaImpianNew rodaImpianNew) {
         this.stage = stage;
         this.rodaImpianNew = rodaImpianNew;
@@ -376,36 +378,72 @@ public class BaseGame {
         }
     }
 
-    public void completePuzzle() throws CloneNotSupportedException {
+    public boolean completePuzzle() throws CloneNotSupportedException {
         answerHolder = "";
+        incompleteTiles.clear();
         for (TileBase t : tileBases) {
             if (!t.isRevealed()) {
-                answerHolder+=t.getLetter();
+                answerHolder += t.getLetter();
                 incompleteTiles.add((TileBase) t.clone());
             }
         }
-        if (!incompleteTiles.isEmpty() && answerHolder!=null) {
+        if (!incompleteTiles.isEmpty() && answerHolder != null) {
             logger.debug("Incomplete size " + incompleteTiles.size);
             for (TileBase t : incompleteTiles) {
                 incompleteGroup.addActor(t);
+                t.setLetter("*");
             }
             Gdx.input.setOnscreenKeyboardVisible(true);
             playerMenu.showCompleteMenu();
             keyListen = new KeyListen(incompleteTiles);
             stage.addListener(keyListen);
-
+            return true;
         }
+        return false;
     }
 
 
-    public void checkCompleteAnswer() {
+    public void checkCompleteAnswer() throws CloneNotSupportedException {
+        boolean correct = false;
+        String compareAnswer = "";
+        Gdx.input.setOnscreenKeyboardVisible(false);
+        if (keyListen != null) {
+            stage.removeListener(keyListen);
+        }
+
+        if (!incompleteTiles.isEmpty() && answerHolder != null) {
+            playerMenu.hideComplete();
+            for (TileBase t : incompleteTiles) {
+                t.setColor(GameConfig.NORMAL_COLOR);
+                compareAnswer += t.getLetter();
+            }
+            answerHolder = answerHolder.toLowerCase();
+            compareAnswer = compareAnswer.toLowerCase();
+
+            if (answerHolder.equals(compareAnswer)) {
+                correct = true;
+            }
+
+            if (correct) {
+                finishGame();
+            } else {
+                answerHolder = "";
+                incompleteGroup.clear();
+                incompleteTiles.clear();
+                gameSound.playWrong();
+                changeTurn();
+            }
+        } else {
+            completePuzzle();
+        }
+
 
     }
 
     public void finishGame() {
         gameSound.playCheer();
         if (!incompleteTiles.isEmpty()) {
-            tilesGroup.clear();
+            incompleteGroup.clear();
             incompleteTiles.clear();
         }
         for (TileBase t : tileBases) {

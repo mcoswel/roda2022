@@ -145,7 +145,7 @@ public class PlayerGuis {
                 playerNew.setAnimateScore(playerNew.getScore());
             }
             scoreLabel.setText("$"+playerNew.getAnimateScore());
-            scoreLabel.setPosition((150f+(300 * playerIndex))-scoreLabel.getWidth()/2f, 165);
+            scoreLabel.setPosition((150f+(300 * playerIndex))-scoreLabel.getWidth(), 165);
         }
     }
 

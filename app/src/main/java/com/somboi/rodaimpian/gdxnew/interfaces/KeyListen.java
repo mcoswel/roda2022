@@ -19,8 +19,12 @@ public class KeyListen extends InputListener {
     @Override
     public boolean keyDown(InputEvent event, int keycode) {
         if (keycode == Input.Keys.BACKSPACE || keycode == Input.Keys.DEL){
+            incomplete.get(counter).setColor(GameConfig.NORMAL_COLOR);
             if (counter>0){
                 counter--;
+                incomplete.get(counter).setColor(Color.GREEN);
+            }else{
+                counter = incomplete.size-1;
                 incomplete.get(counter).setColor(Color.GREEN);
             }
         }
@@ -32,6 +36,7 @@ public class KeyListen extends InputListener {
 
         if (incomplete.get(counter).typeLetter(String.valueOf(character))){
             incomplete.get(counter).setColor(GameConfig.NORMAL_COLOR);
+            incomplete.get(counter).setLetter(String.valueOf(character));
             counter++;
             if (counter==incomplete.size){
                 counter = 0;

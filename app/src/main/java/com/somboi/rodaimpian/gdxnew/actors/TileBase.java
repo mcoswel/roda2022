@@ -124,6 +124,10 @@ public class TileBase extends Image implements Cloneable{
         return letter;
     }
 
+    public void setLetter(String letter) {
+        this.letter = letter;
+    }
+
     @NonNull
     @Override
     public Object clone() throws CloneNotSupportedException {

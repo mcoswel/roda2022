@@ -53,9 +53,10 @@ public class PlayerMenu {
         complete.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                clear();
                 try {
-                    baseGame.completePuzzle();
+                    if (baseGame.completePuzzle()){
+                        clear();
+                    }
                 } catch (CloneNotSupportedException e) {
                     e.printStackTrace();
                 }
@@ -78,6 +79,10 @@ public class PlayerMenu {
         menuTable.setPosition(450f - menuTable.getWidth() / 2f, 630f);
     }
 
+    public void hideComplete(){
+        completeTable.remove();
+    }
+
     private void createCompleteTable(){
         Table first = new Table();
         first.defaults().pad(5f);
@@ -85,7 +90,11 @@ public class PlayerMenu {
         submitAnswer.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                baseGame.checkCompleteAnswer();
+                try {
+                    baseGame.checkCompleteAnswer();
+                } catch (CloneNotSupportedException e) {
+                    e.printStackTrace();
+                }
             }
         });
         SmallButton keyboard = new SmallButton(StringRes.SHOWKEYBOARD,skin);

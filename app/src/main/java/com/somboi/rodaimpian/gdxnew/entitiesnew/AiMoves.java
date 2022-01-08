@@ -169,7 +169,7 @@ public class AiMoves {
     }
 
     private int randomize() {
-        return MathUtils.random(0, tileBases.size - 1);
+        return MathUtils.random(0, tileBases.size);
     }
 
     private String chooseCorrectConsonants() {
@@ -215,6 +215,7 @@ public class AiMoves {
     }
 
     private void answerConsonants(String answer) {
+        logger.debug("answer consonants: "+answer);
         playerGuis.chat(StringRes.CPUCHOOSECONSONANTS.random() + answer);
         Timer.schedule(new Timer.Task() {
             @Override
@@ -225,6 +226,7 @@ public class AiMoves {
     }
 
     private void answerVocals(String answer) {
+        logger.debug("answer vocal: "+answer);
         playerGuis.chat(StringRes.CPUBUYVOCALS.random() + answer);
         Timer.schedule(new Timer.Task() {
             @Override
