@@ -19,8 +19,10 @@ import com.somboi.rodaimpian.gdx.assets.GameSound;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdx.config.GameConfig;
 import com.somboi.rodaimpian.gdxnew.actors.ChatBubble;
+import com.somboi.rodaimpian.gdxnew.actors.Confetti;
 import com.somboi.rodaimpian.gdxnew.actors.CorrectLabel;
 import com.somboi.rodaimpian.gdxnew.actors.CpuFactory;
+import com.somboi.rodaimpian.gdxnew.actors.Fireworks;
 import com.somboi.rodaimpian.gdxnew.actors.GiftBonuses;
 import com.somboi.rodaimpian.gdxnew.actors.HourGlass;
 import com.somboi.rodaimpian.gdxnew.actors.PlayerGuis;
@@ -80,14 +82,22 @@ public class BaseGame {
         this.hourGlass = new HourGlass(rodaImpianNew.getAssetManager().get(AssetDesc.HOURGLASS));
         this.giftBonuses = new GiftBonuses(atlas, rodaImpianNew.getAssetManager().get(AssetDesc.SPARKLE));
         this.giftsIndexes.shuffle();
-        currentQuestion = rodaImpianNew.getPreparedQuestions().get(gameRound);
-        setTile();
         stage.addActor(subjectLabel);
         stage.addActor(tilesGroup);
         stage.addActor(incompleteGroup);
         stage.addActor(vannaHost);
+        setUpNewRound();
+    }
 
-
+    public void setUpNewRound() {
+        if (!tileBases.isEmpty()) {
+            for (TileBase t : tileBases) {
+                t.remove();
+            }
+        }
+        tileBases.clear();
+        currentQuestion = rodaImpianNew.getPreparedQuestions().get(gameRound);
+        setTile();
     }
 
 
@@ -220,6 +230,7 @@ public class BaseGame {
     }
 
     public void startRound() {
+
         vannaHost.relax();
         showQuestions();
         startTurn();
@@ -316,16 +327,27 @@ public class BaseGame {
             }
 
 
-            Timer.schedule(new Timer.Task() {
-                @Override
-                public void run() {
-                    if (!activePlayer.isAi()) {
-                        playerMenu.show();
-                    } else {
-                        cpuMove();
-                    }
+            boolean complete = true;
+            for (TileBase t : tileBases) {
+                if (!t.isRevealed()) {
+                    complete = false;
                 }
-            }, 2f);
+            }
+
+            if (complete) {
+                finishGame();
+            } else {
+                Timer.schedule(new Timer.Task() {
+                    @Override
+                    public void run() {
+                        if (!activePlayer.isAi()) {
+                            playerMenu.show();
+                        } else {
+                            cpuMove();
+                        }
+                    }
+                }, 2f);
+            }
 
         } else {
             vannaHost.wrong();
@@ -360,6 +382,10 @@ public class BaseGame {
                 giftsIndexes.shuffle();
                 giftsNew.setGiftIndex(giftsIndexes.get(0));
                 giftsIndexes.removeIndex(0);
+                rodaImpianNew.getWheelParams().setScores(
+                        giftBonuses.getGiftValue(giftsNew.getGiftIndex())
+                );
+
                 ///sendObject giftIndexNew
             }
 
@@ -437,11 +463,11 @@ public class BaseGame {
             completePuzzle();
         }
 
-
     }
 
     public void finishGame() {
         gameSound.playCheer();
+        vannaHost.dance();
         if (!incompleteTiles.isEmpty()) {
             incompleteGroup.clear();
             incompleteTiles.clear();
@@ -451,6 +477,22 @@ public class BaseGame {
                 t.reveal();
             }
         }
+        stage.addActor(new Fireworks(rodaImpianNew.getAssetManager().get(AssetDesc.WINANIMATION)));
+        stage.addActor(new Confetti(rodaImpianNew.getAssetManager().get(AssetDesc.CONFETTI), currentIndex));
+        gameSound.playWinSound();
+
+        currentGui.getProfilePic().addAction(Actions.moveTo(350f, 1200f, 1.5f));
+
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                currentGui.getProfilePic().addAction(Actions.moveTo(currentGui.getPosition().x, currentGui.getPosition().y, 1f));
+                gameRound++;
+                setUpNewRound();
+                startRound();
+            }
+        }, 4f);
+
     }
 
     public PlayerNew getActivePlayer() {

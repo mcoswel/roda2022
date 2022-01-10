@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import com.somboi.rodaimpian.RodaImpian;
-import com.somboi.rodaimpian.gdx.actor.Confetti;
+import com.somboi.rodaimpian.gdxnew.actors.Confetti;
 import com.somboi.rodaimpian.gdx.actor.EnvelopeSubject;
 import com.somboi.rodaimpian.gdx.actor.Envelopes;
 import com.somboi.rodaimpian.gdxnew.actors.Sparkling;

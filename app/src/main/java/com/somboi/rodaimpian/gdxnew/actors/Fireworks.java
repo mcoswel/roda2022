@@ -1,10 +1,11 @@
-package com.somboi.rodaimpian.gdx.actor;
+package com.somboi.rodaimpian.gdxnew.actors;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.utils.Timer;
 import com.somboi.rodaimpian.gdx.config.GameConfig;
 
 public class Fireworks extends Actor {
@@ -23,6 +24,12 @@ public class Fireworks extends Actor {
             }
         }
         fireAnime = new Animation<>(0.025f, winFrames2);
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                remove();
+            }
+        },3f);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.somboi.rodaimpian.gdx.actor;
+package com.somboi.rodaimpian.gdxnew.actors;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.utils.Timer;
 
 public class Confetti extends Actor {
     private final Animation<TextureRegion> animation;
@@ -30,6 +31,13 @@ public class Confetti extends Actor {
         }else{
             position = new Vector2(750f-250f, 160f);
         }
+
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                remove();
+            }
+        },3f);
     }
 
     @Override

@@ -9,7 +9,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import com.somboi.rodaimpian.RodaImpian;
 import com.somboi.rodaimpian.gdx.actor.CorrectScore;
-import com.somboi.rodaimpian.gdx.actor.Fireworks;
+import com.somboi.rodaimpian.gdxnew.actors.Fireworks;
 import com.somboi.rodaimpian.gdx.actor.SubjectLabel;
 import com.somboi.rodaimpian.gdx.assets.AssetDesc;
 import com.somboi.rodaimpian.gdx.assets.GameSound;

@@ -19,6 +19,7 @@ public class GiftBonuses {
     private boolean prepareGift;
     private int giftCounter;
     private int posYMultiplier;
+
     public GiftBonuses(TextureAtlas atlas, Texture sparkTex) {
         this.atlas = atlas;
         this.sparkling = new Sparkling(sparkTex);
@@ -29,6 +30,76 @@ public class GiftBonuses {
         giftBox = new GiftsImg(atlas.findRegion("unopened_gift"));
         stage.addActor(giftBox);
         prepareGift = true;
+    }
+
+    public int getGiftValue(int giftIndex) {
+        if (giftIndex == 2) {
+            return 35;
+        }
+        if (giftIndex == 3) {
+            return 800;
+        }
+        if (giftIndex == 4) {
+            return 45;
+        }
+        if (giftIndex == 5) {
+            return 700;
+        }
+        if (giftIndex == 6) {
+            return 550;
+        }
+        if (giftIndex == 7) {
+            return 400;
+        }
+        if (giftIndex == 8) {
+            return 320;
+        }
+        if (giftIndex == 9) {
+            return 125;
+        }
+        if (giftIndex == 10) {
+            return 150;
+        }
+        if (giftIndex == 11) {
+            return 375;
+        }
+        if (giftIndex == 12) {
+            return 270;
+        }
+        if (giftIndex == 13) {
+            return 130;
+        }
+        if (giftIndex == 14) {
+            return 990;
+        }
+        if (giftIndex == 15) {
+            return 80;
+        }
+        if (giftIndex == 16) {
+            return 25;
+        }
+        if (giftIndex == 17) {
+            return 35;
+        }
+        if (giftIndex == 18) {
+            return 100;
+        }
+        if (giftIndex == 19) {
+            return 140;
+        }
+        if (giftIndex == 20) {
+            return 880;
+        }
+        if (giftIndex == 21) {
+            return 90;
+        }
+        if (giftIndex == 22) {
+            return 35;
+        }
+        if (giftIndex == 23) {
+            return 1000;
+        }
+        return 1500;
     }
 
     public String getGiftRegion(int giftIndex) {
@@ -97,7 +168,8 @@ public class GiftBonuses {
         }
         if (giftIndex == 22) {
             return "5_g_ultraman";
-        }if (giftIndex == 22) {
+        }
+        if (giftIndex == 22) {
             return "5_g_ultraman";
         }
         return "5_g_voucher";
@@ -118,17 +190,17 @@ public class GiftBonuses {
         gifts = new GiftsImg(giftIndex);
         stage.addActor(gifts);
         gifts.addAction(
-                new SequenceAction( new ParallelAction(
-                        Actions.scaleBy(3f,3f,3f),
-                        Actions.moveTo(100f,300f,3f)),
+                new SequenceAction(new ParallelAction(
+                        Actions.scaleBy(3f, 3f, 3f),
+                        Actions.moveTo(100f, 300f, 3f)),
                         new ParallelAction(
-                                Actions.sizeTo(25f,25f,3f),
-                                Actions.moveTo(position.x-25+(70*giftCounter),position.y,3f))
-                        )
+                                Actions.sizeTo(25f, 25f, 1.5f),
+                                Actions.moveTo(position.x - 25 + (70 * giftCounter), position.y, 1.5f))
+                )
         );
         giftCounter++;
-        if (giftCounter==4){
-            giftCounter=0;
+        if (giftCounter == 4) {
+            giftCounter = 0;
         }
     }
 
@@ -137,18 +209,21 @@ public class GiftBonuses {
             super(region);
             setup();
         }
+
         public GiftsImg(int giftIndex) {
             super(atlas.findRegion(getGiftRegion(giftIndex)));
             setup();
         }
-        private void setup(){
+
+        private void setup() {
             setSize(200, 200);
-            setPosition(350f,1110f);
+            setPosition(350f, 1110f);
         }
 
-        private void openBox(){
+        private void openBox() {
             setDrawable(new SpriteDrawable(atlas.createSprite("opened_gift")));
         }
+
         private void winGifts(int giftIndex) {
             setDrawable(new SpriteDrawable(atlas.createSprite(getGiftRegion(giftIndex))));
         }
@@ -166,7 +241,7 @@ public class GiftBonuses {
     }
 
     public void setPrepareGift(boolean prepareGift) {
-        if (!prepareGift){
+        if (!prepareGift) {
             loseGifts();
 
         }

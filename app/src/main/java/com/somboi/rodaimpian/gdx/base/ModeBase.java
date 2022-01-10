@@ -18,7 +18,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.somboi.rodaimpian.RodaImpian;
 import com.somboi.rodaimpian.android.PlayerOnline;
 import com.somboi.rodaimpian.gdx.actor.ChatBubble;
-import com.somboi.rodaimpian.gdx.actor.Confetti;
+import com.somboi.rodaimpian.gdxnew.actors.Confetti;
 import com.somboi.rodaimpian.gdx.actor.ConsonantKeyboard;
 import com.somboi.rodaimpian.gdx.actor.CorrectScore;
 import com.somboi.rodaimpian.gdx.actor.EndGameDialog;

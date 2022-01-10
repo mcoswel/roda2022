@@ -146,6 +146,12 @@ public class VannaHost extends Image {
             } else {
                 currentAnimation = sideHandR();
             }
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    relax();
+                }
+            },3f);
         }
     }
 
