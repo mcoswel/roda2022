@@ -130,7 +130,6 @@ public class PlayerGuis {
         }
         if (playerNew!=null && scoreLabel!=null){
             if (playerNew.getAnimateScore()<playerNew.getScore()){
-
                 if (playerNew.getScore()-playerNew.getAnimateScore() >= 10000 ){
                     playerNew.setAnimateScore(playerNew.getAnimateScore()+1000);
                 }else if (playerNew.getScore()-playerNew.getAnimateScore() >= 1000 ){
@@ -140,7 +139,6 @@ public class PlayerGuis {
                 }else{
                     playerNew.setAnimateScore(playerNew.getAnimateScore()+1);
                 }
-
             }else{
                 playerNew.setAnimateScore(playerNew.getScore());
             }
@@ -168,5 +166,11 @@ public class PlayerGuis {
             },2f);
         }
         this.free = free;
+    }
+
+    public void updateFullScore(int fullScore) {
+        fulLScoreLabel.setText("$"+fullScore);
+        fulLScoreLabel.pack();
+        fulLScoreLabel.setPosition((150f+(300 * playerIndex))-fulLScoreLabel.getWidth()/2f, 11.2f);
     }
 }

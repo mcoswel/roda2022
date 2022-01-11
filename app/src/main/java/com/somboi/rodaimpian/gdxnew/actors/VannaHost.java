@@ -227,7 +227,7 @@ public class VannaHost extends Image {
 
     public void increaseCount(){
         vannaCounter++;
-        if (vannaCounter%2==0 && !walking){
+        if (vannaCounter%4==0 && !walking){
             walk();
         }
     }

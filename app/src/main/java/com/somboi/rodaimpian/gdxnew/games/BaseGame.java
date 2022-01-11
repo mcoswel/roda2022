@@ -31,12 +31,15 @@ import com.somboi.rodaimpian.gdxnew.actors.ProfilePic;
 import com.somboi.rodaimpian.gdxnew.actors.TileBase;
 import com.somboi.rodaimpian.gdxnew.actors.VannaHost;
 import com.somboi.rodaimpian.gdxnew.actors.WheelTurns;
+import com.somboi.rodaimpian.gdxnew.actors.WinnerDialog;
 import com.somboi.rodaimpian.gdxnew.assets.QuestionNew;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.AiMoves;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.GiftsNew;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
 import com.somboi.rodaimpian.gdxnew.interfaces.KeyListen;
 import com.somboi.rodaimpian.gdxnew.screens.SpinScreen;
+
+import java.util.HashMap;
 
 public class BaseGame {
     protected final Stage stage;
@@ -68,7 +71,7 @@ public class BaseGame {
     protected final Array<TileBase> incompleteTiles = new Array<>();
     protected KeyListen keyListen;
     protected String answerHolder;
-
+    private PlayerGuis testGui;
     public BaseGame(Stage stage, RodaImpianNew rodaImpianNew) {
         this.stage = stage;
         this.rodaImpianNew = rodaImpianNew;
@@ -97,6 +100,7 @@ public class BaseGame {
         }
         tileBases.clear();
         currentQuestion = rodaImpianNew.getPreparedQuestions().get(gameRound);
+        setSubject(StringRes.ROUND + (gameRound + 1));
         setTile();
     }
 
@@ -104,6 +108,7 @@ public class BaseGame {
     public void setTile() {
         float initialY;
         float initialX;
+
         if (currentQuestion.getTotalline() <= 2) {
             initialY = 1401f;
             initialX = 37f;
@@ -153,9 +158,16 @@ public class BaseGame {
 
     public void addPlayers() {
         PlayerGuis playerOneGuis = setHumanGui(rodaImpianNew.getPlayer());
+        testGui = playerOneGuis;
+        rodaImpianNew.getPlayer().setPlayerGifts(new HashMap<>());
+        rodaImpianNew.getPlayer().getPlayerGifts().put("g1",1);
+        rodaImpianNew.getPlayer().getPlayerGifts().put("g2",2);
+        rodaImpianNew.getPlayer().getPlayerGifts().put("g3",3);
+        rodaImpianNew.getPlayer().getPlayerGifts().put("g4",4);
+
+
         PlayerGuis playerTwoGuis;
         PlayerGuis playerThreeGuis;
-
         if (rodaImpianNew.getPlayerTwo() != null) {
             playerTwoGuis = setHumanGui(rodaImpianNew.getPlayerTwo());
         } else {
@@ -226,11 +238,10 @@ public class BaseGame {
             );
             tilesGroup.addActor(tileBase);
         }
-        setSubject();
+        setSubject(currentQuestion.getSubject());
     }
 
     public void startRound() {
-
         vannaHost.relax();
         showQuestions();
         startTurn();
@@ -261,7 +272,6 @@ public class BaseGame {
 
     }
 
-
     private void cpuMove() {
         aiMoves = new AiMoves(this);
         aiMoves.execute(tileBases, playerMenu, activePlayer, currentGui);
@@ -277,8 +287,8 @@ public class BaseGame {
         startTurn();
     }
 
-    private void setSubject() {
-        subjectLabel.setText(currentQuestion.getSubject());
+    private void setSubject(String text) {
+        subjectLabel.setText(text);
         subjectLabel.pack();
         subjectLabel.setPosition(450f - subjectLabel.getWidth() / 2f, 888f);
     }
@@ -313,11 +323,10 @@ public class BaseGame {
                     currentGui.setFree(true);
                 }
                 if (giftBonuses.isPrepareGift()) {
-                    giftBonuses.winGifts(giftsNew.getGiftIndex(), currentGui.getPosition(), stage);
+                    giftBonuses.winGifts(giftsNew.getGiftIndex(), currentGui, stage);
                     Timer.schedule(new Timer.Task() {
                         @Override
                         public void run() {
-
                             giftBonuses.setPrepareGift(false);
                         }
                     }, 2f);
@@ -395,6 +404,10 @@ public class BaseGame {
                 playerMenu.createConsonantsTable();
             }
         } else {
+            if (rodaImpianNew.getWheelParams().getScoreStrings().equals(StringRes.BANKRUPT)) {
+                activePlayer.setScore(0);
+
+            }
             Timer.schedule(new Timer.Task() {
                 @Override
                 public void run() {
@@ -482,18 +495,51 @@ public class BaseGame {
         gameSound.playWinSound();
 
         currentGui.getProfilePic().addAction(Actions.moveTo(350f, 1200f, 1.5f));
+        activePlayer.setFullScore(activePlayer.getFullScore() + activePlayer.getScore());
+        currentGui.updateFullScore(activePlayer.getFullScore());
 
+        playerMenu.resetLetters();
+
+        if (gameRound != 3) {
+            increaseGameRound();
+        } else {
+            if (activePlayer.isAi()) {
+                showWinner();
+            }else{
+                SpinScreen spinScreen = new SpinScreen(rodaImpianNew,false);
+                spinScreen.bonusWheel();
+                rodaImpianNew.setScreen(spinScreen);
+            }
+        }
+
+    }
+
+    private void increaseGameRound() {
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
                 currentGui.getProfilePic().addAction(Actions.moveTo(currentGui.getPosition().x, currentGui.getPosition().y, 1f));
                 gameRound++;
                 setUpNewRound();
-                startRound();
+                for (PlayerGuis p : playerGuis) {
+                    p.getPlayerNew().setScore(0);
+                    p.setFree(false);
+                }
+                Timer.schedule(new Timer.Task() {
+                    @Override
+                    public void run() {
+                        startRound();
+                    }
+                }, 2f);
+
             }
         }, 4f);
+    }
+
+    private void showWinner() {
 
     }
+
 
     public PlayerNew getActivePlayer() {
         return activePlayer;

@@ -48,7 +48,7 @@ public class AiMoves {
         float percentageComplete = (float)completion / (float)tileBases.size;
 
         logger.debug("completion " + completion+" tile size "+tileBases.size+" percentage " + percentageComplete);
-        if (percentageComplete > 0.75f) {
+        if (percentageComplete > 0.75f || !playerMenu.consonantAvailable()) {
             availableMoves.add(CpuMovement.COMPLETE);
         }
 

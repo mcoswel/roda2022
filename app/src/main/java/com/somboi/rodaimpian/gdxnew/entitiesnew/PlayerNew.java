@@ -18,8 +18,8 @@ public class PlayerNew implements Comparable<PlayerNew> {
     private boolean disconnect;
     private boolean ai;
     private boolean logged;
-    private Map<String, String> playerGifts;
-    private Map<String, String> playerBonus;
+    private Map<String, Integer> playerGifts;
+    private Map<String, Integer> playerBonus;
 
     public String getName() {
         return name;
@@ -126,19 +126,19 @@ public class PlayerNew implements Comparable<PlayerNew> {
         this.ai = ai;
     }
 
-    public Map<String, String> getPlayerGifts() {
+    public Map<String, Integer> getPlayerGifts() {
         return playerGifts;
     }
 
-    public void setPlayerGifts(Map<String, String> playerGifts) {
+    public void setPlayerGifts(Map<String, Integer> playerGifts) {
         this.playerGifts = playerGifts;
     }
 
-    public Map<String, String> getPlayerBonus() {
+    public Map<String, Integer> getPlayerBonus() {
         return playerBonus;
     }
 
-    public void setPlayerBonus(Map<String, String> playerBonus) {
+    public void setPlayerBonus(Map<String, Integer> playerBonus) {
         this.playerBonus = playerBonus;
     }
 

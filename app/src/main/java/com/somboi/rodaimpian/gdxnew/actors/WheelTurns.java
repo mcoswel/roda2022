@@ -70,7 +70,7 @@ public class WheelTurns extends Image {
                         }
                     }, 1f);
                 }
-            }, 2f);
+            }, 3f);
         }
 
         if (this.getRotation()<0){

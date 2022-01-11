@@ -58,7 +58,7 @@ public class StringRes {
     public static final String OK = "Ok" ;
     public static final String NOTENOUGHMONEY = "Maaf, wang anda tidak mencukupi.";
     public static final String BONUS = "Round Bonus";
-    public static final String ROUND = "Pusingan ";
+    public static final String ROUND = "PUSINGAN ";
     public static final String BONUSROUND = "Pusingan Bonus" ;
     public static final String CHOOSEENVELOPE = "Pilih Sampul" ;
     public static final String CHOOSE5CONS = "Pilih 5 Huruf Konsonan & 2 Vokal";
@@ -116,6 +116,7 @@ public class StringRes {
     public static final String CHANGENAME = "Tukar Nama";
     public static final String QUESTIONNEW = "newquestion";
     public static final String CONSONANTS = "Konsonan";
+    public static final String EXIT2 = "Keluar";
 
     //159.223.73.205
 

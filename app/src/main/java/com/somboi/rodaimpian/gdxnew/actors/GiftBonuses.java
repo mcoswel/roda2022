@@ -11,13 +11,14 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
+import java.util.HashMap;
+
 public class GiftBonuses {
     private final TextureAtlas atlas;
     private final Sparkling sparkling;
     private GiftsImg gifts;
     private GiftsImg giftBox;
     private boolean prepareGift;
-    private int giftCounter;
     private int posYMultiplier;
 
     public GiftBonuses(TextureAtlas atlas, Texture sparkTex) {
@@ -102,7 +103,7 @@ public class GiftBonuses {
         return 1500;
     }
 
-    public String getGiftRegion(int giftIndex) {
+    public static String getGiftRegion(int giftIndex) {
         if (giftIndex == 1) {
             return "5_b_ipong";
         }
@@ -183,7 +184,16 @@ public class GiftBonuses {
 
     }
 
-    public void winGifts(int giftIndex, Vector2 position, Stage stage) {
+    public void winGifts(int giftIndex, PlayerGuis playerGuis, Stage stage) {
+        Vector2 position = playerGuis.getPosition();
+        if (playerGuis.getPlayerNew().getPlayerGifts() == null) {
+            playerGuis.getPlayerNew().setPlayerGifts(new HashMap<>());
+        }
+        playerGuis.getPlayerNew().getPlayerGifts().put("g" + giftIndex, giftIndex);
+        int giftSize = playerGuis.getPlayerNew().getPlayerGifts().size();
+
+        int giftCounter = giftSize % 5;
+
         if (giftBox != null) {
             giftBox.openBox();
         }
@@ -198,10 +208,8 @@ public class GiftBonuses {
                                 Actions.moveTo(position.x - 25 + (70 * giftCounter), position.y, 1.5f))
                 )
         );
-        giftCounter++;
-        if (giftCounter == 4) {
-            giftCounter = 0;
-        }
+
+
     }
 
     private class GiftsImg extends Image {
@@ -224,9 +232,6 @@ public class GiftBonuses {
             setDrawable(new SpriteDrawable(atlas.createSprite("opened_gift")));
         }
 
-        private void winGifts(int giftIndex) {
-            setDrawable(new SpriteDrawable(atlas.createSprite(getGiftRegion(giftIndex))));
-        }
     }
 
     private class BonusImg extends Image {

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -21,11 +22,10 @@ import com.somboi.rodaimpian.gdxnew.interfaces.WorldContact;
 
 public class SpinScreen extends BaseScreenNew {
     private final WorldFactory worldFactory;
-    // private final Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
+     //private final Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
     private final Body wheelBody;
     private final Body needleBody;
     private final RevoluteJoint needleJoint;
-    private final RevoluteJoint wheelJoint;
     private float angularForce;
     private float yInitial, yFinal;
     private boolean startRotation;
@@ -45,11 +45,15 @@ public class SpinScreen extends BaseScreenNew {
         slotResult = new SlotResultLabel(skin);
         worldFactory = new WorldFactory(world);
         wheelBody = worldFactory.createStopper();
-        wheelJoint = worldFactory.createWheelRevoluteJoint(wheelBody);
+        worldFactory.createWheelRevoluteJoint(wheelBody);
         needleBody = worldFactory.createNeedle();
         needleJoint = worldFactory.createNeedleJoint(needleBody);
         slotSensors = worldFactory.createWheelSlotSensor();
 
+    }
+
+    public void bonusWheel(){
+        actorFactory.createWheelBonus();
     }
 
     @Override
@@ -76,7 +80,7 @@ public class SpinScreen extends BaseScreenNew {
                     angularForce = (yInitial - yFinal);
                     if (angularForce > 500f && !rotated) {
                         //  wheelJoint.setMotorSpeed(angularForce);
-                        wheelBody.applyAngularImpulse(-(angularForce + MathUtils.random(10f, 30f)), true);
+                        wheelBody.applyAngularImpulse(-(angularForce + MathUtils.random(10f, 30f))*3, true);
                         startRotation = true;
                         rotated = true;
                         needleJoint.setMotorSpeed(60f);
@@ -87,7 +91,7 @@ public class SpinScreen extends BaseScreenNew {
             Timer.schedule(new Timer.Task() {
                 @Override
                 public void run() {
-                    wheelBody.applyAngularImpulse(-(MathUtils.random(900,2800)),true);
+                    wheelBody.applyAngularImpulse(-(MathUtils.random(2800,4000)),true);
                     startRotation = true;
                     rotated = true;
                     needleJoint.setMotorSpeed(60f);
@@ -105,7 +109,7 @@ public class SpinScreen extends BaseScreenNew {
     @Override
     public void render(float delta) {
         super.render(delta);
-        //  debugRenderer.render(world, worldStage.getCamera().combined);
+        // debugRenderer.render(world, worldStage.getCamera().combined);
         //logger.debug("wheel rev speed "+wheelBody.getAngularVelocity());
         //logger.debug("angle "+revoluteJoint.getJointAngle());
     }

@@ -42,6 +42,6 @@ public class HourGlass extends Actor {
     }
 
     public void changePos(PlayerGuis activePlayerGui){
-        position = new Vector2(activePlayerGui.getPosition().x, activePlayerGui.getPosition().y);
+        position = new Vector2(activePlayerGui.getPosition().x-25f, activePlayerGui.getPosition().y);
     }
 }

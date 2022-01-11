@@ -54,7 +54,7 @@ public class PlayerMenu {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 try {
-                    if (baseGame.completePuzzle()){
+                    if (baseGame.completePuzzle()) {
                         clear();
                     }
                 } catch (CloneNotSupportedException e) {
@@ -79,14 +79,14 @@ public class PlayerMenu {
         menuTable.setPosition(450f - menuTable.getWidth() / 2f, 630f);
     }
 
-    public void hideComplete(){
+    public void hideComplete() {
         completeTable.remove();
     }
 
-    private void createCompleteTable(){
+    private void createCompleteTable() {
         Table first = new Table();
         first.defaults().pad(5f);
-        SmallButton submitAnswer = new SmallButton(StringRes.SUBMIT,skin);
+        SmallButton submitAnswer = new SmallButton(StringRes.SUBMIT, skin);
         submitAnswer.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -97,7 +97,7 @@ public class PlayerMenu {
                 }
             }
         });
-        SmallButton keyboard = new SmallButton(StringRes.SHOWKEYBOARD,skin);
+        SmallButton keyboard = new SmallButton(StringRes.SHOWKEYBOARD, skin);
         keyboard.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -110,7 +110,6 @@ public class PlayerMenu {
         completeTable.add(first);
         completeTable.setPosition(450f - menuTable.getWidth() / 2f, 630f);
     }
-
 
 
     public boolean vocalAvailable() {
@@ -182,7 +181,7 @@ public class PlayerMenu {
         menuTable.remove();
     }
 
-    public void showCompleteMenu(){
+    public void showCompleteMenu() {
         stage.addActor(completeTable);
     }
 
@@ -205,21 +204,26 @@ public class PlayerMenu {
         return consonantLetter;
     }
 
-    public void removeLetter(Character c){
+    public void removeLetter(Character c) {
 
-        for (int i=0; i<vocalLetter.length(); i++){
-            if (vocalLetter.charAt(i)==c){
+        for (int i = 0; i < vocalLetter.length(); i++) {
+            if (vocalLetter.charAt(i) == c) {
                 vocalLetter.deleteCharAt(i);
                 return;
             }
         }
 
-        for (int i=0; i<consonantLetter.length(); i++){
-            if (consonantLetter.charAt(i)==c){
+        for (int i = 0; i < consonantLetter.length(); i++) {
+            if (consonantLetter.charAt(i) == c) {
                 consonantLetter.deleteCharAt(i);
                 return;
             }
         }
 
+    }
+
+    public void resetLetters() {
+        vocalLetter = new StringBuilder("AEIOU");
+        consonantLetter = new StringBuilder("BCDFGHJKLMNPQRSTVWXYZ");
     }
 }

@@ -1,5 +1,7 @@
 package com.somboi.rodaimpian.gdxnew.actors;
 
+import androidx.annotation.NonNull;
+
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -8,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.somboi.rodaimpian.gdx.utils.RoundMap;
 
-public class ProfilePic extends Image {
+public class ProfilePic extends Image implements Cloneable{
     public ProfilePic(TextureRegion region,String picUri) {
         super(region);
         setSize(250,250);
@@ -25,5 +27,11 @@ public class ProfilePic extends Image {
                 }
             });
         }
+    }
+
+    @NonNull
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }
