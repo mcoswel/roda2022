@@ -22,7 +22,18 @@ public class TileBase extends Image implements Cloneable{
         this.atlas = atlas;
         this.letter = letter;
         setSize(57f, 78f);
+        checkSpecialChar();
     }
+
+    private void checkSpecialChar() {
+        if (letter.contains("-")){
+            setDrawable(new SpriteDrawable(atlas.createSprite("tileminus")));
+        }
+        if (letter.contains("\'")){
+            setDrawable(new SpriteDrawable(atlas.createSprite("tileoppost")));
+        }
+    }
+
 
     public void reveal() {
         revealed = true;

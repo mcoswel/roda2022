@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
 import java.util.HashMap;
 
-public class GiftBonuses {
+public class Gifts {
     private final TextureAtlas atlas;
     private final Sparkling sparkling;
     private GiftsImg gifts;
@@ -21,7 +21,7 @@ public class GiftBonuses {
     private boolean prepareGift;
     private int posYMultiplier;
 
-    public GiftBonuses(TextureAtlas atlas, Texture sparkTex) {
+    public Gifts(TextureAtlas atlas, Texture sparkTex) {
         this.atlas = atlas;
         this.sparkling = new Sparkling(sparkTex);
     }
@@ -170,9 +170,7 @@ public class GiftBonuses {
         if (giftIndex == 22) {
             return "5_g_ultraman";
         }
-        if (giftIndex == 22) {
-            return "5_g_ultraman";
-        }
+
         return "5_g_voucher";
     }
 
@@ -234,12 +232,7 @@ public class GiftBonuses {
 
     }
 
-    private class BonusImg extends Image {
-        public BonusImg(TextureRegion region) {
-            super(region);
-            setSize(200, 200);
-        }
-    }
+
 
     public boolean isPrepareGift() {
         return prepareGift;

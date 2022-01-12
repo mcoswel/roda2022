@@ -56,6 +56,7 @@ public class AiMoves {
         CpuMovement executeMove = availableMoves.first();
 
         float greedyRandom = MathUtils.random(0, 1);
+
         if (greedyRandom == 1) {
             logger.debug("greedy");
             if (availableMoves.contains(CpuMovement.SPIN, false) && questionHaveConsonants()) {
@@ -80,7 +81,7 @@ public class AiMoves {
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
-                baseGame.spinWheel(true);
+                baseGame.spinWheel(true, false);
             }
         }, 1.7f);
     }
@@ -124,22 +125,31 @@ public class AiMoves {
     private void chooseVocals() {
         playerNew.setScore(playerNew.getScore() - 250);
         int random = randomize();
-        logger.debug("random no " + random);
-        if (random < completion && questionHaveVocals()) {
-            answerVocals(chooseCorrectVocals());
-        } else {
-            answerVocals(chooseRandomVocals());
+        String c1 = chooseCorrectVocals();
+        String c2 = chooseRandomVocals();
+        String c3 = String.valueOf(playerMenu.getVocalLetter().charAt(0));
+        if (random < completion && questionHaveVocals() && c1!=null) {
+            answerVocals(c1);
+            return;
+        } else if (c2!=null){
+            answerVocals(c2);
+            return;
+        }else{
+            answerVocals(c3);
+            return;
         }
     }
 
     private String chooseCorrectVocals() {
-        logger.debug("choose correct vocals");
-
         Array<String> vocals = new Array<>();
         for (TileBase t : tileBases) {
-            if (playerMenu.getVocalLetter().toString().contains(t.getLetter())) {
+            String c = t.getLetter().toUpperCase();
+            if (playerMenu.getVocalLetter().toString().contains(c)) {
                 vocals.add(t.getLetter());
             }
+        }
+        if (vocals.isEmpty()){
+            return null;
         }
         vocals.shuffle();
         return vocals.first();
@@ -161,10 +171,18 @@ public class AiMoves {
     public void chooseConsonants() {
         int random = randomize();
         logger.debug("random no " + random);
-        if (random < completion && questionHaveConsonants()) {
-            answerConsonants(chooseCorrectConsonants());
-        } else {
-            answerConsonants(chooseRandomConsonants());
+        String c1 = chooseCorrectConsonants();
+        String c2 = chooseRandomConsonants();
+        String c3 = String.valueOf(playerMenu.getConsonantLetter().charAt(0));
+        if (random < completion && questionHaveConsonants() && c1!=null) {
+            answerConsonants(c1);
+            return;
+        } else if (c2!=null){
+            answerConsonants(c2);
+            return;
+        }else{
+            answerConsonants(c3);
+            return;
         }
     }
 
@@ -173,13 +191,16 @@ public class AiMoves {
     }
 
     private String chooseCorrectConsonants() {
-        logger.debug("choose correct consonants");
         Array<String> correctCons = new Array<>();
 
         for (TileBase t : tileBases) {
-            if (playerMenu.getConsonantLetter().toString().contains(t.getLetter())) {
+            String c = t.getLetter().toUpperCase();
+            if (playerMenu.getConsonantLetter().toString().contains(c)) {
                 correctCons.add(t.getLetter());
             }
+        }
+        if (correctCons.isEmpty()){
+            return null;
         }
         correctCons.shuffle();
         return correctCons.first();
@@ -200,14 +221,12 @@ public class AiMoves {
         for (Character c : groupTwo) {
             String c1 = String.valueOf(c);
             if (playerMenu.getConsonantLetter().toString().contains(c1)) {
-                answerConsonants(c1);
                 return c1;
             }
         }
         for (Character c : groupThree) {
             String c1 = String.valueOf(c);
             if (playerMenu.getConsonantLetter().toString().contains(c1)) {
-                answerConsonants(c1);
                 return c1;
             }
         }
@@ -237,10 +256,11 @@ public class AiMoves {
     }
 
     private boolean questionHaveVocals() {
-        String vocals = "AEIOU";
+        String vocals = "aeiou";
         for (TileBase t : tileBases) {
             if (!t.isRevealed()) {
-                if (vocals.contains(t.getLetter())) {
+                String c = t.getLetter().toLowerCase();
+                if (vocals.contains(c)) {
                     return true;
                 }
             }
@@ -251,10 +271,11 @@ public class AiMoves {
 
 
     private boolean questionHaveConsonants() {
-        String consonants = "BCDFGHJKLMNPQRSTVWXYZ";
+        String consonants = "bcdfghjklmnpqrstvwxyz";
         for (TileBase t : tileBases) {
             if (!t.isRevealed()) {
-                if (consonants.contains(t.getLetter())) {
+                String c = t.getLetter().toLowerCase();
+                if (consonants.contains(c)) {
                     return true;
                 }
             }

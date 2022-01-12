@@ -24,7 +24,7 @@ public class WinnerDialog extends Dialog {
         if (winner.getPlayerGifts() != null) {
 
             for (Map.Entry entry : winner.getPlayerGifts().entrySet()) {
-                Image image = new Image(atlas.findRegion(GiftBonuses.getGiftRegion((int) entry.getValue())));
+                Image image = new Image(atlas.findRegion(Gifts.getGiftRegion((int) entry.getValue())));
                 giftImages.add(image);
             }
         }

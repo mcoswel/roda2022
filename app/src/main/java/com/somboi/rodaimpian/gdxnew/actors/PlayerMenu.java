@@ -46,7 +46,7 @@ public class PlayerMenu {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 clear();
-                baseGame.spinWheel(false);
+                baseGame.spinWheel(false, false);
             }
         });
         SmallButton complete = new SmallButton(StringRes.LENGKAPKAN, skin);

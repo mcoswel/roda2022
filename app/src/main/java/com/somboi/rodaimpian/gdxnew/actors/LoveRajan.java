@@ -1,4 +1,4 @@
-package com.somboi.rodaimpian.gdx.actor;
+package com.somboi.rodaimpian.gdxnew.actors;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;

@@ -26,4 +26,9 @@ public class GameConfig {
         Gdx.gl.glClearColor(0,0,0,0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
+
+    public static void clearScreen(Color color){
+        Gdx.gl.glClearColor(color.r, color.g, color.b, color.a);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    }
 }

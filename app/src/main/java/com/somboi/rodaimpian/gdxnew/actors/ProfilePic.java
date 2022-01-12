@@ -11,8 +11,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.somboi.rodaimpian.gdx.utils.RoundMap;
 
 public class ProfilePic extends Image implements Cloneable{
+    private TextureRegion region;
     public ProfilePic(TextureRegion region,String picUri) {
         super(region);
+        this.region = region;
         setSize(250,250);
         if (picUri!=null){
             Pixmap.downloadFromUrl(picUri, new Pixmap.DownloadPixmapResponseListener() {
@@ -27,6 +29,10 @@ public class ProfilePic extends Image implements Cloneable{
                 }
             });
         }
+    }
+
+    public TextureRegion getRegion() {
+        return region;
     }
 
     @NonNull

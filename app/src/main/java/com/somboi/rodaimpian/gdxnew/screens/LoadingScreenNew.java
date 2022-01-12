@@ -97,10 +97,7 @@ public class LoadingScreenNew extends ScreenAdapter {
 
     @Override
     public void show() {
-
-       // LoadFromCSV.execute();
-
-
+      //  LoadFromCSV.execute();
     }
 
 

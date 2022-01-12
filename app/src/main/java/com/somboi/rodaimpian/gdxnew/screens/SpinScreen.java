@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -22,7 +21,7 @@ import com.somboi.rodaimpian.gdxnew.interfaces.WorldContact;
 
 public class SpinScreen extends BaseScreenNew {
     private final WorldFactory worldFactory;
-     //private final Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
+    //private final Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
     private final Body wheelBody;
     private final Body needleBody;
     private final RevoluteJoint needleJoint;
@@ -35,10 +34,12 @@ public class SpinScreen extends BaseScreenNew {
     private boolean rotated;
     private final GameSound gameSound;
     private final boolean cpuMoves;
+    private boolean bonus;
 
-    public SpinScreen(RodaImpianNew rodaImpianNew, boolean cpuMoves) {
+    public SpinScreen(RodaImpianNew rodaImpianNew, boolean cpuMoves, boolean bonus) {
         super(rodaImpianNew);
         this.cpuMoves = cpuMoves;
+        this.bonus = bonus;
         gameSound = new GameSound(assetManager);
         worldContact = new WorldContact(gameSound);
         world.setContactListener(worldContact);
@@ -52,9 +53,6 @@ public class SpinScreen extends BaseScreenNew {
 
     }
 
-    public void bonusWheel(){
-        actorFactory.createWheelBonus();
-    }
 
     @Override
     public void show() {
@@ -80,30 +78,32 @@ public class SpinScreen extends BaseScreenNew {
                     angularForce = (yInitial - yFinal);
                     if (angularForce > 500f && !rotated) {
                         //  wheelJoint.setMotorSpeed(angularForce);
-                        wheelBody.applyAngularImpulse(-(angularForce + MathUtils.random(10f, 30f))*3, true);
+                        wheelBody.applyAngularImpulse(-(angularForce + MathUtils.random(10f, 30f)) * 3, true);
                         startRotation = true;
                         rotated = true;
                         needleJoint.setMotorSpeed(60f);
                     }
                 }
             });
-        }else{
+        } else {
             Timer.schedule(new Timer.Task() {
                 @Override
                 public void run() {
-                    wheelBody.applyAngularImpulse(-(MathUtils.random(2800,4000)),true);
+                    wheelBody.applyAngularImpulse(-(MathUtils.random(2800, 4000)), true);
                     startRotation = true;
                     rotated = true;
                     needleJoint.setMotorSpeed(60f);
                 }
-            },1f);
+            }, 1f);
         }
         stage.addActor(new Image(assetManager.get(AssetDesc.WHEELBG)));
         actorFactory.createWheel(wheelBody);
         actorFactory.createNeedle(needleBody);
         actorFactory.createLogo(wheelBody);
-        wheelBody.setTransform(wheelBody.getPosition(),rodaImpianNew.getWheelParams().getAngle());
-        //actorFactory.createWheelBonus();
+        wheelBody.setTransform(wheelBody.getPosition(), rodaImpianNew.getWheelParams().getAngle());
+        if (bonus) {
+            actorFactory.createWheelBonus();
+        }
     }
 
     @Override

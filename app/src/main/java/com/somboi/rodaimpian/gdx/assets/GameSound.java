@@ -59,4 +59,14 @@ public class GameSound {
     public void playSlapSound(){
         slapSound.play();
     }
+
+    public void playFire() {
+    }
+
+    public void playAmbulance() {
+    }
+
+    public void playPolice() {
+    }
+
 }

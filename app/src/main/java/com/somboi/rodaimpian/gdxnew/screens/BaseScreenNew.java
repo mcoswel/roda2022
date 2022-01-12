@@ -58,6 +58,11 @@ public class BaseScreenNew extends ScreenAdapter {
     }
 
     @Override
+    public void resize(int width, int height) {
+        hudViewport.update(width, height,true);
+    }
+
+    @Override
     public void dispose() {
         stage.dispose();
         worldStage.dispose();

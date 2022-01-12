@@ -5,8 +5,10 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
+import com.somboi.rodaimpian.gdxnew.actors.PlayerGuis;
 import com.somboi.rodaimpian.gdxnew.assets.QuestionNew;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
+import com.somboi.rodaimpian.gdxnew.screens.BombeiroScreen;
 import com.somboi.rodaimpian.gdxnew.screens.GameScreen;
 import com.somboi.rodaimpian.gdxnew.screens.LoadingScreenNew;
 import com.somboi.rodaimpian.gdxnew.screens.MainScreen;
@@ -130,6 +132,5 @@ public class RodaImpianNew extends Game {
     public void dispose() {
         assetManager.dispose();
     }
-
 
 }

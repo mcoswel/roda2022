@@ -38,23 +38,7 @@ public class CpuFactory {
 
         playerGuis.setNameLabel(new Label(playerNew.getName().toUpperCase(), skin,"name"));
         playerGuis.setProfilePic(new ProfilePic(atlas.findRegion(playerNew.getName().toLowerCase()), null));
-        playerGuis.getProfilePic().addListener(new DragListener() {
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                playerGuis.getProfilePic().setDrawable(new SpriteDrawable(
-                        atlas.createSprite(playerNew.getName().toLowerCase()+"two")
-                ));
-                Timer.schedule(new Timer.Task() {
-                    @Override
-                    public void run() {
-                        playerGuis.getProfilePic().setDrawable(new SpriteDrawable(
-                                atlas.createSprite(playerNew.getName().toLowerCase())
-                        ));
-                    }
-                },60f);
-                return super.touchDown(event, x, y, pointer, button);
-            }
-        });
+
 
         playerGuis.setScoreLabel(new Label("$"+playerNew.getScore(), skin, "score"));
         playerGuis.setFulLScoreLabel(new Label("$"+playerNew.getFullScore(), skin, "arial36"));

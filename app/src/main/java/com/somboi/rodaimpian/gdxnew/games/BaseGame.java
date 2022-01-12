@@ -23,12 +23,13 @@ import com.somboi.rodaimpian.gdxnew.actors.Confetti;
 import com.somboi.rodaimpian.gdxnew.actors.CorrectLabel;
 import com.somboi.rodaimpian.gdxnew.actors.CpuFactory;
 import com.somboi.rodaimpian.gdxnew.actors.Fireworks;
-import com.somboi.rodaimpian.gdxnew.actors.GiftBonuses;
+import com.somboi.rodaimpian.gdxnew.actors.Gifts;
 import com.somboi.rodaimpian.gdxnew.actors.HourGlass;
 import com.somboi.rodaimpian.gdxnew.actors.PlayerGuis;
 import com.somboi.rodaimpian.gdxnew.actors.PlayerMenu;
 import com.somboi.rodaimpian.gdxnew.actors.ProfilePic;
 import com.somboi.rodaimpian.gdxnew.actors.TileBase;
+import com.somboi.rodaimpian.gdxnew.actors.TrophyNew;
 import com.somboi.rodaimpian.gdxnew.actors.VannaHost;
 import com.somboi.rodaimpian.gdxnew.actors.WheelTurns;
 import com.somboi.rodaimpian.gdxnew.actors.WinnerDialog;
@@ -39,7 +40,9 @@ import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
 import com.somboi.rodaimpian.gdxnew.interfaces.KeyListen;
 import com.somboi.rodaimpian.gdxnew.screens.SpinScreen;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class BaseGame {
     protected final Stage stage;
@@ -65,13 +68,14 @@ public class BaseGame {
     protected CorrectLabel correctLabel;
     protected final HourGlass hourGlass;
     protected String answerString;
-    protected final GiftBonuses giftBonuses;
+    protected final Gifts gifts;
     protected final Array<Integer> giftsIndexes = new Array<>(new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23});
     protected final GiftsNew giftsNew = new GiftsNew();
     protected final Array<TileBase> incompleteTiles = new Array<>();
     protected KeyListen keyListen;
     protected String answerHolder;
-    private PlayerGuis testGui;
+    protected PlayerGuis testGui;
+
     public BaseGame(Stage stage, RodaImpianNew rodaImpianNew) {
         this.stage = stage;
         this.rodaImpianNew = rodaImpianNew;
@@ -83,7 +87,7 @@ public class BaseGame {
         this.subjectLabel = new Label("", skin);
         this.playerMenu = new PlayerMenu(stage, this, skin);
         this.hourGlass = new HourGlass(rodaImpianNew.getAssetManager().get(AssetDesc.HOURGLASS));
-        this.giftBonuses = new GiftBonuses(atlas, rodaImpianNew.getAssetManager().get(AssetDesc.SPARKLE));
+        this.gifts = new Gifts(atlas, rodaImpianNew.getAssetManager().get(AssetDesc.SPARKLE));
         this.giftsIndexes.shuffle();
         stage.addActor(subjectLabel);
         stage.addActor(tilesGroup);
@@ -112,26 +116,35 @@ public class BaseGame {
         if (currentQuestion.getTotalline() <= 2) {
             initialY = 1401f;
             initialX = 37f;
+            if (currentQuestion.getLine1() != null) {
+                answerString = currentQuestion.getLine1();
+                addTileBase(currentQuestion.getLine1(), 14, initialY, initialX);
+            }
+            if (currentQuestion.getLine2() != null) {
+                answerString += (" " + currentQuestion.getLine2());
+                addTileBase(currentQuestion.getLine2(), 14, initialY - 78f - 2, 37f);
+            }
         } else {
             initialX = 96f;
             initialY = 1481f;
+            if (currentQuestion.getLine1() != null) {
+                answerString = currentQuestion.getLine1();
+                addTileBase(currentQuestion.getLine1(), 12, initialY, initialX);
+            }
+            if (currentQuestion.getLine2() != null) {
+                answerString += (" " + currentQuestion.getLine2());
+                addTileBase(currentQuestion.getLine2(), 14, initialY - 78f - 2, 37f);
+            }
+            if (currentQuestion.getLine3() != null) {
+                answerString += (" " + currentQuestion.getLine3());
+                addTileBase(currentQuestion.getLine3(), 14, initialY - 78f * 2 - 4, 37f);
+            }
+            if (currentQuestion.getLine4() != null) {
+                answerString += (" " + currentQuestion.getLine4());
+                addTileBase(currentQuestion.getLine4(), 12, initialY - 78f * 3 - 6, 96f);
+            }
         }
-        if (currentQuestion.getLine1() != null) {
-            answerString = currentQuestion.getLine1();
-            addTileBase(currentQuestion.getLine1(), 12, initialY, initialX);
-        }
-        if (currentQuestion.getLine2() != null) {
-            answerString += (" " + currentQuestion.getLine2());
-            addTileBase(currentQuestion.getLine2(), 14, initialY - 78f - 2, 37f);
-        }
-        if (currentQuestion.getLine3() != null) {
-            answerString += (" " + currentQuestion.getLine3());
-            addTileBase(currentQuestion.getLine3(), 14, initialY - 78f * 2 - 4, 37f);
-        }
-        if (currentQuestion.getLine4() != null) {
-            answerString += (" " + currentQuestion.getLine4());
-            addTileBase(currentQuestion.getLine4(), 12, initialY - 78f * 3 - 6, 96f);
-        }
+
 
     }
 
@@ -159,13 +172,6 @@ public class BaseGame {
     public void addPlayers() {
         PlayerGuis playerOneGuis = setHumanGui(rodaImpianNew.getPlayer());
         testGui = playerOneGuis;
-        rodaImpianNew.getPlayer().setPlayerGifts(new HashMap<>());
-        rodaImpianNew.getPlayer().getPlayerGifts().put("g1",1);
-        rodaImpianNew.getPlayer().getPlayerGifts().put("g2",2);
-        rodaImpianNew.getPlayer().getPlayerGifts().put("g3",3);
-        rodaImpianNew.getPlayer().getPlayerGifts().put("g4",4);
-
-
         PlayerGuis playerTwoGuis;
         PlayerGuis playerThreeGuis;
         if (rodaImpianNew.getPlayerTwo() != null) {
@@ -250,6 +256,7 @@ public class BaseGame {
     public void startTurn() {
         vannaHost.increaseCount();
         hourGlass.remove();
+
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
@@ -297,8 +304,8 @@ public class BaseGame {
         playerMenu.show();
     }
 
-    public void spinWheel(boolean cpuMoves) {
-        rodaImpianNew.setScreen(new SpinScreen(rodaImpianNew, cpuMoves));
+    public void spinWheel(boolean cpuMoves, boolean bonus) {
+        rodaImpianNew.setScreen(new SpinScreen(rodaImpianNew, cpuMoves, bonus));
     }
 
     public void checkAnswer(String c) {
@@ -317,56 +324,33 @@ public class BaseGame {
             vannaHost.correct();
             gameSound.playCorrect();
             if (rodaImpianNew.getWheelParams().getScores() > 0) {
+                activePlayer.setScore(activePlayer.getScore() + (multiplier * rodaImpianNew.getWheelParams().getScores()));
                 correctLabel = new CorrectLabel("$" + rodaImpianNew.getWheelParams().getScores() + " x " + multiplier, skin);
                 if (rodaImpianNew.getWheelParams().getScoreStrings().equals(StringRes.FREETURN)) {
                     stage.addActor(currentGui.getFreeTurn());
                     currentGui.setFree(true);
                 }
-                if (giftBonuses.isPrepareGift()) {
-                    giftBonuses.winGifts(giftsNew.getGiftIndex(), currentGui, stage);
+                if (gifts.isPrepareGift()) {
+                    gifts.winGifts(giftsNew.getGiftIndex(), currentGui, stage);
                     Timer.schedule(new Timer.Task() {
                         @Override
                         public void run() {
-                            giftBonuses.setPrepareGift(false);
+                            gifts.setPrepareGift(false);
                         }
                     }, 2f);
 
                 }
                 stage.addActor(correctLabel);
             }
-
-
-            boolean complete = true;
-            for (TileBase t : tileBases) {
-                if (!t.isRevealed()) {
-                    complete = false;
-                }
-            }
-
-            if (complete) {
-                finishGame();
-            } else {
-                Timer.schedule(new Timer.Task() {
-                    @Override
-                    public void run() {
-                        if (!activePlayer.isAi()) {
-                            playerMenu.show();
-                        } else {
-                            cpuMove();
-                        }
-                    }
-                }, 2f);
-            }
-
+            checkIfComplete();
         } else {
             vannaHost.wrong();
-            if (giftBonuses.isPrepareGift()) {
-                giftBonuses.setPrepareGift(false);
+            if (gifts.isPrepareGift()) {
+                gifts.setPrepareGift(false);
             }
             gameSound.playWrong();
             if (currentGui.isFree()) {
                 currentGui.setFree(false);
-
                 startTurn();
             } else {
                 changeTurn();
@@ -374,11 +358,33 @@ public class BaseGame {
 
         }
         playerMenu.removeLetter(c.charAt(0));
-        logger.debug("correct score " + (multiplier * rodaImpianNew.getWheelParams().getScores()));
-        activePlayer.setScore(activePlayer.getScore() + (multiplier * rodaImpianNew.getWheelParams().getScores()));
         rodaImpianNew.getWheelParams().setScores(0);
 
 
+    }
+
+    private void checkIfComplete() {
+        boolean complete = true;
+        for (TileBase t : tileBases) {
+            if (!t.isRevealed()) {
+                complete = false;
+            }
+        }
+
+        if (complete) {
+            finishGame();
+        } else {
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    if (!activePlayer.isAi()) {
+                        playerMenu.show();
+                    } else {
+                        cpuMove();
+                    }
+                }
+            }, 2f);
+        }
     }
 
 
@@ -387,26 +393,34 @@ public class BaseGame {
         if (rodaImpianNew.getWheelParams().getScores() > 0) {
 
             if (rodaImpianNew.getWheelParams().getScoreStrings().equals(StringRes.GIFT)) {
-                giftBonuses.prepareGift(stage);
+                gifts.prepareGift(stage);
                 giftsIndexes.shuffle();
                 giftsNew.setGiftIndex(giftsIndexes.get(0));
                 giftsIndexes.removeIndex(0);
                 rodaImpianNew.getWheelParams().setScores(
-                        giftBonuses.getGiftValue(giftsNew.getGiftIndex())
+                        gifts.getGiftValue(giftsNew.getGiftIndex())
                 );
 
                 ///sendObject giftIndexNew
             }
 
             if (activePlayer.isAi()) {
-                aiMoves.chooseConsonants();
+                Timer.schedule(new Timer.Task() {
+                    @Override
+                    public void run() {
+                        aiMoves.chooseConsonants();
+                    }
+                },1.5f);
+
             } else {
                 playerMenu.createConsonantsTable();
             }
         } else {
             if (rodaImpianNew.getWheelParams().getScoreStrings().equals(StringRes.BANKRUPT)) {
                 activePlayer.setScore(0);
-
+                if (currentGui.isFree()){
+                    currentGui.setFree(false);
+                }
             }
             Timer.schedule(new Timer.Task() {
                 @Override
@@ -495,31 +509,57 @@ public class BaseGame {
         gameSound.playWinSound();
 
         currentGui.getProfilePic().addAction(Actions.moveTo(350f, 1200f, 1.5f));
-        activePlayer.setFullScore(activePlayer.getFullScore() + activePlayer.getScore());
+        activePlayer.setFullScore(activePlayer.getFullScore() + activePlayer.getScore()+200*(gameRound+1));
         currentGui.updateFullScore(activePlayer.getFullScore());
 
         playerMenu.resetLetters();
-
-        if (gameRound != 3) {
-            increaseGameRound();
-        } else {
-            if (activePlayer.isAi()) {
-                showWinner();
-            }else{
-                SpinScreen spinScreen = new SpinScreen(rodaImpianNew,false);
-                spinScreen.bonusWheel();
-                rodaImpianNew.setScreen(spinScreen);
-            }
-        }
+        increaseGameRound();
 
     }
 
     private void increaseGameRound() {
+
+
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
                 currentGui.getProfilePic().addAction(Actions.moveTo(currentGui.getPosition().x, currentGui.getPosition().y, 1f));
                 gameRound++;
+
+                if (gameRound != 3) {
+                    continuePlay();
+                } else {
+                    List<Integer> allScore = new ArrayList<>();
+                    for (PlayerGuis p: playerGuis){
+                        allScore.add(p.getPlayerNew().getFullScore());
+                    }
+                    int highest = Collections.max(allScore);
+
+                    for (PlayerGuis p: playerGuis){
+                        if (p.getPlayerNew().getFullScore()==highest){
+                            activePlayer = p.getPlayerNew();
+                            currentGui = p;
+                        }
+                    }
+
+                    showTrophy();
+                    Timer.schedule(new Timer.Task() {
+                        @Override
+                        public void run() {
+                            if (activePlayer.isAi()) {
+                                showWinner();
+                            } else {
+                                bonusRound();
+                            }
+                        }
+                    }, 2f);
+
+                }
+
+
+            }
+
+            private void continuePlay() {
                 setUpNewRound();
                 for (PlayerGuis p : playerGuis) {
                     p.getPlayerNew().setScore(0);
@@ -536,8 +576,32 @@ public class BaseGame {
         }, 4f);
     }
 
-    private void showWinner() {
+    private void bonusRound() {
 
+        setSubject(StringRes.BONUSROUND);
+
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                for (PlayerGuis p : playerGuis) {
+                    if (!p.equals(currentGui)) {
+                        p.getProfilePic().remove();
+                    }
+                }
+                spinWheel(false, true);
+            }
+        }, 2f);
+
+
+    }
+
+    private void showWinner() {
+        WinnerDialog winnerDialog = new WinnerDialog(skin, currentGui, atlas, rodaImpianNew);
+        winnerDialog.show(stage);
+    }
+
+    private void showTrophy() {
+        stage.addActor(new TrophyNew(currentGui.getPosition(), atlas.findRegion("trophy")));
     }
 
 
