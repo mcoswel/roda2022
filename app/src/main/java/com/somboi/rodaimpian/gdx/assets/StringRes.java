@@ -120,6 +120,8 @@ public class StringRes {
     public static final String FIRETRUCK = "Bomba";
     public static final String AMBULANCE = "Ambulans";
     public static final String POLICE = "Polis";
+    public static final String WINBONUS = "Tahniah! Anda berjaya memenangi hadiah bonus bernilai ";
+    public static final String LOSEBONUS = "Maaf! Anda gagal memenangi hadiah bonus";
 
     //159.223.73.205
 

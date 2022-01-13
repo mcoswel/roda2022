@@ -9,7 +9,6 @@ public class CorrectLabel extends Label {
         super(text, skin,"spin");
         pack();
         setPosition(450f - getWidth() / 2f, 800f);
-
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {

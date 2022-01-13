@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Timer;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdxnew.games.BaseGame;
 
@@ -20,7 +21,10 @@ public class PlayerMenu {
     private StringBuilder consonantLetter = new StringBuilder("BCDFGHJKLMNPQRSTVWXYZ");
     private final SmallButton vocal;
     private final SmallButton spin;
-
+    private boolean bonusMode;
+    private int consonantCounter;
+    private int vocalCounter;
+    private String bonusStringHolder = "";
     public PlayerMenu(Stage stage, BaseGame baseGame, Skin skin) {
         this.stage = stage;
         this.baseGame = baseGame;
@@ -122,6 +126,7 @@ public class PlayerMenu {
 
 
     public void createConsonantsTable() {
+
         final Dialog consDialog = new Dialog(StringRes.CONSONANTS, skin) {
             @Override
             public float getPrefWidth() {
@@ -130,26 +135,39 @@ public class PlayerMenu {
         };
         consDialog.getContentTable().defaults().pad(8f);
         consDialog.getContentTable().padTop(8f);
-        for (int i = 0; i < consonantLetter.length(); i++) {
-            if (i > 0 && i % 5 == 0) {
-                consDialog.getContentTable().row();
-            }
-            String c = String.valueOf(consonantLetter.charAt(i));
+
+        int index = 0;
+        for (Character character : consonantLetter.toString().toCharArray()) {
+            String c = String.valueOf(character);
             final SmallButton smallButton = new SmallButton(c, skin);
-            final int i2 = i;
             smallButton.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
-                    baseGame.checkAnswer(c);
-                    consDialog.hide();
+                    if (!bonusMode) {
+                        baseGame.checkAnswer(c);
+                        consDialog.hide();
+                    } else {
+                        bonusStringHolder+=c;
+                        consonantCounter++;
+                        smallButton.remove();
+                        if (consonantCounter == 5) {
+                            consDialog.hide();
+                            createVocalTable();
+                        }
+                    }
                 }
             });
             consDialog.getContentTable().add(smallButton).size(150f, 100f);
-
+            index++;
+            if (index % 5 == 0) {
+                consDialog.getContentTable().row();
+            }
         }
+
         consDialog.show(stage);
 
     }
+
 
     private void createVocalTable() {
         final Dialog vocalDiag = new Dialog(StringRes.VOKAL, skin) {
@@ -168,8 +186,18 @@ public class PlayerMenu {
             smallButton.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
-                    baseGame.checkAnswer(c);
-                    vocalDiag.hide();
+                    if (!bonusMode) {
+                        baseGame.checkAnswer(c);
+                        vocalDiag.hide();
+                    }else{
+                        bonusStringHolder+=c;
+                        vocalCounter++;
+                        smallButton.remove();
+                        if (vocalCounter==2){
+                            vocalDiag.hide();
+                            baseGame.checkBonusString(bonusStringHolder);
+                        }
+                    }
                 }
             });
             vocalDiag.getContentTable().add(smallButton).size(150f, 100f);
@@ -225,5 +253,13 @@ public class PlayerMenu {
     public void resetLetters() {
         vocalLetter = new StringBuilder("AEIOU");
         consonantLetter = new StringBuilder("BCDFGHJKLMNPQRSTVWXYZ");
+    }
+
+    public void setBonusMode(boolean bonusMode) {
+        this.bonusMode = bonusMode;
+    }
+
+    public boolean isBonusMode() {
+        return bonusMode;
     }
 }

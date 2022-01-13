@@ -28,12 +28,11 @@ public class SinglePlayer extends BaseGame {
 
     @Override
     public void startTurn() {
-        rodaImpianNew.setScreen(new BombeiroScreen(rodaImpianNew, 1,1,testGui));
-
-        /*super.startTurn();
+        //rodaImpianNew.setScreen(new BombeiroScreen(rodaImpianNew, 1,1,testGui));
+        super.startTurn();
         if (!checkRajan) {
             checkRajan();
-        }*/
+        }
     }
 
     private void checkRajan() {

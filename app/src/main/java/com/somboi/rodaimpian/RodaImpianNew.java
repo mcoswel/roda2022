@@ -27,6 +27,7 @@ public class RodaImpianNew extends Game {
     private final AndroInterface androInterface;
     private final Array<QuestionNew> preparedQuestions = new Array<>();
     private GameScreen gameScreen;
+    private boolean bonusMode;
 
     public RodaImpianNew(AndroInterface androInterface) {
         this.androInterface = androInterface;
@@ -128,9 +129,18 @@ public class RodaImpianNew extends Game {
         return preparedQuestions;
     }
 
+    public boolean isBonusMode() {
+        return bonusMode;
+    }
+
+    public void setBonusMode(boolean bonusMode) {
+        this.bonusMode = bonusMode;
+    }
+
     @Override
     public void dispose() {
         assetManager.dispose();
     }
+
 
 }

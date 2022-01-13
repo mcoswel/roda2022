@@ -142,9 +142,11 @@ public class AiMoves {
 
     private String chooseCorrectVocals() {
         Array<String> vocals = new Array<>();
+        String vocalsLeft = playerMenu.getVocalLetter().toString().toLowerCase();
         for (TileBase t : tileBases) {
-            String c = t.getLetter().toUpperCase();
-            if (playerMenu.getVocalLetter().toString().contains(c)) {
+            String c = t.getLetter().toLowerCase();
+
+            if (vocalsLeft.contains(c)) {
                 vocals.add(t.getLetter());
             }
         }
@@ -192,10 +194,10 @@ public class AiMoves {
 
     private String chooseCorrectConsonants() {
         Array<String> correctCons = new Array<>();
-
+        String consonantLeft = playerMenu.getConsonantLetter().toString().toLowerCase();
         for (TileBase t : tileBases) {
-            String c = t.getLetter().toUpperCase();
-            if (playerMenu.getConsonantLetter().toString().contains(c)) {
+            String c = t.getLetter().toLowerCase();
+            if (consonantLeft.contains(c)) {
                 correctCons.add(t.getLetter());
             }
         }

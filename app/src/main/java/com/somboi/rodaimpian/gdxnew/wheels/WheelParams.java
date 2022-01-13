@@ -1,5 +1,6 @@
 package com.somboi.rodaimpian.gdxnew.wheels;
 
+import com.somboi.rodaimpian.RodaImpianNew;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 
 public class WheelParams {
@@ -8,6 +9,7 @@ public class WheelParams {
     private String scoreStrings;
     private boolean gifts;
     private boolean bonus;
+    private int bonusIndex;
     public float getAngle() {
         return angle;
     }
@@ -16,102 +18,138 @@ public class WheelParams {
         this.angle = angle;
     }
 
+    public int getBonusIndex() {
+        return bonusIndex;
+    }
+
+    public void setBonusIndex(int bonusIndex) {
+        this.bonusIndex = bonusIndex;
+    }
+
     public void getBonusResult(String lastContact){
         switch (lastContact){
             case "s1":
                 setScores(150);
                 setScoreStrings("$"+getScores());
+                bonusIndex = 1;
                 break;
             case "s2":
                 setScores(350);
                 setScoreStrings("$"+getScores());
+                bonusIndex = 2;
                 break;
             case "s3":
                 setScores(200);
                 setScoreStrings("$"+getScores());
+                bonusIndex = 3;
                 break;
             case "s4":
                 setScores(500);
                 setScoreStrings("$"+getScores());
+                bonusIndex = 4;
                 break;
             case "s5":
                 setScores(1000);
                 setScoreStrings("$"+getScores());
+                bonusIndex = 5;
                 break;
             case "s6":
-            case "s16":
                 setScores(800);
                 setScoreStrings("$"+getScores());
+                bonusIndex = 6;
                 break;
             case "s7":
                 setScores(750);
                 setScoreStrings("$"+getScores());
+                bonusIndex = 7;
                 break;
             case "s8":
                 setScores(650);
                 setScoreStrings("$"+getScores());
+                bonusIndex = 8;
                 break;
             case "s9":
                 setScores(210);
                 setScoreStrings("$"+getScores());
+                bonusIndex = 9;
                 break;
             case "s10":
                 setScores(50);
                 setScoreStrings("$"+getScores());
+                bonusIndex = 10;
                 break;
             case "s11":
                 setScores(185);
                 setScoreStrings("$"+getScores());
+                bonusIndex = 11;
                 break;
             case "s12":
                 setScores(5000);
                 setScoreStrings("$"+getScores());
+                bonusIndex = 12;
                 break;
             case "s13":
             case "s14":
             case "s15":
                 setScores(100);
                 setScoreStrings("$"+getScores());
+                bonusIndex = 13;
                 break;
+            case "s16":
+                setScores(800);
+                setScoreStrings("$"+getScores());
+                bonusIndex = 14;
+                break;
+
             case "s17":
                 setScores(400);
                 setScoreStrings("$"+getScores());
+                bonusIndex = 15;
                 break;
             case "s18":
                 setScores(525);
                 setScoreStrings("$"+getScores());
+                bonusIndex = 16;
                 break;
             case "s19":
                 setScores(300);
                 setScoreStrings("$"+getScores());
+                bonusIndex = 17;
                 break;
             case "s20":
                 setScores(3000);
                 setScoreStrings("$"+getScores());
+                bonusIndex = 18;
                 break;
             case "s21":
                 setScores(950);
                 setScoreStrings("$"+getScores());
+                bonusIndex = 19;
                 break;
             case "s22":
                 setScores(75);
                 setScoreStrings("$"+getScores());
+                bonusIndex = 20;
                 break;
             case "s23":
                 setScores(15);
                 setScoreStrings("$"+getScores());
+                bonusIndex = 21;
                 break;
             case "s24":
                 setScores(780);
                 setScoreStrings("$"+getScores());
+                bonusIndex = 22;
                 break;
             case "s25":
                 setScores(170);
                 setScoreStrings("$"+getScores());
+                bonusIndex = 23;
                 break;
             case "s26":
                 setScores(1500);
                 setScoreStrings("$"+getScores());
+                bonusIndex = 24;
                 break;
             default:
                 break;

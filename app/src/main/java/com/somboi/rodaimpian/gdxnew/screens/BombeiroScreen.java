@@ -22,6 +22,7 @@ import com.somboi.rodaimpian.gdx.config.GameConfig;
 import com.somboi.rodaimpian.gdxnew.actors.BeiroTiles;
 import com.somboi.rodaimpian.gdxnew.actors.Bonuses;
 import com.somboi.rodaimpian.gdxnew.actors.Bulb;
+import com.somboi.rodaimpian.gdxnew.actors.ErrDiag;
 import com.somboi.rodaimpian.gdxnew.actors.Fireworks;
 import com.somboi.rodaimpian.gdxnew.actors.PlayerGuis;
 import com.somboi.rodaimpian.gdxnew.actors.Vehicle;
@@ -37,29 +38,23 @@ public class BombeiroScreen extends BaseScreenNew {
     private Bonuses bonusGiftImg;
     private boolean moving;
     private boolean winBonus;
-    private final int bonusIndex;
-    private final int bonusValue;
     private int adsCount;
     private final GameSound gameSound;
     private final PlayerGuis playerGuis;
 
-    public BombeiroScreen(RodaImpianNew rodaImpian, int bonusIndex, int bonusValue, PlayerGuis playerGuis) {
+    public BombeiroScreen(RodaImpianNew rodaImpian, PlayerGuis playerGuis) {
         super(rodaImpian);
-        this.bonusIndex = bonusIndex;
-        this.bonusValue = bonusValue;
         this.gameSound = new GameSound(assetManager);
         this.playerGuis = playerGuis;
         Gdx.input.setInputProcessor(stage);
-
         createBackground();
         police = new Vehicle(atlas.findRegion("police"), "police");
         ambulance = new Vehicle(atlas.findRegion("ambulance"), "ambulance");
         firetruck = new Vehicle(atlas.findRegion("firetruck"), "firetruck");
         createButton();
-        bonusGiftImg = new Bonuses(atlas, bonusIndex);
-        stage.addActor(bonusGiftImg.getBonusImage());
+        bonusGiftImg = new Bonuses(atlas, rodaImpian.getWheelParams().getBonusIndex());
+        stage.addActor(bonusGiftImg);
         bonusGiftImg.setPosition(450f - bonusGiftImg.getWidth() / 2f, 1326f);
-        logger.debug("bombeiro screen");
 
         // rodaImpian.loadAds();
     }
@@ -226,6 +221,22 @@ public class BombeiroScreen extends BaseScreenNew {
     }
 
     private void endGame() {
+        String dialogString = StringRes.LOSEBONUS;
+        if (winBonus){
+            dialogString = StringRes.WINBONUS;
+        }
+        ErrDiag errDiag = new ErrDiag(dialogString, skin){
+            @Override
+            protected void result(Object object) {
+                WinnerDialog winnerDialog = new WinnerDialog(skin, playerGuis,atlas, rodaImpianNew);
+                winnerDialog.show(stage);
+                hide();
+                super.result(object);
+            }
+        };
+
+        errDiag.show(stage);
+
       /*  if (rodaImpian.getPlayer().id != null) {
             Player finalPlayer = rodaImpian.getPlayer();
             PlayerOnline playerOnline = rodaImpian.getPlayerOnline();

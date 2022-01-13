@@ -3,13 +3,16 @@ package com.somboi.rodaimpian.gdxnew.games;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.Timer;
@@ -18,16 +21,20 @@ import com.somboi.rodaimpian.gdx.assets.AssetDesc;
 import com.somboi.rodaimpian.gdx.assets.GameSound;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdx.config.GameConfig;
+import com.somboi.rodaimpian.gdxnew.actors.Bonuses;
 import com.somboi.rodaimpian.gdxnew.actors.ChatBubble;
 import com.somboi.rodaimpian.gdxnew.actors.Confetti;
 import com.somboi.rodaimpian.gdxnew.actors.CorrectLabel;
 import com.somboi.rodaimpian.gdxnew.actors.CpuFactory;
+import com.somboi.rodaimpian.gdxnew.actors.EnvelopeNew;
+import com.somboi.rodaimpian.gdxnew.actors.ErrDiag;
 import com.somboi.rodaimpian.gdxnew.actors.Fireworks;
 import com.somboi.rodaimpian.gdxnew.actors.Gifts;
 import com.somboi.rodaimpian.gdxnew.actors.HourGlass;
 import com.somboi.rodaimpian.gdxnew.actors.PlayerGuis;
 import com.somboi.rodaimpian.gdxnew.actors.PlayerMenu;
 import com.somboi.rodaimpian.gdxnew.actors.ProfilePic;
+import com.somboi.rodaimpian.gdxnew.actors.Sparkling;
 import com.somboi.rodaimpian.gdxnew.actors.TileBase;
 import com.somboi.rodaimpian.gdxnew.actors.TrophyNew;
 import com.somboi.rodaimpian.gdxnew.actors.VannaHost;
@@ -38,7 +45,9 @@ import com.somboi.rodaimpian.gdxnew.entitiesnew.AiMoves;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.GiftsNew;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
 import com.somboi.rodaimpian.gdxnew.interfaces.KeyListen;
+import com.somboi.rodaimpian.gdxnew.screens.BombeiroScreen;
 import com.somboi.rodaimpian.gdxnew.screens.SpinScreen;
+import com.somboi.rodaimpian.saves.PlayerSaves;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -75,6 +84,10 @@ public class BaseGame {
     protected KeyListen keyListen;
     protected String answerHolder;
     protected PlayerGuis testGui;
+    protected final PlayerSaves playerSaves = new PlayerSaves();
+    protected boolean clickEnvelope;
+    protected StringBuilder bonusStringHolder;
+    protected Bonuses bonusGiftImg;
 
     public BaseGame(Stage stage, RodaImpianNew rodaImpianNew) {
         this.stage = stage;
@@ -94,6 +107,68 @@ public class BaseGame {
         stage.addActor(incompleteGroup);
         stage.addActor(vannaHost);
         setUpNewRound();
+
+
+    }
+
+    private void prepareEnvelope() {
+        gameRound++;
+        setUpNewRound();
+        bonusGiftImg = new Bonuses(atlas, rodaImpianNew.getWheelParams().getBonusIndex());
+        bonusGiftImg.setPosition(350f, 1110f);
+        stage.addActor(new Sparkling(rodaImpianNew.getAssetManager().get(AssetDesc.SPARKLE)));
+        stage.addActor(bonusGiftImg);
+        correctLabel = new CorrectLabel(StringRes.CHOOSEENVELOPE, skin);
+        stage.addActor(correctLabel);
+        Array<Integer> randEnvelope = new Array<>(new Integer[]{0, 1});
+        Array<Vector2>poseS = new Array<>(new Vector2[]{new Vector2(488f, 505f), new Vector2(75f, 505f)});
+        final Array<EnvelopeNew> envelopeNews = new Array<>();
+        randEnvelope.shuffle();
+        poseS.shuffle();
+        int index = 0;
+        for (Integer integer : randEnvelope) {
+            EnvelopeNew envelopeNew = new EnvelopeNew(atlas, integer, poseS.get(index));
+            envelopeNews.add(envelopeNew);
+            DragListener dragListener = new DragListener() {
+                @Override
+                public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                    if (!clickEnvelope) {
+                        envelopeNew.opened(stage);
+                        Timer.schedule(new Timer.Task() {
+                            @Override
+                            public void run() {
+                                removeEnvelopes(envelopeNews, integer);
+                            }
+                        }, 3f);
+                        clickEnvelope = true;
+                    }
+                    return super.touchDown(event, x, y, pointer, button);
+                }
+            };
+            envelopeNew.prepareEnvelope(stage, dragListener);
+            index++;
+        }
+    }
+
+    private void removeEnvelopes(Array<EnvelopeNew> envelopeNews, int integer) {
+        for (EnvelopeNew envelopeNew : envelopeNews) {
+            envelopeNew.clearAll();
+        }
+        if (integer == 0) {
+            rodaImpianNew.setScreen(new BombeiroScreen(rodaImpianNew, currentGui));
+        } else {
+
+            showQuestions();
+            correctLabel = new CorrectLabel(StringRes.CHOOSE5CONS, skin);
+            stage.addActor(correctLabel);
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    playerMenu.setBonusMode(true);
+                    playerMenu.createConsonantsTable();
+                }
+            }, 4f);
+        }
     }
 
     public void setUpNewRound() {
@@ -104,7 +179,11 @@ public class BaseGame {
         }
         tileBases.clear();
         currentQuestion = rodaImpianNew.getPreparedQuestions().get(gameRound);
-        setSubject(StringRes.ROUND + (gameRound + 1));
+        if (gameRound <=2) {
+            setSubject(StringRes.ROUND + (gameRound + 1));
+        }else{
+            setSubject(StringRes.BONUSROUND);
+        }
         setTile();
     }
 
@@ -308,6 +387,24 @@ public class BaseGame {
         rodaImpianNew.setScreen(new SpinScreen(rodaImpianNew, cpuMoves, bonus));
     }
 
+
+    public void checkBonusChar(String c) {
+        boolean correct = false;
+        for (TileBase tileBase : tileBases) {
+            if (tileBase.getLetter().contains(c)) {
+                tileBase.reveal();
+                correct = true;
+            }
+        }
+        if (correct) {
+            vannaHost.correct();
+            gameSound.playCorrect();
+        } else {
+            vannaHost.wrong();
+            gameSound.playWrong();
+        }
+    }
+
     public void checkAnswer(String c) {
         boolean correct = false;
         int multiplier = 0;
@@ -359,19 +456,21 @@ public class BaseGame {
         }
         playerMenu.removeLetter(c.charAt(0));
         rodaImpianNew.getWheelParams().setScores(0);
-
-
     }
 
-    private void checkIfComplete() {
+    private boolean completenessCheck(){
         boolean complete = true;
         for (TileBase t : tileBases) {
             if (!t.isRevealed()) {
                 complete = false;
             }
         }
+        return complete;
+    }
 
-        if (complete) {
+    private void checkIfComplete() {
+
+        if (completenessCheck()) {
             finishGame();
         } else {
             Timer.schedule(new Timer.Task() {
@@ -387,49 +486,37 @@ public class BaseGame {
         }
     }
 
-
-    public void showConsonants() {
-        vannaHost.waitingAnswer();
-        if (rodaImpianNew.getWheelParams().getScores() > 0) {
-
-            if (rodaImpianNew.getWheelParams().getScoreStrings().equals(StringRes.GIFT)) {
-                gifts.prepareGift(stage);
-                giftsIndexes.shuffle();
-                giftsNew.setGiftIndex(giftsIndexes.get(0));
-                giftsIndexes.removeIndex(0);
-                rodaImpianNew.getWheelParams().setScores(
-                        gifts.getGiftValue(giftsNew.getGiftIndex())
-                );
-
-                ///sendObject giftIndexNew
-            }
-
-            if (activePlayer.isAi()) {
-                Timer.schedule(new Timer.Task() {
-                    @Override
-                    public void run() {
-                        aiMoves.chooseConsonants();
+    public void checkBonusString(String bonusHolder) {
+        final Label label = new Label(bonusHolder, skin, "spin");
+        label.pack();
+        label.setPosition(450f - label.getWidth() / 2f, 800f);
+        bonusStringHolder = new StringBuilder(bonusHolder);
+        stage.addActor(label);
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                if (bonusStringHolder.length() > 0) {
+                    checkBonusChar(String.valueOf(bonusStringHolder.charAt(0)));
+                    bonusStringHolder.deleteCharAt(0);
+                    label.setText(bonusStringHolder.toString());
+                    label.pack();
+                    label.setPosition(450f - label.getWidth() / 2f, 800f);
+                } else {
+                    label.remove();
+                    if (completenessCheck()) {
+                        showWinner();
+                    } else {
+                        try {
+                            completePuzzle();
+                        } catch (CloneNotSupportedException e) {
+                            e.printStackTrace();
+                        }
                     }
-                },1.5f);
-
-            } else {
-                playerMenu.createConsonantsTable();
-            }
-        } else {
-            if (rodaImpianNew.getWheelParams().getScoreStrings().equals(StringRes.BANKRUPT)) {
-                activePlayer.setScore(0);
-                if (currentGui.isFree()){
-                    currentGui.setFree(false);
                 }
             }
-            Timer.schedule(new Timer.Task() {
-                @Override
-                public void run() {
-                    changeTurn();
-                }
-            }, 1f);
-        }
+        }, 2f, 2f, bonusStringHolder.length());
     }
+
 
     public boolean completePuzzle() throws CloneNotSupportedException {
         answerHolder = "";
@@ -441,7 +528,6 @@ public class BaseGame {
             }
         }
         if (!incompleteTiles.isEmpty() && answerHolder != null) {
-            logger.debug("Incomplete size " + incompleteTiles.size);
             for (TileBase t : incompleteTiles) {
                 incompleteGroup.addActor(t);
                 t.setLetter("*");
@@ -450,6 +536,7 @@ public class BaseGame {
             playerMenu.showCompleteMenu();
             keyListen = new KeyListen(incompleteTiles);
             stage.addListener(keyListen);
+            logger.debug("Complete " + answerHolder);
             return true;
         }
         return false;
@@ -476,7 +563,29 @@ public class BaseGame {
             if (answerHolder.equals(compareAnswer)) {
                 correct = true;
             }
+            if (playerMenu.isBonusMode()){
+                String dialogString = StringRes.LOSEBONUS;
+                if (correct){
+                    stage.addActor(new Fireworks(rodaImpianNew.getAssetManager().get(AssetDesc.WINANIMATION)));
+                    dialogString = StringRes.WINBONUS+rodaImpianNew.getWheelParams().getScoreStrings();
+                    gameSound.playCheer();
+                    vannaHost.dance();
+                }else{
+                    gameSound.playAww();
+                    vannaHost.wrong();
+                }
 
+                ErrDiag errDiag = new ErrDiag(dialogString, skin){
+                    @Override
+                    protected void result(Object object) {
+                        showWinner();
+                        hide();
+                        super.result(object);
+                    }
+                };
+                errDiag.show(stage);
+                return;
+            }
             if (correct) {
                 finishGame();
             } else {
@@ -509,7 +618,7 @@ public class BaseGame {
         gameSound.playWinSound();
 
         currentGui.getProfilePic().addAction(Actions.moveTo(350f, 1200f, 1.5f));
-        activePlayer.setFullScore(activePlayer.getFullScore() + activePlayer.getScore()+200*(gameRound+1));
+        activePlayer.setFullScore(activePlayer.getFullScore() + activePlayer.getScore() + 200 * (gameRound + 1));
         currentGui.updateFullScore(activePlayer.getFullScore());
 
         playerMenu.resetLetters();
@@ -518,8 +627,6 @@ public class BaseGame {
     }
 
     private void increaseGameRound() {
-
-
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
@@ -530,13 +637,13 @@ public class BaseGame {
                     continuePlay();
                 } else {
                     List<Integer> allScore = new ArrayList<>();
-                    for (PlayerGuis p: playerGuis){
+                    for (PlayerGuis p : playerGuis) {
                         allScore.add(p.getPlayerNew().getFullScore());
                     }
                     int highest = Collections.max(allScore);
 
-                    for (PlayerGuis p: playerGuis){
-                        if (p.getPlayerNew().getFullScore()==highest){
+                    for (PlayerGuis p : playerGuis) {
+                        if (p.getPlayerNew().getFullScore() == highest) {
                             activePlayer = p.getPlayerNew();
                             currentGui = p;
                         }
@@ -549,7 +656,7 @@ public class BaseGame {
                             if (activePlayer.isAi()) {
                                 showWinner();
                             } else {
-                                bonusRound();
+                                spinBonusRound();
                             }
                         }
                     }, 2f);
@@ -576,10 +683,8 @@ public class BaseGame {
         }, 4f);
     }
 
-    private void bonusRound() {
-
-        setSubject(StringRes.BONUSROUND);
-
+    private void spinBonusRound() {
+        rodaImpianNew.setBonusMode(true);
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
@@ -595,12 +700,62 @@ public class BaseGame {
 
     }
 
+
+    public void showConsonants() {
+
+        if (rodaImpianNew.isBonusMode()) {
+            vannaHost.relax();
+            prepareEnvelope();
+            return;
+        }
+        vannaHost.waitingAnswer();
+        if (rodaImpianNew.getWheelParams().getScores() > 0) {
+            if (rodaImpianNew.getWheelParams().getScoreStrings().equals(StringRes.GIFT)) {
+                gifts.prepareGift(stage);
+                giftsIndexes.shuffle();
+                giftsNew.setGiftIndex(giftsIndexes.get(0));
+                giftsIndexes.removeIndex(0);
+                rodaImpianNew.getWheelParams().setScores(
+                        gifts.getGiftValue(giftsNew.getGiftIndex())
+                );
+                ///sendObject giftIndexNew
+            }
+
+            if (activePlayer.isAi()) {
+                Timer.schedule(new Timer.Task() {
+                    @Override
+                    public void run() {
+                        aiMoves.chooseConsonants();
+                    }
+                }, 1.5f);
+
+            } else {
+                playerMenu.createConsonantsTable();
+            }
+        } else {
+            if (rodaImpianNew.getWheelParams().getScoreStrings().equals(StringRes.BANKRUPT)) {
+                activePlayer.setScore(0);
+                if (currentGui.isFree()) {
+                    currentGui.setFree(false);
+                }
+            }
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    changeTurn();
+                }
+            }, 1f);
+        }
+    }
+
+
     private void showWinner() {
         WinnerDialog winnerDialog = new WinnerDialog(skin, currentGui, atlas, rodaImpianNew);
         winnerDialog.show(stage);
     }
 
     private void showTrophy() {
+        hourGlass.remove();
         stage.addActor(new TrophyNew(currentGui.getPosition(), atlas.findRegion("trophy")));
     }
 
