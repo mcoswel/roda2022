@@ -27,6 +27,7 @@ import com.somboi.rodaimpian.gdxnew.actors.Fireworks;
 import com.somboi.rodaimpian.gdxnew.actors.PlayerGuis;
 import com.somboi.rodaimpian.gdxnew.actors.Vehicle;
 import com.somboi.rodaimpian.gdxnew.actors.WinnerDialog;
+import com.somboi.rodaimpian.saves.PlayerSaves;
 
 public class BombeiroScreen extends BaseScreenNew {
     private final Vehicle police;
@@ -199,16 +200,17 @@ public class BombeiroScreen extends BaseScreenNew {
             winBonus = true;
             stage.addActor(new Fireworks(assetManager.get(AssetDesc.WINANIMATION)));
             gameSound.playCheer();
+            gameSound.playWinSound();
         } else {
             gameSound.playAww();
         }
-        if (type.equals("ambulance")) {
+     /*   if (type.equals("ambulance")) {
             logger.debug("ambulance wins");
         } else if (type.equals("police")) {
             logger.debug("police wins");
         } else if (type.equals("firetruck")) {
             logger.debug("firetruck wins");
-        }
+        }*/
 
         endGame();
         Timer.schedule(new Timer.Task() {
@@ -216,6 +218,7 @@ public class BombeiroScreen extends BaseScreenNew {
             public void run() {
                 WinnerDialog endGameDialog = new WinnerDialog(skin, playerGuis, atlas, rodaImpianNew);
                 endGameDialog.show(stage);
+                rodaImpianNew.winnerFinish(new PlayerSaves());
             }
         }, 3f);
     }
@@ -225,6 +228,7 @@ public class BombeiroScreen extends BaseScreenNew {
         if (winBonus){
             dialogString = StringRes.WINBONUS;
         }
+
         ErrDiag errDiag = new ErrDiag(dialogString, skin){
             @Override
             protected void result(Object object) {

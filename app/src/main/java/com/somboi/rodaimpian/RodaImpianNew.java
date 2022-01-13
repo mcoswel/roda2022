@@ -13,6 +13,7 @@ import com.somboi.rodaimpian.gdxnew.screens.GameScreen;
 import com.somboi.rodaimpian.gdxnew.screens.LoadingScreenNew;
 import com.somboi.rodaimpian.gdxnew.screens.MainScreen;
 import com.somboi.rodaimpian.gdxnew.wheels.WheelParams;
+import com.somboi.rodaimpian.saves.PlayerSaves;
 
 public class RodaImpianNew extends Game {
     private final AssetManager assetManager = new AssetManager();
@@ -47,6 +48,14 @@ public class RodaImpianNew extends Game {
             return;
         }
         androInterface.loginFacebook(mainScreen);
+    }
+
+    public void winnerFinish(PlayerSaves playerSaves){
+        if (player.getFullScore()>player.getBestScore()){
+            player.setBestScore(player.getFullScore());
+        }
+        playerSaves.savePlayerNew(player);
+
     }
 
     public AssetManager getAssetManager() {
@@ -136,6 +145,7 @@ public class RodaImpianNew extends Game {
     public void setBonusMode(boolean bonusMode) {
         this.bonusMode = bonusMode;
     }
+
 
     @Override
     public void dispose() {

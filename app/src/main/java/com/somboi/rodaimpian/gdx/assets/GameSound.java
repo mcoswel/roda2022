@@ -12,6 +12,9 @@ public class GameSound {
     private final Sound cheerSound;
     private final Sound clockSound;
     private final Sound slapSound;
+    private final Sound police;
+    private final Sound ambulance;
+    private final Sound fire;
 
     public GameSound(AssetManager assetManager) {
         awwSound = assetManager.get(AssetDesc.AWWSOUND);
@@ -22,6 +25,9 @@ public class GameSound {
         cheerSound = assetManager.get(AssetDesc.CHEERSOUND);
         clockSound = assetManager.get(AssetDesc.CLOCKSOUND);
         slapSound = assetManager.get(AssetDesc.SLAPSOUND);
+        police = assetManager.get(AssetDesc.POLICE);
+        ambulance = assetManager.get(AssetDesc.AMBULANCE);
+        fire = assetManager.get(AssetDesc.FIRETRUCK);
     }
 
     public void playAww(){
@@ -45,9 +51,6 @@ public class GameSound {
     public void playWinSound(){
         winSound.play();
     }
-    public void playCheerSound(){
-        cheerSound.play();
-    }
 
     public void playClockSound(){
         clockSound.loop();
@@ -61,12 +64,15 @@ public class GameSound {
     }
 
     public void playFire() {
+        fire.play();
     }
 
     public void playAmbulance() {
+        ambulance.play();
     }
 
     public void playPolice() {
+        police.play();
     }
 
 }

@@ -187,7 +187,8 @@ public class Gifts {
         if (playerGuis.getPlayerNew().getPlayerGifts() == null) {
             playerGuis.getPlayerNew().setPlayerGifts(new HashMap<>());
         }
-        playerGuis.getPlayerNew().getPlayerGifts().put("g" + giftIndex, giftIndex);
+        playerGuis.getPlayerNew().getPlayerGifts().put("g" + playerGuis.getPlayerNew().getPlayerGifts().size(),
+                giftIndex);
         int giftSize = playerGuis.getPlayerNew().getPlayerGifts().size();
 
         int giftCounter = giftSize % 5;

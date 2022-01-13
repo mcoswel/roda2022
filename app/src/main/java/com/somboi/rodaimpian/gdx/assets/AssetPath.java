@@ -12,6 +12,9 @@ public class AssetPath {
     public static final String ROTATESOUND = "sounds/rotate.mp3";
     public static final String SLAPSOUND = "sounds/slap.mp3";
     public static final String WINSOUND = "sounds/win.mp3";
+    public static final String POLICE = "sounds/police.ogg";
+    public static final String AMBULANCE = "sounds/ambulan.ogg";
+    public static final String FIRE = "sounds/fire.ogg";
     public static final String WRONGSOUND = "sounds/wrong.mp3";
     public static final String BLURBG = "textures/blurbg.png";
     public static final String BG = "textures/bg.png";

@@ -81,6 +81,9 @@ public class LoadingScreenNew extends ScreenAdapter {
         assetManager.load(AssetDesc.GAMEBGRED);
         assetManager.load(AssetDesc.BLURRED);
         assetManager.load(AssetDesc.BLURGOLD);
+        assetManager.load(AssetDesc.POLICE);
+        assetManager.load(AssetDesc.AMBULANCE);
+        assetManager.load(AssetDesc.FIRETRUCK);
 
        task = new AsyncExecutor(2).submit(new AsyncTask<Void>() {
             @Override

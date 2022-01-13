@@ -127,17 +127,13 @@ public class AiMoves {
         int random = randomize();
         String c1 = chooseCorrectVocals();
         String c2 = chooseRandomVocals();
-        String c3 = String.valueOf(playerMenu.getVocalLetter().charAt(0));
+        String chosen = String.valueOf(playerMenu.getVocalLetter().charAt(0));
         if (random < completion && questionHaveVocals() && c1!=null) {
-            answerVocals(c1);
-            return;
+            chosen = c1;
         } else if (c2!=null){
-            answerVocals(c2);
-            return;
-        }else{
-            answerVocals(c3);
-            return;
+            chosen = c2;
         }
+        answerVocals(chosen);
     }
 
     private String chooseCorrectVocals() {
@@ -175,17 +171,13 @@ public class AiMoves {
         logger.debug("random no " + random);
         String c1 = chooseCorrectConsonants();
         String c2 = chooseRandomConsonants();
-        String c3 = String.valueOf(playerMenu.getConsonantLetter().charAt(0));
+        String chosen = String.valueOf(playerMenu.getConsonantLetter().charAt(0));
         if (random < completion && questionHaveConsonants() && c1!=null) {
-            answerConsonants(c1);
-            return;
+            chosen = c1;
         } else if (c2!=null){
-            answerConsonants(c2);
-            return;
-        }else{
-            answerConsonants(c3);
-            return;
+            chosen = c2;
         }
+        answerConsonants(chosen);
     }
 
     private int randomize() {

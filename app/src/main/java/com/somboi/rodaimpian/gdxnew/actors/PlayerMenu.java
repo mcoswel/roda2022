@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.Timer;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdxnew.games.BaseGame;
@@ -25,6 +26,7 @@ public class PlayerMenu {
     private int consonantCounter;
     private int vocalCounter;
     private String bonusStringHolder = "";
+    private final Logger logger = new Logger(this.getClass().getName(), 3);
     public PlayerMenu(Stage stage, BaseGame baseGame, Skin skin) {
         this.stage = stage;
         this.baseGame = baseGame;
@@ -232,19 +234,20 @@ public class PlayerMenu {
         return consonantLetter;
     }
 
-    public void removeLetter(Character c) {
-
+    public void removeLetter(String c) {
+        logger.debug("remove letter "+c);
         for (int i = 0; i < vocalLetter.length(); i++) {
-            if (vocalLetter.charAt(i) == c) {
+            String compare = String.valueOf(vocalLetter.charAt(i)).toLowerCase();
+            if (compare.equals(c)){
                 vocalLetter.deleteCharAt(i);
                 return;
             }
         }
 
         for (int i = 0; i < consonantLetter.length(); i++) {
-            if (consonantLetter.charAt(i) == c) {
+            String compare = String.valueOf(consonantLetter.charAt(i)).toLowerCase();
+            if (compare.equals(c)){
                 consonantLetter.deleteCharAt(i);
-                return;
             }
         }
 

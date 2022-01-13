@@ -17,6 +17,9 @@ public class AssetDesc {
     public static final AssetDescriptor<Sound> AWWSOUND = new AssetDescriptor<Sound>(AssetPath.AWWSOUND, Sound.class);
     public static final AssetDescriptor<Sound> ROTATESOUND = new AssetDescriptor<Sound>(AssetPath.ROTATESOUND, Sound.class);
     public static final AssetDescriptor<Sound> CORRECTSOUND = new AssetDescriptor<Sound>(AssetPath.CORRECTSOUND, Sound.class);
+    public static final AssetDescriptor<Sound> POLICE = new AssetDescriptor<Sound>(AssetPath.POLICE, Sound.class);
+    public static final AssetDescriptor<Sound> AMBULANCE = new AssetDescriptor<Sound>(AssetPath.AMBULANCE, Sound.class);
+    public static final AssetDescriptor<Sound> FIRETRUCK = new AssetDescriptor<Sound>(AssetPath.FIRE, Sound.class);
     public static final AssetDescriptor<Sound> WRONGSOUND = new AssetDescriptor<Sound>(AssetPath.WRONGSOUND, Sound.class);
     public static final AssetDescriptor<Sound> CLOCKSOUND = new AssetDescriptor<Sound>(AssetPath.CLOCKSOUND, Sound.class);
     public static final AssetDescriptor<Sound> WINSOUND = new AssetDescriptor<Sound>(AssetPath.WINSOUND, Sound.class);
