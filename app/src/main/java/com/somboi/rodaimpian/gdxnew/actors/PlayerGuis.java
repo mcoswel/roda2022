@@ -4,8 +4,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Timer;
+import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlayerGuis {
     private PlayerNew playerNew;
@@ -18,6 +23,9 @@ public class PlayerGuis {
     private Label freeTurn;
     private ChatBubble chatBubble;
     private boolean free;
+    private final List<Integer> giftsWon = new ArrayList<>();
+    private final List<Integer> bonusWon = new ArrayList<>();
+
     public PlayerGuis() {
 
     }
@@ -61,9 +69,16 @@ public class PlayerGuis {
         profilePic.setOrigin(450f - profilePic.getX(), 800f - profilePic.getY());
         nameLabel.setPosition((150f+(300 * playerIndex))-nameLabel.getWidth()/2f, 239f);
         scoreLabel.setPosition((150f+(300 * playerIndex))-scoreLabel.getWidth()/2f, 165);
-        freeTurn.setPosition((150f+(300 * playerIndex))-freeTurn.getWidth()/2f, 75f);
         fulLScoreLabel.setPosition((150f+(300 * playerIndex))-fulLScoreLabel.getWidth()/2f, 11.2f);
+    }
 
+    public Label createFreeTurn(Skin skin){
+        if (freeTurn!=null){
+            freeTurn.remove();
+        }
+        freeTurn = new Label(StringRes.FREETURN, skin, "free");
+        freeTurn.setPosition((150f+(300 * playerIndex))-freeTurn.getWidth()/2f, 75f);
+        return freeTurn;
     }
 
     public void animateShowBoard() {
@@ -106,9 +121,6 @@ public class PlayerGuis {
         this.freeTurn = freeTurn;
     }
 
-    public ChatBubble getChatBubble() {
-        return chatBubble;
-    }
 
     public void chat(String text){
         chatBubble.createBubble(text);
@@ -118,11 +130,6 @@ public class PlayerGuis {
         this.chatBubble = chatBubble;
     }
 
-    public void updateFullScore(){
-        fulLScoreLabel.setText("$"+playerNew.getFullScore());
-        fulLScoreLabel.pack();
-        fulLScoreLabel.setPosition((150f+(300 * playerIndex))-fulLScoreLabel.getWidth()/2f, 11.2f);
-    }
 
     public void update(float delta) {
         if (chatBubble!=null){
@@ -143,7 +150,8 @@ public class PlayerGuis {
                 playerNew.setAnimateScore(playerNew.getScore());
             }
             scoreLabel.setText("$"+playerNew.getAnimateScore());
-            scoreLabel.setPosition((150f+(300 * playerIndex))-scoreLabel.getWidth(), 165);
+            scoreLabel.pack();
+            scoreLabel.setPosition((150f+(300 * playerIndex))-scoreLabel.getWidth()/2f, 165);
         }
     }
 
@@ -153,7 +161,7 @@ public class PlayerGuis {
     }
 
     public void setFree(boolean free) {
-        if (!free){
+        if (!free && freeTurn!=null){
             freeTurn.addAction(new ParallelAction(
                     Actions.moveBy(0,200f,2f),
                     Actions.fadeOut(3f)
@@ -172,5 +180,21 @@ public class PlayerGuis {
         fulLScoreLabel.setText("$"+fullScore);
         fulLScoreLabel.pack();
         fulLScoreLabel.setPosition((150f+(300 * playerIndex))-fulLScoreLabel.getWidth()/2f, 11.2f);
+    }
+
+    public void addGifts(int giftIndex){
+            giftsWon.add(giftIndex);
+    }
+
+    public void addBonus(int bonusIndex){
+            bonusWon.add(bonusIndex);
+    }
+
+    public List<Integer> getGiftsWon() {
+        return giftsWon;
+    }
+
+    public List<Integer> getBonusWon() {
+        return bonusWon;
     }
 }

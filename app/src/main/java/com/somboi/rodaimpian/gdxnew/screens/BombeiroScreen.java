@@ -218,7 +218,6 @@ public class BombeiroScreen extends BaseScreenNew {
             public void run() {
                 WinnerDialog endGameDialog = new WinnerDialog(skin, playerGuis, atlas, rodaImpianNew);
                 endGameDialog.show(stage);
-                rodaImpianNew.winnerFinish(new PlayerSaves());
             }
         }, 3f);
     }

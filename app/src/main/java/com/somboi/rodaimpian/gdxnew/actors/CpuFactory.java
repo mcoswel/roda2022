@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class CpuFactory {
@@ -31,8 +32,8 @@ public class CpuFactory {
         PlayerNew playerNew = new PlayerNew();
         playerNew.setName(cpuName.get(count));
         playerNew.setAi(true);
-        playerNew.setPlayerGifts(new HashMap<>());
-        playerNew.setPlayerBonus(new HashMap<>());
+        playerNew.setPlayerGifts(new ArrayList<>());
+        playerNew.setPlayerBonus(new ArrayList<>());
         PlayerGuis playerGuis = new PlayerGuis();
         playerGuis.setPlayerNew(playerNew);
 

@@ -16,6 +16,9 @@ import com.somboi.rodaimpian.gdx.actor.PlayerImage;
 import com.somboi.rodaimpian.gdx.actor.ScoreLabel;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PlayerGui {
     private final Player player;
     private  PlayerImage image;
@@ -26,7 +29,6 @@ public class PlayerGui {
     private BoardLabel fullScoreLabel;
     private Vector2 playerPos;
     private float xPosition, yPosition;
-
 
     public PlayerGui(Player player, PlayerImage image) {
         this.player = player;
@@ -139,6 +141,7 @@ public class PlayerGui {
     public Vector2 getPlayerPos() {
         return playerPos;
     }
+
 
 
 }

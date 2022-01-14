@@ -66,5 +66,59 @@ public class Bonuses extends Image {
         }
     }
 
+    public static String getBonusRegion(int bonusIndex){
+        if (bonusIndex == 1) {
+            return "7_b_neskopi";
+        } else if (bonusIndex == 2) {
+            return"7_b_nintendo";
+        } else if (bonusIndex == 3) {
+            return"7_b_polystation";
+        } else if (bonusIndex == 4) {
+            return"7_b_predator";
+        } else if (bonusIndex == 5) {
+            return"7_b_ring";
+        } else if (bonusIndex == 6) {
+            return"7_b_toyoda";
+        } else if (bonusIndex == 7) {
+            return"7_b_kawansakit";
+        } else if (bonusIndex == 8) {
+            return"7_b_laptop";
+        } else if (bonusIndex == 9) {
+            return"7_b_wash";
+        } else if (bonusIndex == 10) {
+            return"7_b_lintah";
+        } else if (bonusIndex == 11) {
+            return"7_b_microwave";
+        } else if (bonusIndex == 12) {
+            return"7_b_car";
+        } else if (bonusIndex == 13) {
+            return"7_b_chair";
+        } else if (bonusIndex == 14) {
+            return"7_b_earring";
+        } else if (bonusIndex == 15) {
+            return"7_b_ferraro";
+        } else if (bonusIndex == 16) {
+            return"7_b_flattv";
+        } else if (bonusIndex == 17) {
+            return"7_b_fridge";
+        } else if (bonusIndex == 18) {
+            return"7_b_frog";
+        } else if (bonusIndex == 19) {
+            return"7_b_golf";
+        } else if (bonusIndex == 20) {
+            return"7_b_headphone";
+        } else if (bonusIndex == 21) {
+            return"7_b_jersey";
+        } else if (bonusIndex == 22) {
+            return"7_b_jewel";
+        } else if (bonusIndex == 23) {
+            return"7_b_airasia";
+        }else{
+            return "7_b_motorcycle";
+        }
+    }
 
+    public int getBonusIndex() {
+        return bonusIndex;
+    }
 }

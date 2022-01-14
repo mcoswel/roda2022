@@ -50,13 +50,6 @@ public class RodaImpianNew extends Game {
         androInterface.loginFacebook(mainScreen);
     }
 
-    public void winnerFinish(PlayerSaves playerSaves){
-        if (player.getFullScore()>player.getBestScore()){
-            player.setBestScore(player.getFullScore());
-        }
-        playerSaves.savePlayerNew(player);
-
-    }
 
     public AssetManager getAssetManager() {
         return assetManager;

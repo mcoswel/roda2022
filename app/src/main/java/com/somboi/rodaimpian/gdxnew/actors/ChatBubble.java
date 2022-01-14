@@ -33,7 +33,7 @@ public class ChatBubble {
             stage.addActor(bubbleTalkQueue.first());
             timer-=delta;
             if (timer<=0){
-                timer = 1.25f;
+                timer = 1f;
                 bubbleTalkQueue.first().remove();
                 bubbleTalkQueue.removeFirst();
             }

@@ -35,6 +35,7 @@ public class MainScreen extends BaseScreenNew{
     }
     public void singlePlay(){
         rodaImpianNew.setScreen(new GameScreen(rodaImpianNew, GameModes.SINGLE));
+        rodaImpianNew.setGameModes(GameModes.SINGLE);
     }
 
 }

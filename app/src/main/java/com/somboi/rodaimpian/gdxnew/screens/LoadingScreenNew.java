@@ -17,13 +17,15 @@ import com.somboi.rodaimpian.RodaImpianNew;
 import com.somboi.rodaimpian.gdx.assets.AssetDesc;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdx.config.GameConfig;
-import com.somboi.rodaimpian.gdxnew.assets.LoadFromCSV;
 import com.somboi.rodaimpian.gdxnew.assets.QuestionNew;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
 import com.somboi.rodaimpian.saves.PlayerSaves;
 import com.somboi.rodaimpian.saves.QuestionsSaves;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class LoadingScreenNew extends ScreenAdapter {
@@ -38,6 +40,7 @@ public class LoadingScreenNew extends ScreenAdapter {
     private final OrthographicCamera camera;
     private final QuestionsSaves questionsSaves = new QuestionsSaves();
     private final AsyncResult<Void> task;
+
     public LoadingScreenNew(RodaImpianNew rodaImpian) {
         this.rodaImpian = rodaImpian;
         this.assetManager = rodaImpian.getAssetManager();
@@ -49,8 +52,8 @@ public class LoadingScreenNew extends ScreenAdapter {
         if (player == null) {
             player = new PlayerNew();
             player.setName(StringRes.ANON);
-            player.setPlayerBonus(new HashMap<>());
-            player.setPlayerGifts(new HashMap<>());
+            player.setPlayerBonus(new ArrayList<>());
+            player.setPlayerGifts(new ArrayList<>());
             player.setUid(UUID.randomUUID().toString());
             if (rodaImpian.getFcmToken() != null) {
                 player.setFcmToken(rodaImpian.getFcmToken());
@@ -58,6 +61,13 @@ public class LoadingScreenNew extends ScreenAdapter {
             playerSaves.savePlayerNew(player);
         }
         rodaImpian.setPlayer(player);
+        if (player.getPlayerGifts()!=null){
+            logger.debug("gifts size "+player.getPlayerGifts().size()+" gifts "+player.getPlayerGifts().toString());
+        }
+        if (player.getPlayerBonus()!=null){
+            logger.debug("bonus size "+player.getPlayerBonus().size()+" bonuses "+player.getPlayerBonus().toString());
+        }
+        logger.debug("best score "+player.getBestScore());
         assetManager.load(AssetDesc.TEXTUREATLAS);
         assetManager.load(AssetDesc.CONFETTI);
         assetManager.load(AssetDesc.WINANIMATION);
@@ -85,7 +95,7 @@ public class LoadingScreenNew extends ScreenAdapter {
         assetManager.load(AssetDesc.AMBULANCE);
         assetManager.load(AssetDesc.FIRETRUCK);
 
-       task = new AsyncExecutor(2).submit(new AsyncTask<Void>() {
+        task = new AsyncExecutor(2).submit(new AsyncTask<Void>() {
             @Override
             public Void call() throws Exception {
                 final Array<QuestionNew> questionNewArray = questionsSaves.loadQuestionsNew();
@@ -95,12 +105,13 @@ public class LoadingScreenNew extends ScreenAdapter {
                 return null;
             }
         });
-
     }
+
+
 
     @Override
     public void show() {
-      //LoadFromCSV.execute();
+        //LoadFromCSV.execute();
     }
 
 
@@ -116,7 +127,7 @@ public class LoadingScreenNew extends ScreenAdapter {
 
         if (rodaImpian.getAssetManager().update() && task.isDone()) {
             rodaImpian.setMainScreen(new MainScreen(rodaImpian));
-           rodaImpian.mainMenu();
+            rodaImpian.mainMenu();
 
             //rodaImpian.setScreen(new GameScreen(rodaImpian));
             //rodaImpian.setScreen(new SkinTest(rodaImpian));

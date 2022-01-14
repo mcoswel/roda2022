@@ -37,7 +37,7 @@ public class AiMoves {
         completion = tilesRevealed();
 
 
-        if (playerNew.getScore() >= 250 && playerMenu.vocalAvailable()) {
+        if (playerNew.getScore() >= 250 && questionHaveVocals() && playerMenu.vocalAvailable()) {
             availableMoves.add(CpuMovement.CHOOSEVOCAL);
         }
 
@@ -47,7 +47,6 @@ public class AiMoves {
 
         float percentageComplete = (float)completion / (float)tileBases.size;
 
-        logger.debug("completion " + completion+" tile size "+tileBases.size+" percentage " + percentageComplete);
         if (percentageComplete > 0.75f || !playerMenu.consonantAvailable()) {
             availableMoves.add(CpuMovement.COMPLETE);
         }
@@ -55,15 +54,6 @@ public class AiMoves {
         availableMoves.shuffle();
         CpuMovement executeMove = availableMoves.first();
 
-        float greedyRandom = MathUtils.random(0, 1);
-
-        if (greedyRandom == 1) {
-            logger.debug("greedy");
-            if (availableMoves.contains(CpuMovement.SPIN, false) && questionHaveConsonants()) {
-                chooseSpin();
-                return;
-            }
-        }
 
         if (executeMove.equals(CpuMovement.SPIN)) {
             chooseSpin();
@@ -154,8 +144,6 @@ public class AiMoves {
     }
 
     private String chooseRandomVocals() {
-        logger.debug("choose random vocals");
-
         Array<Character> vocals = new Array<>(GameConfig.VOCALS);
         vocals.shuffle();
         for (Character c : vocals) {
@@ -168,7 +156,6 @@ public class AiMoves {
 
     public void chooseConsonants() {
         int random = randomize();
-        logger.debug("random no " + random);
         String c1 = chooseCorrectConsonants();
         String c2 = chooseRandomConsonants();
         String chosen = String.valueOf(playerMenu.getConsonantLetter().charAt(0));
@@ -177,7 +164,14 @@ public class AiMoves {
         } else if (c2!=null){
             chosen = c2;
         }
-        answerConsonants(chosen);
+        final String chosenAnswer = chosen;
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                answerConsonants(chosenAnswer);
+            }
+        },1.5f);
+
     }
 
     private int randomize() {

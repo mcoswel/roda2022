@@ -150,12 +150,12 @@ public class SpinScreen extends BaseScreenNew {
                                 gameSound.playAww();
                             }
                         }
-
+/*
                         logger.debug(
                                 "last contact " +
                                         worldContact.getLastContact() +
                                         ", wheel params " +
-                                        rodaImpianNew.getWheelParams().getScores() + ", " + rodaImpianNew.getWheelParams().getScoreStrings());
+                                        rodaImpianNew.getWheelParams().getScores() + ", " + rodaImpianNew.getWheelParams().getScoreStrings());*/
                         Timer.schedule(new Timer.Task() {
                             @Override
                             public void run() {

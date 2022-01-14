@@ -1,5 +1,6 @@
 package com.somboi.rodaimpian.gdxnew.entitiesnew;
 
+import java.util.List;
 import java.util.Map;
 
 public class PlayerNew implements Comparable<PlayerNew> {
@@ -18,8 +19,8 @@ public class PlayerNew implements Comparable<PlayerNew> {
     private boolean disconnect;
     private boolean ai;
     private boolean logged;
-    private Map<String, Integer> playerGifts;
-    private Map<String, Integer> playerBonus;
+    private List<Integer> playerGifts;
+    private List<Integer> playerBonus;
 
     public String getName() {
         return name;
@@ -126,19 +127,19 @@ public class PlayerNew implements Comparable<PlayerNew> {
         this.ai = ai;
     }
 
-    public Map<String, Integer> getPlayerGifts() {
+    public List<Integer> getPlayerGifts() {
         return playerGifts;
     }
 
-    public void setPlayerGifts(Map<String, Integer> playerGifts) {
+    public void setPlayerGifts(List<Integer> playerGifts) {
         this.playerGifts = playerGifts;
     }
 
-    public Map<String, Integer> getPlayerBonus() {
+    public List<Integer> getPlayerBonus() {
         return playerBonus;
     }
 
-    public void setPlayerBonus(Map<String, Integer> playerBonus) {
+    public void setPlayerBonus(List<Integer> playerBonus) {
         this.playerBonus = playerBonus;
     }
 

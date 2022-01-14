@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Gifts {
@@ -185,12 +186,10 @@ public class Gifts {
     public void winGifts(int giftIndex, PlayerGuis playerGuis, Stage stage) {
         Vector2 position = playerGuis.getPosition();
         if (playerGuis.getPlayerNew().getPlayerGifts() == null) {
-            playerGuis.getPlayerNew().setPlayerGifts(new HashMap<>());
+            playerGuis.getPlayerNew().setPlayerGifts(new ArrayList<>());
         }
-        playerGuis.getPlayerNew().getPlayerGifts().put("g" + playerGuis.getPlayerNew().getPlayerGifts().size(),
-                giftIndex);
-        int giftSize = playerGuis.getPlayerNew().getPlayerGifts().size();
 
+        int giftSize = playerGuis.getGiftsWon().size();
         int giftCounter = giftSize % 5;
 
         if (giftBox != null) {
@@ -208,7 +207,7 @@ public class Gifts {
                 )
         );
 
-
+        playerGuis.addGifts(giftIndex);
     }
 
     private class GiftsImg extends Image {
