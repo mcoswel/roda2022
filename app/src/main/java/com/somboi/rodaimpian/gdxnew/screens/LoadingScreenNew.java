@@ -23,9 +23,6 @@ import com.somboi.rodaimpian.saves.PlayerSaves;
 import com.somboi.rodaimpian.saves.QuestionsSaves;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 public class LoadingScreenNew extends ScreenAdapter {
@@ -61,13 +58,13 @@ public class LoadingScreenNew extends ScreenAdapter {
             playerSaves.savePlayerNew(player);
         }
         rodaImpian.setPlayer(player);
-        if (player.getPlayerGifts()!=null){
-            logger.debug("gifts size "+player.getPlayerGifts().size()+" gifts "+player.getPlayerGifts().toString());
+        if (player.getPlayerGifts() != null) {
+            logger.debug("gifts size " + player.getPlayerGifts().size() + " gifts " + player.getPlayerGifts().toString());
         }
-        if (player.getPlayerBonus()!=null){
-            logger.debug("bonus size "+player.getPlayerBonus().size()+" bonuses "+player.getPlayerBonus().toString());
+        if (player.getPlayerBonus() != null) {
+            logger.debug("bonus size " + player.getPlayerBonus().size() + " bonuses " + player.getPlayerBonus().toString());
         }
-        logger.debug("best score "+player.getBestScore());
+        logger.debug("best score " + player.getBestScore());
         assetManager.load(AssetDesc.TEXTUREATLAS);
         assetManager.load(AssetDesc.CONFETTI);
         assetManager.load(AssetDesc.WINANIMATION);
@@ -95,23 +92,56 @@ public class LoadingScreenNew extends ScreenAdapter {
         assetManager.load(AssetDesc.AMBULANCE);
         assetManager.load(AssetDesc.FIRETRUCK);
 
-        task = new AsyncExecutor(2).submit(new AsyncTask<Void>() {
+        task = new AsyncExecutor(1).submit(new AsyncTask<Void>() {
             @Override
             public Void call() throws Exception {
-                final Array<QuestionNew> questionNewArray = questionsSaves.loadQuestionsNew();
-                for (int i = 0; i < 5; i++) {
-                    rodaImpian.getPreparedQuestions().add(questionNewArray.random());
+
+                final Array<QuestionNew> mainGroup = questionsSaves.loadMainGroup();
+                final Array<QuestionNew> bonusGroup = questionsSaves.loadBonusGroup();
+                final Array<String> mainSubjects = questionsSaves.loadMainGroupSubjects();
+                final Array<String> bonusSubjects = questionsSaves.loadBonusGroupSubjects();
+                mainSubjects.shuffle();
+                bonusSubjects.shuffle();
+                mainGroup.shuffle();
+                bonusGroup.shuffle();
+
+                mainloop: for (int i=0; i<3; i++){
+                    for (QuestionNew questionNew : mainGroup) {
+                        if (questionNew.getSubject().equals(mainSubjects.get(i))) {
+                            rodaImpian.getPreparedQuestions().add(questionNew);
+                            bonusSubjects.removeValue(questionNew.getSubject(), false);
+                            if (i==2){
+                                break mainloop;
+                            }
+                            break;
+                        }
+                    }
                 }
+
+
+                String bonusSubj = bonusSubjects.random();
+                for (QuestionNew questionNew : bonusGroup) {
+                    if (questionNew.getSubject().equals(bonusSubj)) {
+                        rodaImpian.getPreparedQuestions().add(questionNew);
+                        break;
+                    }
+                }
+
+                logger.debug("questions size "+rodaImpian.getPreparedQuestions().size);
+
+                /*for (int i = 0; i < 5; i++) {
+                    rodaImpian.getPreparedQuestions().add(questionNewArray.random());
+                }*/
                 return null;
             }
         });
     }
 
 
-
     @Override
     public void show() {
         //LoadFromCSV.execute();
+
     }
 
 

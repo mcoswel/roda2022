@@ -53,7 +53,9 @@ public class AiMoves {
 
         availableMoves.shuffle();
         CpuMovement executeMove = availableMoves.first();
-
+        if (!questionHaveConsonants() && playerNew.getScore()<250){
+            executeMove = CpuMovement.COMPLETE;
+        }
 
         if (executeMove.equals(CpuMovement.SPIN)) {
             chooseSpin();
@@ -131,8 +133,7 @@ public class AiMoves {
         String vocalsLeft = playerMenu.getVocalLetter().toString().toLowerCase();
         for (TileBase t : tileBases) {
             String c = t.getLetter().toLowerCase();
-
-            if (vocalsLeft.contains(c)) {
+            if (vocalsLeft.contains(c) && !t.isRevealed()) {
                 vocals.add(t.getLetter());
             }
         }
@@ -179,11 +180,12 @@ public class AiMoves {
     }
 
     private String chooseCorrectConsonants() {
+
         Array<String> correctCons = new Array<>();
         String consonantLeft = playerMenu.getConsonantLetter().toString().toLowerCase();
         for (TileBase t : tileBases) {
             String c = t.getLetter().toLowerCase();
-            if (consonantLeft.contains(c)) {
+            if (consonantLeft.contains(c) && !t.isRevealed()) {
                 correctCons.add(t.getLetter());
             }
         }
@@ -195,7 +197,6 @@ public class AiMoves {
     }
 
     private String chooseRandomConsonants() {
-        logger.debug("random consonant");
         groupOne.shuffle();
         groupTwo.shuffle();
         groupThree.shuffle();
@@ -222,7 +223,6 @@ public class AiMoves {
     }
 
     private void answerConsonants(String answer) {
-        logger.debug("answer consonants: "+answer);
         playerGuis.chat(StringRes.CPUCHOOSECONSONANTS.random() + answer);
         Timer.schedule(new Timer.Task() {
             @Override
@@ -233,7 +233,6 @@ public class AiMoves {
     }
 
     private void answerVocals(String answer) {
-        logger.debug("answer vocal: "+answer);
         playerGuis.chat(StringRes.CPUBUYVOCALS.random() + answer);
         Timer.schedule(new Timer.Task() {
             @Override

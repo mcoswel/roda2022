@@ -28,9 +28,11 @@ public class TileBase extends Image implements Cloneable{
     private void checkSpecialChar() {
         if (letter.contains("-")){
             setDrawable(new SpriteDrawable(atlas.createSprite("tileminus")));
+            revealed = true;
         }
         if (letter.contains("\'")){
             setDrawable(new SpriteDrawable(atlas.createSprite("tileoppost")));
+            revealed = true;
         }
     }
 

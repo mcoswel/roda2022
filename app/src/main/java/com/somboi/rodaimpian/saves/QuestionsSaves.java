@@ -13,7 +13,7 @@ import com.somboi.rodaimpian.gdxnew.assets.QuestionNew;
 
 public class QuestionsSaves {
     private Save save;
-    private FileHandle file = Gdx.files.local(StringRes.QUESTIONNEW);
+    private FileHandle file = Gdx.files.local(StringRes.MAINGROUP);
 
     public QuestionsSaves() {
         save = getSave();
@@ -30,14 +30,50 @@ public class QuestionsSaves {
         return save;
     }
 
-    public void saveQuestionsNew(Array<QuestionNew> questionArrays){
-        save.data.put(StringRes.QUESTIONNEW, questionArrays);
+    public void saveMainGroup(Array<QuestionNew> questionArrays){
+        save.data.put(StringRes.MAINGROUP, questionArrays);
         saveToJson();
     }
 
-    public Array<QuestionNew> loadQuestionsNew(){
-        if (save.data.containsKey(StringRes.QUESTIONNEW))
-            return (Array<QuestionNew> ) save.data.get(StringRes.QUESTIONNEW);
+    public void saveMainGroupSubjects(Array<String> subjects){
+        save.data.put(StringRes.MAINGROUPSUBJECTS, subjects);
+        saveToJson();
+    }
+
+    public void saveBonusGroup(Array<QuestionNew> questionArrays){
+        save.data.put(StringRes.BONUSGROUP, questionArrays);
+        saveToJson();
+    }
+
+    public void saveBonusGroupSubject(Array<String> subjects){
+        save.data.put(StringRes.BONUSGROUPSUBJECTS, subjects);
+        saveToJson();
+    }
+
+    public Array<QuestionNew> loadMainGroup(){
+        if (save.data.containsKey(StringRes.MAINGROUP))
+            return (Array<QuestionNew> ) save.data.get(StringRes.MAINGROUP);
+        else
+            return null;
+    }
+
+    public Array<String> loadMainGroupSubjects(){
+        if (save.data.containsKey(StringRes.MAINGROUPSUBJECTS))
+            return (Array<String> ) save.data.get(StringRes.MAINGROUPSUBJECTS);
+        else
+            return null;
+    }
+
+    public Array<String> loadBonusGroupSubjects(){
+        if (save.data.containsKey(StringRes.BONUSGROUPSUBJECTS))
+            return (Array<String> ) save.data.get(StringRes.BONUSGROUPSUBJECTS);
+        else
+            return null;
+    }
+
+    public Array<QuestionNew> loadBonusGroup(){
+        if (save.data.containsKey(StringRes.BONUSGROUP))
+            return (Array<QuestionNew> ) save.data.get(StringRes.BONUSGROUP);
         else
             return null;
     }

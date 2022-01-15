@@ -6,6 +6,8 @@ import com.badlogic.gdx.utils.Array;
 import com.somboi.rodaimpian.saves.QuestionsSaves;
 
 import java.io.BufferedReader;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoadFromCSV {
     public static void execute() {
@@ -21,8 +23,37 @@ public class LoadFromCSV {
         } catch (Exception e) {
 
         }
+
+        Array<QuestionNew> mainGroup = new Array<>();
+        Array<QuestionNew> bonusGroup = new Array<>();
+        Map<String, String> mainMap = new HashMap<>();
+        Map<String, String> bonusMap = new HashMap<>();
+        Array<String> mainGroupSubjects = new Array<>();
+        Array<String> bonusGroupSubjects = new Array<>();
+
+        for (QuestionNew questionNew : questionArray){
+            if (questionNew.getTotalline()>=3){
+                mainGroup.add(questionNew);
+                mainMap.put(questionNew.getSubject(), questionNew.getSubject());
+            }else{
+                bonusGroup.add(questionNew);
+                bonusMap.put(questionNew.getSubject(), questionNew.getSubject());
+            }
+        }
+
+        for (Map.Entry<String, String>entry: mainMap.entrySet()){
+            mainGroupSubjects.add(entry.getValue());
+        }
+        for (Map.Entry<String, String>entry: bonusMap.entrySet()){
+            bonusGroupSubjects.add(entry.getValue());
+        }
+
         QuestionsSaves questionsSaves = new QuestionsSaves();
-        questionsSaves.saveQuestionsNew(questionArray);
+        questionsSaves.saveMainGroup(mainGroup);
+        questionsSaves.saveBonusGroup(bonusGroup);
+        questionsSaves.saveMainGroupSubjects(mainGroupSubjects);
+        questionsSaves.saveBonusGroupSubject(bonusGroupSubjects);
+
     }
 
     public static QuestionNew createQuestions(String[] values) {
@@ -45,7 +76,5 @@ public class LoadFromCSV {
             questionNew.setTotalline(4);
         }
         return questionNew;
-
-
     }
 }

@@ -114,7 +114,10 @@ public class StringRes {
     public static final String SINGLEPLAYER = "1 Pemain";
     public static final String MULTIPLAYER = "Multi-Pemain";
     public static final String CHANGENAME = "Tukar Nama";
-    public static final String QUESTIONNEW = "newquestion";
+    public static final String MAINGROUP = "maingroup";
+    public static final String BONUSGROUP = "bonusgroup";
+    public static final String MAINGROUPSUBJECTS = "maingroupsubject";
+    public static final String BONUSGROUPSUBJECTS = "bonusgroupsubject";
     public static final String CONSONANTS = "Konsonan";
     public static final String EXIT2 = "Keluar";
     public static final String FIRETRUCK = "Bomba";

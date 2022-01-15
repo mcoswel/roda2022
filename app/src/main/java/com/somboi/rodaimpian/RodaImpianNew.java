@@ -5,15 +5,12 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
-import com.somboi.rodaimpian.gdxnew.actors.PlayerGuis;
 import com.somboi.rodaimpian.gdxnew.assets.QuestionNew;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
-import com.somboi.rodaimpian.gdxnew.screens.BombeiroScreen;
 import com.somboi.rodaimpian.gdxnew.screens.GameScreen;
 import com.somboi.rodaimpian.gdxnew.screens.LoadingScreenNew;
 import com.somboi.rodaimpian.gdxnew.screens.MainScreen;
 import com.somboi.rodaimpian.gdxnew.wheels.WheelParams;
-import com.somboi.rodaimpian.saves.PlayerSaves;
 
 public class RodaImpianNew extends Game {
     private final AssetManager assetManager = new AssetManager();
@@ -26,10 +23,9 @@ public class RodaImpianNew extends Game {
     private PlayerNew playerThree;
     private String fcmToken;
     private final AndroInterface androInterface;
-    private final Array<QuestionNew> preparedQuestions = new Array<>();
     private GameScreen gameScreen;
     private boolean bonusMode;
-
+    private final Array<QuestionNew>preparedQuestions = new Array<>();
     public RodaImpianNew(AndroInterface androInterface) {
         this.androInterface = androInterface;
     }
@@ -127,9 +123,7 @@ public class RodaImpianNew extends Game {
         }
     }
 
-    public Array<QuestionNew> getPreparedQuestions() {
-        return preparedQuestions;
-    }
+
 
     public boolean isBonusMode() {
         return bonusMode;
@@ -139,6 +133,12 @@ public class RodaImpianNew extends Game {
         this.bonusMode = bonusMode;
     }
 
+
+
+
+    public Array<QuestionNew> getPreparedQuestions() {
+        return preparedQuestions;
+    }
 
     @Override
     public void dispose() {

@@ -235,12 +235,10 @@ public class PlayerMenu {
     }
 
     public void removeLetter(String c) {
-        logger.debug("remove letter "+c);
         for (int i = 0; i < vocalLetter.length(); i++) {
             String compare = String.valueOf(vocalLetter.charAt(i)).toLowerCase();
             if (compare.equals(c)){
                 vocalLetter.deleteCharAt(i);
-                return;
             }
         }
 

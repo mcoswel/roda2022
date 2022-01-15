@@ -174,6 +174,7 @@ public class BaseGame {
             }
         }
         tileBases.clear();
+        logger.debug("gameround "+gameRound);
         currentQuestion = rodaImpianNew.getPreparedQuestions().get(gameRound);
         if (gameRound <= 2) {
             setSubject(StringRes.ROUND + (gameRound + 1));
@@ -612,6 +613,7 @@ public class BaseGame {
     }
 
     public void finishGame() {
+        playerMenu.resetLetters();
         gameSound.playCheer();
         vannaHost.dance();
         if (!incompleteTiles.isEmpty()) {
@@ -630,8 +632,6 @@ public class BaseGame {
         currentGui.getProfilePic().addAction(Actions.moveTo(350f, 1150f, 1.5f));
         activePlayer.setFullScore(activePlayer.getFullScore() + activePlayer.getScore() + 200 * (gameRound + 1));
         currentGui.updateFullScore(activePlayer.getFullScore());
-
-        playerMenu.resetLetters();
         increaseGameRound();
 
     }
