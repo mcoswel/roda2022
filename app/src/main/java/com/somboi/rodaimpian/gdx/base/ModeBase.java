@@ -25,7 +25,7 @@ import com.somboi.rodaimpian.gdx.actor.EndGameDialog;
 import com.somboi.rodaimpian.gdx.actor.EnvelopeSubject;
 import com.somboi.rodaimpian.gdx.actor.Envelopes;
 import com.somboi.rodaimpian.gdx.actor.FirstTurnWheel;
-import com.somboi.rodaimpian.gdx.actor.FlyingMoney;
+import com.somboi.rodaimpian.gdxnew.FlyingMoney;
 import com.somboi.rodaimpian.gdxnew.actors.HourGlass;
 import com.somboi.rodaimpian.gdx.actor.MenuButtons;
 import com.somboi.rodaimpian.gdxnew.actors.Sparkling;

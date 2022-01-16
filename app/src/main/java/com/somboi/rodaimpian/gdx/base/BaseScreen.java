@@ -1,5 +1,7 @@
 package com.somboi.rodaimpian.gdx.base;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -12,9 +14,11 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.somboi.rodaimpian.RodaImpian;
 import com.somboi.rodaimpian.gdx.assets.AssetDesc;
 import com.somboi.rodaimpian.gdx.assets.GameSound;
+import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdx.config.GameConfig;
 import com.somboi.rodaimpian.gdx.entities.BgImg;
 import com.somboi.rodaimpian.gdx.entities.Player;
+import com.somboi.rodaimpian.gdxnew.actors.YesNoDiag;
 
 public class BaseScreen extends ScreenAdapter {
     protected final Viewport viewport = new FitViewport(GameConfig.SCWIDTH, GameConfig.SCHEIGHT);
@@ -41,7 +45,6 @@ public class BaseScreen extends ScreenAdapter {
         gameSound = new GameSound(assetManager);
         bgImg = new BgImg(assetManager.get(AssetDesc.BLURBG));
         stage.addActor(bgImg);
-
     }
 
     @Override
@@ -54,6 +57,7 @@ public class BaseScreen extends ScreenAdapter {
             stage.act();
             worldStage.act();
         }
+
     }
 
     public void update(float delta) {
@@ -71,6 +75,9 @@ public class BaseScreen extends ScreenAdapter {
     public void dispose() {
         stage.dispose();
         worldStage.dispose();
+        skin.dispose();
+        textureAtlas.dispose();
+        gameSound.dispose();
     }
 
 }

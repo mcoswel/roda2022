@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.backends.android.AndroidAudio;
@@ -119,5 +120,10 @@ public class AndroidLauncherNew extends AndroidApplication implements AndroInter
         });
     }
 
-
+    @Override
+    public void restart() {
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
+    }
 }

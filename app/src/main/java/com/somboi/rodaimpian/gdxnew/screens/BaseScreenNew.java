@@ -1,6 +1,7 @@
 package com.somboi.rodaimpian.gdxnew.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -12,9 +13,11 @@ import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.somboi.rodaimpian.RodaImpianNew;
 import com.somboi.rodaimpian.gdx.assets.AssetDesc;
+import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdx.config.GameConfig;
 import com.somboi.rodaimpian.gdxnew.actors.ActorFactory;
 import com.somboi.rodaimpian.gdxnew.actors.MenuFactory;
+import com.somboi.rodaimpian.gdxnew.actors.YesNoDiag;
 import com.somboi.rodaimpian.saves.PlayerSaves;
 
 public class BaseScreenNew extends ScreenAdapter {
@@ -40,6 +43,8 @@ public class BaseScreenNew extends ScreenAdapter {
         this.skin = assetManager.get(AssetDesc.NEWSKIN);
         this.actorFactory = new ActorFactory(assetManager, worldStage, stage);
         this.menuFactory = new MenuFactory(assetManager, skin, stage);
+        Gdx.input.setCatchKey(Input.Keys.BACK, true);
+
     }
 
     @Override
@@ -51,6 +56,16 @@ public class BaseScreenNew extends ScreenAdapter {
         stage.draw();
         worldStage.act();
         worldStage.draw();
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.BACK)){
+            YesNoDiag yesNoDiag = new YesNoDiag(StringRes.EXIT2+"?", skin){
+                @Override
+                public void yesFunc() {
+                    Gdx.app.exit();
+                }
+            };
+            yesNoDiag.show(stage);
+        }
     }
 
     public void update(float delta) {

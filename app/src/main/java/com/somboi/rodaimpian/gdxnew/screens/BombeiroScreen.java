@@ -201,6 +201,7 @@ public class BombeiroScreen extends BaseScreenNew {
             stage.addActor(new Fireworks(assetManager.get(AssetDesc.WINANIMATION)));
             gameSound.playCheer();
             gameSound.playWinSound();
+            playerGuis.addGifts(bonusGiftImg.getBonusIndex());
         } else {
             gameSound.playAww();
         }

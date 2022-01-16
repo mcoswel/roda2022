@@ -1,12 +1,15 @@
 package com.somboi.rodaimpian.gdxnew.actors;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.somboi.rodaimpian.RodaImpianNew;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
@@ -20,7 +23,7 @@ public class WinnerDialog extends Dialog {
 
     public WinnerDialog(Skin skin, PlayerGuis winnerGui, TextureAtlas atlas, RodaImpianNew rodaImpianNew) {
         super(StringRes.MATCHFINISHED, skin);
-        winnerGui.getPlayerNew().setFullScore(winnerGui.getPlayerNew().getFullScore()+rodaImpianNew.getWheelParams().getScores());
+        winnerGui.getPlayerNew().setFullScore(winnerGui.getPlayerNew().getFullScore() + rodaImpianNew.getWheelParams().getScores());
         Table gifttable = new Table();
         final PlayerNew winner = winnerGui.getPlayerNew();
         if (winner.getPlayerGifts() == null) {
@@ -42,7 +45,9 @@ public class WinnerDialog extends Dialog {
             for (Integer integer : winnerGui.getGiftsWon()) {
                 Image image = new Image(atlas.findRegion(Gifts.getGiftRegion(integer)));
                 giftImages.add(image);
-                winner.getPlayerGifts().add(integer);
+                if (!winner.getPlayerGifts().contains(integer)) {
+                    winner.getPlayerGifts().add(integer);
+                }
                 if (winner.getPlayerGifts().size() > 3) {
                     winner.getPlayerGifts().remove(0);
                 }
@@ -59,7 +64,9 @@ public class WinnerDialog extends Dialog {
 
 
         if (winnerGui.getBonusWon().size() > 0) {
-            winner.getPlayerBonus().add(winnerGui.getBonusWon().get(0));
+            if (!winner.getPlayerBonus().contains(winnerGui.getBonusWon().get(0))) {
+                winner.getPlayerBonus().add(winnerGui.getBonusWon().get(0));
+            }
             if (winner.getPlayerBonus().size() > 3) {
                 winner.getPlayerBonus().remove(0);
             }
@@ -104,12 +111,25 @@ public class WinnerDialog extends Dialog {
         Table buttonTable = new Table();
         buttonTable.defaults().pad(10f);
         SmallButton menu = new SmallButton(StringRes.MAINMENU, skin);
+        menu.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                rodaImpianNew.restart();
+            }
+        });
         SmallButton leaderBoard = new SmallButton(StringRes.LEADERBOARD, skin);
         SmallButton exit = new SmallButton(StringRes.EXIT2, skin);
+        exit.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                Gdx.app.exit();
+            }
+        });
         buttonTable.add(menu).row();
         buttonTable.add(leaderBoard).row();
         buttonTable.add(exit).row();
         getContentTable().add(buttonTable).row();
+
 
         if (winner.getUid() != null) {
             if (rodaImpianNew.getGameModes().equals(GameModes.SINGLE)
@@ -119,6 +139,7 @@ public class WinnerDialog extends Dialog {
                 }
             }
             PlayerSaves saves = new PlayerSaves();
+            rodaImpianNew.getPlayer().setTimesPlayed(rodaImpianNew.getPlayer().getTimesPlayed() + 1);
             saves.savePlayerNew(rodaImpianNew.getPlayer());
         }
     }

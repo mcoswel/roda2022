@@ -45,24 +45,28 @@ public class AiMoves {
             availableMoves.add(CpuMovement.SPIN);
         }
 
-        float percentageComplete = (float)completion / (float)tileBases.size;
+        float percentageComplete = (float) completion / (float) tileBases.size;
 
-        if (percentageComplete > 0.75f || !playerMenu.consonantAvailable()) {
+        if (percentageComplete > 0.8f || !playerMenu.consonantAvailable()) {
             availableMoves.add(CpuMovement.COMPLETE);
         }
 
         availableMoves.shuffle();
         CpuMovement executeMove = availableMoves.first();
-        if (!questionHaveConsonants() && playerNew.getScore()<250){
+
+        if (!questionHaveConsonants() && playerNew.getScore() < 250) {
             executeMove = CpuMovement.COMPLETE;
         }
 
         if (executeMove.equals(CpuMovement.SPIN)) {
             chooseSpin();
+            return;
         } else if (executeMove.equals(CpuMovement.CHOOSEVOCAL)) {
             chooseVocals();
+            return;
         } else {
             chooseComplete();
+            return;
         }
 
 
@@ -117,61 +121,56 @@ public class AiMoves {
     private void chooseVocals() {
         playerNew.setScore(playerNew.getScore() - 250);
         int random = randomize();
-        String c1 = chooseCorrectVocals();
-        String c2 = chooseRandomVocals();
-        String chosen = String.valueOf(playerMenu.getVocalLetter().charAt(0));
-        if (random < completion && questionHaveVocals() && c1!=null) {
+        Character c1 = chooseCorrectVocals();
+        Character c2 = chooseRandomVocals();
+        Character chosen = playerMenu.getVocalLetter().get(0);
+        if (random < completion && questionHaveVocals() && c1 != null) {
             chosen = c1;
-        } else if (c2!=null){
+        } else if (c2 != null) {
             chosen = c2;
         }
-        answerVocals(chosen);
+        answer(chosen,false);
     }
 
-    private String chooseCorrectVocals() {
-        Array<String> vocals = new Array<>();
-        String vocalsLeft = playerMenu.getVocalLetter().toString().toLowerCase();
+    private Character chooseCorrectVocals() {
+        Array<Character> vocals = new Array<>();
         for (TileBase t : tileBases) {
-            String c = t.getLetter().toLowerCase();
-            if (vocalsLeft.contains(c) && !t.isRevealed()) {
-                vocals.add(t.getLetter());
+            for (Character character : playerMenu.getVocalLetter()) {
+                if (String.valueOf(character).equals(t.getLetter())) {
+                    vocals.add(character);
+                }
             }
         }
-        if (vocals.isEmpty()){
+        if (vocals.isEmpty()) {
             return null;
         }
         vocals.shuffle();
         return vocals.first();
     }
 
-    private String chooseRandomVocals() {
-        Array<Character> vocals = new Array<>(GameConfig.VOCALS);
+    private Character chooseRandomVocals() {
+        Array<Character> vocals = new Array<>(playerMenu.getVocalLetter());
         vocals.shuffle();
-        for (Character c : vocals) {
-            if (playerMenu.getVocalLetter().toString().contains(String.valueOf(c))) {
-                return String.valueOf(c);
-            }
-        }
-        return String.valueOf(playerMenu.getVocalLetter().charAt(0));
+        return vocals.get(0);
     }
 
     public void chooseConsonants() {
         int random = randomize();
-        String c1 = chooseCorrectConsonants();
-        String c2 = chooseRandomConsonants();
-        String chosen = String.valueOf(playerMenu.getConsonantLetter().charAt(0));
-        if (random < completion && questionHaveConsonants() && c1!=null) {
+        Character c1 = chooseCorrectConsonants();
+        Character c2 = chooseRandomConsonants();
+        Character chosen = playerMenu.getConsonantLetter().get(0);
+        if (random < completion && questionHaveConsonants() && c1 != null) {
             chosen = c1;
-        } else if (c2!=null){
+        } else if (c2 != null) {
             chosen = c2;
         }
-        final String chosenAnswer = chosen;
+        final Character chosenAnswer = chosen;
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
-                answerConsonants(chosenAnswer);
+                answer(chosenAnswer, true);
             }
-        },1.5f);
+        }, 1.5f);
 
     }
 
@@ -179,61 +178,58 @@ public class AiMoves {
         return MathUtils.random(0, tileBases.size);
     }
 
-    private String chooseCorrectConsonants() {
-
-        Array<String> correctCons = new Array<>();
-        String consonantLeft = playerMenu.getConsonantLetter().toString().toLowerCase();
+    private Character chooseCorrectConsonants() {
+        Array<Character> correctCons = new Array<>();
         for (TileBase t : tileBases) {
-            String c = t.getLetter().toLowerCase();
-            if (consonantLeft.contains(c) && !t.isRevealed()) {
-                correctCons.add(t.getLetter());
+
+            for (Character character : playerMenu.getConsonantLetter()) {
+                if (String.valueOf(character).equals(t.getLetter())) {
+                    correctCons.add(character);
+                }
             }
         }
-        if (correctCons.isEmpty()){
+        if (correctCons.isEmpty()) {
             return null;
         }
         correctCons.shuffle();
         return correctCons.first();
     }
 
-    private String chooseRandomConsonants() {
+    private Character chooseRandomConsonants() {
         groupOne.shuffle();
         groupTwo.shuffle();
         groupThree.shuffle();
         for (Character c : groupOne) {
-            String c1 = String.valueOf(c);
-            if (playerMenu.getConsonantLetter().toString().contains(c1)) {
-                return c1;
+            for (Character character : playerMenu.getConsonantLetter()) {
+                if (character == c) {
+                    return character;
+                }
             }
         }
 
         for (Character c : groupTwo) {
-            String c1 = String.valueOf(c);
-            if (playerMenu.getConsonantLetter().toString().contains(c1)) {
-                return c1;
+            for (Character character : playerMenu.getConsonantLetter()) {
+                if (character == c) {
+                    return character;
+                }
             }
         }
         for (Character c : groupThree) {
-            String c1 = String.valueOf(c);
-            if (playerMenu.getConsonantLetter().toString().contains(c1)) {
-                return c1;
+            for (Character character : playerMenu.getConsonantLetter()) {
+                if (character == c) {
+                    return character;
+                }
             }
         }
-        return String.valueOf(playerMenu.getConsonantLetter().charAt(0));
+        return playerMenu.getConsonantLetter().get(0);
     }
 
-    private void answerConsonants(String answer) {
-        playerGuis.chat(StringRes.CPUCHOOSECONSONANTS.random() + answer);
-        Timer.schedule(new Timer.Task() {
-            @Override
-            public void run() {
-                baseGame.checkAnswer(answer);
-            }
-        }, 1.5f);
-    }
-
-    private void answerVocals(String answer) {
-        playerGuis.chat(StringRes.CPUBUYVOCALS.random() + answer);
+    private void answer(Character answer, boolean consonant){
+        if (consonant){
+            playerGuis.chat(StringRes.CPUCHOOSECONSONANTS.random() + answer);
+        }else{
+            playerGuis.chat(StringRes.CPUBUYVOCALS.random() + answer);
+        }
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {

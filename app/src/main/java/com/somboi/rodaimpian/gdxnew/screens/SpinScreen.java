@@ -184,4 +184,10 @@ public class SpinScreen extends BaseScreenNew {
 */
 
     }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        world.dispose();
+    }
 }

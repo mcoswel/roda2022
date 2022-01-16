@@ -17,6 +17,7 @@ import com.somboi.rodaimpian.RodaImpianNew;
 import com.somboi.rodaimpian.gdx.assets.AssetDesc;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdx.config.GameConfig;
+import com.somboi.rodaimpian.gdxnew.assets.LoadFromCSV;
 import com.somboi.rodaimpian.gdxnew.assets.QuestionNew;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
 import com.somboi.rodaimpian.saves.PlayerSaves;
@@ -64,6 +65,9 @@ public class LoadingScreenNew extends ScreenAdapter {
         if (player.getPlayerBonus() != null) {
             logger.debug("bonus size " + player.getPlayerBonus().size() + " bonuses " + player.getPlayerBonus().toString());
         }
+        logger.debug("bankrupt size " + player.getBankrupt());
+        logger.debug("times played " + player.getTimesPlayed());
+
         logger.debug("best score " + player.getBestScore());
         assetManager.load(AssetDesc.TEXTUREATLAS);
         assetManager.load(AssetDesc.CONFETTI);
@@ -140,8 +144,7 @@ public class LoadingScreenNew extends ScreenAdapter {
 
     @Override
     public void show() {
-        //LoadFromCSV.execute();
-
+     LoadFromCSV.execute();
     }
 
 

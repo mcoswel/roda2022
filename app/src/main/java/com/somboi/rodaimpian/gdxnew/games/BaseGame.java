@@ -21,6 +21,7 @@ import com.somboi.rodaimpian.gdx.assets.AssetDesc;
 import com.somboi.rodaimpian.gdx.assets.GameSound;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdx.config.GameConfig;
+import com.somboi.rodaimpian.gdxnew.FlyingMoney;
 import com.somboi.rodaimpian.gdxnew.actors.Bonuses;
 import com.somboi.rodaimpian.gdxnew.actors.ChatBubble;
 import com.somboi.rodaimpian.gdxnew.actors.Confetti;
@@ -40,6 +41,7 @@ import com.somboi.rodaimpian.gdxnew.actors.TrophyNew;
 import com.somboi.rodaimpian.gdxnew.actors.VannaHost;
 import com.somboi.rodaimpian.gdxnew.actors.WheelTurns;
 import com.somboi.rodaimpian.gdxnew.actors.WinnerDialog;
+import com.somboi.rodaimpian.gdxnew.actors.YesNoDiag;
 import com.somboi.rodaimpian.gdxnew.assets.QuestionNew;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.AiMoves;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.GiftsNew;
@@ -70,7 +72,7 @@ public class BaseGame {
     protected final Label subjectLabel;
     protected Group tilesGroup = new Group();
     protected Group incompleteGroup = new Group();
-    protected final PlayerMenu playerMenu;
+    protected  PlayerMenu playerMenu;
     protected PlayerGuis currentGui;
     protected AiMoves aiMoves;
     protected CorrectLabel correctLabel;
@@ -96,7 +98,6 @@ public class BaseGame {
         this.vannaHost = new VannaHost(rodaImpianNew.getAssetManager().get(AssetDesc.ATLAS));
         this.gameSound = new GameSound(rodaImpianNew.getAssetManager());
         this.subjectLabel = new Label("", skin);
-        this.playerMenu = new PlayerMenu(stage, this, skin);
         this.hourGlass = new HourGlass(rodaImpianNew.getAssetManager().get(AssetDesc.HOURGLASS));
         this.gifts = new Gifts(atlas, rodaImpianNew.getAssetManager().get(AssetDesc.SPARKLE));
         this.giftsIndexes.shuffle();
@@ -108,7 +109,6 @@ public class BaseGame {
     }
 
     private void prepareEnvelope() {
-        gameRound++;
         setUpNewRound();
         bonusGiftImg = new Bonuses(atlas, rodaImpianNew.getWheelParams().getBonusIndex());
         bonusGiftImg.setPosition(350f, 1110f);
@@ -174,7 +174,6 @@ public class BaseGame {
             }
         }
         tileBases.clear();
-        logger.debug("gameround "+gameRound);
         currentQuestion = rodaImpianNew.getPreparedQuestions().get(gameRound);
         if (gameRound <= 2) {
             setSubject(StringRes.ROUND + (gameRound + 1));
@@ -335,6 +334,7 @@ public class BaseGame {
     public void startRound() {
         vannaHost.relax();
         showQuestions();
+        playerMenu = new PlayerMenu(stage, this,skin);
         startTurn();
     }
 
@@ -408,11 +408,14 @@ public class BaseGame {
         }
     }
 
-    public void checkAnswer(String c) {
+    public void checkAnswer(Character character) {
+        playerMenu.removeLetter(character);
         boolean correct = false;
         int multiplier = 0;
+        String c = String.valueOf(character);
+
         for (TileBase tileBase : tileBases) {
-            if (tileBase.getLetter().contains(c)) {
+            if (tileBase.getLetter().equals(c)) {
                 tileBase.reveal();
                 multiplier++;
                 correct = true;
@@ -436,6 +439,7 @@ public class BaseGame {
                     currentGui.setFree(true);
                 }
                 if (gifts.isPrepareGift()) {
+                    gameSound.playCheer();
                     gifts.winGifts(giftsNew.getGiftIndex(), currentGui, stage);
                     Timer.schedule(new Timer.Task() {
                         @Override
@@ -462,7 +466,7 @@ public class BaseGame {
             }
 
         }
-        playerMenu.removeLetter(c.toLowerCase());
+
         rodaImpianNew.getWheelParams().setScores(0);
     }
 
@@ -579,8 +583,10 @@ public class BaseGame {
                     if (bonusGiftImg != null) {
                         currentGui.getBonusWon().add(bonusGiftImg.getBonusIndex());
                     }
+                    gameSound.playWinSound();
                     gameSound.playCheer();
                     vannaHost.dance();
+                    currentGui.addBonus(bonusGiftImg.getBonusIndex());
                 } else {
                     gameSound.playAww();
                     vannaHost.wrong();
@@ -613,7 +619,6 @@ public class BaseGame {
     }
 
     public void finishGame() {
-        playerMenu.resetLetters();
         gameSound.playCheer();
         vannaHost.dance();
         if (!incompleteTiles.isEmpty()) {
@@ -642,7 +647,6 @@ public class BaseGame {
             public void run() {
                 currentGui.getProfilePic().addAction(Actions.moveTo(currentGui.getPosition().x, currentGui.getPosition().y, 1f));
                 gameRound++;
-
                 if (gameRound != 3) {
                     continuePlay();
                 } else {
@@ -685,6 +689,7 @@ public class BaseGame {
                 Timer.schedule(new Timer.Task() {
                     @Override
                     public void run() {
+
                         startRound();
                     }
                 }, 2f);
@@ -736,9 +741,11 @@ public class BaseGame {
             } else {
                 playerMenu.createConsonantsTable();
             }
+
         } else {
             vannaHost.wrong();
             if (rodaImpianNew.getWheelParams().getScoreStrings().equals(StringRes.BANKRUPT)) {
+                stage.addActor(new FlyingMoney(atlas.findRegion("3_badgebankrupt"), currentGui.getPosition()));
                 if (activePlayer.equals(rodaImpianNew.getPlayer())) {
                     rodaImpianNew.getPlayer().setBankrupt(rodaImpianNew.getPlayer().getBankrupt() + 1);
                 }
@@ -774,6 +781,10 @@ public class BaseGame {
 
     public String getAnswerString() {
         return answerString;
+    }
+
+    public void mainMenu(){
+        rodaImpianNew.restart();
     }
 
     public void update(float delta) {

@@ -146,4 +146,7 @@ public class RodaImpianNew extends Game {
     }
 
 
+    public void restart() {
+        androInterface.restart();
+    }
 }

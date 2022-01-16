@@ -30,36 +30,39 @@ public class GameSound {
         fire = assetManager.get(AssetDesc.FIRETRUCK);
     }
 
-    public void playAww(){
+    public void playAww() {
         awwSound.play();
     }
-    public void playRotate(){
+
+    public void playRotate() {
         rotateSound.play();
     }
-    public void playCorrect(){
+
+    public void playCorrect() {
         correctSound.play();
     }
 
-    public void playWrong(){
+    public void playWrong() {
         wrongSound.play();
     }
 
-    public void playCheer(){
+    public void playCheer() {
         cheerSound.play();
     }
 
-    public void playWinSound(){
+    public void playWinSound() {
         winSound.play();
     }
 
-    public void playClockSound(){
+    public void playClockSound() {
         clockSound.loop();
     }
 
-    public void stopClockSound(){
+    public void stopClockSound() {
         clockSound.stop();
     }
-    public void playSlapSound(){
+
+    public void playSlapSound() {
         slapSound.play();
     }
 
@@ -73,6 +76,20 @@ public class GameSound {
 
     public void playPolice() {
         police.play();
+    }
+
+    public void dispose() {
+        awwSound.dispose();
+        rotateSound.dispose();
+        correctSound.dispose();
+        wrongSound.dispose();
+        winSound.dispose();
+        cheerSound.dispose();
+        clockSound.dispose();
+        slapSound.dispose();
+        police.dispose();
+        ambulance.dispose();
+        fire.dispose();
     }
 
 }

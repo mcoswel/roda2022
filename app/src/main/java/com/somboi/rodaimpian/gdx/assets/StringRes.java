@@ -120,6 +120,8 @@ public class StringRes {
     public static final String BONUSGROUPSUBJECTS = "bonusgroupsubject";
     public static final String CONSONANTS = "Konsonan";
     public static final String EXIT2 = "Keluar";
+    public static final String STOPPLAYING = "Berhenti bermain?";
+
     public static final String FIRETRUCK = "Bomba";
     public static final String AMBULANCE = "Ambulans";
     public static final String POLICE = "Polis";

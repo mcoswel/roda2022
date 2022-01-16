@@ -1,4 +1,4 @@
-package com.somboi.rodaimpian.gdx.actor;
+package com.somboi.rodaimpian.gdxnew;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -15,7 +15,8 @@ public class FlyingMoney extends Image {
         this.addAction(
                 new ParallelAction(
                         Actions.moveBy(0, 400, 4f),
-                        Actions.rotateBy(1080f, 4f)
+                        Actions.rotateBy(1080f, 4f),
+                        Actions.fadeOut(5f)
                 )
         );
 
