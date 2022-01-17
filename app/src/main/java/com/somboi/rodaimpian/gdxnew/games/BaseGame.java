@@ -249,18 +249,18 @@ public class BaseGame {
     }
 
     public void addPlayers() {
-        PlayerGuis playerOneGuis = setHumanGui(rodaImpianNew.getPlayer());
+        PlayerGuis playerOneGuis = setHumanGui(rodaImpianNew.getPlayer(),1);
         testGui = playerOneGuis;
         PlayerGuis playerTwoGuis;
         PlayerGuis playerThreeGuis;
         if (rodaImpianNew.getPlayerTwo() != null) {
-            playerTwoGuis = setHumanGui(rodaImpianNew.getPlayerTwo());
+            playerTwoGuis = setHumanGui(rodaImpianNew.getPlayerTwo(),2);
         } else {
             playerTwoGuis = cpuFactory.createCpu(skin);
         }
 
         if (rodaImpianNew.getPlayerThree() != null) {
-            playerThreeGuis = setHumanGui(rodaImpianNew.getPlayerThree());
+            playerThreeGuis = setHumanGui(rodaImpianNew.getPlayerThree(),3);
         } else {
             playerThreeGuis = cpuFactory.createCpu(skin);
         }
@@ -310,11 +310,11 @@ public class BaseGame {
         }
     }
 
-    public PlayerGuis setHumanGui(PlayerNew playerNew) {
+    public PlayerGuis setHumanGui(PlayerNew playerNew, int playerNo) {
         PlayerGuis playerGuis = new PlayerGuis();
         playerGuis.setPlayerNew(playerNew);
         playerGuis.setNameLabel(new Label(playerNew.getName().toUpperCase(), skin, "name"));
-        playerGuis.setProfilePic(new ProfilePic(atlas.findRegion("defaultavatar"), playerNew.getPicUri()));
+        playerGuis.setProfilePic(new ProfilePic(atlas.findRegion("defaultavatar"), playerNew.getPicUri(), playerNew, playerNo));
         playerGuis.setScoreLabel(new Label("$" + playerNew.getScore(), skin, "score"));
         playerGuis.setFulLScoreLabel(new Label("$" + playerNew.getFullScore(), skin, "arial36"));
         playerGuis.setFreeTurn(new Label(StringRes.FREETURN, skin, "free"));

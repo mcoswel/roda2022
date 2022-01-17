@@ -1,6 +1,7 @@
 package com.somboi.rodaimpian;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
@@ -11,6 +12,7 @@ import com.somboi.rodaimpian.gdxnew.screens.GameScreen;
 import com.somboi.rodaimpian.gdxnew.screens.LoadingScreenNew;
 import com.somboi.rodaimpian.gdxnew.screens.MainScreen;
 import com.somboi.rodaimpian.gdxnew.wheels.WheelParams;
+import com.somboi.rodaimpian.saves.PlayerSaves;
 
 public class RodaImpianNew extends Game {
     private final AssetManager assetManager = new AssetManager();
@@ -26,6 +28,7 @@ public class RodaImpianNew extends Game {
     private GameScreen gameScreen;
     private boolean bonusMode;
     private final Array<QuestionNew>preparedQuestions = new Array<>();
+    private PlayerSaves playerSaves;
     public RodaImpianNew(AndroInterface androInterface) {
         this.androInterface = androInterface;
     }
@@ -38,14 +41,22 @@ public class RodaImpianNew extends Game {
         setScreen(new LoadingScreenNew(this));
     }
 
+    public MainScreen getMainScreen() {
+        return mainScreen;
+    }
 
     public void loginFacebook() {
         if (mainScreen == null) {
             return;
         }
-        androInterface.loginFacebook(mainScreen);
+        androInterface.loginFacebook();
     }
-
+    public void loginGmail() {
+        if (mainScreen == null) {
+            return;
+        }
+        androInterface.loginGmail();
+    }
 
     public AssetManager getAssetManager() {
         return assetManager;
@@ -145,8 +156,26 @@ public class RodaImpianNew extends Game {
         assetManager.dispose();
     }
 
+    public void setPlayerSaves(PlayerSaves playerSaves) {
+        this.playerSaves = playerSaves;
+    }
+    public void savePlayer(){
+        if (playerSaves!=null){
+            playerSaves.savePlayerNew(player);
+        }
+    }
+
+    public void reloadMenu(){
+        if (mainScreen!=null){
+         mainScreen.reloadPhoto();
+        }
+    }
 
     public void restart() {
         androInterface.restart();
+    }
+
+    public void uploadPhoto(int playerNo) {
+        androInterface.choosePhoto(playerNo);
     }
 }

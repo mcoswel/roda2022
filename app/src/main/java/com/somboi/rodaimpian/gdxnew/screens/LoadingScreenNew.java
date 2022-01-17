@@ -58,6 +58,8 @@ public class LoadingScreenNew extends ScreenAdapter {
             }
             playerSaves.savePlayerNew(player);
         }
+
+        rodaImpian.setPlayerSaves(playerSaves);
         rodaImpian.setPlayer(player);
         if (player.getPlayerGifts() != null) {
             logger.debug("gifts size " + player.getPlayerGifts().size() + " gifts " + player.getPlayerGifts().toString());
@@ -145,7 +147,7 @@ public class LoadingScreenNew extends ScreenAdapter {
 
     @Override
     public void show() {
-        LoadFromCSV.execute();
+     //   LoadFromCSV.execute();
     }
 
 

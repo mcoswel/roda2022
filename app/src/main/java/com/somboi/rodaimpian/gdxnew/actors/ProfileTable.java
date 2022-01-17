@@ -15,14 +15,27 @@ public class ProfileTable extends Table {
     private final Label nameLabel;
     private final PlayerNew playerNew;
     private final MainScreen mainScreen;
-    public ProfileTable(TextureRegion defaultAvatar, Skin skin, PlayerNew playerNew, boolean isGold, MainScreen mainScreen) {
+    private final ProfilePic profilPic;
+    public ProfileTable(TextureRegion defaultAvatar,
+                        Skin skin,
+                        PlayerNew playerNew,
+                        int playerNo,
+                        boolean isGold,
+                        MainScreen mainScreen) {
         this.playerNew = playerNew;
         this.mainScreen = mainScreen;
         Table leftTable = new Table();
         leftTable.defaults().center().pad(5f);
-        ProfilePic profilPic = new ProfilePic(defaultAvatar, playerNew.getPicUri());
+
+        profilPic = new ProfilePic(defaultAvatar, playerNew.getPicUri(), playerNew, playerNo);
         leftTable.add(profilPic).size(250f, 250f).row();
         SmallButton uploadPhoto = new SmallButton(StringRes.CHOOSEPHOTO, skin);
+        uploadPhoto.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                mainScreen.uploadPhoto(1);
+            }
+        });
         leftTable.add(uploadPhoto).size(250f, 80f).row();
 
 
@@ -62,5 +75,8 @@ public class ProfileTable extends Table {
         nameLabel.setText(name);
         playerNew.setName(name);
         mainScreen.savePlayer(playerNew);
+    }
+    public void reloadPicUrl(String picUri){
+        profilPic.reloadUrl(picUri);
     }
 }

@@ -33,7 +33,6 @@ public class BaseScreenNew extends ScreenAdapter {
     protected final Logger logger = new Logger(this.getClass().getName(), 3);
     protected final ActorFactory actorFactory;
     protected final PlayerSaves saves = new PlayerSaves();
-    protected final MenuFactory menuFactory;
 
     public BaseScreenNew(RodaImpianNew rodaImpianNew) {
         Gdx.app.setLogLevel(3);
@@ -42,7 +41,6 @@ public class BaseScreenNew extends ScreenAdapter {
         this.atlas = assetManager.get(AssetDesc.ATLAS);
         this.skin = assetManager.get(AssetDesc.NEWSKIN);
         this.actorFactory = new ActorFactory(assetManager, worldStage, stage);
-        this.menuFactory = new MenuFactory(assetManager, skin, stage);
         Gdx.input.setCatchKey(Input.Keys.BACK, true);
 
     }

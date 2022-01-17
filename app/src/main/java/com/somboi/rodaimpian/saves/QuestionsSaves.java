@@ -13,7 +13,7 @@ import com.somboi.rodaimpian.gdxnew.assets.QuestionNew;
 
 public class QuestionsSaves {
     private Save save;
-    private FileHandle file = Gdx.files.local(StringRes.MAINGROUP);
+    private FileHandle file = Gdx.files.internal(StringRes.MAINGROUP);
 
     public QuestionsSaves() {
         save = getSave();

@@ -21,13 +21,16 @@ public class MenuFactory {
     private final TextureAtlas atlas;
     private Vector2 buttonposition;
     private ProfileTable playerProfile;
-    private Table mainButtons;
-
-    public MenuFactory(AssetManager assetManager, Skin skin, Stage stage) {
+    private final Table mainButtons;
+    private final MainScreen mainScreen;
+    public MenuFactory(AssetManager assetManager, Skin skin, Stage stage, MainScreen mainScreen) {
         this.assetManager = assetManager;
         this.skin = skin;
         this.stage = stage;
         this.atlas = assetManager.get(AssetDesc.ATLAS);
+        this.mainScreen = mainScreen;
+        mainButtons = new Table();
+        mainButtons.defaults().pad(10f);
     }
 
     public void createBackground(boolean goldTheme) {
@@ -41,9 +44,8 @@ public class MenuFactory {
         stage.addActor(titleLogo);
     }
 
-    public void createMenuButtons(MainScreen mainScreen, boolean isLogged) {
-        mainButtons = new Table();
-        mainButtons.defaults().pad(10f);
+    public void createMainMenu(boolean isLogged) {
+        mainButtons.clear();
         MenuButton singlePlayer = new MenuButton(StringRes.SINGLEPLAYER, skin);
         singlePlayer.addListener(new ChangeListener() {
             @Override
@@ -73,14 +75,18 @@ public class MenuFactory {
     }
 
 
-    public void createPlayerProfile(PlayerNew playerNew, boolean isGold, MainScreen mainScreen) {
+    public void createPlayerProfile(PlayerNew playerNew, boolean isGold) {
         if (playerProfile != null) {
             playerProfile.remove();
         }
-        playerProfile = new ProfileTable(atlas.findRegion("defaultavatar"), skin, playerNew, isGold, mainScreen);
+        playerProfile = new ProfileTable(atlas.findRegion("defaultavatar"), skin, playerNew, 1, isGold, mainScreen);
         playerProfile.setPosition(450f - playerProfile.getWidth() / 2f, 825f);
         buttonposition = new Vector2(playerProfile.getX(), playerProfile.getY());
         stage.addActor(playerProfile);
+    }
+
+    public void reloadProfilePic(String picUri){
+        playerProfile.reloadPicUrl(picUri);
     }
 
 

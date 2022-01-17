@@ -41,7 +41,14 @@ public class PlayerSaves {
         save.data.put(StringRes.PLAYERSAVENEW, playerNew);
         saveToJson(); //Save the data immediately
     }
-
+    public void savePlayerNewTwo(PlayerNew playerNew) {
+        save.data.put(StringRes.PLAYERSAVENEW2, playerNew);
+        saveToJson(); //Save the data immediately
+    }
+    public void savePlayerNewThree(PlayerNew playerNew) {
+        save.data.put(StringRes.PLAYERSAVENEW3, playerNew);
+        saveToJson(); //Save the data immediately
+    }
 
 
     public void savePlayerOnline(PlayerOnline playerOnline){
@@ -52,6 +59,21 @@ public class PlayerSaves {
         //Return data if the data contains key, otherwise return null
         if (save.data.containsKey(StringRes.PLAYERSAVENEW))
             return (PlayerNew) save.data.get(StringRes.PLAYERSAVENEW);
+        else
+            return null;
+    }
+
+    public PlayerNew loadPlayerNewTwo() {
+        //Return data if the data contains key, otherwise return null
+        if (save.data.containsKey(StringRes.PLAYERSAVENEW2))
+            return (PlayerNew) save.data.get(StringRes.PLAYERSAVENEW2);
+        else
+            return null;
+    }
+    public PlayerNew loadPlayerNewThree() {
+        //Return data if the data contains key, otherwise return null
+        if (save.data.containsKey(StringRes.PLAYERSAVENEW3))
+            return (PlayerNew) save.data.get(StringRes.PLAYERSAVENEW3);
         else
             return null;
     }
