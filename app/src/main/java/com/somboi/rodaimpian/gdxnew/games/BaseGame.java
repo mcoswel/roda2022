@@ -41,7 +41,6 @@ import com.somboi.rodaimpian.gdxnew.actors.TrophyNew;
 import com.somboi.rodaimpian.gdxnew.actors.VannaHost;
 import com.somboi.rodaimpian.gdxnew.actors.WheelTurns;
 import com.somboi.rodaimpian.gdxnew.actors.WinnerDialog;
-import com.somboi.rodaimpian.gdxnew.actors.YesNoDiag;
 import com.somboi.rodaimpian.gdxnew.assets.QuestionNew;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.AiMoves;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.GiftsNew;
@@ -72,7 +71,7 @@ public class BaseGame {
     protected final Label subjectLabel;
     protected Group tilesGroup = new Group();
     protected Group incompleteGroup = new Group();
-    protected  PlayerMenu playerMenu;
+    protected PlayerMenu playerMenu;
     protected PlayerGuis currentGui;
     protected AiMoves aiMoves;
     protected CorrectLabel correctLabel;
@@ -105,10 +104,15 @@ public class BaseGame {
         stage.addActor(tilesGroup);
         stage.addActor(incompleteGroup);
         stage.addActor(vannaHost);
+        start();
+    }
+
+    public void start() {
         setUpNewRound();
     }
 
     private void prepareEnvelope() {
+        playerMenu = new PlayerMenu(stage, this, skin);
         setUpNewRound();
         bonusGiftImg = new Bonuses(atlas, rodaImpianNew.getWheelParams().getBonusIndex());
         bonusGiftImg.setPosition(350f, 1110f);
@@ -334,7 +338,7 @@ public class BaseGame {
     public void startRound() {
         vannaHost.relax();
         showQuestions();
-        playerMenu = new PlayerMenu(stage, this,skin);
+        playerMenu = new PlayerMenu(stage, this, skin);
         startTurn();
     }
 
@@ -783,7 +787,7 @@ public class BaseGame {
         return answerString;
     }
 
-    public void mainMenu(){
+    public void mainMenu() {
         rodaImpianNew.restart();
     }
 

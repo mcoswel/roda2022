@@ -2,6 +2,7 @@ package com.somboi.rodaimpian.gdxnew.actors;
 
 import androidx.annotation.NonNull;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
@@ -9,14 +10,14 @@ import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Logger;
-import com.badlogic.gdx.utils.Timer;
 import com.somboi.rodaimpian.gdx.config.GameConfig;
 
-public class TileBase extends Image implements Cloneable{
+public class TileBase extends Image implements Cloneable {
     private String letter;
     private final TextureAtlas atlas;
     private boolean revealed;
     private final Logger logger = new Logger(this.getClass().getName(), 3);
+
     public TileBase(TextureAtlas atlas, String letter) {
         super(atlas.findRegion("blank"));
         this.atlas = atlas;
@@ -26,11 +27,11 @@ public class TileBase extends Image implements Cloneable{
     }
 
     private void checkSpecialChar() {
-        if (letter.contains("-")){
+        if (letter.contains("-")) {
             setDrawable(new SpriteDrawable(atlas.createSprite("tileminus")));
             revealed = true;
         }
-        if (letter.contains("\'")){
+        if (letter.contains("\'")) {
             setDrawable(new SpriteDrawable(atlas.createSprite("tileoppost")));
             revealed = true;
         }
@@ -40,27 +41,20 @@ public class TileBase extends Image implements Cloneable{
     public void reveal() {
         revealed = true;
         addAction(new SequenceAction(
-                        new ParallelAction(Actions.moveBy(30f, 0, 1f),
-                                Actions.sizeTo(0, 78f, 1f)),
-                        new ParallelAction(Actions.sizeTo(57f, 78f, 1f),
-                                Actions.moveBy(-57f / 2f, 0, 1f))
+                new ParallelAction(
+                        Actions.color(new Color(Color.NAVY)),
+                        Actions.color(GameConfig.NORMAL_COLOR, 3f)
                 )
-        );
+        ));
         String region = getRegionString(letter);
         if (region != null) {
-            Timer.schedule(new Timer.Task() {
-                @Override
-                public void run() {
-                    setDrawable(new SpriteDrawable(atlas.createSprite(region)));
-                }
-            }, 1f);
-
+            setDrawable(new SpriteDrawable(atlas.createSprite(region)));
         }
     }
 
-    public boolean typeLetter(String letter){
+    public boolean typeLetter(String letter) {
         String region = getRegionString(letter);
-        if (region!=null) {
+        if (region != null) {
             setDrawable(new SpriteDrawable(atlas.createSprite(region)));
             return true;
         }

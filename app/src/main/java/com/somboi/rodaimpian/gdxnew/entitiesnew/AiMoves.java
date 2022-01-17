@@ -58,6 +58,10 @@ public class AiMoves {
             executeMove = CpuMovement.COMPLETE;
         }
 
+        if (questionHaveConsonants() && !playerMenu.vocalAvailable()){
+            executeMove = CpuMovement.SPIN;
+        }
+
         if (executeMove.equals(CpuMovement.SPIN)) {
             chooseSpin();
             return;
@@ -106,10 +110,11 @@ public class AiMoves {
 
     private void chooseComplete() {
         playerGuis.chat(StringRes.CPUCOMPLETE);
+        int r = randomize();
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
-                if (randomize() < completion) {
+                if (r < completion) {
                     truComplete();
                 } else {
                     wrongComplete();

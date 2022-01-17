@@ -109,12 +109,13 @@ public class LoadingScreenNew extends ScreenAdapter {
                 mainGroup.shuffle();
                 bonusGroup.shuffle();
 
-                mainloop: for (int i=0; i<3; i++){
+                mainloop:
+                for (int i = 0; i < 3; i++) {
                     for (QuestionNew questionNew : mainGroup) {
                         if (questionNew.getSubject().equals(mainSubjects.get(i))) {
                             rodaImpian.getPreparedQuestions().add(questionNew);
                             bonusSubjects.removeValue(questionNew.getSubject(), false);
-                            if (i==2){
+                            if (i == 2) {
                                 break mainloop;
                             }
                             break;
@@ -131,7 +132,7 @@ public class LoadingScreenNew extends ScreenAdapter {
                     }
                 }
 
-                logger.debug("questions size "+rodaImpian.getPreparedQuestions().size);
+                logger.debug("questions size " + rodaImpian.getPreparedQuestions().size);
 
                 /*for (int i = 0; i < 5; i++) {
                     rodaImpian.getPreparedQuestions().add(questionNewArray.random());
@@ -144,7 +145,7 @@ public class LoadingScreenNew extends ScreenAdapter {
 
     @Override
     public void show() {
-     LoadFromCSV.execute();
+        LoadFromCSV.execute();
     }
 
 

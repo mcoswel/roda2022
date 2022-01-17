@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Logger;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdx.config.GameConfig;
 import com.somboi.rodaimpian.gdxnew.games.BaseGame;
@@ -23,20 +22,19 @@ public class PlayerMenu {
     private final Array<Character> consonantLetter = new Array<>();
     private final SmallButton vocal;
     private final SmallButton spin;
+    private final SmallButton complete;
+    private final SmallButton exit;
     private boolean bonusMode;
     private int consonantCounter;
     private int vocalCounter;
     private String bonusStringHolder = "";
-    private final Logger logger = new Logger(this.getClass().getName(), 3);
 
     public PlayerMenu(Stage stage, BaseGame baseGame, Skin skin) {
         this.stage = stage;
         this.baseGame = baseGame;
         this.skin = skin;
-
         vocalLetter.addAll(GameConfig.VOCALS);
         consonantLetter.addAll(GameConfig.CONSONANTS);
-
         vocal = new SmallButton(StringRes.VOKAL, skin);
         vocal.addListener(new ChangeListener() {
             @Override
@@ -59,7 +57,7 @@ public class PlayerMenu {
                 baseGame.spinWheel(false, false);
             }
         });
-        SmallButton complete = new SmallButton(StringRes.LENGKAPKAN, skin);
+        complete = new SmallButton(StringRes.LENGKAPKAN, skin);
         complete.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -72,7 +70,8 @@ public class PlayerMenu {
                 }
             }
         });
-        SmallButton exit = new SmallButton(StringRes.EXIT, skin);
+
+        exit = new SmallButton(StringRes.EXIT, skin);
         exit.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -85,6 +84,13 @@ public class PlayerMenu {
                 yesNoDiag.show(stage);
             }
         });
+
+        createCompleteTable();
+
+    }
+
+    private void createPlayMenu() {
+        menuTable.clear();
         Table first = new Table();
         first.defaults().pad(5f);
         first.add(vocal).size(850f / 2f, 75f);
@@ -93,8 +99,6 @@ public class PlayerMenu {
         second.defaults().pad(5f);
         second.add(complete).size(850f / 2f, 75f);
         second.add(exit).size(850f / 2f, 75f);
-        createCompleteTable();
-
         menuTable.add(first).row();
         menuTable.add(second).row();
         menuTable.pack();
@@ -130,7 +134,7 @@ public class PlayerMenu {
         first.add(submitAnswer).size(850f / 2f, 75f);
 
         completeTable.add(first);
-        completeTable.setPosition(450f - menuTable.getWidth() / 2f, 788f);
+        completeTable.setPosition(450f - menuTable.getWidth() / 2f, 800f);
     }
 
 
@@ -144,7 +148,6 @@ public class PlayerMenu {
 
 
     public void createConsonantsTable() {
-
         final Dialog consDialog = new Dialog(StringRes.CONSONANTS, skin) {
             @Override
             public float getPrefWidth() {
@@ -196,8 +199,6 @@ public class PlayerMenu {
         };
         vocalDiag.getContentTable().defaults().pad(8f);
         vocalDiag.getContentTable().padTop(8f);
-
-
         for (Character character : vocalLetter) {
             String c = String.valueOf(character);
             final SmallButton smallButton = new SmallButton(c, skin);
@@ -232,6 +233,7 @@ public class PlayerMenu {
     }
 
     public void show() {
+        createPlayMenu();
         if (!vocalAvailable()) {
             vocal.remove();
         }
