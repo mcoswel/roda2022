@@ -14,9 +14,9 @@ public class FlyingMoney extends Image {
         this.setPosition(position.x + 125f, position.y + 200f);
         this.addAction(
                 new ParallelAction(
-                        Actions.moveBy(0, 600, 4f),
+                        Actions.moveBy(0, 400, 4f),
                         Actions.rotateBy(1080f, 4f),
-                        Actions.fadeOut(5f)
+                        Actions.fadeOut(3f)
                 )
         );
 

@@ -1,97 +1,97 @@
 
 skin.png
-size: 2048, 2048
+size: 2048,2048
 format: RGBA8888
-filter: Linear, Linear
+filter: Linear,Linear
 repeat: none
 arial24white
-  rotate: false
-  xy: 515, 1029
-  size: 512, 512
-  orig: 512, 512
-  offset: 0, 0
-  index: -1
-arial32
-  rotate: false
-  xy: 1029, 1
-  size: 512, 512
-  orig: 512, 512
-  offset: 0, 0
-  index: -1
-arial36
-  rotate: false
-  xy: 1029, 515
-  size: 512, 512
-  orig: 512, 512
-  offset: 0, 0
-  index: -1
-arial441
   rotate: false
   xy: 1, 1029
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
   index: -1
-arial442
+arial32
   rotate: false
   xy: 1, 515
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
   index: -1
-comic481
+arial36
+  rotate: false
+  xy: 515, 1029
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+arial441
   rotate: false
   xy: 1, 1
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
   index: -1
-comic482
+arial442
   rotate: false
   xy: 515, 515
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
   index: -1
-comic483
+comic481
   rotate: false
   xy: 1029, 1029
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
   index: -1
-digital
+comic482
   rotate: false
   xy: 515, 1
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
   index: -1
-
-skin2.png
-size: 1024, 1024
-format: RGBA8888
-filter: Linear, Linear
-repeat: none
-comicsmall
+comic483
   rotate: false
-  xy: 1, 274
+  xy: 1029, 515
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
   index: -1
+comicsmall
+  rotate: false
+  xy: 1029, 1
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+
+skin2.png
+size: 2048,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
 bubble
   rotate: false
-  xy: 1, 203
+  xy: 515, 1154
   size: 90, 69
   split: 19, 55, 5, 24
   pad: 12, 10, 12, 28
   orig: 90, 69
   offset: 0, 0
   index: -1
+digital
+  rotate: false
+  xy: 1, 711
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
 label
   rotate: false
-  xy: 1, 1
+  xy: 515, 1053
   size: 74, 99
   split: 19, 18, 22, 34
   pad: 21, 22, 20, 35
@@ -100,7 +100,7 @@ label
   index: -1
 menubutclicked
   rotate: false
-  xy: 515, 592
+  xy: 1, 1
   size: 74, 99
   split: 28, 28, 20, 34
   pad: 23, 23, 11, 29
@@ -109,7 +109,7 @@ menubutclicked
   index: -1
 menubutnormal
   rotate: false
-  xy: 1, 102
+  xy: 515, 952
   size: 74, 99
   split: 28, 28, 20, 34
   pad: 23, 23, 11, 29
@@ -118,7 +118,7 @@ menubutnormal
   index: -1
 smallclicked
   rotate: false
-  xy: 593, 729
+  xy: 607, 1166
   size: 74, 57
   split: 27, 27, 16, 23
   pad: 16, 15, 13, 19
@@ -127,7 +127,7 @@ smallclicked
   index: -1
 smallnormal
   rotate: false
-  xy: 93, 215
+  xy: 79, 138
   size: 74, 57
   split: 27, 27, 16, 23
   pad: 16, 15, 13, 19
@@ -136,10 +136,17 @@ smallnormal
   index: -1
 window
   rotate: false
-  xy: 515, 693
+  xy: 1, 102
   size: 76, 93
   split: 24, 24, 56, 28
   pad: 24, 24, 56, 19
   orig: 76, 93
+  offset: 0, 0
+  index: -1
+arial32
+  rotate: false
+  xy: 1, 197
+  size: 512, 512
+  orig: 512, 512
   offset: 0, 0
   index: -1

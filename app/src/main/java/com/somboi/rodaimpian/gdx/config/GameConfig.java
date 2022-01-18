@@ -18,7 +18,9 @@ public class GameConfig {
     public static final Color VISIBLE = new Color(1f,1f,1f,1f);
     public static final Color INVISIBLE = new Color(1f,1f,1f,0f);
     public static final SequenceAction BLINKS = new SequenceAction(Actions.color(INVISIBLE,0.3f), Actions.color(VISIBLE,0.3f));
-    public static final Array<String> TABLECOLOR = new Array<>(new String[]{"tableblue","tablegold","tablegreen","tablepurple","tablered","tableyellow"});
+    public static final Array<Color> TABLECOLOR =
+            new Array<>(new Color[]{Color.GOLDENROD, Color.RED, Color.BLUE, Color.LIME,Color.PURPLE, Color.PINK,
+                    Color.CORAL, Color.DARK_GRAY, Color.MAGENTA});
     public static final String ALLOWEDCHAR = "abcdefghijklmnopqrstuvwxyz";
     public static final Color NORMAL_COLOR = new Color(1f,1f,1f,1f);
 

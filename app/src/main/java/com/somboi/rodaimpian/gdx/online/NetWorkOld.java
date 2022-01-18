@@ -30,7 +30,7 @@ import com.somboi.rodaimpian.gdx.online.newentities.SetActivePlayer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NetWork {
+public class NetWorkOld {
     static public void register(EndPoint endPoint) {
         Kryo kryo = endPoint.getKryo();
         kryo.register(List.class);

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.somboi.rodaimpian.RodaImpianNew;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
 import com.somboi.rodaimpian.gdxnew.games.BaseGame;
+import com.somboi.rodaimpian.gdxnew.games.ClientNew;
 import com.somboi.rodaimpian.gdxnew.games.SinglePlayer;
 import com.somboi.rodaimpian.gdxnew.interfaces.GameInterface;
 
@@ -14,12 +15,17 @@ public class GameScreen extends BaseScreenNew implements GameInterface {
     public GameScreen(RodaImpianNew rodaImpianNew, GameModes modes) {
         super(rodaImpianNew);
         this.modes = modes;
-        actorFactory.createGameBg(rodaImpianNew.isGoldTheme());
-        actorFactory.createGameTables();
         rodaImpianNew.setGameScreen(this);
         if (modes.equals(GameModes.SINGLE)) {
+            actorFactory.createGameBg(rodaImpianNew.isGoldTheme());
+            actorFactory.createGameTables();
             baseGame = new SinglePlayer(stage, rodaImpianNew);
         }
+        if (modes.equals(GameModes.ONLINE)){
+            actorFactory.createGameBgBlur(rodaImpianNew.isGoldTheme());
+            ClientNew clientNew = new ClientNew(rodaImpianNew);
+        }
+
     }
 
     public void spinResult( ) {

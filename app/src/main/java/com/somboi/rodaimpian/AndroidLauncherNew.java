@@ -57,14 +57,13 @@ import java.util.List;
 import barsoosayque.libgdxoboe.OboeAudio;
 
 public class AndroidLauncherNew extends AndroidApplication implements AndroInterface {
-    private String fcmToken;
     private RodaImpianNew rodaImpianNew;
     private CallbackManager callbackManager;
     private ProfileTracker mProfileTracker;
     private static final int REQUEST_GALLERY_IMAGE = 3;
     private static final int RC_SIGN_IN = 5;
     private String filename;
-
+    private String fcm_token;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,19 +76,7 @@ public class AndroidLauncherNew extends AndroidApplication implements AndroInter
         rodaImpianNew = new RodaImpianNew(this);
         View gameView = initializeForView(rodaImpianNew, config);
         setContentView(gameView);
-
         callbackManager = CallbackManager.Factory.create();
-        FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(new OnCompleteListener<String>() {
-                    @Override
-                    public void onComplete(@NonNull Task<String> task) {
-                        if (!task.isSuccessful()) {
-                            return;
-                        }
-                        fcmToken = task.getResult();
-                        rodaImpianNew.setFcmToken(fcmToken);
-                    }
-                });
 
     }
 
@@ -99,6 +86,9 @@ public class AndroidLauncherNew extends AndroidApplication implements AndroInter
         playerNew.setPicUri(Profile.getCurrentProfile().getProfilePictureUri(300, 300).toString());
         playerNew.setUid(Profile.getCurrentProfile().getId());
         playerNew.setLogged(true);
+        if (fcm_token!=null){
+            playerNew.setFcmToken(fcm_token);
+        }
         rodaImpianNew.setPlayer(playerNew);
         rodaImpianNew.getMainScreen().reloadOnlineProfile();
     }
@@ -173,7 +163,11 @@ public class AndroidLauncherNew extends AndroidApplication implements AndroInter
                 rodaImpianNew.getPlayer().setPicUri(acct.getPhotoUrl().toString());
             }
             rodaImpianNew.getPlayer().setLogged(true);
+            if (fcm_token!=null){
+                rodaImpianNew.getPlayer().setFcmToken(fcm_token);
+            }
             rodaImpianNew.getMainScreen().reloadOnlineProfile();
+
         }
     }
 
@@ -296,6 +290,21 @@ public class AndroidLauncherNew extends AndroidApplication implements AndroInter
                 }).check();
     }
 
+    @Override
+    public void getToken() {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            return;
+                        }
+                        fcm_token = task.getResult();
+                        rodaImpianNew.setFcmToken(fcm_token);
+                    }
+                });
+    }
+
     private class SavePhotoTask extends AsyncTask<byte[], String, String> {
         @Override
         protected String doInBackground(byte[]... jpeg) {
@@ -304,13 +313,14 @@ public class AndroidLauncherNew extends AndroidApplication implements AndroInter
             if (photo.exists()) {
                 photo.delete();
             }
-
             try {
                 FileOutputStream fos = new FileOutputStream(photo.getPath());
                 fos.write(jpeg[0]);
                 fos.close();
             } catch (java.io.IOException e) {
             }
+
+
 
             return (null);
         }

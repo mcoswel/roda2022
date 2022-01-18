@@ -50,8 +50,8 @@ public class LocalPlayMenu {
         this.skin = skin;
         this.textureAtlas = textureAtlas;
         this.menuScreen = menuScreen;
-        playerTwoName = new NameField(StringRes.PLAYERTWO, skin);
-        playerThreeName = new NameField(StringRes.PLAYERTHREE, skin);
+        playerTwoName = new NameField(StringRes.PLAYER_NAME, skin);
+        playerThreeName = new NameField(StringRes.PLAYER_NAME, skin);
         if (p2ImgPath.exists()){
             playerTwoImage = new PlayerImage(new Texture(RoundMap.execute(new Texture(p2ImgPath))));
             loadedPlayerTwo = true;

@@ -23,7 +23,6 @@ public class RodaImpianNew extends Game {
     private PlayerNew player;
     private PlayerNew playerTwo;
     private PlayerNew playerThree;
-    private String fcmToken;
     private final AndroInterface androInterface;
     private GameScreen gameScreen;
     private boolean bonusMode;
@@ -58,6 +57,15 @@ public class RodaImpianNew extends Game {
         androInterface.loginGmail();
     }
 
+    public void getFcmToken(){
+        androInterface.getToken();
+    }
+    public void setFcmToken(String fcmToken) {
+        if (player!=null){
+            player.setFcmToken(fcmToken);
+        }
+    }
+
     public AssetManager getAssetManager() {
         return assetManager;
     }
@@ -75,13 +83,6 @@ public class RodaImpianNew extends Game {
     }
 
 
-    public String getFcmToken() {
-        return fcmToken;
-    }
-
-    public void setFcmToken(String fcmToken) {
-        this.fcmToken = fcmToken;
-    }
 
     public GameModes getGameModes() {
         return gameModes;

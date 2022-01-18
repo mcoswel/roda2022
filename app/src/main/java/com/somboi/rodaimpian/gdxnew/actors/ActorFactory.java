@@ -36,12 +36,24 @@ public class ActorFactory {
         }
     }
 
+    public void createGameBgBlur(boolean isGoldTheme) {
+        if (isGoldTheme) {
+            stage.addActor(new Image(assetManager.get(AssetDesc.BLURGOLD)));
+        } else {
+            stage.addActor(new Image(assetManager.get(AssetDesc.BLURRED)));
+        }
+    }
+
     public void createGameTables() {
         GameConfig.TABLECOLOR.shuffle();
         for (int i = 0; i < 3; i++) {
-            Image image = new Image(atlas.findRegion(GameConfig.TABLECOLOR.get(i)));
+            Image image = new Image(atlas.findRegion("tabledown"));
+            image.setColor(GameConfig.TABLECOLOR.get(i));
+            Image top = new Image(atlas.findRegion("tabletop"));
             image.setPosition(i * 300, 0);
+            top.setPosition(i * 300, 0);
             stage.addActor(image);
+            stage.addActor(top);
         }
     }
 

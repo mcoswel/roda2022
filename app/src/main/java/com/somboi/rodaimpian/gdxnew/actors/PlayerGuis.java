@@ -67,9 +67,9 @@ public class PlayerGuis {
             profilePic.setPosition(450f - (250f / 2), 800f - 100f - 250f);
         }
         profilePic.setOrigin(450f - profilePic.getX(), 800f - profilePic.getY());
-        nameLabel.setPosition((150f+(300 * playerIndex))-nameLabel.getWidth()/2f, 239f);
+        nameLabel.setPosition((150f+(300 * playerIndex))-nameLabel.getWidth()/2f, 234f);
         scoreLabel.setPosition((150f+(300 * playerIndex))-scoreLabel.getWidth()/2f, 165);
-        fulLScoreLabel.setPosition((150f+(300 * playerIndex))-fulLScoreLabel.getWidth()/2f, 11.2f);
+        fulLScoreLabel.setPosition((150f+(300 * playerIndex))-fulLScoreLabel.getWidth()/2f, 18.2f);
     }
 
     public Label createFreeTurn(Skin skin){

@@ -53,14 +53,12 @@ public class LoadingScreenNew extends ScreenAdapter {
             player.setPlayerBonus(new ArrayList<>());
             player.setPlayerGifts(new ArrayList<>());
             player.setUid(UUID.randomUUID().toString());
-            if (rodaImpian.getFcmToken() != null) {
-                player.setFcmToken(rodaImpian.getFcmToken());
-            }
             playerSaves.savePlayerNew(player);
         }
-
         rodaImpian.setPlayerSaves(playerSaves);
         rodaImpian.setPlayer(player);
+        rodaImpian.getFcmToken();
+
         if (player.getPlayerGifts() != null) {
             logger.debug("gifts size " + player.getPlayerGifts().size() + " gifts " + player.getPlayerGifts().toString());
         }

@@ -7,4 +7,5 @@ public interface AndroInterface {
     void restart();
     void choosePhoto(int playerNo);
     void loginGmail();
+    void getToken();
 }

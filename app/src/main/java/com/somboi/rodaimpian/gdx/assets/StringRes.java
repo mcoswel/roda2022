@@ -90,8 +90,7 @@ public class StringRes {
     public static final String TWOPLAYER = "2 Pemain";
     public static final String THREEPLAYER = "3 Pemain";
     public static final String BACK = "Kembali" ;
-    public static final String PLAYERTWO = "Pemain 2";
-    public static final String PLAYERTHREE = "Pemain 3";
+    public static final String PLAYER_NAME = "Pemain ";
     public static final String PAUSEMENU = "Menu";
     public static final String WAITINGENTRY = "Menunggu penyertaan";
     public static final String NOTENOUGHPLAYER = "Bilangan pemain tidak mencukupi";
@@ -111,11 +110,12 @@ public class StringRes {
     public static final String NO3 = "Tak Nak!";
     public static final String FACEBOOK = "Facebook";
     public static final String GMAIL = "Google";
-    public static final String RODARODA = "159.223.73.205";
+    //public static final String RODARODA = "159.223.73.205";
+    public static final String RODARODA = "10.1.19.2";
     public static final String ENTERNAME = "Taipkan nama anda";
     public static final String LETSPLAY = " Mengajak Bermain";
     public static final String SINGLEPLAYER = "1 Pemain";
-    public static final String MULTIPLAYER = "Multi-Pemain";
+    public static final String MULTIPLAYER = "Multiplayer";
     public static final String CHANGENAME = "Tukar Nama";
     public static final String MAINGROUP = "maingroup";
     public static final String BONUSGROUP = "bonusgroup";

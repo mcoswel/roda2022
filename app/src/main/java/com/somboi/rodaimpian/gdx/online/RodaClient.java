@@ -6,7 +6,6 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.somboi.rodaimpian.RodaImpian;
-import com.somboi.rodaimpian.gdx.actor.StatusLabel;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdx.entities.Player;
 import com.somboi.rodaimpian.gdx.entities.WheelParam;
@@ -51,7 +50,7 @@ public class RodaClient {
     public void startClient(){
         client = new Client(1000000, 1000000);
         client.start();
-        NetWork.register(client);
+        NetWorkOld.register(client);
         client.addListener(new Listener() {
             @Override
             public void connected(Connection connection) {

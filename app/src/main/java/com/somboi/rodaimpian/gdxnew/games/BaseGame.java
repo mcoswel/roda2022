@@ -314,7 +314,9 @@ public class BaseGame {
         PlayerGuis playerGuis = new PlayerGuis();
         playerGuis.setPlayerNew(playerNew);
         playerGuis.setNameLabel(new Label(playerNew.getName().toUpperCase(), skin, "name"));
-        playerGuis.setProfilePic(new ProfilePic(atlas.findRegion("defaultavatar"), playerNew.getPicUri(), playerNew, playerNo));
+        ProfilePic profilePic = new ProfilePic(atlas.findRegion("defaultavatar"), playerNew.getPicUri(), playerNew, playerNo);
+        playerGuis.setProfilePic(profilePic);
+        profilePic.stopLoadingPhoto();
         playerGuis.setScoreLabel(new Label("$" + playerNew.getScore(), skin, "score"));
         playerGuis.setFulLScoreLabel(new Label("$" + playerNew.getFullScore(), skin, "arial36"));
         playerGuis.setFreeTurn(new Label(StringRes.FREETURN, skin, "free"));
@@ -721,7 +723,6 @@ public class BaseGame {
 
 
     public void showConsonants() {
-
         if (rodaImpianNew.isBonusMode()) {
             vannaHost.relax();
             prepareEnvelope();
@@ -737,9 +738,7 @@ public class BaseGame {
                 rodaImpianNew.getWheelParams().setScores(
                         gifts.getGiftValue(giftsNew.getGiftIndex())
                 );
-                ///sendObject giftIndexNew
             }
-
             if (activePlayer.isAi()) {
                 aiMoves.chooseConsonants();
             } else {

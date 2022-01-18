@@ -54,7 +54,10 @@ public class BaseScreenNew extends ScreenAdapter {
         stage.draw();
         worldStage.act();
         worldStage.draw();
+        backKey();
+    }
 
+    public void backKey(){
         if (Gdx.input.isKeyJustPressed(Input.Keys.BACK)){
             YesNoDiag yesNoDiag = new YesNoDiag(StringRes.EXIT2+"?", skin){
                 @Override

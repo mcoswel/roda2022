@@ -1,28 +1,51 @@
 package com.somboi.rodaimpian.gdxnew.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.somboi.rodaimpian.RodaImpianNew;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
 import com.somboi.rodaimpian.gdxnew.actors.LoginDiag;
 import com.somboi.rodaimpian.gdxnew.actors.MenuFactory;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
+import com.somboi.rodaimpian.gdxnew.games.MenuState;
 
 public class MainScreen extends BaseScreenNew {
-    private final MenuFactory menuFactory;
+    private MenuFactory menuFactory;
+
     public MainScreen(RodaImpianNew rodaImpianNew) {
         super(rodaImpianNew);
-        this.menuFactory = new MenuFactory(assetManager, skin, stage, this);
+
     }
 
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
-        menuFactory.createBackground(rodaImpianNew.isGoldTheme());
-        menuFactory.createPlayerProfile(rodaImpianNew.getPlayer(), rodaImpianNew.isGoldTheme());
-        menuFactory.createMainMenu(rodaImpianNew.getPlayer().isLogged());
-        if (!rodaImpianNew.getPlayer().isLogged()){
+        menuFactory = new MenuFactory(rodaImpianNew, stage);
+        if (!rodaImpianNew.getPlayer().isLogged()) {
             LoginDiag loginDiag = new LoginDiag(skin, rodaImpianNew);
             loginDiag.show(stage);
+        }
+    }
+
+    @Override
+    public void backKey() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.BACK)) {
+
+            if (menuFactory.getMenuState().equals(MenuState.MAIN)) {
+                Gdx.app.exit();
+            }
+
+            if (menuFactory.getMenuState().equals(MenuState.MULTI)) {
+                menuFactory.createMainMenu();
+            }
+            if (menuFactory.getMenuState().equals(MenuState.MULTISECOND)) {
+                menuFactory.createMultiMenuFirst();
+            }
+
+            if (menuFactory.getMenuState().equals(MenuState.TWOPLAYER) || menuFactory.getMenuState().equals(MenuState.THREEPLAYER)) {
+                menuFactory.createMultiSecond();
+            }
+
         }
     }
 
@@ -40,8 +63,14 @@ public class MainScreen extends BaseScreenNew {
         rodaImpianNew.uploadPhoto(playerNo);
     }
 
-    public void savePlayer(PlayerNew playerNew) {
-        saves.savePlayerNew(playerNew);
+    public void savePlayer(PlayerNew playerNew, int n) {
+        if (n==1) {
+            saves.savePlayerNew(playerNew);
+        }else if (n==2){
+            saves.savePlayerNewTwo(playerNew);
+        }else {
+            saves.savePlayerNewThree(playerNew);
+        }
     }
 
     public void singlePlay() {

@@ -16,6 +16,7 @@ public class ProfileTable extends Table {
     private final PlayerNew playerNew;
     private final MainScreen mainScreen;
     private final ProfilePic profilPic;
+    private final int playerNo;
     public ProfileTable(TextureRegion defaultAvatar,
                         Skin skin,
                         PlayerNew playerNew,
@@ -24,16 +25,18 @@ public class ProfileTable extends Table {
                         MainScreen mainScreen) {
         this.playerNew = playerNew;
         this.mainScreen = mainScreen;
+        this.playerNo = playerNo;
         Table leftTable = new Table();
         leftTable.defaults().center().pad(5f);
 
         profilPic = new ProfilePic(defaultAvatar, playerNew.getPicUri(), playerNew, playerNo);
         leftTable.add(profilPic).size(250f, 250f).row();
         SmallButton uploadPhoto = new SmallButton(StringRes.CHOOSEPHOTO, skin);
+
         uploadPhoto.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                mainScreen.uploadPhoto(1);
+                mainScreen.uploadPhoto(playerNo);
             }
         });
         leftTable.add(uploadPhoto).size(250f, 80f).row();
@@ -56,6 +59,11 @@ public class ProfileTable extends Table {
         Label scoreLabelNumber = new Label("$" + playerNew.getBestScore(), skin);
         rightTable.add(nameLabel).row();
         rightTable.add(changeName).row();
+
+        if (playerNo != 1){
+            scoreLabel.setText(StringRes.PLAYER_NAME);
+            scoreLabelNumber.setText(""+playerNo);
+        }
         rightTable.add(scoreLabel).row();
         rightTable.add(scoreLabelNumber).row();
         //leftTable.setBackground(skin.getDrawable("smallnormal"));
@@ -74,7 +82,7 @@ public class ProfileTable extends Table {
     public void changeName(String name) {
         nameLabel.setText(name);
         playerNew.setName(name);
-        mainScreen.savePlayer(playerNew);
+        mainScreen.savePlayer(playerNew, playerNo);
     }
     public void reloadPicUrl(String picUri){
         profilPic.reloadUrl(picUri);
