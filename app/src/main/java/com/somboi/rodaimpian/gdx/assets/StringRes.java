@@ -8,7 +8,6 @@ public class StringRes {
     public static final String PLAYERSAVENEW = "savenew";
     public static final String PLAYERSAVENEW2 = "savenewtwo";
     public static final String PLAYERSAVENEW3 = "savenewthree";
-
     public static final String START = "Mula";
     public static final String Offline = "Offline";
 

@@ -159,7 +159,7 @@ public class MenuFactory {
                     loginDiag.show(stage);
                 }else{
                     rodaImpianNew.setGameModes(GameModes.ONLINE);
-                    rodaImpianNew.setScreen(new GameScreen(rodaImpianNew, GameModes.ONLINE));
+                    rodaImpianNew.setScreen(new OnlineScreen(rodaImpianNew));
                 }
             }
         });

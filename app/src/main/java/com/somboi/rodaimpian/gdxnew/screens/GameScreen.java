@@ -21,10 +21,6 @@ public class GameScreen extends BaseScreenNew implements GameInterface {
             actorFactory.createGameTables();
             baseGame = new SinglePlayer(stage, rodaImpianNew);
         }
-        if (modes.equals(GameModes.ONLINE)){
-            actorFactory.createGameBgBlur(rodaImpianNew.isGoldTheme());
-            ClientNew clientNew = new ClientNew(rodaImpianNew);
-        }
 
     }
 
