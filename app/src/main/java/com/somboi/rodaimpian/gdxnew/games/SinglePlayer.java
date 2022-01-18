@@ -24,6 +24,7 @@ public class SinglePlayer extends BaseGame {
     public SinglePlayer(Stage stage, RodaImpianNew rodaImpianNew) {
         super(stage, rodaImpianNew);
         addPlayers();
+        start();
     }
 
     @Override

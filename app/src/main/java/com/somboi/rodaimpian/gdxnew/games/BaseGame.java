@@ -104,7 +104,6 @@ public class BaseGame {
         stage.addActor(tilesGroup);
         stage.addActor(incompleteGroup);
         stage.addActor(vannaHost);
-        start();
     }
 
     public void start() {
@@ -178,13 +177,17 @@ public class BaseGame {
             }
         }
         tileBases.clear();
-        currentQuestion = rodaImpianNew.getPreparedQuestions().get(gameRound);
+        currentQuestion = getCurrentQuestion();
         if (gameRound <= 2) {
             setSubject(StringRes.ROUND + (gameRound + 1));
         } else {
             setSubject(StringRes.BONUSROUND);
         }
         setTile();
+    }
+
+    public QuestionNew getCurrentQuestion(){
+        return rodaImpianNew.getPreparedQuestions().get(gameRound);
     }
 
 
@@ -316,7 +319,9 @@ public class BaseGame {
         playerGuis.setNameLabel(new Label(playerNew.getName().toUpperCase(), skin, "name"));
         ProfilePic profilePic = new ProfilePic(atlas.findRegion("defaultavatar"), playerNew.getPicUri(), playerNew, playerNo);
         playerGuis.setProfilePic(profilePic);
-        profilePic.stopLoadingPhoto();
+        if (!playerNew.isLogged()) {
+            profilePic.stopLoadingPhoto();
+        }
         playerGuis.setScoreLabel(new Label("$" + playerNew.getScore(), skin, "score"));
         playerGuis.setFulLScoreLabel(new Label("$" + playerNew.getFullScore(), skin, "arial36"));
         playerGuis.setFreeTurn(new Label(StringRes.FREETURN, skin, "free"));
