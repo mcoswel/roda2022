@@ -1,13 +1,13 @@
 package com.somboi.rodaimpian.gdxnew.onlineclasses;
 
 public class JoinSession {
-    private Integer connectionId;
+    private String roomID;
 
-    public Integer getConnectionId() {
-        return connectionId;
+    public String getRoomID() {
+        return roomID;
     }
 
-    public void setConnectionId(Integer connectionId) {
-        this.connectionId = connectionId;
+    public void setRoomID(String roomID) {
+        this.roomID = roomID;
     }
 }

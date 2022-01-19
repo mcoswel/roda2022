@@ -88,6 +88,10 @@ public class PlayerGuis {
                 Actions.rotateTo(0,1f)
         ));
     }
+    public void setPicFixPos() {
+        position = new Vector2(300 * playerIndex +25f, 314f);
+        profilePic.setPosition(position.x, position.y);
+    }
 
     public Label getScoreLabel() {
         return scoreLabel;

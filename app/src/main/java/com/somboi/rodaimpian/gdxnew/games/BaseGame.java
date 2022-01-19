@@ -83,7 +83,6 @@ public class BaseGame {
     protected final Array<TileBase> incompleteTiles = new Array<>();
     protected KeyListen keyListen;
     protected String answerHolder;
-    protected PlayerGuis testGui;
     protected boolean clickEnvelope;
     protected StringBuilder bonusStringHolder;
     protected Bonuses bonusGiftImg;
@@ -253,7 +252,6 @@ public class BaseGame {
 
     public void addPlayers() {
         PlayerGuis playerOneGuis = setHumanGui(rodaImpianNew.getPlayer(),1);
-        testGui = playerOneGuis;
         PlayerGuis playerTwoGuis;
         PlayerGuis playerThreeGuis;
         if (rodaImpianNew.getPlayerTwo() != null) {
@@ -317,7 +315,7 @@ public class BaseGame {
         PlayerGuis playerGuis = new PlayerGuis();
         playerGuis.setPlayerNew(playerNew);
         playerGuis.setNameLabel(new Label(playerNew.getName().toUpperCase(), skin, "name"));
-        ProfilePic profilePic = new ProfilePic(atlas.findRegion("defaultavatar"), playerNew.getPicUri(), playerNew, playerNo);
+        ProfilePic profilePic = new ProfilePic(atlas.findRegion("defaultavatar"), playerNew, playerNo);
         playerGuis.setProfilePic(profilePic);
         if (!playerNew.isLogged()) {
             profilePic.stopLoadingPhoto();

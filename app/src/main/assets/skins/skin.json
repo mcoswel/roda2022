@@ -80,6 +80,15 @@ com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 		background: bubble
 	}
 }
+com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
+	default: {
+		background: tooltip
+		hScroll: scrollpane-horizontal
+		hScrollKnob: scrollpane-knob-horizontal
+		vScroll: scrollpane-vertical
+		vScrollKnob: scrollpane-knob-vertical
+	}
+}
 com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 	default: {
 		font: comic48

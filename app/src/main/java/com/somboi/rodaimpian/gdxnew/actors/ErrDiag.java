@@ -13,7 +13,19 @@ public class ErrDiag extends Dialog {
         label.setAlignment(Align.center);
         label.setWrap(true);
         getContentTable().add(label).width(825f).row();
-        button(StringRes.OK);
+        button(StringRes.OK, true);
+    }
+
+    @Override
+    protected void result(Object object) {
+        super.result(object);
+        if (object.equals(true)){
+            func();
+        }
+    }
+
+    public void func(){
+        hide();
     }
 
     @Override

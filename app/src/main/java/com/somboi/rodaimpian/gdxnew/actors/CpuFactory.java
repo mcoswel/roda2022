@@ -38,7 +38,7 @@ public class CpuFactory {
         playerGuis.setPlayerNew(playerNew);
 
         playerGuis.setNameLabel(new Label(playerNew.getName().toUpperCase(), skin,"name"));
-        playerGuis.setProfilePic(new ProfilePic(atlas.findRegion(playerNew.getName().toLowerCase()), null, playerNew,0));
+        playerGuis.setProfilePic(new ProfilePic(atlas.findRegion(playerNew.getName().toLowerCase()), playerNew,0));
 
 
         playerGuis.setScoreLabel(new Label("$"+playerNew.getScore(), skin, "score"));

@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.somboi.rodaimpian.RodaImpianNew;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
 import com.somboi.rodaimpian.gdxnew.games.BaseGame;
-import com.somboi.rodaimpian.gdxnew.games.ClientNew;
 import com.somboi.rodaimpian.gdxnew.games.SinglePlayer;
 import com.somboi.rodaimpian.gdxnew.interfaces.GameInterface;
 
@@ -24,7 +23,7 @@ public class GameScreen extends BaseScreenNew implements GameInterface {
 
     }
 
-    public void spinResult( ) {
+    public void spinResult() {
         if (baseGame != null) {
             baseGame.showConsonants();
         }
@@ -37,7 +36,7 @@ public class GameScreen extends BaseScreenNew implements GameInterface {
 
     @Override
     public void update(float delta) {
-        if (baseGame!=null){
+        if (baseGame != null) {
             baseGame.update(delta);
         }
     }

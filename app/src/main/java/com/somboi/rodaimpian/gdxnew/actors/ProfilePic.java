@@ -20,7 +20,7 @@ public class ProfilePic extends Image implements Cloneable {
     private final PlayerNew playerNew;
     private FileHandle path = null;
 
-    public ProfilePic(TextureRegion region, String picUri, PlayerNew playerNew, int playerNo) {
+    public ProfilePic(TextureRegion region, PlayerNew playerNew, int playerNo) {
         super(region);
         this.region = region;
         this.playerNew = playerNew;
@@ -32,8 +32,8 @@ public class ProfilePic extends Image implements Cloneable {
             path = Gdx.files.local(StringRes.PLY3IMAGEPATH);
         }
         setSize(250, 250);
-        if (picUri != null) {
-            Pixmap.downloadFromUrl(picUri, new Pixmap.DownloadPixmapResponseListener() {
+        if (playerNew.getPicUri() != null) {
+            Pixmap.downloadFromUrl(playerNew.getPicUri(), new Pixmap.DownloadPixmapResponseListener() {
                 @Override
                 public void downloadComplete(Pixmap pixmap) {
                     Texture round = new Texture(RoundMap.execute(new Texture(pixmap)));

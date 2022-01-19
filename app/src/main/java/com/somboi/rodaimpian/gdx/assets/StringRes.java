@@ -57,19 +57,19 @@ public class StringRes {
     public static final String SHOWKEYBOARD = "Keyboard";
     public static final String SUBMIT = "Kirim";
     public static final String ERRORTITLE = "Ralat";
-    public static final String OK = "Ok" ;
+    public static final String OK = "Ok";
     public static final String NOTENOUGHMONEY = "Maaf, wang anda tidak mencukupi.";
     public static final String BONUS = "Round Bonus";
     public static final String ROUND = "PUSINGAN ";
-    public static final String BONUSROUND = "Pusingan Bonus" ;
-    public static final String CHOOSEENVELOPE = "Pilih Sampul" ;
+    public static final String BONUSROUND = "Pusingan Bonus";
+    public static final String CHOOSEENVELOPE = "Pilih Sampul";
     public static final String CHOOSE5CONS = "Pilih 5 Huruf Konsonan & 2 Vokal";
     public static final String PEMENANGIALAH = "Pemenang keseluruhan ialah ";
-    public static final String MATCHFINISHED =  "Permainan Tamat";
+    public static final String MATCHFINISHED = "Permainan Tamat";
     public static final String MAINMENU = "Menu Utama";
     public static final String EXIT = "KELUAR";
     public static final String LOGINFB = "Login";
-    public static final String LOGINFBFORONLINE = "Daftar menggunakan Facebook atau Google untuk mengakses permainan online dan merekod markah ke leaderboard?" ;
+    public static final String LOGINFBFORONLINE = "Daftar menggunakan Facebook atau Google untuk mengakses permainan online dan merekod markah ke leaderboard?";
     public static final String NO = "Tidak!";
     public static final String PLAYERONLINESAVE = "playeronlinesaves";
     public static final String ONLINE = "Online";
@@ -81,14 +81,14 @@ public class StringRes {
     public static final String DELETE = "Padam";
     public static final String KICK = "Tendang";
     public static final String EMPTYSLOT = "Kosong";
-    public static final String ROOM = "Bilik " ;
-    public static final String PLAYING = "Sedang Bermain" ;
+    public static final String ROOM = "Bilik ";
+    public static final String PLAYING = "Sedang Bermain";
     public static final String CONNECTING = "Sedang mengubungi server";
     public static final String MESSAGE = "Message";
     public static final String ONEPLAYER = "1 Pemain";
     public static final String TWOPLAYER = "2 Pemain";
     public static final String THREEPLAYER = "3 Pemain";
-    public static final String BACK = "Kembali" ;
+    public static final String BACK = "Kembali";
     public static final String PLAYER_NAME = "Pemain ";
     public static final String PAUSEMENU = "Menu";
     public static final String WAITINGENTRY = "Menunggu penyertaan";
@@ -103,15 +103,15 @@ public class StringRes {
     public static final String DISCONNECTED = "Terputus Hubungan";
     public static final String WATCHADS = "Lihat iklan";
     public static final String ADSPROMPT = "Admin minta maaf, disebabkan sewa server mahal dan admin pula cuma seorang yang miskin, hina serta hensem, admin terpaksa letak" +
-            " Ads yang harus ditonton hingga habis, baru lah boleh cipta bilik online. Permainan online ini boleh menyokong hingga tiga pemain.. :(" ;
-    public static final String BESTSCORE = "Markah Terbaik:" ;
+            " Ads yang harus ditonton hingga habis, baru lah boleh cipta bilik online. Permainan online ini boleh menyokong hingga tiga pemain.. :(";
+    public static final String BESTSCORE = "Markah Terbaik:";
     public static final String UPDATENEWS = "Update";
     public static final String NO3 = "Tak Nak!";
     public static final String FACEBOOK = "Facebook";
     public static final String GMAIL = "Google";
     //public static final String RODARODA = "159.223.73.205";
-  //  public static final String RODARODA = "10.1.19.2";
-    public static final String RODARODA = "192.168.43.69";
+    public static final String RODARODA = "10.1.19.2";
+    // public static final String RODARODA = "192.168.43.69";
 
     public static final String ENTERNAME = "Taipkan nama anda";
     public static final String LETSPLAY = " Mengajak Bermain";
@@ -132,6 +132,7 @@ public class StringRes {
     public static final String WINBONUS = "Tahniah! Anda berjaya memenangi hadiah bonus bernilai ";
     public static final String LOSEBONUS = "Maaf! Anda gagal memenangi hadiah bonus";
     public static final String CONNECTED = "Berjaya mengubungi server";
+    public static final String SORRYYOUBAN = "Maaf, host baru sahaja menendang anda. Cuba lagi";
 
     //159.223.73.205
 

@@ -8,7 +8,7 @@ import java.util.List;
 public class RoomSession {
     private List<PlayerNew> playerList;
     private String roomUri;
-    private int roomNo;
+    private String roomID;
     private List<QuestionNew> questionNews;
 
     public List<PlayerNew> getPlayerList() {
@@ -27,12 +27,12 @@ public class RoomSession {
         this.roomUri = roomUri;
     }
 
-    public int getRoomNo() {
-        return roomNo;
+    public String getRoomID() {
+        return roomID;
     }
 
-    public void setRoomNo(int roomNo) {
-        this.roomNo = roomNo;
+    public void setRoomID(String roomID) {
+        this.roomID = roomID;
     }
 
     public List<QuestionNew> getQuestionNews() {

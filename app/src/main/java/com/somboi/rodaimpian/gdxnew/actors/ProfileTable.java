@@ -29,7 +29,7 @@ public class ProfileTable extends Table {
         Table leftTable = new Table();
         leftTable.defaults().center().pad(5f);
 
-        profilPic = new ProfilePic(defaultAvatar, playerNew.getPicUri(), playerNew, playerNo);
+        profilPic = new ProfilePic(defaultAvatar, playerNew, playerNo);
         leftTable.add(profilPic).size(250f, 250f).row();
         SmallButton uploadPhoto = new SmallButton(StringRes.CHOOSEPHOTO, skin);
 

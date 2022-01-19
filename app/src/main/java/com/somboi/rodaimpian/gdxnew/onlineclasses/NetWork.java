@@ -1,11 +1,9 @@
-package com.somboi.rodaimpian.gdxnew.games;
+package com.somboi.rodaimpian.gdxnew.onlineclasses;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
 import com.somboi.rodaimpian.gdxnew.assets.QuestionNew;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
-import com.somboi.rodaimpian.gdxnew.onlineclasses.JoinSession;
-import com.somboi.rodaimpian.gdxnew.onlineclasses.RoomSession;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +18,10 @@ public class NetWork {
         kryo.register(QuestionNew.class);
         kryo.register(RoomSession.class);
         kryo.register(JoinSession.class);
+        kryo.register(RoomLists.class);
+        kryo.register(Disconnect.class);
+        kryo.register(HostDisconnect.class);
+        kryo.register(KickPlayer.class);
 
     }
 }

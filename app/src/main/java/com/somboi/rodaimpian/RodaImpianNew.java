@@ -28,7 +28,7 @@ public class RodaImpianNew extends Game {
     private boolean bonusMode;
     private final Array<QuestionNew>preparedQuestions = new Array<>();
     private PlayerSaves playerSaves;
-    private int roomSessionID;
+    private Array<String> bannedRoom = new Array<>();
     public RodaImpianNew(AndroInterface androInterface) {
         this.androInterface = androInterface;
     }
@@ -146,13 +146,7 @@ public class RodaImpianNew extends Game {
         this.bonusMode = bonusMode;
     }
 
-    public int getRoomSessionID() {
-        return roomSessionID;
-    }
 
-    public void setRoomSessionID(int roomSessionID) {
-        this.roomSessionID = roomSessionID;
-    }
 
     public Array<QuestionNew> getPreparedQuestions() {
         return preparedQuestions;
@@ -176,6 +170,10 @@ public class RodaImpianNew extends Game {
         if (mainScreen!=null){
          mainScreen.reloadPhoto();
         }
+    }
+
+    public Array<String> getBannedRoom() {
+        return bannedRoom;
     }
 
     public void restart() {
