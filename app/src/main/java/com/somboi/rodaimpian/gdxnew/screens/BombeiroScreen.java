@@ -3,8 +3,11 @@ package com.somboi.rodaimpian.gdxnew.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -42,7 +45,7 @@ public class BombeiroScreen extends BaseScreenNew {
     private int adsCount;
     private final GameSound gameSound;
     private final PlayerGuis playerGuis;
-
+    private final Array<Bulb>bulbs = new Array<>();
     public BombeiroScreen(RodaImpianNew rodaImpian, PlayerGuis playerGuis) {
         super(rodaImpian);
         this.gameSound = new GameSound(assetManager);
@@ -92,6 +95,7 @@ public class BombeiroScreen extends BaseScreenNew {
                 }
             });
             numbersTable.add(bulb);
+            bulbs.add(bulb);
             index++;
             if (index % 6 == 0) {
                 numbersTable.row();
@@ -196,6 +200,24 @@ public class BombeiroScreen extends BaseScreenNew {
 
 
     private void checkWinner(String type) {
+        Gdx.input.setInputProcessor(null);
+        String color = "black";
+        if (vehiclesChosen.equals("firetruck")){
+            color = "red";
+        }
+        if (vehiclesChosen.equals("ambulance")){
+            color = "white";
+        }
+
+        for (Bulb bulb: bulbs){
+            if (bulb.getType().equals(color)){
+                SequenceAction sequenceAction = new SequenceAction(Actions.fadeOut(0.3f), Actions.fadeIn(0.3f));
+                bulb.addAction(Actions.forever(sequenceAction));
+            }
+            bulb.setDrawable(new SpriteDrawable(new Sprite(atlas.findRegion(bulb.getType() + "_move"))));
+        }
+        stage.addActor(numbersTable);
+
         if (vehiclesChosen.equals(type)) {
             winBonus = true;
             stage.addActor(new Fireworks(assetManager.get(AssetDesc.WINANIMATION)));
@@ -213,14 +235,14 @@ public class BombeiroScreen extends BaseScreenNew {
             logger.debug("firetruck wins");
         }*/
 
-        endGame();
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
-                WinnerDialog endGameDialog = new WinnerDialog(skin, playerGuis, atlas, rodaImpianNew);
-                endGameDialog.show(stage);
+                Gdx.input.setInputProcessor(stage);
+                endGame();
             }
-        }, 3f);
+        },3f);
+
     }
 
     private void endGame() {
