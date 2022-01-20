@@ -90,14 +90,13 @@ import com.somboi.rodaimpian.gdx.entities.MainMenuCreator;
 import com.somboi.rodaimpian.gdx.entities.Player;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
 import com.somboi.rodaimpian.gdx.online.OnlinePlay;
-import com.somboi.rodaimpian.gdx.online.entities.ChatOnline;
+import com.somboi.rodaimpian.gdx.online.ChatOnlineOld;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -115,7 +114,7 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
     private CallbackManager callbackManager;
     private ProfileTracker mProfileTracker;
     private RodaImpian rodaImpian;
-    private ChatOnline chatOnline;
+    private ChatOnlineOld chatOnlineOld;
     private InterstitialAd googleInter;
     private FirebaseAnalytics mFirebaseAnalytics;
     private com.facebook.ads.InterstitialAd facebookInter;
@@ -389,13 +388,13 @@ public class AndroidLauncher extends AndroidApplication implements AndroidInterf
                         //What ever you want to do with the value
                         String content = editChat.getText().toString();
                         if (content.length() > 0) {
-                            chatOnline = new ChatOnline();
-                            chatOnline.content = content;
-                            chatOnline.guiIndex = guiIndex;
+                            chatOnlineOld = new ChatOnlineOld();
+                            chatOnlineOld.content = content;
+                            chatOnlineOld.guiIndex = guiIndex;
                             Gdx.app.postRunnable(new Runnable() {
                                 @Override
                                 public void run() {
-                                    onlinePlay.sendChat(chatOnline);
+                                    onlinePlay.sendChat(chatOnlineOld);
                                 }
                             });
 

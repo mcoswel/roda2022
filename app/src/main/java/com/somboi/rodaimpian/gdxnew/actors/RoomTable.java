@@ -14,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdx.utils.RoundMap;
-import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
 import com.somboi.rodaimpian.gdxnew.interfaces.OnInterface;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.JoinSession;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.RoomSession;
@@ -42,22 +41,28 @@ public class RoomTable extends Table {
             rightTable.add(roomName).center().row();
         }
 
-        SmallButton joinButton = new SmallButton(StringRes.JOIN, skin);
-        joinButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                if (onInterface.isBanned(roomSession.getRoomID())){
-                    ErrDiag errDiag = new ErrDiag(StringRes.SORRYYOUBAN, skin);
-                    errDiag.show(getStage());
-                }else {
-                    JoinSession joinSession = new JoinSession();
-                    joinSession.setRoomID(roomSession.getRoomID());
-                    onInterface.sendObjects(joinSession);
-                }
-            }
-        });
 
-        rightTable.add(joinButton).row();
+        if (!roomSession.isOccupied()) {
+            SmallButton joinButton = new SmallButton(StringRes.JOIN, skin);
+            joinButton.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    if (onInterface.isBanned(roomSession.getRoomID())) {
+                        ErrDiag errDiag = new ErrDiag(StringRes.SORRYYOUBAN, skin);
+                        errDiag.show(getStage());
+                    } else {
+                        JoinSession joinSession = new JoinSession();
+                        joinSession.setRoomID(roomSession.getRoomID());
+                        onInterface.sendObjects(joinSession);
+                    }
+                }
+            });
+            rightTable.add(joinButton).row();
+        } else {
+            Label playing = new Label(StringRes.PLAYING, skin);
+            rightTable.add(playing).row();
+        }
+
         add(leftTable).size(280f, 225f);
         add(rightTable).size(580f, 225f);
     }

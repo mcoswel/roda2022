@@ -9,10 +9,16 @@ import com.somboi.rodaimpian.gdx.assets.StringRes;
 public class ErrDiag extends Dialog {
     public ErrDiag(String errorText, Skin skin) {
         super(StringRes.ERRORTITLE, skin);
-        Label label = new Label(errorText, skin);
+        getContentTable().defaults().pad(8f);
+        Label label = new Label(errorText, skin){
+            @Override
+            public float getPrefWidth() {
+                return 800f;
+            }
+        };
         label.setAlignment(Align.center);
         label.setWrap(true);
-        getContentTable().add(label).width(825f).row();
+        getContentTable().add(label).width(800f).row();
         button(StringRes.OK, true);
     }
 

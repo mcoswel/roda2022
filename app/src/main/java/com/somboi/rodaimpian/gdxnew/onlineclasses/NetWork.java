@@ -2,6 +2,7 @@ package com.somboi.rodaimpian.gdxnew.onlineclasses;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
+import com.somboi.rodaimpian.gdx.online.ChatOnlineOld;
 import com.somboi.rodaimpian.gdxnew.assets.QuestionNew;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
 
@@ -22,6 +23,9 @@ public class NetWork {
         kryo.register(Disconnect.class);
         kryo.register(HostDisconnect.class);
         kryo.register(KickPlayer.class);
+        kryo.register(ChatOnline.class);
+        kryo.register(Occupied.class);
+        kryo.register(StartQuestion.class);
 
     }
 }

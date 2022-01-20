@@ -1,7 +1,9 @@
 package com.somboi.rodaimpian;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -10,10 +12,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.backends.android.AndroidAudio;
@@ -45,6 +49,9 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.somboi.rodaimpian.gdx.utils.ShortenName;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
+import com.somboi.rodaimpian.gdxnew.interfaces.OnInterface;
+import com.somboi.rodaimpian.gdx.online.ChatOnlineOld;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.ChatOnline;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -303,6 +310,40 @@ public class AndroidLauncherNew extends AndroidApplication implements AndroInter
                         rodaImpianNew.setFcmToken(fcm_token);
                     }
                 });
+    }
+
+    @Override
+    public void chatOnline(final OnInterface onInterface, final int guiIndex) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                AlertDialog.Builder alert = new AlertDialog.Builder(AndroidLauncherNew.this);
+                final EditText editChat = new EditText(AndroidLauncherNew.this);
+                alert.setTitle(R.string.chat);
+                alert.setView(editChat);
+                alert.setPositiveButton(R.string.kirim, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        //What ever you want to do with the value
+                        String content = editChat.getText().toString();
+                        if (content.length() > 0) {
+                            ChatOnline chatOnline = new ChatOnline();
+                            chatOnline.setText(content);
+                            chatOnline.setGuiIndex(guiIndex);
+                            Gdx.app.postRunnable(new Runnable() {
+                                @Override
+                                public void run() {
+                                    onInterface.sendObjects(chatOnline);
+                                }
+                            });
+                            //     return new ChatBubble(content,skin,guiIndex);
+                        } else {
+                            dialog.dismiss();
+                        }
+                    }
+                }).show();
+            }
+        });
+
     }
 
     private class SavePhotoTask extends AsyncTask<byte[], String, String> {

@@ -20,7 +20,7 @@ import com.somboi.rodaimpian.gdx.online.OnlinePlay;
 import com.somboi.rodaimpian.gdx.online.RodaClient;
 import com.somboi.rodaimpian.gdx.online.actor.RoomMenu;
 import com.somboi.rodaimpian.gdx.online.actor.SessionTable;
-import com.somboi.rodaimpian.gdx.online.entities.ChatOnline;
+import com.somboi.rodaimpian.gdx.online.ChatOnlineOld;
 import com.somboi.rodaimpian.gdx.online.entities.EnvelopeIndex;
 import com.somboi.rodaimpian.gdx.online.newentities.CreateSessions;
 
@@ -220,8 +220,8 @@ public class OnlineMatchScreen extends BaseScreen implements OnlineInterface {
     }
 
     @Override
-    public void queueChat(ChatOnline chatOnline) {
-        onlinePlay.queueChatOnline(chatOnline);
+    public void queueChat(ChatOnlineOld chatOnlineOld) {
+        onlinePlay.queueChatOnline(chatOnlineOld);
     }
 
     @Override

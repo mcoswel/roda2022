@@ -8,7 +8,6 @@ import com.somboi.rodaimpian.gdx.entities.WheelParam;
 import com.somboi.rodaimpian.gdx.online.entities.BeginSpin;
 import com.somboi.rodaimpian.gdx.online.entities.BonusHolder;
 import com.somboi.rodaimpian.gdx.online.entities.BonusIndex;
-import com.somboi.rodaimpian.gdx.online.entities.ChatOnline;
 import com.somboi.rodaimpian.gdx.online.entities.CheckAnswer;
 import com.somboi.rodaimpian.gdx.online.entities.DisconnectPlayer;
 import com.somboi.rodaimpian.gdx.online.entities.EnvelopeIndex;
@@ -42,7 +41,7 @@ public class NetWorkOld {
         kryo.register(RegisterPlayer.class);
         kryo.register(StatusText.class);
         kryo.register(Float.class);
-        kryo.register(ChatOnline.class);
+        kryo.register(ChatOnlineOld.class);
         kryo.register(CheckAnswer.class);
         kryo.register(Character.class);
         kryo.register(BeginSpin.class);

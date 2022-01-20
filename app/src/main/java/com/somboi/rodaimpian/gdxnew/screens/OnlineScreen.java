@@ -20,13 +20,16 @@ import com.somboi.rodaimpian.gdxnew.actors.SmallButton;
 import com.somboi.rodaimpian.gdxnew.actors.StatusLabel;
 import com.somboi.rodaimpian.gdxnew.actors.YesNoDiag;
 import com.somboi.rodaimpian.gdxnew.assets.QuestionNew;
-import com.somboi.rodaimpian.gdxnew.onlineclasses.Disconnect;
-import com.somboi.rodaimpian.gdxnew.onlineclasses.KickPlayer;
-import com.somboi.rodaimpian.gdxnew.onlineclasses.NetWork;
 import com.somboi.rodaimpian.gdxnew.games.OnlineGame;
 import com.somboi.rodaimpian.gdxnew.interfaces.OnInterface;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.ChatOnline;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.Disconnect;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.HostDisconnect;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.KickPlayer;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.NetWork;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.RoomLists;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.RoomSession;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.StartQuestion;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,6 +42,7 @@ public class OnlineScreen extends BaseScreenNew implements OnInterface {
     private final Table roomTableScroll = new Table();
     private boolean host;
     private final Group sessionGroup = new Group();
+
     public OnlineScreen(RodaImpianNew rodaImpianNew) {
         super(rodaImpianNew);
         Gdx.input.setInputProcessor(stage);
@@ -81,7 +85,7 @@ public class OnlineScreen extends BaseScreenNew implements OnInterface {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if (client.isConnected()) {
-                createRoomSession();
+                    createRoomSession();
                 }
             }
         });
@@ -94,7 +98,7 @@ public class OnlineScreen extends BaseScreenNew implements OnInterface {
     }
 
     private void createRoomSession() {
-        logger.debug("create room");
+        //  logger.debug("create room");
         host = true;
         RoomSession roomSession = new RoomSession();
         roomSession.setPlayerList(new ArrayList<>());
@@ -121,7 +125,9 @@ public class OnlineScreen extends BaseScreenNew implements OnInterface {
 
         @Override
         public void disconnected(Connection connection) {
-            rodaImpianNew.getPlayer().setDisconnect(true);
+            Disconnect disconnect = new Disconnect();
+            disconnect.setPlayerId(rodaImpianNew.getPlayer().getUid());
+            client.sendTCP(disconnect);
         }
 
         @Override
@@ -132,24 +138,19 @@ public class OnlineScreen extends BaseScreenNew implements OnInterface {
                     updateRoomList(roomLists);
                 }
             }
-            if (o instanceof RoomSession){
+            if (o instanceof RoomSession) {
                 RoomSession roomSession = (RoomSession) o;
-
-                Gdx.app.postRunnable(new Runnable() {
-                    @Override
-                    public void run() {
-                        createBg(roomSession);
-                    }
-                });
+                createBg(roomSession);
             }
-            if (o instanceof Disconnect){
+            if (o instanceof Disconnect) {
                 Disconnect disconnect = (Disconnect) o;
+                //   logger.debug("Player disconnect ");
                 onlineGame.playerDisconnected(disconnect.getPlayerId());
             }
-            if (o instanceof KickPlayer){
-                KickPlayer kickPlayer = (KickPlayer)o;
-                rodaImpianNew.getBannedRoom().add(kickPlayer.getRoomId());
-                ErrDiag errDiag = new ErrDiag(StringRes.YOUBEENKICK, skin){
+
+            if (o instanceof HostDisconnect) {
+                //   logger.debug("Host disconnect ");
+                ErrDiag errDiag = new ErrDiag(StringRes.HOSTLOST, skin) {
                     @Override
                     public void func() {
                         rodaImpianNew.setScreen(new OnlineScreen(rodaImpianNew));
@@ -157,6 +158,27 @@ public class OnlineScreen extends BaseScreenNew implements OnInterface {
                 };
                 errDiag.show(stage);
             }
+
+            if (o instanceof KickPlayer) {
+                KickPlayer kickPlayer = (KickPlayer) o;
+                rodaImpianNew.getBannedRoom().add(kickPlayer.getRoomId());
+                ErrDiag errDiag = new ErrDiag(StringRes.YOUBEENKICK, skin) {
+                    @Override
+                    public void func() {
+                        rodaImpianNew.setScreen(new OnlineScreen(rodaImpianNew));
+                    }
+                };
+                errDiag.show(stage);
+            }
+            if (o instanceof ChatOnline) {
+                ChatOnline chatOnline = (ChatOnline) o;
+                onlineGame.showChatOnline(chatOnline);
+            }
+            if (o instanceof StartQuestion) {
+                statusLabel.remove();
+                onlineGame.startRound();
+            }
+
         }
 
         @Override
@@ -164,6 +186,7 @@ public class OnlineScreen extends BaseScreenNew implements OnInterface {
             super.idle(connection);
         }
     }
+
 
     private void statusConnected(Connection connection) {
         statusLabel.updateText(StringRes.CONNECTED);
@@ -192,19 +215,20 @@ public class OnlineScreen extends BaseScreenNew implements OnInterface {
         return rodaImpianNew.getBannedRoom().contains(roomID, false);
     }
 
-    private void createBg(RoomSession roomSession){
+    @Override
+    public void updateStatusLabel(String text) {
+        statusLabel.updateText(text);
+        stage.addActor(statusLabel);
+    }
+
+    private void createBg(RoomSession roomSession) {
+        onlineGame.setQuestionNewList(roomSession.getQuestionNews());
         sessionGroup.clear();
         sessionGroup.remove();
         onlineGame.setRoomSession(roomSession);
         actorFactory.createGameBg(rodaImpianNew.isGoldTheme());
         actorFactory.createGameTables();
         onlineGame.addPlayers();
-        Array<QuestionNew> questionNewArray = new Array<>();
-        for (QuestionNew questionNew: roomSession.getQuestionNews()){
-            questionNewArray.add(questionNew);
-        }
-        rodaImpianNew.getPreparedQuestions().clear();
-        rodaImpianNew.getPreparedQuestions().addAll(questionNewArray);
     }
 
     private void updateRoomList(RoomLists roomLists) {
@@ -226,12 +250,15 @@ public class OnlineScreen extends BaseScreenNew implements OnInterface {
         }
     }
 
+
+
     @Override
     public void backKey() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.BACK)){
-            YesNoDiag yesNoDiag = new YesNoDiag(StringRes.EXIT2+"?", skin){
+        if (Gdx.input.isKeyJustPressed(Input.Keys.BACK)) {
+            YesNoDiag yesNoDiag = new YesNoDiag(StringRes.EXIT2 + "?", skin) {
                 @Override
                 public void yesFunc() {
+                    logger.debug("disconnect ");
                     Disconnect disconnect = new Disconnect();
                     disconnect.setPlayerId(rodaImpianNew.getPlayer().getUid());
                     sendObjects(disconnect);

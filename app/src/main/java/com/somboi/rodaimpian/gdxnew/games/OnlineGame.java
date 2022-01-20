@@ -4,22 +4,34 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.somboi.rodaimpian.RodaImpianNew;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdxnew.actors.ChatBubble;
 import com.somboi.rodaimpian.gdxnew.actors.PlayerGuis;
+import com.somboi.rodaimpian.gdxnew.actors.PlayerMenu;
 import com.somboi.rodaimpian.gdxnew.actors.SmallButton;
+import com.somboi.rodaimpian.gdxnew.actors.UltraSmallBtn;
+import com.somboi.rodaimpian.gdxnew.assets.QuestionNew;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
 import com.somboi.rodaimpian.gdxnew.interfaces.OnInterface;
+import com.somboi.rodaimpian.gdx.online.ChatOnlineOld;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.ChatOnline;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.KickPlayer;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.Occupied;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.RoomSession;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.StartQuestion;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class OnlineGame extends BaseGame {
     private RoomSession roomSession;
     private final OnInterface onInterface;
     private final Group onlineMenuGroup = new Group();
-
+    private PlayerGuis selfGui;
+    private List<QuestionNew> questionNewList = new ArrayList<>();
     public OnlineGame(Stage stage, RodaImpianNew rodaImpianNew, OnInterface onInterface) {
         super(stage, rodaImpianNew);
         this.onInterface = onInterface;
@@ -28,6 +40,8 @@ public class OnlineGame extends BaseGame {
 
     @Override
     public void addPlayers() {
+        gameRound = 0;
+        setUpNewRound();
         playerGuis.clear();
         tilesGroup.clear();
         tilesGroup.remove();
@@ -39,6 +53,9 @@ public class OnlineGame extends BaseGame {
             playerGuis.add(setHumanGui(playerNew, 1));
         }
         for (PlayerGuis p : playerGuis) {
+            if (p.getPlayerNew().getUid().equals(rodaImpianNew.getPlayer().getUid())){
+                selfGui = p;
+            }
             p.getPlayerNew().setScore(0);
             p.getScoreLabel().setText("$" + p.getPlayerNew().getScore());
             p.getPlayerNew().setFullScore(0);
@@ -50,14 +67,10 @@ public class OnlineGame extends BaseGame {
             pgui.setPlayerIndex(i);
             pgui.setChatBubble(new ChatBubble(i, stage, skin));
             pgui.setPicFixPos();
+            pgui.setChatBubble(new ChatBubble(i, stage, skin));
             stage.addActor(pgui.getProfilePic());
-            if (i > 0 && onInterface.isHost())  {
-                SmallButton kickBtn = new SmallButton(StringRes.KICK, skin) {
-                    @Override
-                    public float getPrefWidth() {
-                        return 260f;
-                    }
-                };
+            if (i > 0 && onInterface.isHost()) {
+                UltraSmallBtn kickBtn = new UltraSmallBtn(StringRes.KICK, skin);
                 kickBtn.addListener(new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
@@ -76,15 +89,69 @@ public class OnlineGame extends BaseGame {
             tilesGroup.addActor(pgui.getNameLabel());
         }
 
+        if (playerGuis.size < 2) {
+            onInterface.updateStatusLabel(StringRes.WAITINGENTRY);
+        } else {
+            onInterface.updateStatusLabel(StringRes.WAITINGHOST);
+            if (onInterface.isHost()) {
+                createOnlineMenu();
+            }
+        }
+        UltraSmallBtn chat = new UltraSmallBtn(StringRes.CHAT, skin);
+        chat.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                rodaImpianNew.chatOnline(onInterface, selfGui.getPlayerIndex());
+            }
+        });
+        chat.setPosition(selfGui.getPosition().x, 310f);
+        stage.addActor(chat);
+    }
 
+    @Override
+    public void startRound() {
+        stage.addActor(vannaHost);
+        vannaHost.relax();
+        showQuestions();
+    }
+
+    @Override
+    public QuestionNew getCurrentQuestion() {
+        return questionNewList.get(gameRound);
+    }
+
+    public void createOnlineMenu() {
+        final Table onlineMenuTable = new Table();
+        SmallButton start = new SmallButton(StringRes.START, skin);
+        start.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                onlineMenuGroup.remove();
+                onInterface.sendObjects(new Occupied());
+                onInterface.sendObjects(new StartQuestion());
+            }
+        });
+        onlineMenuTable.add(start);
+        onlineMenuTable.pack();
+        onlineMenuTable.setPosition(450f - onlineMenuTable.getWidth() / 2f, 750f);
+        stage.addActor(onlineMenuTable);
+    }
+
+    public void showChatOnline(ChatOnline chatOnline){
+        playerGuis.get(chatOnline.getGuiIndex()).chat(chatOnline.getText());
     }
 
     public void playerDisconnected(String uid) {
         for (PlayerGuis p : playerGuis) {
             if (p.getPlayerNew().getUid().equals(uid)) {
                 p.getProfilePic().setColor(Color.BLUE);
+                p.getPlayerNew().setDisconnect(true);
             }
         }
+    }
+
+    public void setQuestionNewList(List<QuestionNew> questionNewList) {
+        this.questionNewList = questionNewList;
     }
 
     public void setRoomSession(RoomSession roomSession) {

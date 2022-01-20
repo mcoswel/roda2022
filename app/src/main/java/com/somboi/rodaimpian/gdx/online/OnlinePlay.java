@@ -31,7 +31,6 @@ import com.somboi.rodaimpian.gdx.base.ModeBase;
 import com.somboi.rodaimpian.gdx.entities.Player;
 import com.somboi.rodaimpian.gdx.entities.PlayerGui;
 import com.somboi.rodaimpian.gdx.online.actor.KickBtn;
-import com.somboi.rodaimpian.gdx.online.entities.ChatOnline;
 import com.somboi.rodaimpian.gdx.online.entities.EnvelopeIndex;
 import com.somboi.rodaimpian.gdx.online.entities.PlayerState;
 import com.somboi.rodaimpian.gdx.online.newentities.RemovePlayer;
@@ -264,8 +263,8 @@ public class OnlinePlay extends ModeBase {
         matchRound.checkAnswer(c);
     }
 
-    public void sendChat(ChatOnline chatOnline) {
-        newClient.sendObject(chatOnline);
+    public void sendChat(ChatOnlineOld chatOnlineOld) {
+        newClient.sendObject(chatOnlineOld);
     }
 
     public void checkDisconnected(String id) {

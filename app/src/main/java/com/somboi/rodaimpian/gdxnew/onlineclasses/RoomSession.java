@@ -10,7 +10,7 @@ public class RoomSession {
     private String roomUri;
     private String roomID;
     private List<QuestionNew> questionNews;
-
+    private boolean occupied;
     public List<PlayerNew> getPlayerList() {
         return playerList;
     }
@@ -41,5 +41,13 @@ public class RoomSession {
 
     public void setQuestionNews(List<QuestionNew> questionNews) {
         this.questionNews = questionNews;
+    }
+
+    public boolean isOccupied() {
+        return occupied;
+    }
+
+    public void setOccupied(boolean occupied) {
+        this.occupied = occupied;
     }
 }

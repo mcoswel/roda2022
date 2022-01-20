@@ -12,7 +12,6 @@ import com.somboi.rodaimpian.gdx.entities.WheelParam;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
 import com.somboi.rodaimpian.gdx.online.entities.BonusHolder;
 import com.somboi.rodaimpian.gdx.online.entities.BonusIndex;
-import com.somboi.rodaimpian.gdx.online.entities.ChatOnline;
 import com.somboi.rodaimpian.gdx.online.entities.CheckAnswer;
 import com.somboi.rodaimpian.gdx.online.entities.DisconnectPlayer;
 import com.somboi.rodaimpian.gdx.online.entities.EnvelopeIndex;
@@ -171,9 +170,9 @@ public class RodaClient {
                     rodaImpian.setQuestionsReady(rodaSession.questionsReady);
                     onlineScreen.updateOwnSession();
                 }
-                if (o instanceof ChatOnline) {
-                    ChatOnline chatOnline = (ChatOnline) o;
-                    onlineScreen.queueChat(chatOnline);
+                if (o instanceof ChatOnlineOld) {
+                    ChatOnlineOld chatOnlineOld = (ChatOnlineOld) o;
+                    onlineScreen.queueChat(chatOnlineOld);
                     logger.debug("receive chat online");
                 }
 

@@ -2,7 +2,7 @@ package com.somboi.rodaimpian.gdx.screen;
 
 import com.somboi.rodaimpian.gdx.actor.StatusLabel;
 import com.somboi.rodaimpian.gdx.entities.WheelParam;
-import com.somboi.rodaimpian.gdx.online.entities.ChatOnline;
+import com.somboi.rodaimpian.gdx.online.ChatOnlineOld;
 import com.somboi.rodaimpian.gdx.online.entities.EnvelopeIndex;
 import com.somboi.rodaimpian.gdx.online.newentities.CreateSessions;
 
@@ -24,7 +24,7 @@ public interface OnlineInterface {
     void updateSession(CreateSessions createSessions);
     void removeSession(String sessionID);
     void updateOwnSession();
-    void queueChat(ChatOnline chatOnline);
+    void queueChat(ChatOnlineOld chatOnlineOld);
     void setBonusOnline(int bonusIndex);
     void bonusRound();
     void openEnvelopes(EnvelopeIndex envelopeIndex);

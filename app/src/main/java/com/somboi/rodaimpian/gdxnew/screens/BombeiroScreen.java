@@ -213,10 +213,11 @@ public class BombeiroScreen extends BaseScreenNew {
             if (bulb.getType().equals(color)){
                 SequenceAction sequenceAction = new SequenceAction(Actions.fadeOut(0.3f), Actions.fadeIn(0.3f));
                 bulb.addAction(Actions.forever(sequenceAction));
+
             }
             bulb.setDrawable(new SpriteDrawable(new Sprite(atlas.findRegion(bulb.getType() + "_move"))));
         }
-        stage.addActor(numbersTable);
+
 
         if (vehiclesChosen.equals(type)) {
             winBonus = true;
@@ -225,6 +226,12 @@ public class BombeiroScreen extends BaseScreenNew {
             gameSound.playWinSound();
             playerGuis.addGifts(bonusGiftImg.getBonusIndex());
         } else {
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    stage.addActor(numbersTable);
+                }
+            },2f);
             gameSound.playAww();
         }
      /*   if (type.equals("ambulance")) {
@@ -241,7 +248,7 @@ public class BombeiroScreen extends BaseScreenNew {
                 Gdx.input.setInputProcessor(stage);
                 endGame();
             }
-        },3f);
+        },4f);
 
     }
 

@@ -47,7 +47,7 @@ import com.somboi.rodaimpian.gdx.entities.Tiles;
 import com.somboi.rodaimpian.gdx.entities.WheelParam;
 import com.somboi.rodaimpian.gdx.listener.InputCompleteKey;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
-import com.somboi.rodaimpian.gdx.online.entities.ChatOnline;
+import com.somboi.rodaimpian.gdx.online.ChatOnlineOld;
 import com.somboi.rodaimpian.gdx.online.entities.PlayerState;
 import com.somboi.rodaimpian.gdx.online.newentities.SetActivePlayer;
 import com.somboi.rodaimpian.gdx.screen.WheelScreen;
@@ -253,8 +253,8 @@ public class ModeBase {
         showChat();
     }
 
-    public void queueChatOnline(ChatOnline chatOnline) {
-        ChatBubble chatBubble = new ChatBubble(chatOnline.content, skin, chatOnline.guiIndex);
+    public void queueChatOnline(ChatOnlineOld chatOnlineOld) {
+        ChatBubble chatBubble = new ChatBubble(chatOnlineOld.content, skin, chatOnlineOld.guiIndex);
         chatBubbles.addLast(chatBubble);
         showChat();
     }

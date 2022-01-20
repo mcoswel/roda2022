@@ -18,7 +18,7 @@ public class StatusLabel extends Label {
         pack();
         setWrap(true);
         setAlignment(Align.center);
-        setPosition(25f,888f);
+        setPosition(25f, 888f);
     }
 
     @Override
