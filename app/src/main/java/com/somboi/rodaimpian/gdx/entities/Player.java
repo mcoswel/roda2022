@@ -1,6 +1,6 @@
 package com.somboi.rodaimpian.gdx.entities;
 
-import com.somboi.rodaimpian.gdx.online.entities.PlayerState;
+import com.somboi.rodaimpian.gdx.online.entities.PlaeyrStateOld;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,5 +23,5 @@ public class Player {
     public List<Integer>gifts = new ArrayList<>();
     public int conID;
     public boolean disconnect;
-    public PlayerState playerState;
+    public PlaeyrStateOld plaeyrStateOld;
 }

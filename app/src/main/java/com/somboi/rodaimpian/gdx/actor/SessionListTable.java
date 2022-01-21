@@ -11,8 +11,8 @@ import com.badlogic.gdx.utils.Logger;
 import com.somboi.rodaimpian.RodaImpian;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdx.entities.Player;
-import com.somboi.rodaimpian.gdx.online.entities.GameState;
-import com.somboi.rodaimpian.gdx.online.entities.PlayerState;
+import com.somboi.rodaimpian.gdx.online.entities.GameStateOld;
+import com.somboi.rodaimpian.gdx.online.entities.PlaeyrStateOld;
 import com.somboi.rodaimpian.gdx.online.newentities.RegisterPlayer;
 import com.somboi.rodaimpian.gdx.online.RodaClient;
 import com.somboi.rodaimpian.gdx.online.newentities.SessionRoom;
@@ -36,7 +36,7 @@ public class SessionListTable extends Window {
         join.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                rodaClient.sendObject(PlayerState.EXITROOM);
+                rodaClient.sendObject(PlaeyrStateOld.EXITROOM);
                 RegisterPlayer registerPlayer = new RegisterPlayer();
                 registerPlayer.roomID = sessionRoom.getRoomID();
                 registerPlayer.player = rodaImpian.getPlayer();
@@ -98,7 +98,7 @@ public class SessionListTable extends Window {
         delete.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                rodaClient.sendObject(PlayerState.EXITROOM);
+                rodaClient.sendObject(PlaeyrStateOld.EXITROOM);
             }
         });
         MenuBtn exit = new MenuBtn(StringRes.EXIT, skin);
@@ -106,14 +106,14 @@ public class SessionListTable extends Window {
         start.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                rodaClient.sendObject(GameState.START);
+                rodaClient.sendObject(GameStateOld.START);
             }
         });
 
         exit.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                rodaClient.sendObject(PlayerState.EXITROOM);
+                rodaClient.sendObject(PlaeyrStateOld.EXITROOM);
                 rodaClient.setSessionID(null);
             }
         });

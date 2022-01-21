@@ -218,7 +218,7 @@ public class MenuFactory {
 
     private void updateMainButtonPos() {
         mainButtons.pack();
-        mainButtons.setPosition(450f - mainButtons.getWidth() / 2f, buttonposition.y - mainButtons.getWidth() + 30f);
+        mainButtons.setPosition(450f - mainButtons.getWidth() / 2f, buttonposition.y - mainButtons.getWidth() + 50f);
     }
 
     public void createMultiMenuFirst() {

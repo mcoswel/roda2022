@@ -22,8 +22,9 @@ import com.somboi.rodaimpian.gdxnew.assets.QuestionNew;
 import com.somboi.rodaimpian.gdxnew.games.OnlineGame;
 import com.somboi.rodaimpian.gdxnew.interfaces.OnInterface;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.ChatOnline;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.ChooseVocal;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.Disconnect;
-import com.somboi.rodaimpian.gdxnew.onlineclasses.HostDisconnect;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.GameState;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.KickPlayer;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.NetWork;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.PlayerStates;
@@ -44,15 +45,15 @@ public class OnlineScreen extends BaseScreenNew implements OnInterface {
 
     public OnlineScreen(RodaImpianNew rodaImpianNew) {
         super(rodaImpianNew);
-        Gdx.input.setInputProcessor(stage);
+        statusLabel = new StatusLabel(skin);
+        statusLabel.updateText(StringRes.CONNECTING);
         actorFactory.createGameBgBlur(rodaImpianNew.isGoldTheme());
         onlineGame = new OnlineGame(stage, rodaImpianNew, this);
-        statusLabel = new StatusLabel(skin);
         stage.addActor(sessionGroup);
         stage.addActor(statusLabel);
-        statusLabel.updateText(StringRes.CONNECTING);
         createMenu();
         setUpClient();
+        Gdx.input.setInputProcessor(stage);
     }
 
     private void setUpClient() {
@@ -131,6 +132,9 @@ public class OnlineScreen extends BaseScreenNew implements OnInterface {
 
         @Override
         public void received(Connection connection, Object o) {
+            if (o instanceof PlayerStates) {
+                client.sendTCP(o);
+            }
             if (o instanceof RoomLists) {
                 RoomLists roomLists = (RoomLists) o;
                 if (roomLists != null && !host) {
@@ -147,15 +151,23 @@ public class OnlineScreen extends BaseScreenNew implements OnInterface {
                 onlineGame.playerDisconnected(disconnect.getPlayerId());
             }
 
-            if (o instanceof HostDisconnect) {
-                //   logger.debug("Host disconnect ");
-                ErrDiag errDiag = new ErrDiag(StringRes.HOSTLOST, skin) {
-                    @Override
-                    public void func() {
-                        rodaImpianNew.setScreen(new OnlineScreen(rodaImpianNew));
-                    }
-                };
-                errDiag.show(stage);
+            if (o instanceof GameState) {
+                GameState gameState = (GameState) o;
+
+                if (gameState.equals(GameState.HOSTDISCONNECT)) {
+                    ErrDiag errDiag = new ErrDiag(StringRes.HOSTLOST, skin) {
+                        @Override
+                        public void func() {
+                            rodaImpianNew.setScreen(new OnlineScreen(rodaImpianNew));
+                        }
+                    };
+                    errDiag.show(stage);
+                }
+            }
+
+            if (o instanceof ChooseVocal) {
+                ChooseVocal chooseVocal = (ChooseVocal) o;
+                onlineGame.chooseVocal(chooseVocal);
             }
 
             if (o instanceof KickPlayer) {
@@ -179,12 +191,7 @@ public class OnlineScreen extends BaseScreenNew implements OnInterface {
             }*/
 
 
-            if (o instanceof PlayerStates) {
-                PlayerStates playerStates = (PlayerStates) o;
-                if (playerStates.equals(PlayerStates.CHOOSESPIN)) {
 
-                }
-            }
 
 
         }

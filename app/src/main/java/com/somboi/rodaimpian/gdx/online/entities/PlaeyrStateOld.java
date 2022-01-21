@@ -1,6 +1,6 @@
 package com.somboi.rodaimpian.gdx.online.entities;
 
-public enum PlayerState {
+public enum PlaeyrStateOld {
     START,
     CONNECTED,
     EXITROOM,

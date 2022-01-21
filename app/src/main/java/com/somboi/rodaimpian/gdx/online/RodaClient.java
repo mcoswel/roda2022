@@ -2,7 +2,6 @@ package com.somboi.rodaimpian.gdx.online;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Logger;
-import com.badlogic.gdx.utils.Queue;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -16,8 +15,8 @@ import com.somboi.rodaimpian.gdx.online.entities.BonusIndex;
 import com.somboi.rodaimpian.gdx.online.entities.CheckAnswer;
 import com.somboi.rodaimpian.gdx.online.entities.DisconnectPlayer;
 import com.somboi.rodaimpian.gdx.online.entities.EnvelopeIndex;
-import com.somboi.rodaimpian.gdx.online.entities.GameState;
-import com.somboi.rodaimpian.gdx.online.entities.PlayerState;
+import com.somboi.rodaimpian.gdx.online.entities.GameStateOld;
+import com.somboi.rodaimpian.gdx.online.entities.PlaeyrStateOld;
 import com.somboi.rodaimpian.gdx.online.newentities.ClearSession;
 import com.somboi.rodaimpian.gdx.online.newentities.CreateSessions;
 import com.somboi.rodaimpian.gdx.online.newentities.FinishSpin;
@@ -40,7 +39,7 @@ public class RodaClient {
     private WheelParam wheelParam;
     private OnlineInterface onlineScreen;
     private String sessionID;
-    private PlayerState playerState;
+    private PlaeyrStateOld plaeyrStateOld;
     public RodaClient(RodaImpian rodaImpian, OnlineInterface onlineScreen) {
         rodaImpian.setGameModes(GameModes.ONLINE);
         this.rodaImpian = rodaImpian;
@@ -83,7 +82,7 @@ public class RodaClient {
                     SetActivePlayer setActivePlayer = (SetActivePlayer) o;
                     onlineScreen.setActivePlayer(setActivePlayer.index);
                     rodaImpian.gotoOnlineScreen();
-                    sendObject(PlayerState.SHOWMENU);
+                    sendObject(PlaeyrStateOld.SHOWMENU);
                 }
 
                 if (o instanceof FinishSpin) {
@@ -98,58 +97,58 @@ public class RodaClient {
                             sendObject(finishSpin.wheelParam);
                         }
                     }
-                    sendObject(PlayerState.SHOWRESULT);
+                    sendObject(PlaeyrStateOld.SHOWRESULT);
                 }
-                if (o instanceof PlayerState) {
+                if (o instanceof PlaeyrStateOld) {
                     sendObject(o);
-                    logger.debug("receive playerstate " + ((PlayerState) o));
+                    logger.debug("receive playerstate " + ((PlaeyrStateOld) o));
                 }
 
-                if (o instanceof GameState) {
-                    GameState gameState = (GameState) o;
-                    if (gameState.equals(GameState.HOSTLOST)) {
+                if (o instanceof GameStateOld) {
+                    GameStateOld gameStateOld = (GameStateOld) o;
+                    if (gameStateOld.equals(GameStateOld.HOSTLOST)) {
                         onlineScreen.hostLost();
                     }
-                    if (gameState.equals(GameState.START)) {
+                    if (gameStateOld.equals(GameStateOld.START)) {
                         logger.debug("Start play");
                         onlineScreen.startPlays();
                     }
-                    if (gameState.equals(GameState.BANKRUPT)) {
+                    if (gameStateOld.equals(GameStateOld.BANKRUPT)) {
                         rodaImpian.gotoOnlineScreen();
-                        sendObject(PlayerState.CHANGETURN);
+                        sendObject(PlaeyrStateOld.CHANGETURN);
                     }
 
-                    if (gameState.equals(GameState.SHOWMENU)) {
+                    if (gameStateOld.equals(GameStateOld.SHOWMENU)) {
                         onlineScreen.showMenu();
                     }
-                    if (gameState.equals(GameState.SPIN)) {
+                    if (gameStateOld.equals(GameStateOld.SPIN)) {
                         rodaImpian.spinWheel();
                     }
 
-                    if (gameState.equals(GameState.SHOWVOCAL)) {
+                    if (gameStateOld.equals(GameStateOld.SHOWVOCAL)) {
                         onlineScreen.showVocals();
                     }
-                    if (gameState.equals(GameState.ROOMFULL)) {
+                    if (gameStateOld.equals(GameStateOld.ROOMFULL)) {
                         onlineScreen.roomFull();
                         RegisterPlayer registerPlayer = new RegisterPlayer();
                         registerPlayer.player = rodaImpian.getPlayer();
                         registerPlayer.roomID = "empty";
                         sendObject(registerPlayer);
                     }
-                    if (gameState.equals(GameState.KICKOUT)) {
+                    if (gameStateOld.equals(GameStateOld.KICKOUT)) {
                         onlineScreen.kickedOut();
                     }
-                    if (gameState.equals(GameState.SHOWRESULT)) {
+                    if (gameStateOld.equals(GameStateOld.SHOWRESULT)) {
                         rodaImpian.getWheelScreen().showResult();
                     }
-                    if (gameState.equals(GameState.GOTOMATCH)) {
+                    if (gameStateOld.equals(GameStateOld.GOTOMATCH)) {
                         rodaImpian.gotoOnlineScreen();
                     }
-                    if (gameState.equals(GameState.REVEALALL)) {
+                    if (gameStateOld.equals(GameStateOld.REVEALALL)) {
                         rodaImpian.gotoOnlineScreen();
                         onlineScreen.revealAll();
                     }
-                    if (gameState.equals(GameState.NEWROUND)) {
+                    if (gameStateOld.equals(GameStateOld.NEWROUND)) {
                         logger.debug("Increase game ");
                         onlineScreen.newRound();
                     }
@@ -297,12 +296,12 @@ public class RodaClient {
         this.sessionID = sessionID;
     }
 
-    public PlayerState getPlayerState() {
-        return playerState;
+    public PlaeyrStateOld getPlayerState() {
+        return plaeyrStateOld;
     }
 
-    public void setPlayerState(PlayerState playerState) {
-        this.playerState = playerState;
+    public void setPlayerState(PlaeyrStateOld plaeyrStateOld) {
+        this.plaeyrStateOld = plaeyrStateOld;
     }
 
     public void stop() {

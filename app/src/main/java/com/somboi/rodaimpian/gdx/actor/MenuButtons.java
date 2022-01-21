@@ -1,10 +1,8 @@
 package com.somboi.rodaimpian.gdx.actor;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -13,8 +11,7 @@ import com.somboi.rodaimpian.gdx.assets.AssetDesc;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdx.base.ModeBase;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
-import com.somboi.rodaimpian.gdx.online.entities.GameState;
-import com.somboi.rodaimpian.gdx.online.entities.PlayerState;
+import com.somboi.rodaimpian.gdx.online.entities.PlaeyrStateOld;
 
 public class MenuButtons {
     private final RodaImpian rodaImpian;
@@ -41,7 +38,7 @@ public class MenuButtons {
                 if (modeBase.getActivePlayer().currentScore >= 250) {
                     if (rodaImpian.getGameModes().equals(GameModes.ONLINE)){
                         if(rodaImpian.getPlayer().currentScore>=250) {
-                            modeBase.sendObject(PlayerState.SHOWVOCAL);
+                            modeBase.sendObject(PlaeyrStateOld.SHOWVOCAL);
                         }
                     }else{
                         modeBase.showVocals();
@@ -64,7 +61,7 @@ public class MenuButtons {
                     return;
                 }
                 if (rodaImpian.getGameModes().equals(GameModes.ONLINE)){
-                    modeBase.sendObject(PlayerState.SPIN);
+                    modeBase.sendObject(PlaeyrStateOld.SPIN);
                 }else {
                     modeBase.spinWheel();
                 }

@@ -11,8 +11,8 @@ import com.somboi.rodaimpian.gdx.online.entities.BonusIndex;
 import com.somboi.rodaimpian.gdx.online.entities.CheckAnswer;
 import com.somboi.rodaimpian.gdx.online.entities.DisconnectPlayer;
 import com.somboi.rodaimpian.gdx.online.entities.EnvelopeIndex;
-import com.somboi.rodaimpian.gdx.online.entities.GameState;
-import com.somboi.rodaimpian.gdx.online.entities.PlayerState;
+import com.somboi.rodaimpian.gdx.online.entities.GameStateOld;
+import com.somboi.rodaimpian.gdx.online.entities.PlaeyrStateOld;
 import com.somboi.rodaimpian.gdx.online.entities.SessionList;
 import com.somboi.rodaimpian.gdx.online.entities.StatusText;
 import com.somboi.rodaimpian.gdx.online.entities.TilesOnline;
@@ -37,7 +37,7 @@ public class NetWorkOld {
         kryo.register(QuestionsReady.class);
         kryo.register(WheelParam.class);
         kryo.register(Player.class);
-        kryo.register(GameState.class);
+        kryo.register(GameStateOld.class);
         kryo.register(RegisterPlayer.class);
         kryo.register(StatusText.class);
         kryo.register(Float.class);
@@ -45,7 +45,7 @@ public class NetWorkOld {
         kryo.register(CheckAnswer.class);
         kryo.register(Character.class);
         kryo.register(BeginSpin.class);
-        kryo.register(PlayerState.class);
+        kryo.register(PlaeyrStateOld.class);
         kryo.register(SessionRoom.class);
         kryo.register(SessionList.class);
         kryo.register(DisconnectPlayer.class);

@@ -32,7 +32,7 @@ import com.somboi.rodaimpian.gdx.entities.Player;
 import com.somboi.rodaimpian.gdx.entities.PlayerGui;
 import com.somboi.rodaimpian.gdx.online.actor.KickBtn;
 import com.somboi.rodaimpian.gdx.online.entities.EnvelopeIndex;
-import com.somboi.rodaimpian.gdx.online.entities.PlayerState;
+import com.somboi.rodaimpian.gdx.online.entities.PlaeyrStateOld;
 import com.somboi.rodaimpian.gdx.online.newentities.RemovePlayer;
 import com.somboi.rodaimpian.gdx.online.newentities.RemoveSession;
 import com.somboi.rodaimpian.gdx.online.newentities.RodaSession;
@@ -78,7 +78,7 @@ public class OnlinePlay extends ModeBase {
                     RemoveSession removeSession = new RemoveSession();
                     removeSession.sessionid = rodaSession.id;
                     sendObject(removeSession);
-                    sendObject(PlayerState.START);
+                    sendObject(PlaeyrStateOld.START);
                 }
             }
         });
@@ -142,7 +142,7 @@ public class OnlinePlay extends ModeBase {
 
 
         if (!rodaSession.id.equals(rodaImpian.getPlayer().id)) {
-            sendObject(PlayerState.START);
+            sendObject(PlaeyrStateOld.START);
         }
       /*  player.guiIndex = playerSize;
         PlayerGui playerGui = new PlayerGui(player, new PlayerImage(player.picUri, textureAtlas.findRegion("default_avatar")));
@@ -190,7 +190,7 @@ public class OnlinePlay extends ModeBase {
                     checkWinner();
                 } else {
                     stage.addActor(hourGlass);
-                    sendObject(PlayerState.START);
+                    sendObject(PlaeyrStateOld.START);
                     //  startRound();
                 }
             }
@@ -215,9 +215,9 @@ public class OnlinePlay extends ModeBase {
         if (activePlayer.freeTurn && !activePlayer.disconnect) {
             playerGuis.get(activePlayer.guiIndex).removeFreeTurn();
             activePlayer.freeTurn = false;
-            sendObject(PlayerState.SHOWMENU);
+            sendObject(PlaeyrStateOld.SHOWMENU);
         } else {
-            sendObject(PlayerState.CHANGETURN);
+            sendObject(PlaeyrStateOld.CHANGETURN);
         }
     }
 
@@ -249,7 +249,7 @@ public class OnlinePlay extends ModeBase {
         statusGroup.remove();
         statusLabel.setText(StringRes.ONLINE);
         tilesGroup.addActor(statusLabel);
-        sendObject(PlayerState.SETACTIVEPLAYER);
+        sendObject(PlaeyrStateOld.SETACTIVEPLAYER);
         gameSound.playCorrect();
         infoLabel.setText(StringRes.ROUND + (1 + gameRound));
         if (gameRound != 3) {

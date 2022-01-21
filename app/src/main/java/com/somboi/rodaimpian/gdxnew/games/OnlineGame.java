@@ -16,13 +16,12 @@ import com.somboi.rodaimpian.gdxnew.actors.UltraSmallBtn;
 import com.somboi.rodaimpian.gdxnew.assets.QuestionNew;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
 import com.somboi.rodaimpian.gdxnew.interfaces.OnInterface;
-import com.somboi.rodaimpian.gdx.online.ChatOnlineOld;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.ChatOnline;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.ChooseVocal;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.GameState;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.KickPlayer;
-import com.somboi.rodaimpian.gdxnew.onlineclasses.Occupied;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.PlayerStates;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.RoomSession;
-import com.somboi.rodaimpian.gdxnew.onlineclasses.StartQuestion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +31,7 @@ public class OnlineGame extends BaseGame {
     private final OnInterface onInterface;
     private final Group onlineMenuGroup = new Group();
     private List<QuestionNew> questionNewList = new ArrayList<>();
+
     public OnlineGame(Stage stage, RodaImpianNew rodaImpianNew, OnInterface onInterface) {
         super(stage, rodaImpianNew);
         this.onInterface = onInterface;
@@ -53,7 +53,7 @@ public class OnlineGame extends BaseGame {
             playerGuis.add(setHumanGui(playerNew, 1));
         }
         for (PlayerGuis p : playerGuis) {
-            if (p.getPlayerNew().getUid().equals(rodaImpianNew.getPlayer().getUid())){
+            if (p.getPlayerNew().getUid().equals(rodaImpianNew.getPlayer().getUid())) {
                 selfGui = p;
             }
             p.getPlayerNew().setScore(0);
@@ -131,8 +131,8 @@ public class OnlineGame extends BaseGame {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 onlineMenuGroup.remove();
-                onInterface.sendObjects(new Occupied());
-                onInterface.sendObjects(new StartQuestion());
+                onInterface.sendObjects(GameState.OCCUPIED);
+                onInterface.sendObjects(PlayerStates.START);
             }
         });
         onlineMenuTable.add(start);
@@ -141,7 +141,7 @@ public class OnlineGame extends BaseGame {
         onlineMenuGroup.addActor(onlineMenuTable);
     }
 
-    public void showChatOnline(ChatOnline chatOnline){
+    public void showChatOnline(ChatOnline chatOnline) {
         playerGuis.get(chatOnline.getGuiIndex()).chat(chatOnline.getText());
     }
 
@@ -168,9 +168,9 @@ public class OnlineGame extends BaseGame {
     }
 
 
-    public boolean isTurn(){
-        for (PlayerGuis p: playerGuis){
-            if (p.getPlayerNew().isTurn()){
+    public boolean isTurn() {
+        for (PlayerGuis p : playerGuis) {
+            if (p.getPlayerNew().isTurn()) {
                 return p.getPlayerNew().getUid().equals(rodaImpianNew.getPlayer().getUid());
             }
         }
@@ -182,7 +182,10 @@ public class OnlineGame extends BaseGame {
         playerGuis.get(chooseVocal.getGuiIndex()).getPlayerNew().setScore(
                 playerGuis.get(chooseVocal.getGuiIndex()).getPlayerNew().getScore() - 250
         );
+        onInterface.sendObjects(PlayerStates.CHOOSEVOCAL);
+    }
 
+    public void vocalKeyboard() {
         playerMenu.createVocalTable();
     }
 }

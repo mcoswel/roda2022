@@ -1,6 +1,6 @@
 package com.somboi.rodaimpian.gdx.online.entities;
 
-public enum GameState {
+public enum GameStateOld {
    START,
    HOSTLOST,
    SHOWMENU,

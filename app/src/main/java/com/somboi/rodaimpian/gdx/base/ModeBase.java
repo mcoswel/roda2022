@@ -48,7 +48,7 @@ import com.somboi.rodaimpian.gdx.entities.WheelParam;
 import com.somboi.rodaimpian.gdx.listener.InputCompleteKey;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
 import com.somboi.rodaimpian.gdx.online.ChatOnlineOld;
-import com.somboi.rodaimpian.gdx.online.entities.PlayerState;
+import com.somboi.rodaimpian.gdx.online.entities.PlaeyrStateOld;
 import com.somboi.rodaimpian.gdx.online.newentities.SetActivePlayer;
 import com.somboi.rodaimpian.gdx.screen.WheelScreen;
 import com.somboi.rodaimpian.saves.PlayerSaves;
@@ -613,7 +613,7 @@ public class ModeBase {
         if (correct) {
 
             if (rodaImpian.getGameModes().equals(GameModes.ONLINE)) {
-                sendObject(PlayerState.COMPLETETRUE);
+                sendObject(PlaeyrStateOld.COMPLETETRUE);
             } else {
                 matchRound.revealAll();
             }
@@ -622,7 +622,7 @@ public class ModeBase {
                 endGame();
             } else {
                 if (rodaImpian.getGameModes().equals(GameModes.ONLINE)) {
-                    sendObject(PlayerState.COMPLETEWRONG);
+                    sendObject(PlaeyrStateOld.COMPLETEWRONG);
                     menuButtons.hideMenu();
                 } else {
                     changeTurn();

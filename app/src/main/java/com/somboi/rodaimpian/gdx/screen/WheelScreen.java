@@ -34,7 +34,7 @@ import com.somboi.rodaimpian.gdx.entities.WheelParam;
 import com.somboi.rodaimpian.gdx.listener.WorldContact;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
 import com.somboi.rodaimpian.gdx.online.entities.BonusIndex;
-import com.somboi.rodaimpian.gdx.online.entities.PlayerState;
+import com.somboi.rodaimpian.gdx.online.entities.PlaeyrStateOld;
 import com.somboi.rodaimpian.gdx.online.newentities.FinishSpin;
 import com.somboi.rodaimpian.gdx.utils.BodyEditorLoader;
 
@@ -602,10 +602,10 @@ public class WheelScreen extends BaseScreen {
                     rodaImpian.gotoMatch();
                 } else {
                     if (wheelParam.resultValue == 0) {
-                        modeBase.sendObject(PlayerState.BANKRUPT);
+                        modeBase.sendObject(PlaeyrStateOld.BANKRUPT);
                     } else {
                         modeBase.hideMenu();
-                        modeBase.sendObject(PlayerState.GOTOMATCH);
+                        modeBase.sendObject(PlaeyrStateOld.GOTOMATCH);
                     }
 
                 }
