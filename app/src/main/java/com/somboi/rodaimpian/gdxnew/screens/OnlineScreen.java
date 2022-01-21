@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
@@ -27,9 +26,9 @@ import com.somboi.rodaimpian.gdxnew.onlineclasses.Disconnect;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.HostDisconnect;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.KickPlayer;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.NetWork;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.PlayerStates;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.RoomLists;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.RoomSession;
-import com.somboi.rodaimpian.gdxnew.onlineclasses.StartQuestion;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -174,10 +173,19 @@ public class OnlineScreen extends BaseScreenNew implements OnInterface {
                 ChatOnline chatOnline = (ChatOnline) o;
                 onlineGame.showChatOnline(chatOnline);
             }
-            if (o instanceof StartQuestion) {
+         /*   if (o instanceof StartQuestion) {
                 statusLabel.remove();
                 onlineGame.startRound();
+            }*/
+
+
+            if (o instanceof PlayerStates) {
+                PlayerStates playerStates = (PlayerStates) o;
+                if (playerStates.equals(PlayerStates.CHOOSESPIN)) {
+
+                }
             }
+
 
         }
 
@@ -251,7 +259,6 @@ public class OnlineScreen extends BaseScreenNew implements OnInterface {
     }
 
 
-
     @Override
     public void backKey() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.BACK)) {
@@ -269,5 +276,14 @@ public class OnlineScreen extends BaseScreenNew implements OnInterface {
             yesNoDiag.show(stage);
 
         }
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        Disconnect disconnect = new Disconnect();
+        disconnect.setPlayerId(rodaImpianNew.getPlayer().getUid());
+        client.sendTCP(disconnect);
+
     }
 }

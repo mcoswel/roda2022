@@ -1,5 +1,7 @@
 package com.somboi.rodaimpian.gdxnew.entitiesnew;
 
+import com.somboi.rodaimpian.gdxnew.onlineclasses.PlayerStates;
+
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +21,7 @@ public class PlayerNew implements Comparable<PlayerNew> {
     private boolean disconnect;
     private boolean ai;
     private boolean logged;
+    private PlayerStates playerStates;
     private List<Integer> playerGifts;
     private List<Integer> playerBonus;
 
@@ -157,6 +160,14 @@ public class PlayerNew implements Comparable<PlayerNew> {
 
     public void setAnimateScore(int animateScore) {
         this.animateScore = animateScore;
+    }
+
+    public PlayerStates getPlayerStates() {
+        return playerStates;
+    }
+
+    public void setPlayerStates(PlayerStates playerStates) {
+        this.playerStates = playerStates;
     }
 
     @Override

@@ -2,9 +2,9 @@ package com.somboi.rodaimpian.gdxnew.onlineclasses;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
-import com.somboi.rodaimpian.gdx.online.ChatOnlineOld;
 import com.somboi.rodaimpian.gdxnew.assets.QuestionNew;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
+import com.somboi.rodaimpian.gdxnew.wheels.WheelParams;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,9 @@ public class NetWork {
         kryo.register(KickPlayer.class);
         kryo.register(ChatOnline.class);
         kryo.register(Occupied.class);
-        kryo.register(StartQuestion.class);
+        kryo.register(ChooseLetter.class);
+        kryo.register(WheelParams.class);
+
 
     }
 }

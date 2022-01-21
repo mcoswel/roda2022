@@ -2,6 +2,7 @@ package com.somboi.rodaimpian.gdx.online;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Logger;
+import com.badlogic.gdx.utils.Queue;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -84,6 +85,7 @@ public class RodaClient {
                     rodaImpian.gotoOnlineScreen();
                     sendObject(PlayerState.SHOWMENU);
                 }
+
                 if (o instanceof FinishSpin) {
                     FinishSpin finishSpin = (FinishSpin) o;
                     //onlineScreen.newOnline.setWheelParam(finishSpin.wheelParam);

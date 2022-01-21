@@ -10,8 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdx.config.GameConfig;
+import com.somboi.rodaimpian.gdx.modes.GameModes;
 import com.somboi.rodaimpian.gdxnew.games.BaseGame;
-import com.somboi.rodaimpian.gdxnew.interfaces.OnInterface;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.ChooseVocal;
 
 public class PlayerMenu {
     private final Stage stage;
@@ -29,6 +30,7 @@ public class PlayerMenu {
     private int consonantCounter;
     private int vocalCounter;
     private String bonusStringHolder = "";
+
     public PlayerMenu(Stage stage, BaseGame baseGame, Skin skin) {
         this.stage = stage;
         this.baseGame = baseGame;
@@ -39,8 +41,19 @@ public class PlayerMenu {
         vocal.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+
+
+
                 if (baseGame.getActivePlayer().getScore() >= 250) {
                     clear();
+
+                    if (baseGame.getGameModes().equals(GameModes.ONLINE)){
+                        ChooseVocal chooseVocal = new ChooseVocal() ;
+                        chooseVocal.setGuiIndex(baseGame.getSelfGui().getPlayerIndex());
+                        baseGame.sendObject(chooseVocal);
+                        return;
+                    }
+
                     baseGame.getActivePlayer().setScore(baseGame.getActivePlayer().getScore() - 250);
                     createVocalTable();
                 } else {
@@ -89,6 +102,7 @@ public class PlayerMenu {
 
     }
 
+
     private void createPlayMenu() {
         menuTable.clear();
         Table first = new Table();
@@ -108,7 +122,6 @@ public class PlayerMenu {
     public void hideComplete() {
         completeTable.remove();
     }
-
 
 
     private void createCompleteTable() {
@@ -192,7 +205,7 @@ public class PlayerMenu {
     }
 
 
-    private void createVocalTable() {
+    public void createVocalTable() {
         final Dialog vocalDiag = new Dialog(StringRes.VOKAL, skin) {
             @Override
             public float getPrefWidth() {

@@ -18,6 +18,7 @@ import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
 import com.somboi.rodaimpian.gdxnew.interfaces.OnInterface;
 import com.somboi.rodaimpian.gdx.online.ChatOnlineOld;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.ChatOnline;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.ChooseVocal;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.KickPlayer;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.Occupied;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.RoomSession;
@@ -30,7 +31,6 @@ public class OnlineGame extends BaseGame {
     private RoomSession roomSession;
     private final OnInterface onInterface;
     private final Group onlineMenuGroup = new Group();
-    private PlayerGuis selfGui;
     private List<QuestionNew> questionNewList = new ArrayList<>();
     public OnlineGame(Stage stage, RodaImpianNew rodaImpianNew, OnInterface onInterface) {
         super(stage, rodaImpianNew);
@@ -108,11 +108,15 @@ public class OnlineGame extends BaseGame {
         stage.addActor(chat);
     }
 
+    //startQuestion
     @Override
     public void startRound() {
+        subjectLabel.remove();
         stage.addActor(vannaHost);
-        vannaHost.relax();
+        stage.addActor(subjectLabel);
+        vannaHost.dance();
         showQuestions();
+        playerMenu = new PlayerMenu(stage, this, skin);
     }
 
     @Override
@@ -134,7 +138,7 @@ public class OnlineGame extends BaseGame {
         onlineMenuTable.add(start);
         onlineMenuTable.pack();
         onlineMenuTable.setPosition(450f - onlineMenuTable.getWidth() / 2f, 750f);
-        stage.addActor(onlineMenuTable);
+        onlineMenuGroup.addActor(onlineMenuTable);
     }
 
     public void showChatOnline(ChatOnline chatOnline){
@@ -156,5 +160,29 @@ public class OnlineGame extends BaseGame {
 
     public void setRoomSession(RoomSession roomSession) {
         this.roomSession = roomSession;
+    }
+
+    @Override
+    public void sendObject(Object o) {
+        onInterface.sendObjects(o);
+    }
+
+
+    public boolean isTurn(){
+        for (PlayerGuis p: playerGuis){
+            if (p.getPlayerNew().isTurn()){
+                return p.getPlayerNew().getUid().equals(rodaImpianNew.getPlayer().getUid());
+            }
+        }
+        return false;
+    }
+
+    public void chooseVocal(ChooseVocal chooseVocal) {
+
+        playerGuis.get(chooseVocal.getGuiIndex()).getPlayerNew().setScore(
+                playerGuis.get(chooseVocal.getGuiIndex()).getPlayerNew().getScore() - 250
+        );
+
+        playerMenu.createVocalTable();
     }
 }

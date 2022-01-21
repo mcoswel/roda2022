@@ -21,6 +21,7 @@ import com.somboi.rodaimpian.gdx.assets.AssetDesc;
 import com.somboi.rodaimpian.gdx.assets.GameSound;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdx.config.GameConfig;
+import com.somboi.rodaimpian.gdx.modes.GameModes;
 import com.somboi.rodaimpian.gdxnew.FlyingMoney;
 import com.somboi.rodaimpian.gdxnew.actors.Bonuses;
 import com.somboi.rodaimpian.gdxnew.actors.ChatBubble;
@@ -86,6 +87,8 @@ public class BaseGame {
     protected boolean clickEnvelope;
     protected StringBuilder bonusStringHolder;
     protected Bonuses bonusGiftImg;
+    protected final GameModes gameModes;
+    protected PlayerGuis selfGui;
 
     public BaseGame(Stage stage, RodaImpianNew rodaImpianNew) {
         this.stage = stage;
@@ -99,6 +102,7 @@ public class BaseGame {
         this.hourGlass = new HourGlass(rodaImpianNew.getAssetManager().get(AssetDesc.HOURGLASS));
         this.gifts = new Gifts(atlas, rodaImpianNew.getAssetManager().get(AssetDesc.SPARKLE));
         this.giftsIndexes.shuffle();
+        this.gameModes = rodaImpianNew.getGameModes();
         stage.addActor(subjectLabel);
         stage.addActor(tilesGroup);
         stage.addActor(incompleteGroup);
@@ -799,4 +803,15 @@ public class BaseGame {
         }
     }
 
+    public void sendObject(Object o){
+
+    }
+
+    public GameModes getGameModes() {
+        return gameModes;
+    }
+
+    public PlayerGuis getSelfGui() {
+        return selfGui;
+    }
 }
