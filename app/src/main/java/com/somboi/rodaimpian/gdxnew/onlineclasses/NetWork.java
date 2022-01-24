@@ -21,13 +21,13 @@ public class NetWork {
         kryo.register(JoinSession.class);
         kryo.register(RoomLists.class);
         kryo.register(Disconnect.class);
-        kryo.register(HostDisconnect.class);
         kryo.register(KickPlayer.class);
         kryo.register(ChatOnline.class);
         kryo.register(Occupied.class);
         kryo.register(ChooseLetter.class);
         kryo.register(WheelParams.class);
-
+        kryo.register(PlayerStates.class);
+        kryo.register(GameState.class);
 
     }
 }

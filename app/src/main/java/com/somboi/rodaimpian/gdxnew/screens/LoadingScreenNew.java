@@ -19,6 +19,7 @@ import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdx.config.GameConfig;
 import com.somboi.rodaimpian.gdxnew.assets.QuestionNew;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.PlayerStates;
 import com.somboi.rodaimpian.saves.PlayerSaves;
 import com.somboi.rodaimpian.saves.QuestionsSaves;
 
@@ -54,6 +55,8 @@ public class LoadingScreenNew extends ScreenAdapter {
             player.setUid(UUID.randomUUID().toString());
             playerSaves.savePlayerNew(player);
         }
+
+        player.setPlayerStates(PlayerStates.LOADED);
         rodaImpian.setPlayerSaves(playerSaves);
         rodaImpian.setPlayer(player);
         rodaImpian.getFcmToken();

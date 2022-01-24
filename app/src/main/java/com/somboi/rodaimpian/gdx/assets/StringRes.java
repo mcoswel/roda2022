@@ -110,9 +110,9 @@ public class StringRes {
     public static final String FACEBOOK = "Facebook";
     public static final String GMAIL = "Google";
     //public static final String RODARODA = "159.223.73.205";
-    //public static final String RODARODA = "10.1.19.2";
+    public static final String RODARODA = "10.1.19.2";
     // public static final String RODARODA = "192.168.43.69";
-     public static final String RODARODA = "127.0.0.1";
+    // public static final String RODARODA = "127.0.0.1";
 
     public static final String ENTERNAME = "Taipkan nama anda";
     public static final String LETSPLAY = " Mengajak Bermain";

@@ -5,4 +5,5 @@ public interface OnInterface {
     boolean isHost();
     boolean isBanned(String roomID);
     void updateStatusLabel(String text);
+    boolean isTurn();
 }

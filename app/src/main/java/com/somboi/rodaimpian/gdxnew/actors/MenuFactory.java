@@ -145,7 +145,7 @@ public class MenuFactory {
             login.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
-                    mainScreen.loginFacebook();
+                    loginDialog();
                 }
             });
         }
@@ -155,11 +155,12 @@ public class MenuFactory {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if (!rodaImpianNew.getPlayer().isLogged()) {
-                    LoginDiag loginDiag = new LoginDiag(skin, rodaImpianNew);
-                    loginDiag.show(stage);
+                   loginDialog();
                 }else{
                     rodaImpianNew.setGameModes(GameModes.ONLINE);
-                    rodaImpianNew.setScreen(new OnlineScreen(rodaImpianNew));
+                    OnlineScreen onlineScreen = new OnlineScreen(rodaImpianNew);
+                    rodaImpianNew.setOnlineScreen(onlineScreen);
+                    rodaImpianNew.backOnlineScreen();
                 }
             }
         });
@@ -186,6 +187,11 @@ public class MenuFactory {
                 createThreePlayerOffline();
             }
         });
+    }
+
+    private void loginDialog(){
+        LoginDiag loginDiag = new LoginDiag(skin, rodaImpianNew);
+        loginDiag.show(stage);
     }
     private void updateMultiButton(){
         startMulti.pack();

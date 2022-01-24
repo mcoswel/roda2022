@@ -13,12 +13,14 @@ import com.somboi.rodaimpian.gdxnew.interfaces.OnInterface;
 import com.somboi.rodaimpian.gdxnew.screens.GameScreen;
 import com.somboi.rodaimpian.gdxnew.screens.LoadingScreenNew;
 import com.somboi.rodaimpian.gdxnew.screens.MainScreen;
+import com.somboi.rodaimpian.gdxnew.screens.OnlineScreen;
+import com.somboi.rodaimpian.gdxnew.screens.SpinOnline;
 import com.somboi.rodaimpian.gdxnew.wheels.WheelParams;
 import com.somboi.rodaimpian.saves.PlayerSaves;
 
 public class RodaImpianNew extends Game {
     private final AssetManager assetManager = new AssetManager();
-    private final WheelParams wheelParams = new WheelParams();
+    private  WheelParams wheelParams = new WheelParams();
     private MainScreen mainScreen;
     private GameModes gameModes;
     private boolean goldTheme;
@@ -31,6 +33,8 @@ public class RodaImpianNew extends Game {
     private final Array<QuestionNew>preparedQuestions = new Array<>();
     private PlayerSaves playerSaves;
     private Array<String> bannedRoom = new Array<>();
+    private OnlineScreen onlineScreen;
+    private SpinOnline spinOnline;
     public RodaImpianNew(AndroInterface androInterface) {
         this.androInterface = androInterface;
     }
@@ -188,5 +192,32 @@ public class RodaImpianNew extends Game {
 
     public void chatOnline(OnInterface onInterface, int guiIndex) {
         androInterface.chatOnline(onInterface, guiIndex);
+    }
+
+    public void setWheelParams(WheelParams wheelParams) {
+        this.wheelParams = wheelParams;
+    }
+    public void setOnlineScreen(OnlineScreen onlineScreen){
+        this.onlineScreen = onlineScreen;
+    }
+
+    public void createSpinOnlineNormal(OnInterface onInterface){
+        spinOnline = new SpinOnline(this, false, onInterface);
+    }
+
+    public void spinOnline(){
+        if (spinOnline!=null){
+            setScreen(spinOnline);
+        }
+    }
+
+    public SpinOnline getSpinOnline() {
+        return spinOnline;
+    }
+
+    public void backOnlineScreen(){
+        if (onlineScreen!=null){
+            setScreen(onlineScreen);
+        }
     }
 }

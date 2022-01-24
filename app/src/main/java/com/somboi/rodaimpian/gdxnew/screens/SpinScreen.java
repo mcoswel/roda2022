@@ -29,10 +29,10 @@ public class SpinScreen extends BaseScreenNew {
     private float yInitial, yFinal;
     private boolean startRotation;
     private final Array<Body> slotSensors;
-    private final WorldContact worldContact;
-    private final SlotResultLabel slotResult;
+    protected final WorldContact worldContact;
+    protected final SlotResultLabel slotResult;
     private boolean rotated;
-    private final GameSound gameSound;
+    protected final GameSound gameSound;
     private final boolean cpuMoves;
     private boolean bonus;
 
@@ -131,40 +131,7 @@ public class SpinScreen extends BaseScreenNew {
                     needleJoint.setMotorSpeed(0);
                 }
                 startRotation = false;
-
-
-                Timer.schedule(new Timer.Task() {
-                    @Override
-                    public void run() {
-                        ////after spin
-                        if (worldContact.getLastContact() != null) {
-                            slotResult.addAction(new SequenceAction(Actions.fadeOut(0f), Actions.fadeIn(1f)));
-                            stage.addActor(slotResult);
-                            if (actorFactory.isWheelBonus()) {
-                                rodaImpianNew.getWheelParams().getBonusResult(worldContact.getLastContact());
-                            } else {
-                                rodaImpianNew.getWheelParams().getResult(worldContact.getLastContact());
-                            }
-                            slotResult.setText(rodaImpianNew.getWheelParams().getScoreStrings());
-                            if (rodaImpianNew.getWheelParams().getScores() == 0) {
-                                gameSound.playAww();
-                            }
-                        }
-/*
-                        logger.debug(
-                                "last contact " +
-                                        worldContact.getLastContact() +
-                                        ", wheel params " +
-                                        rodaImpianNew.getWheelParams().getScores() + ", " + rodaImpianNew.getWheelParams().getScoreStrings());*/
-                        Timer.schedule(new Timer.Task() {
-                            @Override
-                            public void run() {
-                                rodaImpianNew.finishSpin();
-                            }
-                        }, 1.5f);
-                    }
-                }, 2f);
-
+                finishSpin();
             }
         }
 
@@ -183,6 +150,40 @@ public class SpinScreen extends BaseScreenNew {
         }
 */
 
+    }
+
+    public void finishSpin(){
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                ////after spin
+                if (worldContact.getLastContact() != null) {
+                    slotResult.addAction(new SequenceAction(Actions.fadeOut(0f), Actions.fadeIn(1f)));
+                    stage.addActor(slotResult);
+                    if (actorFactory.isWheelBonus()) {
+                        rodaImpianNew.getWheelParams().getBonusResult(worldContact.getLastContact());
+                    } else {
+                        rodaImpianNew.getWheelParams().getResult(worldContact.getLastContact());
+                    }
+                    slotResult.setText(rodaImpianNew.getWheelParams().getScoreStrings());
+                    if (rodaImpianNew.getWheelParams().getScores() == 0) {
+                        gameSound.playAww();
+                    }
+                }
+/*
+                        logger.debug(
+                                "last contact " +
+                                        worldContact.getLastContact() +
+                                        ", wheel params " +
+                                        rodaImpianNew.getWheelParams().getScores() + ", " + rodaImpianNew.getWheelParams().getScoreStrings());*/
+                Timer.schedule(new Timer.Task() {
+                    @Override
+                    public void run() {
+                        rodaImpianNew.finishSpin();
+                    }
+                }, 1.5f);
+            }
+        }, 2f);
     }
 
     @Override
