@@ -44,7 +44,7 @@ import com.somboi.rodaimpian.gdxnew.actors.WheelTurns;
 import com.somboi.rodaimpian.gdxnew.actors.WinnerDialog;
 import com.somboi.rodaimpian.gdxnew.assets.QuestionNew;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.AiMoves;
-import com.somboi.rodaimpian.gdxnew.entitiesnew.GiftsNew;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.GiftsNew;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
 import com.somboi.rodaimpian.gdxnew.interfaces.KeyListen;
 import com.somboi.rodaimpian.gdxnew.screens.BombeiroScreen;
@@ -79,7 +79,7 @@ public class BaseGame {
     protected final HourGlass hourGlass;
     protected String answerString;
     protected final Gifts gifts;
-    protected final Array<Integer> giftsIndexes = new Array<>(new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23});
+    protected Array<Integer> giftsIndexes = new Array<>(new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23});
     protected final GiftsNew giftsNew = new GiftsNew();
     protected final Array<TileBase> incompleteTiles = new Array<>();
     protected KeyListen keyListen;
@@ -113,7 +113,7 @@ public class BaseGame {
         setUpNewRound();
     }
 
-    private void prepareEnvelope() {
+    public  void prepareEnvelope() {
         playerMenu = new PlayerMenu(stage, this, skin);
         setUpNewRound();
         bonusGiftImg = new Bonuses(atlas, rodaImpianNew.getWheelParams().getBonusIndex());
@@ -742,6 +742,10 @@ public class BaseGame {
                 giftsIndexes.shuffle();
                 giftsNew.setGiftIndex(giftsIndexes.get(0));
                 giftsIndexes.removeIndex(0);
+                if (giftsIndexes.isEmpty()){
+                    giftsIndexes = new Array<>(new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23});
+                    giftsIndexes.shuffle();
+                }
                 rodaImpianNew.getWheelParams().setScores(
                         gifts.getGiftValue(giftsNew.getGiftIndex())
                 );

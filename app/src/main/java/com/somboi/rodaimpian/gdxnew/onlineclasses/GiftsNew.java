@@ -1,4 +1,4 @@
-package com.somboi.rodaimpian.gdxnew.entitiesnew;
+package com.somboi.rodaimpian.gdxnew.onlineclasses;
 
 import java.util.ArrayList;
 import java.util.Arrays;

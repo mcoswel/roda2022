@@ -10,6 +10,7 @@ import com.somboi.rodaimpian.gdx.screen.OnlineInterface;
 import com.somboi.rodaimpian.gdxnew.assets.QuestionNew;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
 import com.somboi.rodaimpian.gdxnew.interfaces.OnInterface;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.ApplyForce;
 import com.somboi.rodaimpian.gdxnew.screens.GameScreen;
 import com.somboi.rodaimpian.gdxnew.screens.LoadingScreenNew;
 import com.somboi.rodaimpian.gdxnew.screens.MainScreen;
@@ -205,9 +206,15 @@ public class RodaImpianNew extends Game {
         spinOnline = new SpinOnline(this, false, onInterface);
     }
 
-    public void spinOnline(){
+    public void spinOnline(boolean bonusMode){
         if (spinOnline!=null){
             setScreen(spinOnline);
+        }
+    }
+
+    public void forceWheel(ApplyForce applyForce){
+        if (spinOnline!=null){
+            spinOnline.spinWheel(applyForce);
         }
     }
 
@@ -220,4 +227,6 @@ public class RodaImpianNew extends Game {
             setScreen(onlineScreen);
         }
     }
+
+
 }

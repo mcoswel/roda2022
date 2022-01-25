@@ -4,8 +4,9 @@ public enum GameState {
     HOSTDISCONNECT,
     START,
     SPINSCREEN,
-    SHOWRESULT,
+    SHOWCONSONANT,
     FINISHSPIN,
+    PREPAREENVELOPE,
     OCCUPIED
 }
 

@@ -22,16 +22,16 @@ import com.somboi.rodaimpian.gdxnew.interfaces.WorldContact;
 public class SpinScreen extends BaseScreenNew {
     private final WorldFactory worldFactory;
     //private final Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
-    private final Body wheelBody;
+    protected final Body wheelBody;
     private final Body needleBody;
-    private final RevoluteJoint needleJoint;
+    protected final RevoluteJoint needleJoint;
     private float angularForce;
     private float yInitial, yFinal;
-    private boolean startRotation;
+    protected boolean startRotation;
     private final Array<Body> slotSensors;
     protected final WorldContact worldContact;
     protected final SlotResultLabel slotResult;
-    private boolean rotated;
+    protected boolean rotated;
     protected final GameSound gameSound;
     private final boolean cpuMoves;
     private boolean bonus;
@@ -78,10 +78,7 @@ public class SpinScreen extends BaseScreenNew {
                     angularForce = (yInitial - yFinal);
                     if (angularForce > 500f && !rotated) {
                         //  wheelJoint.setMotorSpeed(angularForce);
-                        wheelBody.applyAngularImpulse(-(angularForce + MathUtils.random(10f, 30f)) * 3, true);
-                        startRotation = true;
-                        rotated = true;
-                        needleJoint.setMotorSpeed(60f);
+                        applyAngularForce(angularForce);
                     }
                 }
             });
@@ -104,6 +101,13 @@ public class SpinScreen extends BaseScreenNew {
         if (bonus) {
             actorFactory.createWheelBonus();
         }
+    }
+
+    public void applyAngularForce(float angularForce) {
+        wheelBody.applyAngularImpulse(-(angularForce + MathUtils.random(10f, 30f)) * 3, true);
+        startRotation = true;
+        rotated = true;
+        needleJoint.setMotorSpeed(60f);
     }
 
     @Override

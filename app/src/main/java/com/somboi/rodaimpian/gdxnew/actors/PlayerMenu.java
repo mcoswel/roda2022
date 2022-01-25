@@ -13,6 +13,8 @@ import com.somboi.rodaimpian.gdx.config.GameConfig;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
 import com.somboi.rodaimpian.gdxnew.games.BaseGame;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.ChooseVocal;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.Disconnect;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.PlayerStates;
 
 public class PlayerMenu {
     private final Stage stage;
@@ -42,8 +44,6 @@ public class PlayerMenu {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
 
-
-
                 if (baseGame.getActivePlayer().getScore() >= 250) {
                     clear();
 
@@ -67,6 +67,10 @@ public class PlayerMenu {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 clear();
+                if (baseGame.getGameModes().equals(GameModes.ONLINE)){
+                    baseGame.sendObject(PlayerStates.CHOOSESPIN);
+                    return;
+                }
                 baseGame.spinWheel(false, false);
             }
         });
@@ -91,6 +95,11 @@ public class PlayerMenu {
                 YesNoDiag yesNoDiag = new YesNoDiag(StringRes.STOPPLAYING, skin) {
                     @Override
                     public void yesFunc() {
+                        if (baseGame.getGameModes().equals(GameModes.ONLINE)) {
+                            Disconnect disconnect = new Disconnect();
+                            disconnect.setPlayerId(baseGame.getSelfGui().getPlayerNew().getUid());
+                            baseGame.sendObject(disconnect);
+                        }
                         baseGame.mainMenu();
                     }
                 };

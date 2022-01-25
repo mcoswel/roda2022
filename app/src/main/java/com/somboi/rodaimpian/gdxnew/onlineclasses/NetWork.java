@@ -28,6 +28,9 @@ public class NetWork {
         kryo.register(WheelParams.class);
         kryo.register(PlayerStates.class);
         kryo.register(GameState.class);
+        kryo.register(ApplyForce.class);
+        kryo.register(WheelBodyAngle.class);
+        kryo.register(GiftsNew.class);
 
     }
 }
