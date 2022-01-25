@@ -202,7 +202,6 @@ public class OnlineScreen extends BaseScreenNew implements OnInterface {
                     onlineGame.prepareEnvelope();
                 }
                 if (gameState.equals(GameState.SHOWCONSONANT)){
-                    logger.debug("showconsonanst");
                     onlineGame.showConsonants();
                 }
 
@@ -230,7 +229,6 @@ public class OnlineScreen extends BaseScreenNew implements OnInterface {
             }
 
             if (o instanceof WheelBodyAngle){
-                logger.debug("recevice wheelbody");
                 if (!isTurn()) {
                     WheelBodyAngle wheelBodyAngle = (WheelBodyAngle) o;
                     rodaImpianNew.getSpinOnline().setWheelBodyAngle(wheelBodyAngle);
