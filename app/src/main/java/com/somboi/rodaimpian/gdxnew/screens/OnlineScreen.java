@@ -22,9 +22,15 @@ import com.somboi.rodaimpian.gdxnew.assets.QuestionNew;
 import com.somboi.rodaimpian.gdxnew.games.OnlineGame;
 import com.somboi.rodaimpian.gdxnew.interfaces.OnInterface;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.ApplyForce;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.BonusStringHolder;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.ChangeTurn;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.ChatOnline;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.CheckAnswer;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.ChooseSpin;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.ChooseVocal;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.CompleteAnswer;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.Disconnect;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.FinishGame;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.GameState;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.GiftsNew;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.KickPlayer;
@@ -32,6 +38,9 @@ import com.somboi.rodaimpian.gdxnew.onlineclasses.NetWork;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.PlayerStates;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.RoomLists;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.RoomSession;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.ShowMenu;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.ShowWinner;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.StartTurn;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.WheelBodyAngle;
 import com.somboi.rodaimpian.gdxnew.wheels.WheelParams;
 
@@ -57,7 +66,6 @@ public class OnlineScreen extends BaseScreenNew implements OnInterface {
         stage.addActor(statusLabel);
         createMenu();
         setUpClient();
-        rodaImpianNew.createSpinOnlineNormal(this);
         //Gdx.input.setInputProcessor(stage);
     }
 
@@ -123,7 +131,6 @@ public class OnlineScreen extends BaseScreenNew implements OnInterface {
     }
 
 
-
     private class Clistener extends Listener {
         @Override
         public void connected(Connection connection) {
@@ -141,16 +148,40 @@ public class OnlineScreen extends BaseScreenNew implements OnInterface {
             Disconnect disconnect = new Disconnect();
             disconnect.setPlayerId(rodaImpianNew.getPlayer().getUid());
             client.sendTCP(disconnect);
+            sendObjects(PlayerStates.DISCONNECT);
+            ErrDiag errDiag = new ErrDiag(StringRes.DISCONNECTED, skin) {
+                @Override
+                public void func() {
+                    rodaImpianNew.mainMenu();
+
+                }
+            };
+            errDiag.show(stage);
         }
 
         @Override
         public void received(Connection connection, Object o) {
-            if (o instanceof PlayerStates) {
-                PlayerStates playerStates = (PlayerStates)o;
-                if (!rodaImpianNew.getPlayer().getPlayerStates().equals(playerStates)){
-                    rodaImpianNew.getPlayer().setPlayerStates(playerStates);
-                    client.sendTCP(o);
-                }
+
+            if (o instanceof ChooseSpin) {
+                client.sendTCP(PlayerStates.CHOOSESPIN);
+            }
+            if (o instanceof FinishGame) {
+                client.sendTCP(PlayerStates.FINISHROUND);
+            }
+            if (o instanceof CompleteAnswer) {
+                client.sendTCP(PlayerStates.CHOOSECOMPLETE);
+            }
+            if (o instanceof ShowWinner) {
+                client.sendTCP(PlayerStates.SHOWWINNER);
+            }
+            if (o instanceof ChangeTurn) {
+                client.sendTCP(PlayerStates.CHANGETURN);
+            }
+            if (o instanceof StartTurn) {
+                client.sendTCP(PlayerStates.STARTTURN);
+            }
+            if (o instanceof ShowMenu) {
+                client.sendTCP(PlayerStates.SHOWMENU);
             }
             if (o instanceof RoomLists) {
                 RoomLists roomLists = (RoomLists) o;
@@ -168,8 +199,14 @@ public class OnlineScreen extends BaseScreenNew implements OnInterface {
                 onlineGame.playerDisconnected(disconnect.getPlayerId());
             }
             if (o instanceof GiftsNew) {
-                GiftsNew giftsNew = (GiftsNew)o;
+                GiftsNew giftsNew = (GiftsNew) o;
                 onlineGame.setGiftOnline(giftsNew);
+            }
+
+
+                if (o instanceof BonusStringHolder) {
+                BonusStringHolder bonusStringHolder = (BonusStringHolder) o;
+                onlineGame.checkBonusString(bonusStringHolder.getBonusStringHolder());
             }
 
             if (o instanceof GameState) {
@@ -192,17 +229,50 @@ public class OnlineScreen extends BaseScreenNew implements OnInterface {
                 if (gameState.equals(GameState.FINISHSPIN)) {
                     rodaImpianNew.backOnlineScreen();
                     sendObjects(PlayerStates.SHOWCONSONANT);
+                    rodaImpianNew.getPlayer().setPlayerStates(PlayerStates.SHOWCONSONANT);
                 }
 
                 if (gameState.equals(GameState.START)) {
                     statusLabel.remove();
                     onlineGame.startRound();
                 }
+                if (gameState.equals(GameState.SHOWQUESTIONS)) {
+                    onlineGame.showQuestions();
+                }
+                if (gameState.equals(GameState.STARTURN)) {
+                    onlineGame.executeStartTurn();
+                }
+                if (gameState.equals(GameState.SHOWMENU)) {
+                    onlineGame.executeShowPlayerMenu();
+                }
+                if (gameState.equals(GameState.CHANGETURN)) {
+                    onlineGame.executeChangeTurn();
+                }
                 if (gameState.equals(GameState.PREPAREENVELOPE)) {
                     onlineGame.prepareEnvelope();
                 }
-                if (gameState.equals(GameState.SHOWCONSONANT)){
+                if (gameState.equals(GameState.SHOWCONSONANT)) {
                     onlineGame.showConsonants();
+                }
+                if (gameState.equals(GameState.SHOWVOCAL)) {
+                    onlineGame.vocalKeyboard();
+                }
+                if (gameState.equals(GameState.FINISHROUND)) {
+                    onlineGame.executeFinishGame();
+                }
+                if (gameState.equals(GameState.SHOWWINNER)) {
+                    onlineGame.executeShowWinner();
+                }
+                if (gameState.equals(GameState.COMPLETE)) {
+                    if (isTurn()) {
+                        try {
+                            if (onlineGame.completePuzzle()) {
+                                onlineGame.clearPlayerMenu();
+                            }
+                        } catch (CloneNotSupportedException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
 
             }
@@ -210,6 +280,10 @@ public class OnlineScreen extends BaseScreenNew implements OnInterface {
             if (o instanceof ChooseVocal) {
                 ChooseVocal chooseVocal = (ChooseVocal) o;
                 onlineGame.chooseVocal(chooseVocal);
+            }
+            if (o instanceof CheckAnswer) {
+                CheckAnswer checkAnswer = (CheckAnswer) o;
+                onlineGame.checkAnswer(checkAnswer.getCharacter());
             }
 
             if (o instanceof KickPlayer) {
@@ -228,7 +302,7 @@ public class OnlineScreen extends BaseScreenNew implements OnInterface {
                 onlineGame.showChatOnline(chatOnline);
             }
 
-            if (o instanceof WheelBodyAngle){
+            if (o instanceof WheelBodyAngle) {
                 if (!isTurn()) {
                     WheelBodyAngle wheelBodyAngle = (WheelBodyAngle) o;
                     rodaImpianNew.getSpinOnline().setWheelBodyAngle(wheelBodyAngle);
@@ -239,8 +313,8 @@ public class OnlineScreen extends BaseScreenNew implements OnInterface {
                 WheelParams wheelParams = (WheelParams) o;
                 rodaImpianNew.getSpinOnline().showResults(wheelParams);
             }
-            if (o instanceof ApplyForce){
-                ApplyForce applyForce = (ApplyForce)o;
+            if (o instanceof ApplyForce) {
+                ApplyForce applyForce = (ApplyForce) o;
                 rodaImpianNew.forceWheel(applyForce);
             }
 
@@ -282,8 +356,14 @@ public class OnlineScreen extends BaseScreenNew implements OnInterface {
 
     @Override
     public void updateStatusLabel(String text) {
-        statusLabel.updateText(text);
-        stage.addActor(statusLabel);
+        Gdx.app.postRunnable(new Runnable() {
+            @Override
+            public void run() {
+                statusLabel.updateText(text);
+                stage.addActor(statusLabel);
+            }
+        });
+
     }
 
     @Override
@@ -292,7 +372,13 @@ public class OnlineScreen extends BaseScreenNew implements OnInterface {
     }
 
     public void spinOnline(boolean bonus) {
-       rodaImpianNew.spinOnline(bonus);
+        Gdx.app.postRunnable(new Runnable() {
+            @Override
+            public void run() {
+                rodaImpianNew.spinOnline(bonus, OnlineScreen.this);
+            }
+        });
+
     }
 
     private void createPlayStage(RoomSession roomSession) {
@@ -331,10 +417,10 @@ public class OnlineScreen extends BaseScreenNew implements OnInterface {
             YesNoDiag yesNoDiag = new YesNoDiag(StringRes.EXIT2 + "?", skin) {
                 @Override
                 public void yesFunc() {
-                    logger.debug("disconnect ");
                     Disconnect disconnect = new Disconnect();
                     disconnect.setPlayerId(rodaImpianNew.getPlayer().getUid());
                     sendObjects(disconnect);
+                    sendObjects(PlayerStates.DISCONNECT);
                     client.stop();
                     rodaImpianNew.mainMenu();
                 }
@@ -350,6 +436,7 @@ public class OnlineScreen extends BaseScreenNew implements OnInterface {
         Disconnect disconnect = new Disconnect();
         disconnect.setPlayerId(rodaImpianNew.getPlayer().getUid());
         client.sendTCP(disconnect);
+        sendObjects(PlayerStates.DISCONNECT);
 
     }
 }

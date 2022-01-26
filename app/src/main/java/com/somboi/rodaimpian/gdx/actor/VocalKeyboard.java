@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Timer;
 import com.somboi.rodaimpian.gdx.entities.MatchRound;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
-import com.somboi.rodaimpian.gdx.online.entities.CheckAnswer;
+import com.somboi.rodaimpian.gdx.online.entities.CheckAnswerOld;
 
 public class VocalKeyboard {
     private final Skin skin;
@@ -59,10 +59,10 @@ public class VocalKeyboard {
                     builder.deleteCharAt(iFinal);
                     matchRound.setVocals(builder.toString());
                     if (matchRound.getRodaImpian().getGameModes().equals(GameModes.ONLINE) && !bonusRound) {
-                        CheckAnswer checkAnswer = new CheckAnswer();
-                        checkAnswer.character = cFinal;
+                        CheckAnswerOld checkAnswerOld = new CheckAnswerOld();
+                        checkAnswerOld.character = cFinal;
                       //  matchRound.getModeBase().sendObject(GameState.BUYVOCAL);
-                        matchRound.getModeBase().sendObject(checkAnswer);
+                        matchRound.getModeBase().sendObject(checkAnswerOld);
                     } else {
                         matchRound.checkAnswer(cFinal);
                     }

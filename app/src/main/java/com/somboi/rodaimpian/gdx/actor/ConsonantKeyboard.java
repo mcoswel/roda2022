@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.somboi.rodaimpian.gdx.entities.MatchRound;
-import com.somboi.rodaimpian.gdx.online.entities.CheckAnswer;
+import com.somboi.rodaimpian.gdx.online.entities.CheckAnswerOld;
 
 public class ConsonantKeyboard {
     private final Table consonantTable = new Table();
@@ -54,9 +54,9 @@ public class ConsonantKeyboard {
                     consonantTable.remove();
 
                     if (matchRound.isOnlinePlay() && !bonusRound) {
-                        CheckAnswer checkAnswer = new CheckAnswer();
-                        checkAnswer.character = cFinal;
-                        matchRound.getModeBase().sendObject(checkAnswer);
+                        CheckAnswerOld checkAnswerOld = new CheckAnswerOld();
+                        checkAnswerOld.character = cFinal;
+                        matchRound.getModeBase().sendObject(checkAnswerOld);
                     } else {
                         matchRound.checkAnswer(cFinal);
                     }

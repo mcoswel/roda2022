@@ -193,6 +193,9 @@ public class BaseGame {
         return rodaImpianNew.getPreparedQuestions().get(gameRound);
     }
 
+    public void clearPlayerMenu(){
+        playerMenu.clear();
+    }
 
     public void setTile() {
         float initialY;
@@ -479,11 +482,10 @@ public class BaseGame {
             }
 
         }
-
         rodaImpianNew.getWheelParams().setScores(0);
     }
 
-    private boolean completenessCheck() {
+    public boolean completenessCheck() {
         boolean complete = true;
         for (TileBase t : tileBases) {
             if (!t.isRevealed()) {
@@ -493,7 +495,7 @@ public class BaseGame {
         return complete;
     }
 
-    private void checkIfComplete() {
+    public void checkIfComplete() {
 
         if (completenessCheck()) {
             finishGame();
@@ -651,10 +653,10 @@ public class BaseGame {
         activePlayer.setFullScore(activePlayer.getFullScore() + activePlayer.getScore() + 200 * (gameRound + 1));
         currentGui.updateFullScore(activePlayer.getFullScore());
         increaseGameRound();
-
     }
 
-    private void increaseGameRound() {
+
+    public void increaseGameRound() {
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
@@ -778,7 +780,7 @@ public class BaseGame {
     }
 
 
-    private void showWinner() {
+    public void showWinner() {
         WinnerDialog winnerDialog = new WinnerDialog(skin, currentGui, atlas, rodaImpianNew);
         winnerDialog.show(stage);
     }

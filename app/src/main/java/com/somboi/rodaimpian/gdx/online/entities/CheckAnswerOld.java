@@ -1,5 +1,5 @@
 package com.somboi.rodaimpian.gdx.online.entities;
 
-public class CheckAnswer {
+public class CheckAnswerOld {
     public Character character;
 }

@@ -12,7 +12,11 @@ import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdx.config.GameConfig;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
 import com.somboi.rodaimpian.gdxnew.games.BaseGame;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.BonusStringHolder;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.CheckAnswer;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.ChooseSpin;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.ChooseVocal;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.CompleteAnswer;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.Disconnect;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.PlayerStates;
 
@@ -68,7 +72,7 @@ public class PlayerMenu {
             public void changed(ChangeEvent event, Actor actor) {
                 clear();
                 if (baseGame.getGameModes().equals(GameModes.ONLINE)){
-                    baseGame.sendObject(PlayerStates.CHOOSESPIN);
+                    baseGame.sendObject(new ChooseSpin());
                     return;
                 }
                 baseGame.spinWheel(false, false);
@@ -78,6 +82,11 @@ public class PlayerMenu {
         complete.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+
+                if (baseGame.getGameModes().equals(GameModes.ONLINE)){
+                    baseGame.sendObject(new CompleteAnswer());
+                    return;
+                }
                 try {
                     if (baseGame.completePuzzle()) {
                         clear();
@@ -188,9 +197,19 @@ public class PlayerMenu {
             smallButton.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
+
                     if (!bonusMode) {
-                        baseGame.checkAnswer(character);
                         consDialog.hide();
+
+                        if (baseGame.getGameModes().equals(GameModes.ONLINE)){
+                            CheckAnswer checkAnswer = new CheckAnswer();
+                            checkAnswer.setCharacter(character);
+                            baseGame.sendObject(checkAnswer);
+                            return;
+                        }
+
+                        baseGame.checkAnswer(character);
+
                     } else {
                         bonusStringHolder += character;
                         consonantCounter++;
@@ -230,14 +249,28 @@ public class PlayerMenu {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
                     if (!bonusMode) {
-                        baseGame.checkAnswer(character);
                         vocalDiag.hide();
+                        if (baseGame.getGameModes().equals(GameModes.ONLINE)){
+                            CheckAnswer checkAnswer = new CheckAnswer();
+                            checkAnswer.setCharacter(character);
+                            baseGame.sendObject(checkAnswer);
+                            return;
+                        }
+                        baseGame.checkAnswer(character);
+
+
                     } else {
                         bonusStringHolder += character;
                         vocalCounter++;
                         smallButton.remove();
                         if (vocalCounter == 2) {
                             vocalDiag.hide();
+                            if (baseGame.getGameModes().equals(GameModes.ONLINE)){
+                                BonusStringHolder bHolder = new BonusStringHolder();
+                                bHolder.setBonusStringHolder(bonusStringHolder);
+                                baseGame.sendObject(bHolder);
+                                return;
+                            }
                             baseGame.checkBonusString(bonusStringHolder);
                         }
                     }

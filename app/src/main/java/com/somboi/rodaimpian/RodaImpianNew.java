@@ -202,13 +202,13 @@ public class RodaImpianNew extends Game {
         this.onlineScreen = onlineScreen;
     }
 
-    public void createSpinOnlineNormal(OnInterface onInterface){
-        spinOnline = new SpinOnline(this, false, onInterface);
-    }
 
-    public void spinOnline(boolean bonusMode){
+    public void spinOnline(boolean bonusMode, OnInterface onInterface){
+        spinOnline = new SpinOnline(this, bonusMode, onInterface);
         if (spinOnline!=null){
-            setScreen(spinOnline);
+            if (!getScreen().equals(spinOnline)) {
+                setScreen(spinOnline);
+            }
         }
     }
 

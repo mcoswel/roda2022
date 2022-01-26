@@ -12,7 +12,7 @@ import com.somboi.rodaimpian.gdx.entities.WheelParam;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
 import com.somboi.rodaimpian.gdx.online.entities.BonusHolder;
 import com.somboi.rodaimpian.gdx.online.entities.BonusIndex;
-import com.somboi.rodaimpian.gdx.online.entities.CheckAnswer;
+import com.somboi.rodaimpian.gdx.online.entities.CheckAnswerOld;
 import com.somboi.rodaimpian.gdx.online.entities.DisconnectPlayer;
 import com.somboi.rodaimpian.gdx.online.entities.EnvelopeIndex;
 import com.somboi.rodaimpian.gdx.online.entities.GameStateOld;
@@ -70,12 +70,12 @@ public class RodaClient {
                     wheelParam = (WheelParam) o;
                     onlineScreen.setWheelParam(wheelParam);
                 }
-                if (o instanceof CheckAnswer) {
+                if (o instanceof CheckAnswerOld) {
 
-                    CheckAnswer checkAnswer = (CheckAnswer) o;
-                    logger.debug("receive chk answer " + checkAnswer.character);
+                    CheckAnswerOld checkAnswerOld = (CheckAnswerOld) o;
+                    logger.debug("receive chk answer " + checkAnswerOld.character);
 
-                    onlineScreen.checkChar(checkAnswer.character);
+                    onlineScreen.checkChar(checkAnswerOld.character);
                 }
 
                 if (o instanceof SetActivePlayer) {

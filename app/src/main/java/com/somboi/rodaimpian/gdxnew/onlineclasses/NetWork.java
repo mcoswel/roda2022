@@ -31,6 +31,16 @@ public class NetWork {
         kryo.register(ApplyForce.class);
         kryo.register(WheelBodyAngle.class);
         kryo.register(GiftsNew.class);
+        kryo.register(CheckAnswer.class);
+        kryo.register(BonusStringHolder.class);
+        kryo.register(ChooseVocal.class);
+        kryo.register(CompleteAnswer.class);
+        kryo.register(ChooseSpin.class);
+        kryo.register(FinishGame.class);
+        kryo.register(ShowWinner.class);
+        kryo.register(ChangeTurn.class);
+        kryo.register(StartTurn.class);
+        kryo.register(ShowMenu.class);
 
     }
 }
