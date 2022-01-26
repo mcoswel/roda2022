@@ -2,7 +2,9 @@ package com.somboi.rodaimpian.gdxnew.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
 import com.somboi.rodaimpian.RodaImpianNew;
+import com.somboi.rodaimpian.gdx.assets.AssetDesc;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
 import com.somboi.rodaimpian.gdxnew.actors.LoginDiag;
 import com.somboi.rodaimpian.gdxnew.actors.MenuFactory;
@@ -14,7 +16,13 @@ public class MainScreen extends BaseScreenNew {
 
     public MainScreen(RodaImpianNew rodaImpianNew) {
         super(rodaImpianNew);
-
+        Music music = assetManager.get(AssetDesc.REDMUSIC);
+        if (rodaImpianNew.isGoldTheme()){
+            music = assetManager.get(AssetDesc.GOLDMUSIC);
+        }
+        rodaImpianNew.setMusic(music);
+        rodaImpianNew.getMusic().setLooping(true);
+        rodaImpianNew.getMusic().play();
     }
 
     @Override

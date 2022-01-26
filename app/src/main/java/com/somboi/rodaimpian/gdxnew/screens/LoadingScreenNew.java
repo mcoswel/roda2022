@@ -98,7 +98,8 @@ public class LoadingScreenNew extends ScreenAdapter {
         assetManager.load(AssetDesc.POLICE);
         assetManager.load(AssetDesc.AMBULANCE);
         assetManager.load(AssetDesc.FIRETRUCK);
-
+        assetManager.load(AssetDesc.GOLDMUSIC);
+        assetManager.load(AssetDesc.REDMUSIC);
         task = new AsyncExecutor(1).submit(new AsyncTask<Void>() {
             @Override
             public Void call() throws Exception {

@@ -17,7 +17,7 @@ import com.somboi.rodaimpian.gdxnew.actors.ErrDiag;
 import com.somboi.rodaimpian.gdxnew.actors.RoomTable;
 import com.somboi.rodaimpian.gdxnew.actors.SmallButton;
 import com.somboi.rodaimpian.gdxnew.actors.StatusLabel;
-import com.somboi.rodaimpian.gdxnew.actors.YesNoDiag;
+import com.somboi.rodaimpian.gdxnew.actors.SubMenu;
 import com.somboi.rodaimpian.gdxnew.assets.QuestionNew;
 import com.somboi.rodaimpian.gdxnew.games.OnlineGame;
 import com.somboi.rodaimpian.gdxnew.interfaces.OnInterface;
@@ -538,9 +538,9 @@ public class OnlineScreen extends BaseScreenNew implements OnInterface {
     @Override
     public void backKey() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.BACK)) {
-            YesNoDiag yesNoDiag = new YesNoDiag(StringRes.EXIT2 + "?", skin) {
+            SubMenu subMenu = new SubMenu(rodaImpianNew, skin) {
                 @Override
-                public void yesFunc() {
+                public void keluarFunc() {
                     Disconnect disconnect = new Disconnect();
                     disconnect.setPlayerId(rodaImpianNew.getPlayer().getUid());
                     sendObjects(disconnect);
@@ -549,7 +549,8 @@ public class OnlineScreen extends BaseScreenNew implements OnInterface {
                     rodaImpianNew.mainMenu();
                 }
             };
-            yesNoDiag.show(stage);
+            subMenu.show(stage);
+
 
         }
     }

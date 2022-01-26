@@ -90,7 +90,7 @@ public class StringRes {
     public static final String THREEPLAYER = "3 Pemain";
     public static final String BACK = "Kembali";
     public static final String PLAYER_NAME = "Pemain ";
-    public static final String PAUSEMENU = "Menu";
+    public static final String PAUSEMENU = "MENU";
     public static final String WAITINGENTRY = "Menunggu penyertaan";
     public static final String NOTENOUGHPLAYER = "Bilangan pemain tidak mencukupi";
     public static final String INFO = "Info";
@@ -134,6 +134,7 @@ public class StringRes {
     public static final String LOSEBONUS = "Maaf! Anda gagal memenangi hadiah bonus";
     public static final String CONNECTED = "Berjaya mengubungi server";
     public static final String SORRYYOUBAN = "Maaf, host baru sahaja menendang anda. Cuba lagi";
+    public static final String MUSICOFF = "Off Muzik";
 
     //159.223.73.205
 

@@ -17,6 +17,7 @@ import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdx.config.GameConfig;
 import com.somboi.rodaimpian.gdxnew.actors.ActorFactory;
 import com.somboi.rodaimpian.gdxnew.actors.MenuFactory;
+import com.somboi.rodaimpian.gdxnew.actors.SubMenu;
 import com.somboi.rodaimpian.gdxnew.actors.YesNoDiag;
 import com.somboi.rodaimpian.saves.PlayerSaves;
 
@@ -59,13 +60,8 @@ public class BaseScreenNew extends ScreenAdapter {
 
     public void backKey(){
         if (Gdx.input.isKeyJustPressed(Input.Keys.BACK)){
-            YesNoDiag yesNoDiag = new YesNoDiag(StringRes.EXIT2+"?", skin){
-                @Override
-                public void yesFunc() {
-                    Gdx.app.exit();
-                }
-            };
-            yesNoDiag.show(stage);
+            SubMenu subMenu = new SubMenu(rodaImpianNew, skin);
+            subMenu.show(stage);
         }
     }
 

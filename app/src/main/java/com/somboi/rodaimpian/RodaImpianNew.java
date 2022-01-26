@@ -3,6 +3,7 @@ package com.somboi.rodaimpian;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
@@ -35,7 +36,7 @@ public class RodaImpianNew extends Game {
     private Array<String> bannedRoom = new Array<>();
     private OnlineScreen onlineScreen;
     private SpinOnline spinOnline;
-
+    private Music music;
     public RodaImpianNew(AndroInterface androInterface) {
         this.androInterface = androInterface;
     }
@@ -235,5 +236,11 @@ public class RodaImpianNew extends Game {
         }
     }
 
+    public Music getMusic() {
+        return music;
+    }
 
+    public void setMusic(Music music) {
+        this.music = music;
+    }
 }

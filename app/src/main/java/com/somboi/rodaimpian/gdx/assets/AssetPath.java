@@ -15,6 +15,9 @@ public class AssetPath {
     public static final String POLICE = "sounds/police.ogg";
     public static final String AMBULANCE = "sounds/ambulan.ogg";
     public static final String FIRE = "sounds/fire.ogg";
+    public static final String GOLDMUSIC = "sounds/goldmusic.ogg";
+    public static final String REDMUSIC = "sounds/redmusic.ogg";
+
     public static final String WRONGSOUND = "sounds/wrong.mp3";
     public static final String BLURBG = "textures/blurbg.png";
     public static final String BG = "textures/bg.png";

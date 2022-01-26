@@ -17,6 +17,7 @@ import com.somboi.rodaimpian.RodaImpianNew;
 import com.somboi.rodaimpian.gdx.assets.AssetDesc;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdx.config.GameConfig;
+import com.somboi.rodaimpian.gdx.modes.GameModes;
 import com.somboi.rodaimpian.gdxnew.FlyingMoney;
 import com.somboi.rodaimpian.gdxnew.actors.Bonuses;
 import com.somboi.rodaimpian.gdxnew.actors.ChatBubble;
@@ -28,6 +29,7 @@ import com.somboi.rodaimpian.gdxnew.actors.PlayerGuis;
 import com.somboi.rodaimpian.gdxnew.actors.PlayerMenu;
 import com.somboi.rodaimpian.gdxnew.actors.SmallButton;
 import com.somboi.rodaimpian.gdxnew.actors.Sparkling;
+import com.somboi.rodaimpian.gdxnew.actors.SubMenu;
 import com.somboi.rodaimpian.gdxnew.actors.TileBase;
 import com.somboi.rodaimpian.gdxnew.actors.UltraSmallBtn;
 import com.somboi.rodaimpian.gdxnew.actors.WinnerDialog;
@@ -38,6 +40,7 @@ import com.somboi.rodaimpian.gdxnew.onlineclasses.ChangeTurn;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.ChatOnline;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.ChooseVocal;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.CompleteAnswer;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.Disconnect;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.FinishGame;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.GameState;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.GiftsNew;
@@ -52,6 +55,7 @@ import com.somboi.rodaimpian.gdxnew.onlineclasses.ShowMenu;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.SpinBonusWheel;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.StartTurn;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.WinBonus;
+import com.somboi.rodaimpian.gdxnew.screens.LoadingScreenNew;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -156,6 +160,20 @@ public class OnlineGame extends BaseGame {
         playerMenu = new PlayerMenu(stage, this, skin);
         onInterface.sendObjects(PlayerStates.SHOWQUESTIONS);
         //    startTurn();
+    }
+
+    @Override
+    public void showSubMenu() {
+        SubMenu subMenu = new SubMenu(rodaImpianNew, skin){
+            @Override
+            public void keluarFunc() {
+                    Disconnect disconnect = new Disconnect();
+                    disconnect.setPlayerId(rodaImpianNew.getPlayer().getUid());
+                    sendObject(disconnect);
+                    rodaImpianNew.restart();
+            }
+        };
+        subMenu.show(stage);
     }
 
     @Override

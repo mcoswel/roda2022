@@ -17,8 +17,6 @@ import com.somboi.rodaimpian.gdxnew.onlineclasses.CheckAnswer;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.ChooseSpin;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.ChooseVocal;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.CompleteAnswer;
-import com.somboi.rodaimpian.gdxnew.onlineclasses.Disconnect;
-import com.somboi.rodaimpian.gdxnew.onlineclasses.PlayerStates;
 
 public class PlayerMenu {
     private final Stage stage;
@@ -51,8 +49,8 @@ public class PlayerMenu {
                 if (baseGame.getActivePlayer().getScore() >= 250) {
                     clear();
 
-                    if (baseGame.getGameModes().equals(GameModes.ONLINE)){
-                        ChooseVocal chooseVocal = new ChooseVocal() ;
+                    if (baseGame.getGameModes().equals(GameModes.ONLINE)) {
+                        ChooseVocal chooseVocal = new ChooseVocal();
                         chooseVocal.setGuiIndex(baseGame.getSelfGui().getPlayerIndex());
                         baseGame.sendObject(chooseVocal);
                         return;
@@ -71,7 +69,7 @@ public class PlayerMenu {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 clear();
-                if (baseGame.getGameModes().equals(GameModes.ONLINE)){
+                if (baseGame.getGameModes().equals(GameModes.ONLINE)) {
                     baseGame.sendObject(new ChooseSpin());
                     return;
                 }
@@ -83,7 +81,7 @@ public class PlayerMenu {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
 
-                if (baseGame.getGameModes().equals(GameModes.ONLINE)){
+                if (baseGame.getGameModes().equals(GameModes.ONLINE)) {
                     baseGame.sendObject(new CompleteAnswer());
                     return;
                 }
@@ -97,22 +95,11 @@ public class PlayerMenu {
             }
         });
 
-        exit = new SmallButton(StringRes.EXIT, skin);
+        exit = new SmallButton(StringRes.PAUSEMENU, skin);
         exit.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                YesNoDiag yesNoDiag = new YesNoDiag(StringRes.STOPPLAYING, skin) {
-                    @Override
-                    public void yesFunc() {
-                        if (baseGame.getGameModes().equals(GameModes.ONLINE)) {
-                            Disconnect disconnect = new Disconnect();
-                            disconnect.setPlayerId(baseGame.getSelfGui().getPlayerNew().getUid());
-                            baseGame.sendObject(disconnect);
-                        }
-                        baseGame.mainMenu();
-                    }
-                };
-                yesNoDiag.show(stage);
+                baseGame.showSubMenu();
             }
         });
 
@@ -149,7 +136,7 @@ public class PlayerMenu {
         submitAnswer.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-               checkAnswers();
+                checkAnswers();
             }
         });
         SmallButton keyboard = new SmallButton(StringRes.SHOWKEYBOARD, skin);
@@ -205,7 +192,7 @@ public class PlayerMenu {
                     if (!bonusMode) {
                         consDialog.hide();
 
-                        if (baseGame.getGameModes().equals(GameModes.ONLINE)){
+                        if (baseGame.getGameModes().equals(GameModes.ONLINE)) {
                             CheckAnswer checkAnswer = new CheckAnswer();
                             checkAnswer.setCharacter(character);
                             baseGame.sendObject(checkAnswer);
@@ -238,8 +225,8 @@ public class PlayerMenu {
 
 
     public void createVocalTable() {
-        if (baseGame.getGameModes().equals(GameModes.ONLINE)){
-            if (!baseGame.isTurn()){
+        if (baseGame.getGameModes().equals(GameModes.ONLINE)) {
+            if (!baseGame.isTurn()) {
                 return;
             }
         }
@@ -260,7 +247,7 @@ public class PlayerMenu {
                     if (!bonusMode) {
                         vocalDiag.hide();
 
-                        if (baseGame.getGameModes().equals(GameModes.ONLINE)){
+                        if (baseGame.getGameModes().equals(GameModes.ONLINE)) {
                             CheckAnswer checkAnswer = new CheckAnswer();
                             checkAnswer.setCharacter(character);
                             baseGame.sendObject(checkAnswer);
@@ -275,7 +262,7 @@ public class PlayerMenu {
                         smallButton.remove();
                         if (vocalCounter == 2) {
                             vocalDiag.hide();
-                            if (baseGame.getGameModes().equals(GameModes.ONLINE)){
+                            if (baseGame.getGameModes().equals(GameModes.ONLINE)) {
                                 BonusStringHolder bHolder = new BonusStringHolder();
                                 bHolder.setBonusStringHolder(bonusStringHolder);
                                 baseGame.sendObject(bHolder);

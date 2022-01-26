@@ -37,6 +37,7 @@ import com.somboi.rodaimpian.gdxnew.actors.PlayerGuis;
 import com.somboi.rodaimpian.gdxnew.actors.PlayerMenu;
 import com.somboi.rodaimpian.gdxnew.actors.ProfilePic;
 import com.somboi.rodaimpian.gdxnew.actors.Sparkling;
+import com.somboi.rodaimpian.gdxnew.actors.SubMenu;
 import com.somboi.rodaimpian.gdxnew.actors.TileBase;
 import com.somboi.rodaimpian.gdxnew.actors.TrophyNew;
 import com.somboi.rodaimpian.gdxnew.actors.VannaHost;
@@ -46,7 +47,9 @@ import com.somboi.rodaimpian.gdxnew.assets.QuestionNew;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.AiMoves;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
 import com.somboi.rodaimpian.gdxnew.interfaces.KeyListen;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.Disconnect;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.GiftsNew;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.PlayerStates;
 import com.somboi.rodaimpian.gdxnew.screens.BombeiroScreen;
 import com.somboi.rodaimpian.gdxnew.screens.SpinScreen;
 
@@ -815,6 +818,11 @@ public class BaseGame {
 
     public GameModes getGameModes() {
         return rodaImpianNew.getGameModes();
+    }
+
+    public void showSubMenu(){
+        SubMenu subMenu = new SubMenu(rodaImpianNew, skin);
+        subMenu.show(stage);
     }
 
     public PlayerGuis getSelfGui() {

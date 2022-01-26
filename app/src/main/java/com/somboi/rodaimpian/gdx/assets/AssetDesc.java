@@ -1,6 +1,7 @@
 package com.somboi.rodaimpian.gdx.assets;
 
 import com.badlogic.gdx.assets.AssetDescriptor;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -33,5 +34,7 @@ public class AssetDesc {
     public static final AssetDescriptor<Texture> WHEELBG = new AssetDescriptor<Texture>(AssetPath.WHEELBG, Texture.class);
     public static final AssetDescriptor<Texture> BLURRED = new AssetDescriptor<Texture>(AssetPath.BLURRED, Texture.class);
     public static final AssetDescriptor<Texture> BLURGOLD = new AssetDescriptor<Texture>(AssetPath.BLURGOLD, Texture.class);
+    public static final AssetDescriptor<Music> GOLDMUSIC = new AssetDescriptor<Music>(AssetPath.GOLDMUSIC, Music.class);
+    public static final AssetDescriptor<Music> REDMUSIC = new AssetDescriptor<Music>(AssetPath.REDMUSIC, Music.class);
 }
 
