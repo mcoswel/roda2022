@@ -109,8 +109,8 @@ public class StringRes {
     public static final String NO3 = "Tak Nak!";
     public static final String FACEBOOK = "Facebook";
     public static final String GMAIL = "Google";
-    //public static final String RODARODA = "159.223.73.205";
-    public static final String RODARODA = "10.1.19.2";
+    public static final String RODARODA = "159.223.73.205";
+   // public static final String RODARODA = "10.1.19.2";
     // public static final String RODARODA = "192.168.43.69";
     // public static final String RODARODA = "127.0.0.1";
 

@@ -24,6 +24,7 @@ import com.somboi.rodaimpian.saves.PlayerSaves;
 import com.somboi.rodaimpian.saves.QuestionsSaves;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.UUID;
 
 public class LoadingScreenNew extends ScreenAdapter {
@@ -106,10 +107,17 @@ public class LoadingScreenNew extends ScreenAdapter {
                 final Array<QuestionNew> bonusGroup = questionsSaves.loadBonusGroup();
                 final Array<String> mainSubjects = questionsSaves.loadMainGroupSubjects();
                 final Array<String> bonusSubjects = questionsSaves.loadBonusGroupSubjects();
-                mainSubjects.shuffle();
-                bonusSubjects.shuffle();
-                mainGroup.shuffle();
-                bonusGroup.shuffle();
+
+                Calendar now = Calendar.getInstance();
+                int second = now.get(Calendar.SECOND);
+
+                while (second>0) {
+                    mainSubjects.shuffle();
+                    bonusSubjects.shuffle();
+                    mainGroup.shuffle();
+                    bonusGroup.shuffle();
+                    second--;
+                }
 
                 mainloop:
                 for (int i = 0; i < 3; i++) {
@@ -133,8 +141,6 @@ public class LoadingScreenNew extends ScreenAdapter {
                         break;
                     }
                 }
-
-                logger.debug("questions size " + rodaImpian.getPreparedQuestions().size);
 
                 /*for (int i = 0; i < 5; i++) {
                     rodaImpian.getPreparedQuestions().add(questionNewArray.random());

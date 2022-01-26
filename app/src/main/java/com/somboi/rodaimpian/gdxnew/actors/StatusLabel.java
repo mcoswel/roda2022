@@ -9,8 +9,6 @@ import com.badlogic.gdx.utils.Align;
 public class StatusLabel extends Label {
     public StatusLabel(Skin skin) {
         super("", skin);
-        SequenceAction sequenceAction = new SequenceAction(Actions.fadeOut(0.3f), Actions.fadeIn(0.3f));
-        addAction(Actions.forever(sequenceAction));
     }
 
     public void updateText(String text) {

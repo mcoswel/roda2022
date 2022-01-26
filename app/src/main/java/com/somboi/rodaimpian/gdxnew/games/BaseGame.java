@@ -44,9 +44,9 @@ import com.somboi.rodaimpian.gdxnew.actors.WheelTurns;
 import com.somboi.rodaimpian.gdxnew.actors.WinnerDialog;
 import com.somboi.rodaimpian.gdxnew.assets.QuestionNew;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.AiMoves;
-import com.somboi.rodaimpian.gdxnew.onlineclasses.GiftsNew;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
 import com.somboi.rodaimpian.gdxnew.interfaces.KeyListen;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.GiftsNew;
 import com.somboi.rodaimpian.gdxnew.screens.BombeiroScreen;
 import com.somboi.rodaimpian.gdxnew.screens.SpinScreen;
 
@@ -113,7 +113,7 @@ public class BaseGame {
         setUpNewRound();
     }
 
-    public  void prepareEnvelope() {
+    public void prepareEnvelope() {
         playerMenu = new PlayerMenu(stage, this, skin);
         setUpNewRound();
         bonusGiftImg = new Bonuses(atlas, rodaImpianNew.getWheelParams().getBonusIndex());
@@ -189,11 +189,11 @@ public class BaseGame {
         setTile();
     }
 
-    public QuestionNew getCurrentQuestion(){
+    public QuestionNew getCurrentQuestion() {
         return rodaImpianNew.getPreparedQuestions().get(gameRound);
     }
 
-    public void clearPlayerMenu(){
+    public void clearPlayerMenu() {
         playerMenu.clear();
     }
 
@@ -258,17 +258,17 @@ public class BaseGame {
     }
 
     public void addPlayers() {
-        PlayerGuis playerOneGuis = setHumanGui(rodaImpianNew.getPlayer(),1);
+        PlayerGuis playerOneGuis = setHumanGui(rodaImpianNew.getPlayer(), 1);
         PlayerGuis playerTwoGuis;
         PlayerGuis playerThreeGuis;
         if (rodaImpianNew.getPlayerTwo() != null) {
-            playerTwoGuis = setHumanGui(rodaImpianNew.getPlayerTwo(),2);
+            playerTwoGuis = setHumanGui(rodaImpianNew.getPlayerTwo(), 2);
         } else {
             playerTwoGuis = cpuFactory.createCpu(skin);
         }
 
         if (rodaImpianNew.getPlayerThree() != null) {
-            playerThreeGuis = setHumanGui(rodaImpianNew.getPlayerThree(),3);
+            playerThreeGuis = setHumanGui(rodaImpianNew.getPlayerThree(), 3);
         } else {
             playerThreeGuis = cpuFactory.createCpu(skin);
         }
@@ -392,7 +392,7 @@ public class BaseGame {
         startTurn();
     }
 
-    private void setSubject(String text) {
+    public void setSubject(String text) {
         subjectLabel.setText(text);
         subjectLabel.pack();
         subjectLabel.setPosition(450f - subjectLabel.getWidth() / 2f, 888f);
@@ -561,7 +561,7 @@ public class BaseGame {
             }
             Gdx.input.setOnscreenKeyboardVisible(true);
             playerMenu.showCompleteMenu();
-            keyListen = new KeyListen(incompleteTiles);
+            keyListen = new KeyListen(incompleteTiles, playerMenu);
             stage.addListener(keyListen);
 //            logger.debug("Complete " + answerHolder);
             return true;
@@ -655,6 +655,9 @@ public class BaseGame {
         increaseGameRound();
     }
 
+    public boolean isTurn() {
+        return true;
+    }
 
     public void increaseGameRound() {
         Timer.schedule(new Timer.Task() {
@@ -704,7 +707,6 @@ public class BaseGame {
                 Timer.schedule(new Timer.Task() {
                     @Override
                     public void run() {
-
                         startRound();
                     }
                 }, 2f);
@@ -713,7 +715,7 @@ public class BaseGame {
         }, 4f);
     }
 
-    private void spinBonusRound() {
+    public void spinBonusRound() {
         rodaImpianNew.setBonusMode(true);
         Timer.schedule(new Timer.Task() {
             @Override
@@ -726,8 +728,6 @@ public class BaseGame {
                 spinWheel(false, true);
             }
         }, 2f);
-
-
     }
 
 
@@ -744,7 +744,7 @@ public class BaseGame {
                 giftsIndexes.shuffle();
                 giftsNew.setGiftIndex(giftsIndexes.get(0));
                 giftsIndexes.removeIndex(0);
-                if (giftsIndexes.isEmpty()){
+                if (giftsIndexes.isEmpty()) {
                     giftsIndexes = new Array<>(new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23});
                     giftsIndexes.shuffle();
                 }
@@ -785,7 +785,7 @@ public class BaseGame {
         winnerDialog.show(stage);
     }
 
-    private void showTrophy() {
+    public void showTrophy() {
         hourGlass.remove();
         stage.addActor(new TrophyNew(currentGui.getPosition(), atlas.findRegion("trophy")));
     }
@@ -809,12 +809,12 @@ public class BaseGame {
         }
     }
 
-    public void sendObject(Object o){
+    public void sendObject(Object o) {
 
     }
 
     public GameModes getGameModes() {
-        return gameModes;
+        return rodaImpianNew.getGameModes();
     }
 
     public PlayerGuis getSelfGui() {

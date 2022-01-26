@@ -149,11 +149,7 @@ public class PlayerMenu {
         submitAnswer.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                try {
-                    baseGame.checkCompleteAnswer();
-                } catch (CloneNotSupportedException e) {
-                    e.printStackTrace();
-                }
+               checkAnswers();
             }
         });
         SmallButton keyboard = new SmallButton(StringRes.SHOWKEYBOARD, skin);
@@ -168,6 +164,14 @@ public class PlayerMenu {
 
         completeTable.add(first);
         completeTable.setPosition(450f - menuTable.getWidth() / 2f, 800f);
+    }
+
+    public void checkAnswers() {
+        try {
+            baseGame.checkCompleteAnswer();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -234,6 +238,11 @@ public class PlayerMenu {
 
 
     public void createVocalTable() {
+        if (baseGame.getGameModes().equals(GameModes.ONLINE)){
+            if (!baseGame.isTurn()){
+                return;
+            }
+        }
         final Dialog vocalDiag = new Dialog(StringRes.VOKAL, skin) {
             @Override
             public float getPrefWidth() {
@@ -250,6 +259,7 @@ public class PlayerMenu {
                 public void changed(ChangeEvent event, Actor actor) {
                     if (!bonusMode) {
                         vocalDiag.hide();
+
                         if (baseGame.getGameModes().equals(GameModes.ONLINE)){
                             CheckAnswer checkAnswer = new CheckAnswer();
                             checkAnswer.setCharacter(character);

@@ -15,7 +15,8 @@ public enum GameState {
     CONTINUETURN,
     CHANGETURN,
     COMPLETE,
-    SHOWWINNER,
+    INCREASEROUND,
+    SPINBONUSWHEEL,
     OCCUPIED
 }
 

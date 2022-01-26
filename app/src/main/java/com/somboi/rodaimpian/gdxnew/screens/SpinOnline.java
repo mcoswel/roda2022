@@ -51,7 +51,6 @@ public class SpinOnline extends SpinScreen {
     }
 
     public void setWheelBodyAngle(WheelBodyAngle wheelBodyAngle){
-        logger.debug("set wheel angle");
         wheelBody.setTransform(wheelBody.getPosition(), wheelBodyAngle.getAngle());
     }
 

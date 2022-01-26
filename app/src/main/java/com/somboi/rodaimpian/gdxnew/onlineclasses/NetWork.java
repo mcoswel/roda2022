@@ -37,10 +37,14 @@ public class NetWork {
         kryo.register(CompleteAnswer.class);
         kryo.register(ChooseSpin.class);
         kryo.register(FinishGame.class);
-        kryo.register(ShowWinner.class);
         kryo.register(ChangeTurn.class);
         kryo.register(StartTurn.class);
         kryo.register(ShowMenu.class);
-
+        kryo.register(IncreaseRound.class);
+        kryo.register(SpinBonusWheel.class);
+        kryo.register(PrepareEnvelope.class);
+        kryo.register(WinBonus.class);
+        kryo.register(LoseBonus.class);
+        kryo.register(RemoveSession.class);
     }
 }

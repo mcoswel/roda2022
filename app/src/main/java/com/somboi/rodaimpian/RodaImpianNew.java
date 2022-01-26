@@ -6,7 +6,6 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.somboi.rodaimpian.gdx.modes.GameModes;
-import com.somboi.rodaimpian.gdx.screen.OnlineInterface;
 import com.somboi.rodaimpian.gdxnew.assets.QuestionNew;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
 import com.somboi.rodaimpian.gdxnew.interfaces.OnInterface;
@@ -21,7 +20,7 @@ import com.somboi.rodaimpian.saves.PlayerSaves;
 
 public class RodaImpianNew extends Game {
     private final AssetManager assetManager = new AssetManager();
-    private  WheelParams wheelParams = new WheelParams();
+    private WheelParams wheelParams = new WheelParams();
     private MainScreen mainScreen;
     private GameModes gameModes;
     private boolean goldTheme;
@@ -31,11 +30,12 @@ public class RodaImpianNew extends Game {
     private final AndroInterface androInterface;
     private GameScreen gameScreen;
     private boolean bonusMode;
-    private final Array<QuestionNew>preparedQuestions = new Array<>();
+    private final Array<QuestionNew> preparedQuestions = new Array<>();
     private PlayerSaves playerSaves;
     private Array<String> bannedRoom = new Array<>();
     private OnlineScreen onlineScreen;
     private SpinOnline spinOnline;
+
     public RodaImpianNew(AndroInterface androInterface) {
         this.androInterface = androInterface;
     }
@@ -58,6 +58,7 @@ public class RodaImpianNew extends Game {
         }
         androInterface.loginFacebook();
     }
+
     public void loginGmail() {
         if (mainScreen == null) {
             return;
@@ -65,11 +66,12 @@ public class RodaImpianNew extends Game {
         androInterface.loginGmail();
     }
 
-    public void getFcmToken(){
+    public void getFcmToken() {
         androInterface.getToken();
     }
+
     public void setFcmToken(String fcmToken) {
-        if (player!=null){
+        if (player != null) {
             player.setFcmToken(fcmToken);
         }
     }
@@ -89,7 +91,6 @@ public class RodaImpianNew extends Game {
     public void setPlayer(PlayerNew player) {
         this.player = player;
     }
-
 
 
     public GameModes getGameModes() {
@@ -136,13 +137,12 @@ public class RodaImpianNew extends Game {
         this.gameScreen = gameScreen;
     }
 
-    public void finishSpin( ) {
+    public void finishSpin() {
         if (gameScreen != null) {
             setScreen(gameScreen);
             gameScreen.spinResult();
         }
     }
-
 
 
     public boolean isBonusMode() {
@@ -152,7 +152,6 @@ public class RodaImpianNew extends Game {
     public void setBonusMode(boolean bonusMode) {
         this.bonusMode = bonusMode;
     }
-
 
 
     public Array<QuestionNew> getPreparedQuestions() {
@@ -167,15 +166,16 @@ public class RodaImpianNew extends Game {
     public void setPlayerSaves(PlayerSaves playerSaves) {
         this.playerSaves = playerSaves;
     }
-    public void savePlayer(){
-        if (playerSaves!=null){
+
+    public void savePlayer() {
+        if (playerSaves != null) {
             playerSaves.savePlayerNew(player);
         }
     }
 
-    public void reloadMenu(){
-        if (mainScreen!=null){
-         mainScreen.reloadPhoto();
+    public void reloadMenu() {
+        if (mainScreen != null) {
+            mainScreen.reloadPhoto();
         }
     }
 
@@ -198,22 +198,29 @@ public class RodaImpianNew extends Game {
     public void setWheelParams(WheelParams wheelParams) {
         this.wheelParams = wheelParams;
     }
-    public void setOnlineScreen(OnlineScreen onlineScreen){
+
+    public void setOnlineScreen(OnlineScreen onlineScreen) {
         this.onlineScreen = onlineScreen;
     }
 
 
-    public void spinOnline(boolean bonusMode, OnInterface onInterface){
-        spinOnline = new SpinOnline(this, bonusMode, onInterface);
-        if (spinOnline!=null){
-            if (!getScreen().equals(spinOnline)) {
-                setScreen(spinOnline);
+    public void spinOnline(boolean bonusMode, OnInterface onInterface) {
+        Gdx.app.postRunnable(new Runnable() {
+            @Override
+            public void run() {
+                spinOnline = new SpinOnline(RodaImpianNew.this, bonusMode, onInterface);
+                if (spinOnline != null) {
+                    if (!getScreen().equals(spinOnline)) {
+                        setScreen(spinOnline);
+                    }
+                }
             }
-        }
+        });
+
     }
 
-    public void forceWheel(ApplyForce applyForce){
-        if (spinOnline!=null){
+    public void forceWheel(ApplyForce applyForce) {
+        if (spinOnline != null) {
             spinOnline.spinWheel(applyForce);
         }
     }
@@ -222,8 +229,8 @@ public class RodaImpianNew extends Game {
         return spinOnline;
     }
 
-    public void backOnlineScreen(){
-        if (onlineScreen!=null){
+    public void backOnlineScreen() {
+        if (onlineScreen != null) {
             setScreen(onlineScreen);
         }
     }

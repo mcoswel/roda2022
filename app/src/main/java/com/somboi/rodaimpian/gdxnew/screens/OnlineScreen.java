@@ -33,15 +33,19 @@ import com.somboi.rodaimpian.gdxnew.onlineclasses.Disconnect;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.FinishGame;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.GameState;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.GiftsNew;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.IncreaseRound;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.KickPlayer;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.LoseBonus;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.NetWork;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.PlayerStates;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.PrepareEnvelope;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.RoomLists;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.RoomSession;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.ShowMenu;
-import com.somboi.rodaimpian.gdxnew.onlineclasses.ShowWinner;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.SpinBonusWheel;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.StartTurn;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.WheelBodyAngle;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.WinBonus;
 import com.somboi.rodaimpian.gdxnew.wheels.WheelParams;
 
 import java.io.IOException;
@@ -87,6 +91,12 @@ public class OnlineScreen extends BaseScreenNew implements OnInterface {
                     client.setTimeout(20000);
                 } catch (IOException e) {
                     statusLabel.updateText(StringRes.FAILSERVER);
+                    Timer.schedule(new Timer.Task() {
+                        @Override
+                        public void run() {
+                            rodaImpianNew.mainMenu();
+                        }
+                    }, 2f);
                 }
             }
         });
@@ -168,14 +178,32 @@ public class OnlineScreen extends BaseScreenNew implements OnInterface {
             if (o instanceof FinishGame) {
                 client.sendTCP(PlayerStates.FINISHROUND);
             }
+            if (o instanceof IncreaseRound) {
+                client.sendTCP(PlayerStates.INCREASEROUND);
+            }
             if (o instanceof CompleteAnswer) {
                 client.sendTCP(PlayerStates.CHOOSECOMPLETE);
             }
-            if (o instanceof ShowWinner) {
-                client.sendTCP(PlayerStates.SHOWWINNER);
-            }
+
             if (o instanceof ChangeTurn) {
                 client.sendTCP(PlayerStates.CHANGETURN);
+            }
+            if (o instanceof WinBonus) {
+                Gdx.app.postRunnable(new Runnable() {
+                    @Override
+                    public void run() {
+                        onlineGame.executeBonusWin();
+                    }
+                });
+
+            }
+            if (o instanceof LoseBonus) {
+                Gdx.app.postRunnable(new Runnable() {
+                    @Override
+                    public void run() {
+                        onlineGame.executeLoseBonus();
+                    }
+                });
             }
             if (o instanceof StartTurn) {
                 client.sendTCP(PlayerStates.STARTTURN);
@@ -183,139 +211,235 @@ public class OnlineScreen extends BaseScreenNew implements OnInterface {
             if (o instanceof ShowMenu) {
                 client.sendTCP(PlayerStates.SHOWMENU);
             }
+            if (o instanceof SpinBonusWheel) {
+                client.sendTCP(PlayerStates.SPINBONUSWHEEL);
+            }
+            if (o instanceof PrepareEnvelope) {
+                client.sendTCP(PlayerStates.ENVELOPE);
+            }
             if (o instanceof RoomLists) {
                 RoomLists roomLists = (RoomLists) o;
-                if (roomLists != null && !host) {
-                    updateRoomList(roomLists);
-                }
+
+                Gdx.app.postRunnable(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (roomLists != null && !host) {
+                            updateRoomList(roomLists);
+                        }
+                    }
+                });
+
             }
             if (o instanceof RoomSession) {
                 RoomSession roomSession = (RoomSession) o;
-                createPlayStage(roomSession);
+                Gdx.app.postRunnable(new Runnable() {
+                    @Override
+                    public void run() {
+                        createPlayStage(roomSession);
+                    }
+                });
+
             }
             if (o instanceof Disconnect) {
                 Disconnect disconnect = (Disconnect) o;
                 //   logger.debug("Player disconnect ");
-                onlineGame.playerDisconnected(disconnect.getPlayerId());
+
+                Gdx.app.postRunnable(new Runnable() {
+                    @Override
+                    public void run() {
+                        onlineGame.playerDisconnected(disconnect.getPlayerId());
+
+                    }
+                });
             }
             if (o instanceof GiftsNew) {
                 GiftsNew giftsNew = (GiftsNew) o;
-                onlineGame.setGiftOnline(giftsNew);
+                Gdx.app.postRunnable(new Runnable() {
+                    @Override
+                    public void run() {
+                        onlineGame.setGiftOnline(giftsNew);
+
+                    }
+                });
             }
 
 
-                if (o instanceof BonusStringHolder) {
+            if (o instanceof BonusStringHolder) {
                 BonusStringHolder bonusStringHolder = (BonusStringHolder) o;
-                onlineGame.checkBonusString(bonusStringHolder.getBonusStringHolder());
+                Gdx.app.postRunnable(new Runnable() {
+                    @Override
+                    public void run() {
+                        onlineGame.checkBonusString(bonusStringHolder.getBonusStringHolder());
+
+                    }
+                });
             }
 
             if (o instanceof GameState) {
                 GameState gameState = (GameState) o;
+                Gdx.app.postRunnable(new Runnable() {
+                    @Override
+                    public void run() {
 
-                if (gameState.equals(GameState.HOSTDISCONNECT)) {
-                    ErrDiag errDiag = new ErrDiag(StringRes.HOSTLOST, skin) {
-                        @Override
-                        public void func() {
-                            rodaImpianNew.setScreen(new OnlineScreen(rodaImpianNew));
+                        if (gameState.equals(GameState.HOSTDISCONNECT)) {
+                            ErrDiag errDiag = new ErrDiag(StringRes.HOSTLOST, skin) {
+                                @Override
+                                public void func() {
+                                    rodaImpianNew.setScreen(new OnlineScreen(rodaImpianNew));
+                                }
+                            };
+                            errDiag.show(stage);
                         }
-                    };
-                    errDiag.show(stage);
-                }
 
-                if (gameState.equals(GameState.SPINSCREEN)) {
-                    spinOnline(false);
-                }
+                        if (gameState.equals(GameState.SPINSCREEN)) {
 
-                if (gameState.equals(GameState.FINISHSPIN)) {
-                    rodaImpianNew.backOnlineScreen();
-                    sendObjects(PlayerStates.SHOWCONSONANT);
-                    rodaImpianNew.getPlayer().setPlayerStates(PlayerStates.SHOWCONSONANT);
-                }
+                            spinOnline(false);
+                        }
 
-                if (gameState.equals(GameState.START)) {
-                    statusLabel.remove();
-                    onlineGame.startRound();
-                }
-                if (gameState.equals(GameState.SHOWQUESTIONS)) {
-                    onlineGame.showQuestions();
-                }
-                if (gameState.equals(GameState.STARTURN)) {
-                    onlineGame.executeStartTurn();
-                }
-                if (gameState.equals(GameState.SHOWMENU)) {
-                    onlineGame.executeShowPlayerMenu();
-                }
-                if (gameState.equals(GameState.CHANGETURN)) {
-                    onlineGame.executeChangeTurn();
-                }
-                if (gameState.equals(GameState.PREPAREENVELOPE)) {
-                    onlineGame.prepareEnvelope();
-                }
-                if (gameState.equals(GameState.SHOWCONSONANT)) {
-                    onlineGame.showConsonants();
-                }
-                if (gameState.equals(GameState.SHOWVOCAL)) {
-                    onlineGame.vocalKeyboard();
-                }
-                if (gameState.equals(GameState.FINISHROUND)) {
-                    onlineGame.executeFinishGame();
-                }
-                if (gameState.equals(GameState.SHOWWINNER)) {
-                    onlineGame.executeShowWinner();
-                }
-                if (gameState.equals(GameState.COMPLETE)) {
-                    if (isTurn()) {
-                        try {
-                            if (onlineGame.completePuzzle()) {
-                                onlineGame.clearPlayerMenu();
+                        if (gameState.equals(GameState.FINISHSPIN)) {
+                            rodaImpianNew.backOnlineScreen();
+                            sendObjects(PlayerStates.SHOWCONSONANT);
+                            rodaImpianNew.getPlayer().setPlayerStates(PlayerStates.SHOWCONSONANT);
+                        }
+
+                        if (gameState.equals(GameState.START)) {
+                            Gdx.app.postRunnable(new Runnable() {
+                                @Override
+                                public void run() {
+                                    statusLabel.remove();
+                                    onlineGame.startRound();
+                                }
+                            });
+
+                        }
+                        if (gameState.equals(GameState.SHOWQUESTIONS)) {
+                            onlineGame.showQuestions();
+                        }
+                        if (gameState.equals(GameState.STARTURN)) {
+                            onlineGame.executeStartTurn();
+                        }
+                        if (gameState.equals(GameState.SHOWMENU)) {
+                            onlineGame.executeShowPlayerMenu();
+                        }
+                        if (gameState.equals(GameState.CHANGETURN)) {
+                            onlineGame.executeChangeTurn();
+                        }
+                        if (gameState.equals(GameState.PREPAREENVELOPE)) {
+                            onlineGame.prepareEnvelope();
+                        }
+                        if (gameState.equals(GameState.SHOWCONSONANT)) {
+                            onlineGame.showConsonants();
+                        }
+                        if (gameState.equals(GameState.SHOWVOCAL)) {
+                            onlineGame.vocalKeyboard();
+                        }
+                        if (gameState.equals(GameState.FINISHROUND)) {
+                            onlineGame.executeFinishGame();
+                        }
+
+                        if (gameState.equals(GameState.SPINBONUSWHEEL)) {
+                            rodaImpianNew.spinOnline(true, OnlineScreen.this);
+                        }
+                        if (gameState.equals(GameState.INCREASEROUND)) {
+                            logger.debug("increasing");
+                            onlineGame.increaseGameRound();
+                        }
+                        if (gameState.equals(GameState.COMPLETE)) {
+                            if (isTurn()) {
+                                try {
+                                    if (onlineGame.completePuzzle()) {
+                                        onlineGame.clearPlayerMenu();
+                                    }
+                                } catch (CloneNotSupportedException e) {
+                                    e.printStackTrace();
+                                }
                             }
-                        } catch (CloneNotSupportedException e) {
-                            e.printStackTrace();
                         }
                     }
-                }
-
+                });
             }
 
             if (o instanceof ChooseVocal) {
                 ChooseVocal chooseVocal = (ChooseVocal) o;
-                onlineGame.chooseVocal(chooseVocal);
+                Gdx.app.postRunnable(new Runnable() {
+                    @Override
+                    public void run() {
+                        onlineGame.chooseVocal(chooseVocal);
+
+                    }
+                });
             }
             if (o instanceof CheckAnswer) {
                 CheckAnswer checkAnswer = (CheckAnswer) o;
-                onlineGame.checkAnswer(checkAnswer.getCharacter());
+                Gdx.app.postRunnable(new Runnable() {
+                    @Override
+                    public void run() {
+                        onlineGame.checkAnswer(checkAnswer.getCharacter());
+
+                    }
+                });
             }
 
             if (o instanceof KickPlayer) {
                 KickPlayer kickPlayer = (KickPlayer) o;
-                rodaImpianNew.getBannedRoom().add(kickPlayer.getRoomId());
-                ErrDiag errDiag = new ErrDiag(StringRes.YOUBEENKICK, skin) {
+
+                Gdx.app.postRunnable(new Runnable() {
                     @Override
-                    public void func() {
-                        rodaImpianNew.setScreen(new OnlineScreen(rodaImpianNew));
+                    public void run() {
+                        rodaImpianNew.getBannedRoom().add(kickPlayer.getRoomId());
+                        ErrDiag errDiag = new ErrDiag(StringRes.YOUBEENKICK, skin) {
+                            @Override
+                            public void func() {
+                                rodaImpianNew.setScreen(new OnlineScreen(rodaImpianNew));
+                            }
+                        };
+                        errDiag.show(stage);
                     }
-                };
-                errDiag.show(stage);
+                });
+
+
             }
             if (o instanceof ChatOnline) {
                 ChatOnline chatOnline = (ChatOnline) o;
-                onlineGame.showChatOnline(chatOnline);
+                Gdx.app.postRunnable(new Runnable() {
+                    @Override
+                    public void run() {
+                        onlineGame.showChatOnline(chatOnline);
+
+                    }
+                });
             }
 
             if (o instanceof WheelBodyAngle) {
                 if (!isTurn()) {
                     WheelBodyAngle wheelBodyAngle = (WheelBodyAngle) o;
-                    rodaImpianNew.getSpinOnline().setWheelBodyAngle(wheelBodyAngle);
+                    Gdx.app.postRunnable(new Runnable() {
+                        @Override
+                        public void run() {
+                            rodaImpianNew.getSpinOnline().setWheelBodyAngle(wheelBodyAngle);
+
+                        }
+                    });
                 }
             }
 
             if (o instanceof WheelParams) {
                 WheelParams wheelParams = (WheelParams) o;
-                rodaImpianNew.getSpinOnline().showResults(wheelParams);
+                Gdx.app.postRunnable(new Runnable() {
+                    @Override
+                    public void run() {
+                        rodaImpianNew.getSpinOnline().showResults(wheelParams);
+                    }
+                });
             }
             if (o instanceof ApplyForce) {
                 ApplyForce applyForce = (ApplyForce) o;
-                rodaImpianNew.forceWheel(applyForce);
+                Gdx.app.postRunnable(new Runnable() {
+                    @Override
+                    public void run() {
+                        rodaImpianNew.forceWheel(applyForce);
+                    }
+                });
             }
 
         }

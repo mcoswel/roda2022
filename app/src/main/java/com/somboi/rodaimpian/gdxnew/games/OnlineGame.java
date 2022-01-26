@@ -6,6 +6,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
@@ -15,13 +18,16 @@ import com.somboi.rodaimpian.gdx.assets.AssetDesc;
 import com.somboi.rodaimpian.gdx.assets.StringRes;
 import com.somboi.rodaimpian.gdx.config.GameConfig;
 import com.somboi.rodaimpian.gdxnew.FlyingMoney;
+import com.somboi.rodaimpian.gdxnew.actors.Bonuses;
 import com.somboi.rodaimpian.gdxnew.actors.ChatBubble;
 import com.somboi.rodaimpian.gdxnew.actors.Confetti;
+import com.somboi.rodaimpian.gdxnew.actors.CorrectLabel;
 import com.somboi.rodaimpian.gdxnew.actors.ErrDiag;
 import com.somboi.rodaimpian.gdxnew.actors.Fireworks;
 import com.somboi.rodaimpian.gdxnew.actors.PlayerGuis;
 import com.somboi.rodaimpian.gdxnew.actors.PlayerMenu;
 import com.somboi.rodaimpian.gdxnew.actors.SmallButton;
+import com.somboi.rodaimpian.gdxnew.actors.Sparkling;
 import com.somboi.rodaimpian.gdxnew.actors.TileBase;
 import com.somboi.rodaimpian.gdxnew.actors.UltraSmallBtn;
 import com.somboi.rodaimpian.gdxnew.actors.WinnerDialog;
@@ -35,14 +41,20 @@ import com.somboi.rodaimpian.gdxnew.onlineclasses.CompleteAnswer;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.FinishGame;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.GameState;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.GiftsNew;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.IncreaseRound;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.KickPlayer;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.LoseBonus;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.PlayerStates;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.PrepareEnvelope;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.RemoveSession;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.RoomSession;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.ShowMenu;
-import com.somboi.rodaimpian.gdxnew.onlineclasses.ShowWinner;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.SpinBonusWheel;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.StartTurn;
+import com.somboi.rodaimpian.gdxnew.onlineclasses.WinBonus;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class OnlineGame extends BaseGame {
@@ -168,31 +180,11 @@ public class OnlineGame extends BaseGame {
                 correct = true;
             }
             if (playerMenu.isBonusMode()) {
-                String dialogString = StringRes.LOSEBONUS;
                 if (correct) {
-                    stage.addActor(new Fireworks(rodaImpianNew.getAssetManager().get(AssetDesc.WINANIMATION)));
-                    dialogString = StringRes.WINBONUS + rodaImpianNew.getWheelParams().getScoreStrings();
-                    if (bonusGiftImg != null) {
-                        currentGui.getBonusWon().add(bonusGiftImg.getBonusIndex());
-                    }
-                    gameSound.playWinSound();
-                    gameSound.playCheer();
-                    vannaHost.dance();
-                    currentGui.addBonus(bonusGiftImg.getBonusIndex());
+                    sendObject(new WinBonus());
                 } else {
-                    gameSound.playAww();
-                    vannaHost.wrong();
+                    sendObject(new LoseBonus());
                 }
-
-                ErrDiag errDiag = new ErrDiag(dialogString, skin) {
-                    @Override
-                    protected void result(Object object) {
-                        showWinner();
-                        hide();
-                        super.result(object);
-                    }
-                };
-                errDiag.show(stage);
                 return;
             }
             if (correct) {
@@ -205,18 +197,93 @@ public class OnlineGame extends BaseGame {
                 changeTurn();
             }
         } else {
-            sendObject(new CompleteAnswer());
+            if (isTurn()) {
+                sendObject(new CompleteAnswer());
+            }
         }
+    }
+
+
+    public void executeBonusWin() {
+        stage.addActor(new Fireworks(rodaImpianNew.getAssetManager().get(AssetDesc.WINANIMATION)));
+        String dialogString = activePlayer.getName() + ", " + StringRes.WINBONUS + rodaImpianNew.getWheelParams().getScoreStrings();
+        if (bonusGiftImg != null) {
+            currentGui.getBonusWon().add(bonusGiftImg.getBonusIndex());
+        }
+        gameSound.playWinSound();
+        gameSound.playCheer();
+        vannaHost.dance();
+        currentGui.addBonus(bonusGiftImg.getBonusIndex());
+        showFinisDialog(dialogString);
+    }
+
+    public void executeLoseBonus() {
+        String dialogString = activePlayer.getName() + ", " + StringRes.LOSEBONUS;
+        gameSound.playAww();
+        vannaHost.wrong();
+        showFinisDialog(dialogString);
+    }
+
+    private void showFinisDialog(String dialogString) {
+        ErrDiag errDiag = new ErrDiag(dialogString, skin) {
+            @Override
+            protected void result(Object object) {
+                showWinner();
+                hide();
+                super.result(object);
+            }
+        };
+        errDiag.show(stage);
+    }
+
+    @Override
+    public void checkBonusString(String bonusHolder) {
+        final Label label = new Label(bonusHolder, skin, "spin");
+        label.pack();
+        label.setPosition(450f - label.getWidth() / 2f, 800f);
+        bonusStringHolder = new StringBuilder(bonusHolder);
+        stage.addActor(label);
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                if (bonusStringHolder.length() > 0) {
+                    checkBonusChar(String.valueOf(bonusStringHolder.charAt(0)));
+                    bonusStringHolder.deleteCharAt(0);
+                    label.setText(bonusStringHolder.toString());
+                    label.pack();
+                    label.setPosition(450f - label.getWidth() / 2f, 800f);
+                } else {
+                    label.remove();
+                    if (completenessCheck()) {
+                        showWinner();
+                    } else {
+                        try {
+                            if (isTurn()) {
+                                completePuzzle();
+                            }
+                        } catch (CloneNotSupportedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }, 2f, 2f, bonusStringHolder.length());
     }
 
     @Override
     public void finishGame() {
-        sendObject(new FinishGame());
+        if (isTurn()) {
+            sendObject(new FinishGame());
+        }
     }
 
     @Override
     public void showWinner() {
-        sendObject(new ShowWinner());
+        WinnerDialog winnerDialog = new WinnerDialog(skin, currentGui, atlas, rodaImpianNew);
+        winnerDialog.show(stage);
+        RemoveSession removeSession = new RemoveSession();
+        removeSession.setUid(rodaImpianNew.getPlayer().getUid());
+        sendObject(removeSession);
     }
 
     @Override
@@ -232,12 +299,8 @@ public class OnlineGame extends BaseGame {
 
     }
 
-    public void executeShowWinner(){
-        WinnerDialog winnerDialog = new WinnerDialog(skin, currentGui, atlas, rodaImpianNew);
-        winnerDialog.show(stage);
-    }
 
-    public void executeFinishGame(){
+    public void executeFinishGame() {
         gameSound.playCheer();
         vannaHost.dance();
         if (!incompleteTiles.isEmpty()) {
@@ -256,18 +319,25 @@ public class OnlineGame extends BaseGame {
         currentGui.getProfilePic().addAction(Actions.moveTo(350f, 1150f, 1.5f));
         activePlayer.setFullScore(activePlayer.getFullScore() + activePlayer.getScore() + 200 * (gameRound + 1));
         currentGui.updateFullScore(activePlayer.getFullScore());
-        increaseGameRound();
+        if (isTurn()) {
+            sendObject(new IncreaseRound());
+        }
     }
+
 
     @Override
     public void showQuestions() {
         super.showQuestions();
-        onInterface.sendObjects(new StartTurn());
+        if (isTurn()) {
+            onInterface.sendObjects(new StartTurn());
+        }
     }
 
     @Override
     public void showPlayerMenu() {
-        onInterface.sendObjects(new ShowMenu());
+        if (isTurn()) {
+            onInterface.sendObjects(new ShowMenu());
+        }
     }
 
     public void executeShowPlayerMenu() {
@@ -309,6 +379,7 @@ public class OnlineGame extends BaseGame {
                 p.getPlayerNew().setDisconnect(true);
             }
         }
+
     }
 
     public void setQuestionNewList(List<QuestionNew> questionNewList) {
@@ -319,12 +390,13 @@ public class OnlineGame extends BaseGame {
         this.roomSession = roomSession;
     }
 
+
     @Override
     public void showConsonants() {
         if (rodaImpianNew.isBonusMode()) {
             vannaHost.relax();
             if (onInterface.isTurn()) {
-                onInterface.sendObjects(PlayerStates.ENVELOPE);
+                onInterface.sendObjects(new PrepareEnvelope());
             }
             return;
         }
@@ -355,13 +427,74 @@ public class OnlineGame extends BaseGame {
                     currentGui.setFree(false);
                 }
             }
-            Timer.schedule(new Timer.Task() {
-                @Override
-                public void run() {
-                    changeTurn();
-                }
-            }, 1f);
+            changeTurn();
         }
+    }
+
+    @Override
+    public void increaseGameRound() {
+        gameRound++;
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                currentGui.getProfilePic().addAction(Actions.moveTo(currentGui.getPosition().x, currentGui.getPosition().y, 1f));
+                if (gameRound != 3) {
+                    continuePlay();
+                } else {
+                    List<Integer> allScore = new ArrayList<>();
+                    for (PlayerGuis p : playerGuis) {
+                        allScore.add(p.getPlayerNew().getFullScore());
+                    }
+                    int highest = Collections.max(allScore);
+
+                    for (PlayerGuis p : playerGuis) {
+                        if (p.getPlayerNew().getFullScore() == highest) {
+                            activePlayer = p.getPlayerNew();
+                            currentGui = p;
+                        }
+                    }
+                    showTrophy();
+
+                    Timer.schedule(new Timer.Task() {
+                        @Override
+                        public void run() {
+                            spinBonusRound();
+
+                        }
+                    }, 2f);
+
+                }
+
+
+            }
+
+            private void continuePlay() {
+                setUpNewRound();
+                for (PlayerGuis p : playerGuis) {
+                    p.getPlayerNew().setScore(0);
+                    p.setFree(false);
+                }
+                startRound();
+            }
+        }, 2f);
+    }
+
+    @Override
+    public void spinBonusRound() {
+        rodaImpianNew.setBonusMode(true);
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                for (PlayerGuis p : playerGuis) {
+                    if (!p.equals(currentGui)) {
+                        p.getProfilePic().remove();
+                    }
+                }
+                if (isTurn()) {
+                    sendObject(new SpinBonusWheel());
+                }
+            }
+        }, 2f);
     }
 
     private void showKeyboardConsonant() {
@@ -404,33 +537,33 @@ public class OnlineGame extends BaseGame {
         if (completenessCheck()) {
             finishGame();
         } else {
-            Timer.schedule(new Timer.Task() {
-                @Override
-                public void run() {
-                    showPlayerMenu();
-                }
-            }, 2f);
+            showPlayerMenu();
         }
     }
 
     public void executeChangeTurn() {
-       // logger.debug("current Index before" + currentIndex);
+        // logger.debug("current Index before" + currentIndex);
 
         playerMenu.clear();
         currentIndex = (currentIndex + 1) % playerGuis.size;
+        if (playerGuis.get(currentIndex).getPlayerNew().isDisconnect()){
+            executeChangeTurn();
+            return;
+        }
         for (PlayerGuis playerGui : playerGuis) {
             playerGui.getPlayerNew().setTurn(false);
         }
         playerGuis.get(currentIndex).getPlayerNew().setTurn(true);
         startTurn();
-       // logger.debug("current Index after" + currentIndex);
+        // logger.debug("current Index after" + currentIndex);
     }
 
-    public void setGiftOnline(GiftsNew giftsNew) {
+    public void setGiftOnline(GiftsNew gg) {
+        this.giftsNew.setGiftIndex(gg.getGiftIndex());
         rodaImpianNew.getWheelParams().setScores(
                 gifts.getGiftValue(giftsNew.getGiftIndex())
         );
-        giftsIndexes.removeValue(giftsNew.getGiftIndex(), false);
+        giftsIndexes.removeValue(gg.getGiftIndex(), false);
         if (giftsIndexes.isEmpty()) {
             giftsIndexes = new Array<>(new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23});
             giftsIndexes.shuffle();
@@ -441,10 +574,38 @@ public class OnlineGame extends BaseGame {
 
     @Override
     public void prepareEnvelope() {
-        super.prepareEnvelope();
-        if (!onInterface.isTurn()) {
-            Gdx.input.setInputProcessor(null);
+        logger.debug("prepareEnvelope");
+        playerMenu = new PlayerMenu(stage, this, skin);
+        gameRound = 3;
+        setUpNewRound();
+        bonusGiftImg = new Bonuses(atlas, rodaImpianNew.getWheelParams().getBonusIndex());
+        bonusGiftImg.setPosition(350f, 1110f);
+        stage.addActor(new Sparkling(rodaImpianNew.getAssetManager().get(AssetDesc.SPARKLE)));
+        stage.addActor(bonusGiftImg);
+        gameSound.playCorrect();
+
+        for (TileBase tileBase : tileBases) {
+            tileBase.addAction(
+                    new ParallelAction(
+                            new SequenceAction(Actions.fadeOut(0),
+                                    Actions.fadeIn(1f)),
+                            new SequenceAction(Actions.color(Color.RED, 1f), Actions.color(new Color(1f, 1f, 1f, 1f), 1f)))
+            );
+            tilesGroup.addActor(tileBase);
         }
+        setSubject(currentQuestion.getSubject());
+        correctLabel = new CorrectLabel(StringRes.CHOOSE5CONS, skin);
+        stage.addActor(correctLabel);
+        playerMenu.setBonusMode(true);
+        if (onInterface.isTurn()) {
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    playerMenu.createConsonantsTable();
+                }
+            }, 2f);
+        }
+
     }
 
 
@@ -453,7 +614,7 @@ public class OnlineGame extends BaseGame {
         onInterface.sendObjects(o);
     }
 
-
+    @Override
     public boolean isTurn() {
         for (PlayerGuis p : playerGuis) {
             if (p.getPlayerNew().isTurn()) {
@@ -464,7 +625,6 @@ public class OnlineGame extends BaseGame {
     }
 
     public void chooseVocal(ChooseVocal chooseVocal) {
-
         playerGuis.get(chooseVocal.getGuiIndex()).getPlayerNew().setScore(
                 playerGuis.get(chooseVocal.getGuiIndex()).getPlayerNew().getScore() - 250
         );

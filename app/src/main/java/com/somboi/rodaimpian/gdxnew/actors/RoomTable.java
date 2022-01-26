@@ -47,7 +47,10 @@ public class RoomTable extends Table {
             joinButton.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
-                    if (onInterface.isBanned(roomSession.getRoomID())) {
+                    if (roomSession.getPlayerList().size() >= 3) {
+                        ErrDiag errDiag = new ErrDiag(StringRes.ROOMFULL, skin);
+                        errDiag.show(getStage());
+                    } else if (onInterface.isBanned(roomSession.getRoomID())) {
                         ErrDiag errDiag = new ErrDiag(StringRes.SORRYYOUBAN, skin);
                         errDiag.show(getStage());
                     } else {
