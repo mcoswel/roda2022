@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
-
+        <meta-data android:name="applovin.sdk.key"
+            android:value="84iGEQC1TLw1OSQlKC08uHPyeRtHIMi2fJQCZScJ_BF0EFUUwB5nJSN5qUnxtxbkTPqEGR1Nqc8B3EnorQmL1D"/>
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />

@@ -32,7 +32,7 @@ public class LoadingScreenNew extends ScreenAdapter {
     private final AssetManager assetManager;
     private final PlayerSaves playerSaves = new PlayerSaves();
     private final Logger logger = new Logger(this.getClass().getName(), 3);
-    private final Texture loading = new Texture(Gdx.files.internal("textures/loading.png"));
+    private final Texture loading = new Texture(Gdx.files.internal("loading.png"));
     private final Viewport viewport;
     private final SpriteBatch batch = new SpriteBatch();
     private float rotation;
@@ -68,16 +68,12 @@ public class LoadingScreenNew extends ScreenAdapter {
         if (player.getPlayerBonus() != null) {
             logger.debug("bonus size " + player.getPlayerBonus().size() + " bonuses " + player.getPlayerBonus().toString());
         }
-        logger.debug("bankrupt size " + player.getBankrupt());
-        logger.debug("times played " + player.getTimesPlayed());
-
-        logger.debug("best score " + player.getBestScore());
-        assetManager.load(AssetDesc.TEXTUREATLAS);
+     //   assetManager.load(AssetDesc.TEXTUREATLAS);
         assetManager.load(AssetDesc.CONFETTI);
         assetManager.load(AssetDesc.WINANIMATION);
         assetManager.load(AssetDesc.SPARKLE);
-        assetManager.load(AssetDesc.BLURBG);
-        assetManager.load(AssetDesc.SKIN);
+     //   assetManager.load(AssetDesc.BLURBG);
+      //  assetManager.load(AssetDesc.SKIN);
         assetManager.load(AssetDesc.AWWSOUND);
         assetManager.load(AssetDesc.CHEERSOUND);
         assetManager.load(AssetDesc.ROTATESOUND);
@@ -86,7 +82,8 @@ public class LoadingScreenNew extends ScreenAdapter {
         assetManager.load(AssetDesc.WINSOUND);
         assetManager.load(AssetDesc.CLOCKSOUND);
         assetManager.load(AssetDesc.SLAPSOUND);
-        assetManager.load(AssetDesc.BG);
+        assetManager.load(AssetDesc.TWANK);
+        //   assetManager.load(AssetDesc.BG);
         assetManager.load(AssetDesc.HOURGLASS);
         assetManager.load(AssetDesc.ATLAS);
         assetManager.load(AssetDesc.NEWSKIN);

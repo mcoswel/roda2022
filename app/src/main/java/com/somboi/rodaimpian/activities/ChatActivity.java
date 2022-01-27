@@ -16,7 +16,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.badlogic.gdx.utils.Json;
 import com.facebook.ads.AdSize;
-import com.facebook.ads.AdView;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -42,7 +46,7 @@ public class ChatActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ChatListener chatListener = new ChatListener();
     private ValueEventListener bilOnlineListener;
-   private  AdView adView;
+    private AdView mAdView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,15 +58,19 @@ public class ChatActivity extends AppCompatActivity {
             Json json = new Json();
             player = json.fromJson(PlayerOnline.class, extra.getString("player"));
         }
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
 
         recyclerView = findViewById(R.id.recycleView);
         send = findViewById(R.id.kirimBtn);
         editText = findViewById(R.id.chatInput);
-        adView = new AdView(this, getString(R.string.facebook_banner), AdSize.BANNER_HEIGHT_50);
-        LinearLayout adContainer = (LinearLayout) findViewById(R.id.banner_container);
-        adContainer.addView(adView);
-        adView.loadAd();
 
+        mAdView = findViewById(R.id.ad_online_chat);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 /*
 
         player.picUri = "https://firebasestorage.googleapis.com/v0/b/roda-impian-acc41.appspot.com/o/avatar_lelex.png?alt=media&token=83d0bf7f-454b-49b7-a102-f030ab2a13df";
@@ -151,10 +159,10 @@ public class ChatActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         removeChats();
-        if (adView != null) {
-            adView.destroy();
-        }
         finish();
+        if(mAdView!=null) {
+            mAdView.destroy();
+        }
 
     }
 

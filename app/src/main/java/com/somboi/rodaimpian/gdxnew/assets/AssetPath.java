@@ -32,6 +32,7 @@ public class AssetPath {
     public static final String BLURRED = "blurred.png";
     public static final String BLURGOLD = "blurgold.png";
 
+    public static final String TWANK = "sounds/twank.mp3";
 }
 
 

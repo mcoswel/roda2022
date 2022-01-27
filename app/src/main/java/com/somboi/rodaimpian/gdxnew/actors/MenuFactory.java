@@ -224,7 +224,7 @@ public class MenuFactory {
 
     private void updateMultiButton() {
         startMulti.pack();
-        startMulti.setPosition(450f - startMulti.getWidth() / 2f, 200f);
+        startMulti.setPosition(450f - startMulti.getWidth() / 2f, 400f);
     }
 
     private void createBackground() {

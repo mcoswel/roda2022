@@ -1,14 +1,11 @@
 package com.somboi.rodaimpian.gdxnew.actors;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
-import com.somboi.rodaimpian.gdx.entities.PlayerGui;
 import com.somboi.rodaimpian.gdxnew.games.BaseGame;
-import com.somboi.rodaimpian.gdxnew.games.SinglePlayer;
 
 public class WheelTurns extends Image {
     private float rotations;
@@ -38,7 +35,7 @@ public class WheelTurns extends Image {
 
     @Override
     public void act(float delta) {
-        if (!stopRotate){
+        if (!stopRotate) {
             getStage().addActor(pointer);
         }
         if (rotations > 0 && !stopRotate) {
@@ -65,7 +62,7 @@ public class WheelTurns extends Image {
                     Timer.schedule(new Timer.Task() {
                         @Override
                         public void run() {
-                           baseGame.startRound();
+                            baseGame.startRound();
 
                         }
                     }, 1f);
@@ -73,10 +70,10 @@ public class WheelTurns extends Image {
             }, 3f);
         }
 
-        if (this.getRotation()<0){
+        if (this.getRotation() < 0) {
             this.setRotation(360);
         }
-        for (PlayerGuis p: playerGuis){
+        for (PlayerGuis p : playerGuis) {
             p.getProfilePic().setRotation(this.getRotation());
         }
     }

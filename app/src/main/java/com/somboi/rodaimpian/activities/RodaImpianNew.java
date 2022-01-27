@@ -40,7 +40,7 @@ public class RodaImpianNew extends Game {
     private OnlineScreen onlineScreen;
     private SpinOnline spinOnline;
     private Music music;
-
+    private boolean rewardedLoaded;
     public RodaImpianNew(AndroInterface androInterface) {
         this.androInterface = androInterface;
     }
@@ -275,5 +275,33 @@ public class RodaImpianNew extends Game {
         if (!topPlayers.isEmpty()) {
             mainScreen.updateTopPlayer(topPlayers);
         }
+    }
+
+    public boolean isRewardedLoaded() {
+        return rewardedLoaded;
+    }
+
+    public void setRewardedLoaded(boolean rewardedLoaded) {
+        this.rewardedLoaded = rewardedLoaded;
+    }
+
+    public void loadAds() {
+        androInterface.loadAllAds();
+    }
+
+    public void showAds(int gameRound) {
+        androInterface.showAds(gameRound);
+    }
+
+    public void showRewarded() {
+        androInterface.showRewardedAds();
+    }
+
+    public void loadRewarededAds() {
+        androInterface.loadRewardedAds();
+    }
+
+    public void openPlayStore() {
+        androInterface.sahibba();
     }
 }

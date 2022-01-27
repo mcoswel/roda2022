@@ -136,6 +136,7 @@ public class StringRes {
     public static final String SORRYYOUBAN = "Maaf, host baru sahaja menendang anda. Cuba lagi";
     public static final String MUSICOFF = "Off Muzik";
     public static final String TOPPLAYER = "Pemain Legend: ";
+    public static final String SORRY = "Maaf";
 
     //159.223.73.205
 

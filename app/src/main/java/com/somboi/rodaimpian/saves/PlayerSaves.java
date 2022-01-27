@@ -8,7 +8,6 @@ import com.badlogic.gdx.utils.JsonWriter;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.somboi.rodaimpian.activities.PlayerOnline;
 import com.somboi.rodaimpian.gdxnew.assets.StringRes;
-import com.somboi.rodaimpian.gdx.entities.Player;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
 
 public class PlayerSaves {
@@ -30,28 +29,28 @@ public class PlayerSaves {
         return save;
     }
 
-    public void save(Player player) {
-        save.data.put(StringRes.PLAYERSAVE, player);
-        saveToJson(); //Save the data immediately
-    }
+
     public void savePlayerNew(PlayerNew playerNew) {
         save.data.put(StringRes.PLAYERSAVENEW, playerNew);
         saveToJson(); //Save the data immediately
     }
+
     public void savePlayerNewTwo(PlayerNew playerNew) {
         save.data.put(StringRes.PLAYERSAVENEW2, playerNew);
         saveToJson(); //Save the data immediately
     }
+
     public void savePlayerNewThree(PlayerNew playerNew) {
         save.data.put(StringRes.PLAYERSAVENEW3, playerNew);
         saveToJson(); //Save the data immediately
     }
 
 
-    public void savePlayerOnline(PlayerOnline playerOnline){
+    public void savePlayerOnline(PlayerOnline playerOnline) {
         save.data.put(StringRes.PLAYERONLINESAVE, playerOnline);
         saveToJson(); //Save the data immediately
     }
+
     public PlayerNew loadPlayerNew() {
         //Return data if the data contains key, otherwise return null
         if (save.data.containsKey(StringRes.PLAYERSAVENEW))
@@ -67,6 +66,7 @@ public class PlayerSaves {
         else
             return null;
     }
+
     public PlayerNew loadPlayerNewThree() {
         //Return data if the data contains key, otherwise return null
         if (save.data.containsKey(StringRes.PLAYERSAVENEW3))
@@ -74,13 +74,7 @@ public class PlayerSaves {
         else
             return null;
     }
-    public Player load() {
-        //Return data if the data contains key, otherwise return null
-        if (save.data.containsKey(StringRes.PLAYERSAVE))
-            return (Player) save.data.get(StringRes.PLAYERSAVE);
-        else
-            return null;
-    }
+
 
     public PlayerOnline loadPlayerOnline() {
         //Return data if the data contains key, otherwise return null
@@ -95,6 +89,7 @@ public class PlayerSaves {
         json.setOutputType(JsonWriter.OutputType.json);
         file.writeString(Base64Coder.encodeString(json.prettyPrint(save)), false);
     }
+
     /**
      * T replaces the type to be read as needed * public <T> T loadDataValue (String key, Class type) {if (save.data.containsKey (key)) return (T) save.data.get (key) ; else return null;//this if () avoids exception, but check for null on load.}
      */

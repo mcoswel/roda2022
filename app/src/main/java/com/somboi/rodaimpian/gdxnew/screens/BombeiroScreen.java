@@ -2,6 +2,7 @@ package com.somboi.rodaimpian.gdxnew.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -55,7 +56,7 @@ public class BombeiroScreen extends BaseScreenNew {
         stage.addActor(bonusGiftImg);
         bonusGiftImg.setPosition(450f - bonusGiftImg.getWidth() / 2f, 1326f);
 
-        // rodaImpian.loadAds();
+         rodaImpianNew.loadAds();
     }
 
     private void createNumbersTable() {
@@ -105,7 +106,7 @@ public class BombeiroScreen extends BaseScreenNew {
     private void moveVehicles(String type) {
         adsCount++;
         if (adsCount == 8) {
-            // rodaImpian.showAds(2);
+            rodaImpianNew.showAds(MathUtils.random(0,3));
         }
         if (type.equals("red")) {
             firetruck.move();
@@ -228,6 +229,7 @@ public class BombeiroScreen extends BaseScreenNew {
                 }
             },2f);
             gameSound.playAww();
+            gameSound.playTwank();
         }
      /*   if (type.equals("ambulance")) {
             logger.debug("ambulance wins");
@@ -248,6 +250,7 @@ public class BombeiroScreen extends BaseScreenNew {
     }
 
     private void endGame() {
+        rodaImpianNew.showAds(1);
         String dialogString = StringRes.LOSEBONUS;
         if (winBonus){
             dialogString = StringRes.WINBONUS;

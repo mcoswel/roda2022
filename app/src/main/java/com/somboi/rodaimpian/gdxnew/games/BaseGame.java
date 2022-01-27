@@ -17,10 +17,6 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.Timer;
 import com.somboi.rodaimpian.activities.RodaImpianNew;
-import com.somboi.rodaimpian.gdxnew.assets.AssetDesc;
-import com.somboi.rodaimpian.gdxnew.assets.GameSound;
-import com.somboi.rodaimpian.gdxnew.assets.StringRes;
-import com.somboi.rodaimpian.gdxnew.assets.GameConfig;
 import com.somboi.rodaimpian.gdxnew.FlyingMoney;
 import com.somboi.rodaimpian.gdxnew.actors.Bonuses;
 import com.somboi.rodaimpian.gdxnew.actors.ChatBubble;
@@ -42,7 +38,11 @@ import com.somboi.rodaimpian.gdxnew.actors.TrophyNew;
 import com.somboi.rodaimpian.gdxnew.actors.VannaHost;
 import com.somboi.rodaimpian.gdxnew.actors.WheelTurns;
 import com.somboi.rodaimpian.gdxnew.actors.WinnerDialog;
+import com.somboi.rodaimpian.gdxnew.assets.AssetDesc;
+import com.somboi.rodaimpian.gdxnew.assets.GameConfig;
+import com.somboi.rodaimpian.gdxnew.assets.GameSound;
 import com.somboi.rodaimpian.gdxnew.assets.QuestionNew;
+import com.somboi.rodaimpian.gdxnew.assets.StringRes;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.AiMoves;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
 import com.somboi.rodaimpian.gdxnew.interfaces.KeyListen;
@@ -89,6 +89,7 @@ public class BaseGame {
     protected Bonuses bonusGiftImg;
     protected final GameModes gameModes;
     protected PlayerGuis selfGui;
+    protected float adsTimer = 60f;
 
     public BaseGame(Stage stage, RodaImpianNew rodaImpianNew) {
         this.stage = stage;
@@ -107,6 +108,7 @@ public class BaseGame {
         stage.addActor(tilesGroup);
         stage.addActor(incompleteGroup);
         stage.addActor(vannaHost);
+        rodaImpianNew.loadAds();
     }
 
     public void start() {
@@ -114,6 +116,7 @@ public class BaseGame {
     }
 
     public void prepareEnvelope() {
+        rodaImpianNew.showAds(gameRound);
         playerMenu = new PlayerMenu(stage, this, skin);
         setUpNewRound();
         bonusGiftImg = new Bonuses(atlas, rodaImpianNew.getWheelParams().getBonusIndex());
@@ -604,6 +607,7 @@ public class BaseGame {
                     currentGui.addBonus(bonusGiftImg.getBonusIndex());
                 } else {
                     gameSound.playAww();
+                    gameSound.playTwank();
                     vannaHost.wrong();
                 }
 
@@ -660,6 +664,7 @@ public class BaseGame {
     }
 
     public void increaseGameRound() {
+        rodaImpianNew.showAds(gameRound);
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
@@ -764,6 +769,7 @@ public class BaseGame {
                 stage.addActor(new FlyingMoney(atlas.findRegion("3_badgebankrupt"), currentGui.getPosition()));
                 if (activePlayer.equals(rodaImpianNew.getPlayer())) {
                     rodaImpianNew.getPlayer().setBankrupt(rodaImpianNew.getPlayer().getBankrupt() + 1);
+                    gameSound.playTwank();
                 }
                 activePlayer.setScore(0);
                 if (currentGui.isFree()) {
@@ -781,6 +787,7 @@ public class BaseGame {
 
 
     public void showWinner() {
+        rodaImpianNew.showAds(gameRound);
         WinnerDialog winnerDialog = new WinnerDialog(skin, currentGui, atlas, rodaImpianNew);
         winnerDialog.show(stage);
     }
@@ -799,11 +806,13 @@ public class BaseGame {
         return answerString;
     }
 
-    public void mainMenu() {
-        rodaImpianNew.restart();
-    }
 
     public void update(float delta) {
+        adsTimer-=delta;
+        if (adsTimer<=0){
+            adsTimer = 60f;
+            rodaImpianNew.loadAds();
+        }
         for (PlayerGuis playerGui : playerGuis) {
             playerGui.update(delta);
         }
@@ -817,7 +826,7 @@ public class BaseGame {
         return rodaImpianNew.getGameModes();
     }
 
-    public void showSubMenu(){
+    public void showSubMenu() {
         SubMenu subMenu = new SubMenu(rodaImpianNew, skin);
         subMenu.show(stage);
     }

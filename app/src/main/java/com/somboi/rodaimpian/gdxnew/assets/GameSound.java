@@ -16,6 +16,7 @@ public class GameSound {
     private final Sound police;
     private final Sound ambulance;
     private final Sound fire;
+    private final Sound twank;
 
     public GameSound(AssetManager assetManager) {
         awwSound = assetManager.get(AssetDesc.AWWSOUND);
@@ -29,6 +30,8 @@ public class GameSound {
         police = assetManager.get(AssetDesc.POLICE);
         ambulance = assetManager.get(AssetDesc.AMBULANCE);
         fire = assetManager.get(AssetDesc.FIRETRUCK);
+        twank = assetManager.get(AssetDesc.TWANK);
+
     }
 
     public void playAww() {
@@ -37,6 +40,9 @@ public class GameSound {
 
     public void playRotate() {
         rotateSound.play();
+    }
+    public void playTwank() {
+        twank.play();
     }
 
     public void playCorrect() {

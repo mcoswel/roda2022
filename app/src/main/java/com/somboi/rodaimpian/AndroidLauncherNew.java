@@ -17,11 +17,20 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.applovin.mediation.MaxAd;
+import com.applovin.mediation.MaxError;
+import com.applovin.mediation.MaxReward;
+import com.applovin.mediation.MaxRewardedAdListener;
+import com.applovin.mediation.ads.MaxInterstitialAd;
+import com.applovin.mediation.ads.MaxRewardedAd;
+import com.applovin.sdk.AppLovinSdk;
+import com.applovin.sdk.AppLovinSdkConfiguration;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.backends.android.AndroidAudio;
 import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.Timer;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.transition.Transition;
@@ -30,8 +39,24 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
+import com.facebook.ads.Ad;
+import com.facebook.ads.AdError;
+import com.facebook.ads.AudienceNetworkAds;
+import com.facebook.ads.RewardedVideoAd;
+import com.facebook.ads.RewardedVideoAdListener;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.OnUserEarnedRewardListener;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+import com.google.android.gms.ads.rewarded.RewardItem;
+import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd;
+import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoadCallback;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -58,11 +83,11 @@ import com.somboi.rodaimpian.activities.CommentActivity;
 import com.somboi.rodaimpian.activities.LeaderBoard;
 import com.somboi.rodaimpian.activities.PlayerOnline;
 import com.somboi.rodaimpian.activities.RodaImpianNew;
-import com.somboi.rodaimpian.gdxnew.utils.CopyPlayer;
-import com.somboi.rodaimpian.gdxnew.utils.ShortenName;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
 import com.somboi.rodaimpian.gdxnew.interfaces.OnInterface;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.ChatOnline;
+import com.somboi.rodaimpian.gdxnew.utils.CopyPlayer;
+import com.somboi.rodaimpian.gdxnew.utils.ShortenName;
 import com.somboi.rodaimpian.ui.Chats;
 import com.somboi.rodaimpian.ui.TargetGlide;
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -77,7 +102,7 @@ import java.util.List;
 
 import barsoosayque.libgdxoboe.OboeAudio;
 
-public class AndroidLauncherNew extends AndroidApplication implements AndroInterface {
+public class AndroidLauncherNew extends AndroidApplication implements AndroInterface, OnUserEarnedRewardListener {
     private RodaImpianNew rodaImpianNew;
     private CallbackManager callbackManager;
     private ProfileTracker mProfileTracker;
@@ -85,6 +110,13 @@ public class AndroidLauncherNew extends AndroidApplication implements AndroInter
     private static final int RC_SIGN_IN = 5;
     private String filename;
     private String fcm_token;
+    private MaxInterstitialAd maxInter;
+    private MaxRewardedAd maxRewardedAd;
+    private InterstitialAd googleInter;
+    private com.facebook.ads.InterstitialAd facebookInter;
+    private RewardedInterstitialAd googleRewarded;
+    private RewardedVideoAd facebookRewarded;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,6 +131,30 @@ public class AndroidLauncherNew extends AndroidApplication implements AndroInter
         setContentView(gameView);
         callbackManager = CallbackManager.Factory.create();
 
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+
+
+        AppLovinSdk.getInstance(this).setMediationProvider("max");
+        AppLovinSdk.initializeSdk(this, new AppLovinSdk.SdkInitializationListener() {
+            @Override
+            public void onSdkInitialized(final AppLovinSdkConfiguration configuration) {
+                // AppLovin SDK is initialized, start loading ads
+            }
+        });
+
+        maxInter = new MaxInterstitialAd(getString(R.string.maxinter), this);
+        maxRewardedAd = MaxRewardedAd.getInstance(getString(R.string.maxrewarded), this);
+
+        AudienceNetworkAds.initialize(this);
+        facebookInter = new com.facebook.ads.InterstitialAd(this, getString(R.string.fb_inter_ads));
+        facebookRewarded = new RewardedVideoAd(this, getString(R.string.fb_rewarded_ads));
+
+
     }
 
     private void getFaceBookDetail() {
@@ -107,7 +163,7 @@ public class AndroidLauncherNew extends AndroidApplication implements AndroInter
         playerNew.setPicUri(Profile.getCurrentProfile().getProfilePictureUri(300, 300).toString());
         playerNew.setUid(Profile.getCurrentProfile().getId());
         playerNew.setLogged(true);
-        if (fcm_token!=null){
+        if (fcm_token != null) {
             playerNew.setFcmToken(fcm_token);
         }
         rodaImpianNew.setPlayer(playerNew);
@@ -123,6 +179,204 @@ public class AndroidLauncherNew extends AndroidApplication implements AndroInter
     @Override
     public AndroidAudio createAudio(Context context, AndroidApplicationConfiguration config) {
         return new OboeAudio(context.getAssets());
+    }
+
+    @Override
+    public void loadRewardedAds() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (googleRewarded == null) {
+                    RewardedInterstitialAd.load(AndroidLauncherNew.this, getString(R.string.google_rewarded_id),
+                            new AdRequest.Builder().build(), new RewardedInterstitialAdLoadCallback() {
+                                @Override
+                                public void onAdLoaded(RewardedInterstitialAd ad) {
+                                    googleRewarded = ad;
+                                }
+
+                                @Override
+                                public void onAdFailedToLoad(LoadAdError loadAdError) {
+                                    googleRewarded = null;
+                                }
+                            });
+                }
+
+                if (!facebookRewarded.isAdLoaded()) {
+                    RewardedVideoAdListener rewardedVideoAdListener = new RewardedVideoAdListener() {
+
+                        @Override
+                        public void onError(Ad ad, AdError adError) {
+
+
+                        }
+
+                        @Override
+                        public void onAdLoaded(Ad ad) {
+
+                        }
+
+                        @Override
+                        public void onAdClicked(Ad ad) {
+
+                        }
+
+                        @Override
+                        public void onLoggingImpression(Ad ad) {
+
+                        }
+
+                        @Override
+                        public void onRewardedVideoCompleted() {
+                            rodaImpianNew.setRewardedLoaded(true);
+                        }
+
+                        @Override
+                        public void onRewardedVideoClosed() {
+                            // The Rewarded Video ad was closed - this can occur during the video
+                            // by closing the app, or closing the end card.
+                        }
+                    };
+                    facebookRewarded.loadAd(
+                            facebookRewarded.buildLoadAdConfig()
+                                    .withAdListener(rewardedVideoAdListener)
+                                    .build());
+                }
+
+                maxRewardedAd.setListener(new MaxRewardedAdListener() {
+                    @Override
+                    public void onRewardedVideoStarted(MaxAd ad) {
+
+                    }
+
+                    @Override
+                    public void onRewardedVideoCompleted(MaxAd ad) {
+                        rodaImpianNew.setRewardedLoaded(true);
+                    }
+
+                    @Override
+                    public void onUserRewarded(MaxAd ad, MaxReward reward) {
+                        rodaImpianNew.setRewardedLoaded(true);
+                    }
+
+                    @Override
+                    public void onAdLoaded(MaxAd ad) {
+
+                    }
+
+                    @Override
+                    public void onAdDisplayed(MaxAd ad) {
+
+                    }
+
+                    @Override
+                    public void onAdHidden(MaxAd ad) {
+
+                    }
+
+                    @Override
+                    public void onAdClicked(MaxAd ad) {
+
+                    }
+
+                    @Override
+                    public void onAdLoadFailed(String adUnitId, MaxError error) {
+                        Timer.schedule(new Timer.Task() {
+                            @Override
+                            public void run() {
+                                maxRewardedAd.loadAd();
+                            }
+                        }, 60f);
+                    }
+
+                    @Override
+                    public void onAdDisplayFailed(MaxAd ad, MaxError error) {
+
+                    }
+                });
+                maxRewardedAd.loadAd();
+            }
+        });
+    }
+
+    @Override
+    public void loadAllAds() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (googleInter == null) {
+                    loadGoogleAds();
+                }
+                if (!maxInter.isReady()) {
+                    loadMaxInter();
+                }
+                if (!facebookInter.isAdLoaded()) {
+                    loadFacebookAds();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void showRewardedAds() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (googleRewarded != null) {
+                    googleRewarded.show(AndroidLauncherNew.this, AndroidLauncherNew.this);
+                } else if (facebookRewarded.isAdLoaded()) {
+                    facebookRewarded.show();
+                } else if (maxRewardedAd.isReady()) {
+                    maxRewardedAd.showAd();
+                } else {
+                    rodaImpianNew.setRewardedLoaded(true);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void showAds(int gameRound) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (gameRound == 0) {
+                    if (googleInter != null) {
+                        googleInter.show(AndroidLauncherNew.this);
+                    } else if (facebookInter.isAdLoaded()) {
+                        facebookInter.show();
+                    } else if (maxInter.isReady()) {
+                        maxInter.showAd();
+                    }
+                } else if (gameRound == 1) {
+                    if (maxInter.isReady()) {
+                        maxInter.showAd();
+                    } else if (!facebookInter.isAdLoaded()) {
+                        facebookInter.show();
+                    } else if (googleInter != null) {
+                        googleInter.show(AndroidLauncherNew.this);
+                    }
+                } else {
+                    if (googleInter != null) {
+                        googleInter.show(AndroidLauncherNew.this);
+                    } else if (!facebookInter.isAdLoaded()) {
+                        facebookInter.show();
+                    } else if (maxInter.isReady()) {
+                        maxInter.showAd();
+                    }
+                }
+            }
+        });
+
+
+    }
+
+    @Override
+    public void sahibba() {
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.somboi.melayuscrabble")));
+        } catch (android.content.ActivityNotFoundException anfe) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.somboi.melayuscrabble" )));
+        }
     }
 
     @Override
@@ -184,7 +438,7 @@ public class AndroidLauncherNew extends AndroidApplication implements AndroInter
                 rodaImpianNew.getPlayer().setPicUri(acct.getPhotoUrl().toString());
             }
             rodaImpianNew.getPlayer().setLogged(true);
-            if (fcm_token!=null){
+            if (fcm_token != null) {
                 rodaImpianNew.getPlayer().setFcmToken(fcm_token);
             }
             rodaImpianNew.getMainScreen().reloadOnlineProfile();
@@ -400,8 +654,8 @@ public class AndroidLauncherNew extends AndroidApplication implements AndroInter
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     Chats chats = ds.getValue(Chats.class);
-                    if (rodaImpianNew.getPlayer().getUid()!=null){
-                        if (chats.getPlayer().id.equals(rodaImpianNew.getPlayer().getUid())){
+                    if (rodaImpianNew.getPlayer().getUid() != null) {
+                        if (chats.getPlayer().id.equals(rodaImpianNew.getPlayer().getUid())) {
                             chatDatabase.child(chats.getPushKey()).removeValue();
                         }
                     }
@@ -420,7 +674,7 @@ public class AndroidLauncherNew extends AndroidApplication implements AndroInter
         });
     }
 
-    private String playerOnlineJson(){
+    private String playerOnlineJson() {
         Json json = new Json();
         PlayerOnline playerOnline = CopyPlayer.getPlayerOnline(rodaImpianNew.getPlayer());
         String playerOnlineJson = json.toJson(playerOnline);
@@ -442,7 +696,7 @@ public class AndroidLauncherNew extends AndroidApplication implements AndroInter
                 }
                 Collections.sort(playerList);
                 for (int i = 0; i < 3; i++) {
-                    if (i<playerList.size()){
+                    if (i < playerList.size()) {
                         topPlayers.add(playerList.get(i));
                     }
                 }
@@ -454,6 +708,38 @@ public class AndroidLauncherNew extends AndroidApplication implements AndroInter
 
             }
         });
+    }
+
+
+    private void loadGoogleAds() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+        InterstitialAd.load(AndroidLauncherNew.this, getString(R.string.google_inter_id), adRequest, new InterstitialAdLoadCallback() {
+            @Override
+            public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                super.onAdLoaded(interstitialAd);
+                googleInter = interstitialAd;
+            }
+
+            @Override
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                super.onAdFailedToLoad(loadAdError);
+                googleInter = null;
+            }
+        });
+    }
+
+    private void loadFacebookAds() {
+        facebookInter.loadAd();
+    }
+
+    private void loadMaxInter() {
+        maxInter.loadAd();
+    }
+
+
+    @Override
+    public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
+        rodaImpianNew.setRewardedLoaded(true);
     }
 
     private class SavePhotoTask extends AsyncTask<byte[], String, String> {
@@ -472,7 +758,6 @@ public class AndroidLauncherNew extends AndroidApplication implements AndroInter
             }
 
 
-
             return (null);
         }
 
@@ -480,5 +765,15 @@ public class AndroidLauncherNew extends AndroidApplication implements AndroInter
         protected void onPostExecute(String s) {
             //  menuCreator.loadLocalPic();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        rodaImpianNew.dispose();
+        facebookInter.destroy();
+        facebookRewarded.destroy();
+        maxInter.destroy();
+        maxRewardedAd.destroy();
     }
 }

@@ -10,6 +10,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.badlogic.gdx.utils.Json;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.play.core.review.ReviewInfo;
 import com.google.android.play.core.review.ReviewManager;
 import com.google.android.play.core.review.ReviewManagerFactory;
@@ -19,11 +24,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.mopub.common.MoPub;
-import com.mopub.common.SdkConfiguration;
-import com.mopub.common.SdkInitializationListener;
-import com.mopub.common.logging.MoPubLog;
-import com.mopub.mobileads.MoPubView;
 import com.somboi.rodaimpian.R;
 import com.somboi.rodaimpian.ui.LeaderboardInterface;
 import com.somboi.rodaimpian.ui.ScoreAdapter;
@@ -36,10 +36,18 @@ public class LeaderBoard extends AppCompatActivity implements LeaderboardInterfa
 
     private PlayerOnline thisPlayer;
     private List<PlayerOnline> playerList;
+    private AdView mAdView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leaderboard);
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String playerJson = extras.getString("playeronline");
@@ -49,21 +57,16 @@ public class LeaderBoard extends AppCompatActivity implements LeaderboardInterfa
 
         // saveRestore = new SaveRestore(this);
 
-       // thisPlayer = saveRestore.getPlayer();
+        // thisPlayer = saveRestore.getPlayer();
         //listScore = findViewById(R.id.leaderListView);
         //String month= new SimpleDateFormat("MMMM").format(Calendar.getInstance().getTime());
         // String year= new SimpleDateFormat("YYYY").format(Calendar.getInstance().getTime());
         // Log.d("MonthYear",month+year);
 
-
-        final SdkConfiguration.Builder configBuilder = new SdkConfiguration.Builder(getString(R.string.mopubbanner));
-
-        configBuilder.withLogLevel(MoPubLog.LogLevel.INFO);
-        MoPub.initializeSdk(this, configBuilder.build(), initSdkListener());
-
-        MoPubView moPubView = (MoPubView) findViewById(R.id.adView);
-        moPubView.setAdUnitId(getString(R.string.mopubbanner));
-        moPubView.loadAd();
+        ;
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
 
         ReviewManager manager = ReviewManagerFactory.create(this);
@@ -98,8 +101,8 @@ public class LeaderBoard extends AppCompatActivity implements LeaderboardInterfa
                 for (int i = 0; i < playerList.size(); i++) {
                     playerList.get(i).rank = (i + 1);
                 }
-                if (playerList.size()>100){
-                    for (int i = 98; i<playerList.size(); i++){
+                if (playerList.size() > 100) {
+                    for (int i = 98; i < playerList.size(); i++) {
                         databaseReference.child(playerList.get(i).id).removeValue();
                         playerList.remove(i);
                     }
@@ -128,13 +131,12 @@ public class LeaderBoard extends AppCompatActivity implements LeaderboardInterfa
 
     }
 
-    private SdkInitializationListener initSdkListener() {
-        return new SdkInitializationListener() {
-            @Override
-            public void onInitializationFinished() {
-                // SDK initialization complete. You may now request ads.
-            }
-        };
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mAdView!=null) {
+            mAdView.destroy();
+        }
     }
 
     @Override

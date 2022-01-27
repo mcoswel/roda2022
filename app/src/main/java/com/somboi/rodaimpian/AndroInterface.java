@@ -29,4 +29,13 @@ public interface AndroInterface {
     void logout();
 
     void getTopPlayers();
+
+    void loadRewardedAds();
+
+    void loadAllAds();
+
+    void showRewardedAds();
+    void showAds(int gameRound);
+
+    void sahibba();
 }

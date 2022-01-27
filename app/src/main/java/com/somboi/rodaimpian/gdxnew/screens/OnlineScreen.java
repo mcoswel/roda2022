@@ -12,6 +12,7 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.somboi.rodaimpian.activities.RodaImpianNew;
+import com.somboi.rodaimpian.gdxnew.actors.RewardPrompt;
 import com.somboi.rodaimpian.gdxnew.assets.StringRes;
 import com.somboi.rodaimpian.gdxnew.actors.ErrDiag;
 import com.somboi.rodaimpian.gdxnew.actors.RoomTable;
@@ -70,6 +71,7 @@ public class OnlineScreen extends BaseScreenNew implements OnInterface {
         stage.addActor(statusLabel);
         createMenu();
         setUpClient();
+
         //Gdx.input.setInputProcessor(stage);
     }
 
@@ -119,8 +121,13 @@ public class OnlineScreen extends BaseScreenNew implements OnInterface {
         createRoom.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if (client.isConnected()) {
-                    createRoomSession();
+                if (rodaImpianNew.isRewardedLoaded()) {
+                    if (client.isConnected()) {
+                        createRoomSession();
+                    }
+                }else{
+                    RewardPrompt rewardPrompt = new RewardPrompt(skin, rodaImpianNew);
+                    rewardPrompt.show(stage);
                 }
             }
         });

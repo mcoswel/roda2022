@@ -236,6 +236,7 @@ public class OnlineGame extends BaseGame {
     public void executeLoseBonus() {
         String dialogString = activePlayer.getName() + ", " + StringRes.LOSEBONUS;
         gameSound.playAww();
+        gameSound.playTwank();
         vannaHost.wrong();
         showFinisDialog(dialogString);
     }
@@ -295,6 +296,7 @@ public class OnlineGame extends BaseGame {
 
     @Override
     public void showWinner() {
+        rodaImpianNew.showAds(gameRound);
         WinnerDialog winnerDialog = new WinnerDialog(skin, currentGui, atlas, rodaImpianNew);
         winnerDialog.show(stage);
         RemoveSession removeSession = new RemoveSession();
@@ -309,6 +311,11 @@ public class OnlineGame extends BaseGame {
             public void run() {
                 for (PlayerGuis playerGui : playerGuis) {
                     playerGui.update(delta);
+                }
+                adsTimer-=delta;
+                if (adsTimer<=0){
+                    adsTimer = 60f;
+                    rodaImpianNew.loadAds();
                 }
             }
         });
@@ -434,6 +441,7 @@ public class OnlineGame extends BaseGame {
         } else {
             vannaHost.wrong();
             if (rodaImpianNew.getWheelParams().getScoreStrings().equals(StringRes.BANKRUPT)) {
+                gameSound.playTwank();
                 stage.addActor(new FlyingMoney(atlas.findRegion("3_badgebankrupt"), currentGui.getPosition()));
                 if (activePlayer.equals(rodaImpianNew.getPlayer())) {
                     rodaImpianNew.getPlayer().setBankrupt(rodaImpianNew.getPlayer().getBankrupt() + 1);
@@ -449,6 +457,7 @@ public class OnlineGame extends BaseGame {
 
     @Override
     public void increaseGameRound() {
+        rodaImpianNew.showAds(gameRound);
         gameRound++;
         Timer.schedule(new Timer.Task() {
             @Override
@@ -497,6 +506,7 @@ public class OnlineGame extends BaseGame {
 
     @Override
     public void spinBonusRound() {
+        rodaImpianNew.showAds(gameRound);
         rodaImpianNew.setBonusMode(true);
         Timer.schedule(new Timer.Task() {
             @Override

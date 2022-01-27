@@ -31,8 +31,9 @@ public class TopPlayerTable extends Table {
             Label rankLbl = new Label(""+rank+".", skin);
             rankLbl.setColor(Color.YELLOW);
             Label nameLbl = new Label(p.name, skin);
+            nameLbl.setColor(Color.PINK);
             Label scoreLbl = new Label("$"+p.bestScore, skin);
-            scoreLbl.setColor(Color.MAGENTA);
+            scoreLbl.setColor(Color.GOLDENROD);
 
             subTable.add(rankLbl).width(50f).center();
 

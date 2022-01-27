@@ -21,21 +21,29 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constrainedHeight="true"
         app:layout_constraintTop_toTopOf="@id/titleKomen"
-        app:layout_constraintBottom_toTopOf="@id/banner_container"
+        app:layout_constraintBottom_toTopOf="@id/ad_chat"
         android:id="@+id/komenList"
         />
 
-    <LinearLayout
-        android:id="@+id/banner_container"
-        android:layout_width="match_parent"
+
+
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/ad_chat"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="parent"
+        ads:adSize="BANNER"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:paddingBottom="5dp"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        ads:adUnitId="@string/google_banner">
+    </com.google.android.gms.ads.AdView>
+
+
 
 <!--
         app:layout_constraintBottom_toTopOf="@id/adView2"

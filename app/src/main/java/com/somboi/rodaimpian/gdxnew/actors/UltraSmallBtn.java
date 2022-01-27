@@ -10,7 +10,7 @@ public class UltraSmallBtn extends TextButton {
 
     @Override
     public float getPrefWidth() {
-        return 250f;
+        return 280f;
     }
 
     @Override

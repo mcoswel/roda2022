@@ -15,8 +15,8 @@ import androidx.core.app.NotificationCompat;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.somboi.rodaimpian.AndroidLauncherNew;
 import com.somboi.rodaimpian.R;
-import com.somboi.rodaimpian.android.AndroidLauncher;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -37,7 +37,7 @@ public class FireService extends FirebaseMessagingService {
 
     public void shownotification(RemoteMessage.Notification message){
 
-        Intent intent = new Intent(this, AndroidLauncher.class);
+        Intent intent = new Intent(this, AndroidLauncherNew.class);
         intent.putExtra("invitation","invitation");
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
