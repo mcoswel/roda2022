@@ -147,7 +147,9 @@ public class WinnerDialog extends Dialog {
             PlayerSaves saves = new PlayerSaves();
             rodaImpianNew.getPlayer().setTimesPlayed(rodaImpianNew.getPlayer().getTimesPlayed() + 1);
             saves.savePlayerNew(rodaImpianNew.getPlayer());
-            rodaImpianNew.uploadScore();
+            if (rodaImpianNew.getPlayer().isLogged()) {
+                rodaImpianNew.uploadScore();
+            }
         }
     }
 
