@@ -1,7 +1,5 @@
 package com.somboi.rodaimpian.gdx.base;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -11,14 +9,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.somboi.rodaimpian.RodaImpian;
-import com.somboi.rodaimpian.gdx.assets.AssetDesc;
-import com.somboi.rodaimpian.gdx.assets.GameSound;
-import com.somboi.rodaimpian.gdx.assets.StringRes;
-import com.somboi.rodaimpian.gdx.config.GameConfig;
+import com.somboi.rodaimpian.activities.RodaImpian;
+import com.somboi.rodaimpian.gdxnew.assets.AssetDesc;
+import com.somboi.rodaimpian.gdxnew.assets.GameSound;
+import com.somboi.rodaimpian.gdxnew.assets.GameConfig;
 import com.somboi.rodaimpian.gdx.entities.BgImg;
 import com.somboi.rodaimpian.gdx.entities.Player;
-import com.somboi.rodaimpian.gdxnew.actors.YesNoDiag;
 
 public class BaseScreen extends ScreenAdapter {
     protected final Viewport viewport = new FitViewport(GameConfig.SCWIDTH, GameConfig.SCHEIGHT);

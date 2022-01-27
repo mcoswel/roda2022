@@ -12,16 +12,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
-import com.somboi.rodaimpian.RodaImpian;
-import com.somboi.rodaimpian.gdx.actor.LargeButton;
+import com.somboi.rodaimpian.activities.RodaImpian;
+import com.somboi.rodaimpian.gdxnew.actors.LargeButton;
 import com.somboi.rodaimpian.gdx.actor.NameField;
 import com.somboi.rodaimpian.gdx.actor.PlayerImage;
-import com.somboi.rodaimpian.gdx.assets.StringRes;
-import com.somboi.rodaimpian.gdx.modes.GameModes;
+import com.somboi.rodaimpian.gdxnew.assets.StringRes;
+import com.somboi.rodaimpian.gdxnew.games.GameModes;
 import com.somboi.rodaimpian.gdx.screen.MatchScreen;
 import com.somboi.rodaimpian.gdx.screen.MenuScreen;
-import com.somboi.rodaimpian.gdx.utils.RoundMap;
-import com.somboi.rodaimpian.saves.PlayerSaves;
+import com.somboi.rodaimpian.gdxnew.utils.RoundMap;
 
 public class LocalPlayMenu {
     private final RodaImpian rodaImpian;

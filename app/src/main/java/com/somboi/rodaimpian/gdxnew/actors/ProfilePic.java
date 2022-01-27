@@ -10,8 +10,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
-import com.somboi.rodaimpian.gdx.assets.StringRes;
-import com.somboi.rodaimpian.gdx.utils.RoundMap;
+import com.somboi.rodaimpian.gdxnew.assets.StringRes;
+import com.somboi.rodaimpian.gdxnew.utils.RoundMap;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
 
 public class ProfilePic extends Image implements Cloneable {

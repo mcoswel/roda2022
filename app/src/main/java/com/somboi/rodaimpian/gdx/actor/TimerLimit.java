@@ -3,7 +3,7 @@ package com.somboi.rodaimpian.gdx.actor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.somboi.rodaimpian.gdx.assets.GameSound;
+import com.somboi.rodaimpian.gdxnew.assets.GameSound;
 
 public class TimerLimit extends Label {
     private float limit = 60f;

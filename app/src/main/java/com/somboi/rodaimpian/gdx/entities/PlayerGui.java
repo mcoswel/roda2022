@@ -14,10 +14,7 @@ import com.somboi.rodaimpian.gdx.actor.BlinkActions;
 import com.somboi.rodaimpian.gdx.actor.BoardLabel;
 import com.somboi.rodaimpian.gdx.actor.PlayerImage;
 import com.somboi.rodaimpian.gdx.actor.ScoreLabel;
-import com.somboi.rodaimpian.gdx.assets.StringRes;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.somboi.rodaimpian.gdxnew.assets.StringRes;
 
 public class PlayerGui {
     private final Player player;

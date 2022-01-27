@@ -3,13 +3,12 @@ package com.somboi.rodaimpian.gdxnew.actors;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
-import com.somboi.rodaimpian.gdx.assets.AssetDesc;
-import com.somboi.rodaimpian.gdx.config.GameConfig;
+import com.somboi.rodaimpian.gdxnew.assets.AssetDesc;
+import com.somboi.rodaimpian.gdxnew.assets.GameConfig;
 
 public class ActorFactory {
     private final TextureAtlas atlas;

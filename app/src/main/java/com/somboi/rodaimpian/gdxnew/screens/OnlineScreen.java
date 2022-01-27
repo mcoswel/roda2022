@@ -11,8 +11,8 @@ import com.badlogic.gdx.utils.Timer;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
-import com.somboi.rodaimpian.RodaImpianNew;
-import com.somboi.rodaimpian.gdx.assets.StringRes;
+import com.somboi.rodaimpian.activities.RodaImpianNew;
+import com.somboi.rodaimpian.gdxnew.assets.StringRes;
 import com.somboi.rodaimpian.gdxnew.actors.ErrDiag;
 import com.somboi.rodaimpian.gdxnew.actors.RoomTable;
 import com.somboi.rodaimpian.gdxnew.actors.SmallButton;
@@ -109,6 +109,12 @@ public class OnlineScreen extends BaseScreenNew implements OnInterface {
 
     private void createMenu() {
         SmallButton chat = new SmallButton(StringRes.CHAT, skin);
+        chat.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                rodaImpianNew.openChats();
+            }
+        });
         SmallButton createRoom = new SmallButton(StringRes.CREATEROOM, skin);
         createRoom.addListener(new ChangeListener() {
             @Override

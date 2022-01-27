@@ -1,6 +1,6 @@
 package com.somboi.rodaimpian.android;
 
-import com.somboi.rodaimpian.gdx.entities.Player;
+import com.somboi.rodaimpian.activities.PlayerOnline;
 
 public class Rooms {
     private PlayerOnline hostPlayer;

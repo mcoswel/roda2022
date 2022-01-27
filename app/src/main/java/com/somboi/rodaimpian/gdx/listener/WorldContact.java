@@ -5,7 +5,7 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.utils.Logger;
-import com.somboi.rodaimpian.gdx.assets.GameSound;
+import com.somboi.rodaimpian.gdxnew.assets.GameSound;
 
 public class WorldContact implements ContactListener {
 

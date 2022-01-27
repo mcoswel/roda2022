@@ -2,12 +2,12 @@ package com.somboi.rodaimpian.gdx.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.somboi.rodaimpian.RodaImpian;
+import com.somboi.rodaimpian.activities.RodaImpian;
 import com.somboi.rodaimpian.gdx.actor.MenuPrompt;
-import com.somboi.rodaimpian.gdx.assets.AssetDesc;
+import com.somboi.rodaimpian.gdxnew.assets.AssetDesc;
 import com.somboi.rodaimpian.gdx.base.BaseScreen;
 import com.somboi.rodaimpian.gdx.entities.BgImg;
-import com.somboi.rodaimpian.gdx.modes.GameModes;
+import com.somboi.rodaimpian.gdxnew.games.GameModes;
 import com.somboi.rodaimpian.gdx.modes.MultiPlayLocal;
 import com.somboi.rodaimpian.gdx.modes.SinglePlayer;
 

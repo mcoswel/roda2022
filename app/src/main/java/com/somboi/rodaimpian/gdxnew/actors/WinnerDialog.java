@@ -11,9 +11,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
-import com.somboi.rodaimpian.RodaImpianNew;
-import com.somboi.rodaimpian.gdx.assets.StringRes;
-import com.somboi.rodaimpian.gdx.modes.GameModes;
+import com.somboi.rodaimpian.activities.RodaImpianNew;
+import com.somboi.rodaimpian.gdxnew.assets.StringRes;
+import com.somboi.rodaimpian.gdxnew.games.GameModes;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
 import com.somboi.rodaimpian.saves.PlayerSaves;
 
@@ -118,6 +118,12 @@ public class WinnerDialog extends Dialog {
             }
         });
         SmallButton leaderBoard = new SmallButton(StringRes.LEADERBOARD, skin);
+        leaderBoard.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                rodaImpianNew.openLeaderBoard();
+            }
+        });
         SmallButton exit = new SmallButton(StringRes.EXIT2, skin);
         exit.addListener(new ChangeListener() {
             @Override
@@ -141,6 +147,7 @@ public class WinnerDialog extends Dialog {
             PlayerSaves saves = new PlayerSaves();
             rodaImpianNew.getPlayer().setTimesPlayed(rodaImpianNew.getPlayer().getTimesPlayed() + 1);
             saves.savePlayerNew(rodaImpianNew.getPlayer());
+            rodaImpianNew.uploadScore();
         }
     }
 

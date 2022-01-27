@@ -4,9 +4,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.somboi.rodaimpian.RodaImpianNew;
-import com.somboi.rodaimpian.gdx.assets.StringRes;
-import com.somboi.rodaimpian.gdxnew.screens.LoadingScreenNew;
+import com.somboi.rodaimpian.activities.RodaImpianNew;
+import com.somboi.rodaimpian.gdxnew.assets.StringRes;
 
 public class SubMenu extends Dialog {
     private final RodaImpianNew rodaImpianNew;

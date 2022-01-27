@@ -1,8 +1,8 @@
 package com.somboi.rodaimpian.gdxnew.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.somboi.rodaimpian.RodaImpianNew;
-import com.somboi.rodaimpian.gdx.modes.GameModes;
+import com.somboi.rodaimpian.activities.RodaImpianNew;
+import com.somboi.rodaimpian.gdxnew.games.GameModes;
 import com.somboi.rodaimpian.gdxnew.games.BaseGame;
 import com.somboi.rodaimpian.gdxnew.games.SinglePlayer;
 import com.somboi.rodaimpian.gdxnew.interfaces.GameInterface;

@@ -3,9 +3,8 @@ package com.somboi.rodaimpian.gdxnew.actors;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.somboi.rodaimpian.RodaImpianNew;
-import com.somboi.rodaimpian.gdx.assets.StringRes;
+import com.somboi.rodaimpian.activities.RodaImpianNew;
+import com.somboi.rodaimpian.gdxnew.assets.StringRes;
 
 public class LoginDiag extends Dialog {
     private final RodaImpianNew rodaImpianNew;

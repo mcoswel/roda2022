@@ -1,6 +1,8 @@
 package com.somboi.rodaimpian.gdxnew.actors;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -9,14 +11,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.Logger;
-import com.somboi.rodaimpian.RodaImpianNew;
-import com.somboi.rodaimpian.gdx.assets.AssetDesc;
-import com.somboi.rodaimpian.gdx.assets.StringRes;
-import com.somboi.rodaimpian.gdx.modes.GameModes;
+import com.somboi.rodaimpian.activities.RodaImpianNew;
+import com.somboi.rodaimpian.gdxnew.assets.AssetDesc;
+import com.somboi.rodaimpian.gdxnew.assets.StringRes;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
+import com.somboi.rodaimpian.gdxnew.games.GameModes;
 import com.somboi.rodaimpian.gdxnew.games.MenuState;
-import com.somboi.rodaimpian.gdxnew.screens.GameScreen;
 import com.somboi.rodaimpian.gdxnew.screens.MainScreen;
 import com.somboi.rodaimpian.gdxnew.screens.OnlineScreen;
 import com.somboi.rodaimpian.saves.PlayerSaves;
@@ -41,12 +41,15 @@ public class MenuFactory {
     private MenuButton leaderBoard;
     private MenuButton login;
     private MenuButton online;
+    private MenuButton mesej;
     private MenuButton offline;
     private MenuButton twoPlayer;
     private MenuButton threePlayer;
     private MenuState menuState;
     private PlayerNew playerNewTwo;
     private PlayerNew playerNewThree;
+    private MenuButton logout;
+
     public MenuFactory(RodaImpianNew rodaImpianNew, Stage stage) {
         this.assetManager = rodaImpianNew.getAssetManager();
         this.skin = assetManager.get(AssetDesc.NEWSKIN);
@@ -55,7 +58,7 @@ public class MenuFactory {
         this.rodaImpianNew = rodaImpianNew;
         this.mainScreen = rodaImpianNew.getMainScreen();
         mainButtons = new Table();
-        mainButtons.defaults().pad(10f);
+        mainButtons.defaults().pad(5f);
         checkPlayerTwoThree();
         showMainMenu();
     }
@@ -85,18 +88,18 @@ public class MenuFactory {
         playerProfileTwo = new ProfileTable(atlas.findRegion("defaultavatar"), skin, playerNewTwo, 2,
                 rodaImpianNew.isGoldTheme(), rodaImpianNew.getMainScreen());
         playerProfileTwo.pack();
-        playerProfileTwo.setPosition(450f - playerProfileTwo.getWidth() / 2f, 825f);
+        playerProfileTwo.setPosition(450f - playerProfileTwo.getWidth() / 2f, 950f);
 
         playerProfileThree = new ProfileTable(atlas.findRegion("defaultavatar"), skin, playerNewThree, 3,
                 rodaImpianNew.isGoldTheme(), rodaImpianNew.getMainScreen());
         playerProfileThree.pack();
-        playerProfileThree.setPosition(450f - playerProfileThree.getWidth() / 2f, 825f-20f-playerProfileTwo.getHeight());
+        playerProfileThree.setPosition(450f - playerProfileThree.getWidth() / 2f, 950f - 20f - playerProfileTwo.getHeight());
     }
 
     private PlayerNew createNewPlayer(int n) {
         PlayerNew playerNew = new PlayerNew();
         playerNew.setName(StringRes.PLAYER_NAME + n);
-        playerNew.setUid("0"+n);
+        playerNew.setUid("0" + n);
         playerNew.setPlayerBonus(new ArrayList<>());
         playerNew.setPlayerGifts(new ArrayList<>());
         return playerNew;
@@ -138,25 +141,41 @@ public class MenuFactory {
 
 
         leaderBoard = new MenuButton(StringRes.LEADERBOARD, skin);
+        leaderBoard.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                rodaImpianNew.openLeaderBoard();
+            }
+        });
 
-        login = new MenuButton(StringRes.LOGOUT, skin);
-        if (!rodaImpianNew.getPlayer().isLogged()) {
-            login.setText(StringRes.LOGINFB);
-            login.addListener(new ChangeListener() {
-                @Override
-                public void changed(ChangeEvent event, Actor actor) {
-                    loginDialog();
+        login = new MenuButton(StringRes.LOGINFB, skin);
+        login.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                loginDialog();
+            }
+        });
+
+
+        logout = new MenuButton(StringRes.LOGOUT, skin);
+        logout.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                FileHandle fileHandle = Gdx.files.local("playersave");
+                if (fileHandle.exists()) {
+                    fileHandle.delete();
                 }
-            });
-        }
+                rodaImpianNew.logout();
+            }
+        });
 
         online = new MenuButton(StringRes.ONLINE, skin);
         online.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if (!rodaImpianNew.getPlayer().isLogged()) {
-                   loginDialog();
-                }else{
+                    loginDialog();
+                } else {
                     rodaImpianNew.setGameModes(GameModes.ONLINE);
                     OnlineScreen onlineScreen = new OnlineScreen(rodaImpianNew);
                     rodaImpianNew.setOnlineScreen(onlineScreen);
@@ -187,15 +206,25 @@ public class MenuFactory {
                 createThreePlayerOffline();
             }
         });
+
+        mesej = new MenuButton(StringRes.MESSAGE, skin);
+        mesej.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                rodaImpianNew.openMessages();
+            }
+        });
+
     }
 
-    private void loginDialog(){
+    private void loginDialog() {
         LoginDiag loginDiag = new LoginDiag(skin, rodaImpianNew);
         loginDiag.show(stage);
     }
-    private void updateMultiButton(){
+
+    private void updateMultiButton() {
         startMulti.pack();
-        startMulti.setPosition(450f- startMulti.getWidth()/2f, 200f);
+        startMulti.setPosition(450f - startMulti.getWidth() / 2f, 200f);
     }
 
     private void createBackground() {
@@ -205,7 +234,7 @@ public class MenuFactory {
             stage.addActor(new Image(assetManager.get(AssetDesc.BLURRED)));
         }
         Image titleLogo = new Image(atlas.findRegion("titlelogo"));
-        titleLogo.setPosition(39f, 1291f);
+        titleLogo.setPosition(39f, 1380f);
         stage.addActor(titleLogo);
     }
 
@@ -217,6 +246,9 @@ public class MenuFactory {
         mainButtons.add(leaderBoard).row();
         if (!rodaImpianNew.getPlayer().isLogged()) {
             mainButtons.add(login).row();
+        }else{
+            mainButtons.add(mesej).row();
+            mainButtons.add(logout).row();
         }
         updateMainButtonPos();
         stage.addActor(mainButtons);
@@ -224,7 +256,7 @@ public class MenuFactory {
 
     private void updateMainButtonPos() {
         mainButtons.pack();
-        mainButtons.setPosition(450f - mainButtons.getWidth() / 2f, buttonposition.y - mainButtons.getWidth() + 50f);
+        mainButtons.setPosition(450f - mainButtons.getWidth() / 2f, buttonposition.y - mainButtons.getHeight()-20f);
     }
 
     public void createMultiMenuFirst() {
@@ -293,7 +325,7 @@ public class MenuFactory {
         playerProfile = new ProfileTable(atlas.findRegion("defaultavatar"), skin, rodaImpianNew.getPlayer(), 1,
                 rodaImpianNew.isGoldTheme(), mainScreen);
 
-        playerProfile.setPosition(450f - playerProfile.getWidth() / 2f, 825f);
+        playerProfile.setPosition(450f - playerProfile.getWidth() / 2f, 950f);
 
         buttonposition = new Vector2(playerProfile.getX(), playerProfile.getY());
         stage.addActor(playerProfile);

@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
-import com.somboi.rodaimpian.gdx.utils.RoundMap;
+import com.somboi.rodaimpian.gdxnew.utils.RoundMap;
 
 public class PlayerImage extends Image implements Cloneable {
     private Sprite animate = null;

@@ -4,7 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Align;
-import com.somboi.rodaimpian.gdx.assets.StringRes;
+import com.somboi.rodaimpian.gdxnew.assets.StringRes;
 
 public class ErrDiag extends Dialog {
     public ErrDiag(String errorText, Skin skin) {

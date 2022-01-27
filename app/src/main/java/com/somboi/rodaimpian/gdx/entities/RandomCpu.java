@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.Array;
 import com.somboi.rodaimpian.gdx.actor.PlayerImage;
-import com.somboi.rodaimpian.gdx.assets.GameSound;
+import com.somboi.rodaimpian.gdxnew.assets.GameSound;
 
 public class RandomCpu {
     private final TextureAtlas textureAtlas;

@@ -4,16 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.somboi.rodaimpian.RodaImpian;
-import com.somboi.rodaimpian.android.onlinemsg.UpdateNews;
+import com.somboi.rodaimpian.activities.RodaImpian;
+import com.somboi.rodaimpian.onlinemsg.UpdateNews;
 import com.somboi.rodaimpian.gdx.actor.PromoDialog;
 import com.somboi.rodaimpian.gdx.actor.UpdateMsg;
-import com.somboi.rodaimpian.gdx.assets.AssetDesc;
-import com.somboi.rodaimpian.gdx.assets.QuestionsGenerator;
+import com.somboi.rodaimpian.gdxnew.assets.AssetDesc;
 import com.somboi.rodaimpian.gdx.base.BaseScreen;
 import com.somboi.rodaimpian.gdx.entities.LocalPlayMenu;
 import com.somboi.rodaimpian.gdx.entities.MainMenuCreator;
-import com.somboi.rodaimpian.saves.QuestionsSaves;
 
 public class MenuScreen extends BaseScreen {
     private MainMenuCreator mainMenuCreator;

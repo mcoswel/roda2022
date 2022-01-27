@@ -4,12 +4,11 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.somboi.rodaimpian.RodaImpian;
+import com.somboi.rodaimpian.activities.RodaImpian;
 import com.somboi.rodaimpian.gdx.actor.ErrorDialog;
-import com.somboi.rodaimpian.gdx.actor.LargeButton;
+import com.somboi.rodaimpian.gdxnew.actors.LargeButton;
 import com.somboi.rodaimpian.gdx.actor.PromptAds;
-import com.somboi.rodaimpian.gdx.actor.YesNoDialog;
-import com.somboi.rodaimpian.gdx.assets.StringRes;
+import com.somboi.rodaimpian.gdxnew.assets.StringRes;
 import com.somboi.rodaimpian.gdx.online.RodaClient;
 
 public class RoomMenu extends Table {

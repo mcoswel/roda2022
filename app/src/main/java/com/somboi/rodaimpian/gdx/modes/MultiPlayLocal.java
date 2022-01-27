@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Timer;
-import com.somboi.rodaimpian.RodaImpian;
+import com.somboi.rodaimpian.activities.RodaImpian;
 import com.somboi.rodaimpian.gdxnew.actors.LoveRajan;
 import com.somboi.rodaimpian.gdx.actor.PlayerImage;
 import com.somboi.rodaimpian.gdx.base.ModeBase;

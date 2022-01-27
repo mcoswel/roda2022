@@ -11,14 +11,11 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Logger;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.somboi.rodaimpian.RodaImpianNew;
-import com.somboi.rodaimpian.gdx.assets.AssetDesc;
-import com.somboi.rodaimpian.gdx.assets.StringRes;
-import com.somboi.rodaimpian.gdx.config.GameConfig;
+import com.somboi.rodaimpian.activities.RodaImpianNew;
+import com.somboi.rodaimpian.gdxnew.assets.AssetDesc;
+import com.somboi.rodaimpian.gdxnew.assets.GameConfig;
 import com.somboi.rodaimpian.gdxnew.actors.ActorFactory;
-import com.somboi.rodaimpian.gdxnew.actors.MenuFactory;
 import com.somboi.rodaimpian.gdxnew.actors.SubMenu;
-import com.somboi.rodaimpian.gdxnew.actors.YesNoDiag;
 import com.somboi.rodaimpian.saves.PlayerSaves;
 
 public class BaseScreenNew extends ScreenAdapter {

@@ -3,13 +3,12 @@ package com.somboi.rodaimpian.gdxnew.box2d;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.badlogic.gdx.utils.Array;
-import com.somboi.rodaimpian.gdx.utils.BodyEditorLoader;
+import com.somboi.rodaimpian.gdxnew.utils.BodyEditorLoader;
 
 public class WorldFactory {
     private final World world;

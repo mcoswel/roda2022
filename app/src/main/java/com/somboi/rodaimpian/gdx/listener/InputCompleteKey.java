@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Logger;
 import com.somboi.rodaimpian.gdx.base.ModeBase;
-import com.somboi.rodaimpian.gdx.config.GameConfig;
+import com.somboi.rodaimpian.gdxnew.assets.GameConfig;
 import com.somboi.rodaimpian.gdx.entities.Tiles;
 
 import java.util.List;

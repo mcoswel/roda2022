@@ -21,6 +21,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.backends.android.AndroidAudio;
+import com.badlogic.gdx.utils.Json;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.transition.Transition;
@@ -38,6 +39,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -47,17 +53,25 @@ import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
-import com.somboi.rodaimpian.gdx.utils.ShortenName;
+import com.somboi.rodaimpian.activities.ChatActivity;
+import com.somboi.rodaimpian.activities.CommentActivity;
+import com.somboi.rodaimpian.activities.LeaderBoard;
+import com.somboi.rodaimpian.activities.PlayerOnline;
+import com.somboi.rodaimpian.activities.RodaImpianNew;
+import com.somboi.rodaimpian.gdxnew.utils.CopyPlayer;
+import com.somboi.rodaimpian.gdxnew.utils.ShortenName;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
 import com.somboi.rodaimpian.gdxnew.interfaces.OnInterface;
-import com.somboi.rodaimpian.gdx.online.ChatOnlineOld;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.ChatOnline;
+import com.somboi.rodaimpian.ui.Chats;
+import com.somboi.rodaimpian.ui.TargetGlide;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -344,6 +358,102 @@ public class AndroidLauncherNew extends AndroidApplication implements AndroInter
             }
         });
 
+    }
+
+    @Override
+    public void leaderboardActivity() {
+        Intent intent = new Intent(this, LeaderBoard.class);
+        intent.putExtra("playeronline", playerOnlineJson());
+        startActivity(intent);
+    }
+
+    @Override
+    public void uploadToLeaderBoard() {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Offline").child("jan2022");
+        PlayerOnline playerOnline = CopyPlayer.getPlayerOnline(rodaImpianNew.getPlayer());
+        databaseReference.child(playerOnline.id).setValue(playerOnline);
+    }
+
+    @Override
+    public void chatActivity() {
+        Intent intent = new Intent(this, ChatActivity.class);
+        intent.putExtra("player", playerOnlineJson());
+        startActivity(intent);
+    }
+
+    @Override
+    public void commentActivity() {
+        Intent intent = new Intent(this, CommentActivity.class);
+        intent.putExtra("player", playerOnlineJson());
+        startActivity(intent);
+    }
+
+    @Override
+    public void logout() {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Offline").child("jan2022");
+        if (rodaImpianNew.getPlayer().getUid() != null) {
+            databaseReference.child(rodaImpianNew.getPlayer().getUid()).removeValue();
+        }
+        DatabaseReference chatDatabase = FirebaseDatabase.getInstance().getReference().getDatabase().getReference().child("Online").child("chatsjan2022");
+        chatDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    Chats chats = ds.getValue(Chats.class);
+                    if (rodaImpianNew.getPlayer().getUid()!=null){
+                        if (chats.getPlayer().id.equals(rodaImpianNew.getPlayer().getUid())){
+                            chatDatabase.child(chats.getPushKey()).removeValue();
+                        }
+                    }
+                }
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
+            }
+        });
+    }
+
+    private String playerOnlineJson(){
+        Json json = new Json();
+        PlayerOnline playerOnline = CopyPlayer.getPlayerOnline(rodaImpianNew.getPlayer());
+        String playerOnlineJson = json.toJson(playerOnline);
+        return playerOnlineJson;
+    }
+
+    @Override
+    public void getTopPlayers() {
+        List<PlayerOnline> topPlayers = new ArrayList<>();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Offline").child("jan2022");
+        //DatabaseReference monthlyData = FirebaseDatabase.getInstance().getReference().child("Offline").child(month+year);
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<PlayerOnline> playerList = new ArrayList<>();
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    PlayerOnline p = ds.getValue(PlayerOnline.class);
+                    playerList.add(p);
+                }
+                Collections.sort(playerList);
+                for (int i = 0; i < 3; i++) {
+                    if (i<playerList.size()){
+                        topPlayers.add(playerList.get(i));
+                    }
+                }
+                rodaImpianNew.updateTopPlayer(topPlayers);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private class SavePhotoTask extends AsyncTask<byte[], String, String> {

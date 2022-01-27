@@ -1,5 +1,6 @@
 package com.somboi.rodaimpian.android;
 
+import com.somboi.rodaimpian.activities.PlayerOnline;
 import com.somboi.rodaimpian.gdx.entities.MainMenuCreator;
 import com.somboi.rodaimpian.gdx.entities.Player;
 import com.somboi.rodaimpian.gdx.online.OnlinePlay;

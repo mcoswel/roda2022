@@ -3,13 +3,17 @@ package com.somboi.rodaimpian.gdxnew.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
-import com.somboi.rodaimpian.RodaImpianNew;
-import com.somboi.rodaimpian.gdx.assets.AssetDesc;
-import com.somboi.rodaimpian.gdx.modes.GameModes;
+import com.somboi.rodaimpian.activities.PlayerOnline;
+import com.somboi.rodaimpian.activities.RodaImpianNew;
+import com.somboi.rodaimpian.gdxnew.actors.TopPlayerTable;
+import com.somboi.rodaimpian.gdxnew.assets.AssetDesc;
+import com.somboi.rodaimpian.gdxnew.games.GameModes;
 import com.somboi.rodaimpian.gdxnew.actors.LoginDiag;
 import com.somboi.rodaimpian.gdxnew.actors.MenuFactory;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
 import com.somboi.rodaimpian.gdxnew.games.MenuState;
+
+import java.util.List;
 
 public class MainScreen extends BaseScreenNew {
     private MenuFactory menuFactory;
@@ -23,16 +27,19 @@ public class MainScreen extends BaseScreenNew {
         rodaImpianNew.setMusic(music);
         rodaImpianNew.getMusic().setLooping(true);
         rodaImpianNew.getMusic().play();
-    }
-
-    @Override
-    public void show() {
-        Gdx.input.setInputProcessor(stage);
-        menuFactory = new MenuFactory(rodaImpianNew, stage);
         if (!rodaImpianNew.getPlayer().isLogged()) {
             LoginDiag loginDiag = new LoginDiag(skin, rodaImpianNew);
             loginDiag.show(stage);
         }
+    }
+
+    @Override
+    public void show() {
+
+        Gdx.input.setInputProcessor(stage);
+        menuFactory = new MenuFactory(rodaImpianNew, stage);
+        rodaImpianNew.getTopPlayers();
+
     }
 
     @Override
@@ -88,5 +95,11 @@ public class MainScreen extends BaseScreenNew {
 
     public void reloadPhoto() {
         menuFactory.reloadProfilePic(rodaImpianNew.getPlayer().getPicUri());
+    }
+
+    public void updateTopPlayer(List<PlayerOnline> topPlayer) {
+        if (!topPlayer.isEmpty()){
+            stage.addActor(new TopPlayerTable(skin, atlas.findRegion("defaultavatar"),topPlayer));
+        }
     }
 }

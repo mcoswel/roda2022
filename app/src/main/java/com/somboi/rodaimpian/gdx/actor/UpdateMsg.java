@@ -3,9 +3,9 @@ package com.somboi.rodaimpian.gdx.actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.somboi.rodaimpian.RodaImpian;
-import com.somboi.rodaimpian.gdx.assets.AssetDesc;
-import com.somboi.rodaimpian.gdx.assets.StringRes;
+import com.somboi.rodaimpian.activities.RodaImpian;
+import com.somboi.rodaimpian.gdxnew.assets.AssetDesc;
+import com.somboi.rodaimpian.gdxnew.assets.StringRes;
 
 public class UpdateMsg extends Dialog {
     private final RodaImpian rodaImpian;

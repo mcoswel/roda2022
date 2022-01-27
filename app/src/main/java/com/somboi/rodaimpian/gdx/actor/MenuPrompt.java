@@ -3,13 +3,12 @@ package com.somboi.rodaimpian.gdx.actor;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.somboi.rodaimpian.RodaImpian;
-import com.somboi.rodaimpian.gdx.assets.StringRes;
+import com.somboi.rodaimpian.activities.RodaImpian;
+import com.somboi.rodaimpian.gdxnew.actors.LargeButton;
+import com.somboi.rodaimpian.gdxnew.assets.StringRes;
 import com.somboi.rodaimpian.gdx.screen.LoadingScreen;
-import com.somboi.rodaimpian.gdx.screen.MatchScreen;
 
 public class MenuPrompt extends Dialog {
     private final RodaImpian rodaImpian;

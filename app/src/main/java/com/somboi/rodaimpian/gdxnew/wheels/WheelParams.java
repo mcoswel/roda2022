@@ -1,7 +1,6 @@
 package com.somboi.rodaimpian.gdxnew.wheels;
 
-import com.somboi.rodaimpian.RodaImpianNew;
-import com.somboi.rodaimpian.gdx.assets.StringRes;
+import com.somboi.rodaimpian.gdxnew.assets.StringRes;
 
 public class WheelParams {
     private float angle;

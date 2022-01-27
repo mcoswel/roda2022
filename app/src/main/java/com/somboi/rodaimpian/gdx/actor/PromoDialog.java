@@ -4,8 +4,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.somboi.rodaimpian.RodaImpian;
-import com.somboi.rodaimpian.gdx.assets.StringRes;
 
 public class PromoDialog extends Dialog {
     public PromoDialog(Skin skin, TextureRegion textureRegion) {

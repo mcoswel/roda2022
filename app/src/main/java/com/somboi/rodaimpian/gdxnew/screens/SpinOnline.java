@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.utils.Timer;
-import com.somboi.rodaimpian.RodaImpianNew;
+import com.somboi.rodaimpian.activities.RodaImpianNew;
 import com.somboi.rodaimpian.gdxnew.interfaces.OnInterface;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.ApplyForce;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.PlayerStates;
