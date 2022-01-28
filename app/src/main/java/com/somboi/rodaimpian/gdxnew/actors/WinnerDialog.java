@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Logger;
 import com.somboi.rodaimpian.activities.RodaImpianNew;
 import com.somboi.rodaimpian.gdxnew.assets.StringRes;
 import com.somboi.rodaimpian.gdxnew.games.GameModes;
@@ -20,9 +21,12 @@ import com.somboi.rodaimpian.saves.PlayerSaves;
 import java.util.ArrayList;
 
 public class WinnerDialog extends Dialog {
-
+    private final Logger logger = new Logger(this.getClass().getName(), 3);
     public WinnerDialog(Skin skin, PlayerGuis winnerGui, TextureAtlas atlas, RodaImpianNew rodaImpianNew) {
         super(StringRes.MATCHFINISHED, skin);
+
+        logger.debug("winner gui bonuswon "+winnerGui.getBonusWon().toString());
+
         winnerGui.getPlayerNew().setFullScore(winnerGui.getPlayerNew().getFullScore() + rodaImpianNew.getWheelParams().getScores());
         Table gifttable = new Table();
         final PlayerNew winner = winnerGui.getPlayerNew();

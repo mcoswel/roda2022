@@ -20,7 +20,6 @@ public class Gifts {
     private GiftsImg gifts;
     private GiftsImg giftBox;
     private boolean prepareGift;
-    private int posYMultiplier;
 
     public Gifts(TextureAtlas atlas, Texture sparkTex) {
         this.atlas = atlas;

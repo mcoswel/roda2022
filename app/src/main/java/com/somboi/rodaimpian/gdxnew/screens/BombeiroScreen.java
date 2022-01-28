@@ -15,18 +15,18 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import com.somboi.rodaimpian.activities.RodaImpianNew;
-import com.somboi.rodaimpian.gdxnew.actors.LargeButton;
-import com.somboi.rodaimpian.gdxnew.assets.AssetDesc;
-import com.somboi.rodaimpian.gdxnew.assets.GameSound;
-import com.somboi.rodaimpian.gdxnew.assets.StringRes;
 import com.somboi.rodaimpian.gdxnew.actors.BeiroTiles;
 import com.somboi.rodaimpian.gdxnew.actors.Bonuses;
 import com.somboi.rodaimpian.gdxnew.actors.Bulb;
 import com.somboi.rodaimpian.gdxnew.actors.ErrDiag;
 import com.somboi.rodaimpian.gdxnew.actors.Fireworks;
+import com.somboi.rodaimpian.gdxnew.actors.LargeButton;
 import com.somboi.rodaimpian.gdxnew.actors.PlayerGuis;
 import com.somboi.rodaimpian.gdxnew.actors.Vehicle;
 import com.somboi.rodaimpian.gdxnew.actors.WinnerDialog;
+import com.somboi.rodaimpian.gdxnew.assets.AssetDesc;
+import com.somboi.rodaimpian.gdxnew.assets.GameSound;
+import com.somboi.rodaimpian.gdxnew.assets.StringRes;
 
 public class BombeiroScreen extends BaseScreenNew {
     private final Vehicle police;
@@ -41,7 +41,8 @@ public class BombeiroScreen extends BaseScreenNew {
     private int adsCount;
     private final GameSound gameSound;
     private final PlayerGuis playerGuis;
-    private final Array<Bulb>bulbs = new Array<>();
+    private final Array<Bulb> bulbs = new Array<>();
+
     public BombeiroScreen(RodaImpianNew rodaImpian, PlayerGuis playerGuis) {
         super(rodaImpian);
         this.gameSound = new GameSound(assetManager);
@@ -55,8 +56,7 @@ public class BombeiroScreen extends BaseScreenNew {
         bonusGiftImg = new Bonuses(atlas, rodaImpian.getWheelParams().getBonusIndex());
         stage.addActor(bonusGiftImg);
         bonusGiftImg.setPosition(450f - bonusGiftImg.getWidth() / 2f, 1326f);
-
-         rodaImpianNew.loadAds();
+        rodaImpianNew.loadAds();
     }
 
     private void createNumbersTable() {
@@ -106,7 +106,7 @@ public class BombeiroScreen extends BaseScreenNew {
     private void moveVehicles(String type) {
         adsCount++;
         if (adsCount == 8) {
-            rodaImpianNew.showAds(MathUtils.random(0,3));
+            rodaImpianNew.showAds(MathUtils.random(0, 3));
         }
         if (type.equals("red")) {
             firetruck.move();
@@ -194,19 +194,18 @@ public class BombeiroScreen extends BaseScreenNew {
     }
 
 
-
     private void checkWinner(String type) {
         Gdx.input.setInputProcessor(null);
         String color = "black";
-        if (vehiclesChosen.equals("firetruck")){
+        if (vehiclesChosen.equals("firetruck")) {
             color = "red";
         }
-        if (vehiclesChosen.equals("ambulance")){
+        if (vehiclesChosen.equals("ambulance")) {
             color = "white";
         }
 
-        for (Bulb bulb: bulbs){
-            if (bulb.getType().equals(color)){
+        for (Bulb bulb : bulbs) {
+            if (bulb.getType().equals(color)) {
                 SequenceAction sequenceAction = new SequenceAction(Actions.fadeOut(0.3f), Actions.fadeIn(0.3f));
                 bulb.addAction(Actions.forever(sequenceAction));
 
@@ -220,14 +219,14 @@ public class BombeiroScreen extends BaseScreenNew {
             stage.addActor(new Fireworks(assetManager.get(AssetDesc.WINANIMATION)));
             gameSound.playCheer();
             gameSound.playWinSound();
-            playerGuis.addGifts(bonusGiftImg.getBonusIndex());
+            playerGuis.addBonus(bonusGiftImg.getBonusIndex());
         } else {
             Timer.schedule(new Timer.Task() {
                 @Override
                 public void run() {
                     stage.addActor(numbersTable);
                 }
-            },2f);
+            }, 2f);
             gameSound.playAww();
             gameSound.playTwank();
         }
@@ -245,21 +244,21 @@ public class BombeiroScreen extends BaseScreenNew {
                 Gdx.input.setInputProcessor(stage);
                 endGame();
             }
-        },4f);
+        }, 4f);
 
     }
 
     private void endGame() {
         rodaImpianNew.showAds(1);
         String dialogString = StringRes.LOSEBONUS;
-        if (winBonus){
+        if (winBonus) {
             dialogString = StringRes.WINBONUS;
         }
 
-        ErrDiag errDiag = new ErrDiag(dialogString, skin){
+        ErrDiag errDiag = new ErrDiag(dialogString, skin) {
             @Override
             protected void result(Object object) {
-                WinnerDialog winnerDialog = new WinnerDialog(skin, playerGuis,atlas, rodaImpianNew);
+                WinnerDialog winnerDialog = new WinnerDialog(skin, playerGuis, atlas, rodaImpianNew);
                 winnerDialog.show(stage);
                 hide();
                 super.result(object);
@@ -304,9 +303,9 @@ public class BombeiroScreen extends BaseScreenNew {
     }
 
     private void createBackground() {
-        if (rodaImpianNew.isGoldTheme()){
+        if (rodaImpianNew.isGoldTheme()) {
             stage.addActor(new Image(assetManager.get(AssetDesc.BLURGOLD)));
-        }else{
+        } else {
             stage.addActor(new Image(assetManager.get(AssetDesc.BLURRED)));
         }
         for (int i = 0; i < 5; i++) {

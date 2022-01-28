@@ -339,7 +339,7 @@ public class AndroidLauncherNew extends AndroidApplication implements AndroInter
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (gameRound == 0) {
+                if (gameRound % 2 == 0) {
                     if (googleInter != null) {
                         googleInter.show(AndroidLauncherNew.this);
                     } else if (facebookInter.isAdLoaded()) {
@@ -347,21 +347,13 @@ public class AndroidLauncherNew extends AndroidApplication implements AndroInter
                     } else if (maxInter.isReady()) {
                         maxInter.showAd();
                     }
-                } else if (gameRound == 1) {
+                } else {
                     if (maxInter.isReady()) {
                         maxInter.showAd();
-                    } else if (!facebookInter.isAdLoaded()) {
+                    } else if (facebookInter.isAdLoaded()) {
                         facebookInter.show();
                     } else if (googleInter != null) {
                         googleInter.show(AndroidLauncherNew.this);
-                    }
-                } else {
-                    if (googleInter != null) {
-                        googleInter.show(AndroidLauncherNew.this);
-                    } else if (!facebookInter.isAdLoaded()) {
-                        facebookInter.show();
-                    } else if (maxInter.isReady()) {
-                        maxInter.showAd();
                     }
                 }
             }
@@ -375,7 +367,7 @@ public class AndroidLauncherNew extends AndroidApplication implements AndroInter
         try {
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.somboi.melayuscrabble")));
         } catch (android.content.ActivityNotFoundException anfe) {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.somboi.melayuscrabble" )));
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.somboi.melayuscrabble")));
         }
     }
 

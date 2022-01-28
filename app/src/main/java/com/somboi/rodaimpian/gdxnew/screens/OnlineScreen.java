@@ -205,7 +205,7 @@ public class OnlineScreen extends BaseScreenNew implements OnInterface {
                 Gdx.app.postRunnable(new Runnable() {
                     @Override
                     public void run() {
-                        onlineGame.executeBonusWin();
+                        onlineGame.winBonus();
                     }
                 });
 
@@ -214,7 +214,7 @@ public class OnlineScreen extends BaseScreenNew implements OnInterface {
                 Gdx.app.postRunnable(new Runnable() {
                     @Override
                     public void run() {
-                        onlineGame.executeLoseBonus();
+                        onlineGame.loseBonus();
                     }
                 });
             }

@@ -1,6 +1,7 @@
 package com.somboi.rodaimpian.gdxnew.assets;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.somboi.rodaimpian.gdxnew.assets.AssetDesc;
 
@@ -11,7 +12,7 @@ public class GameSound {
     private final Sound wrongSound;
     private final Sound winSound;
     private final Sound cheerSound;
-    private final Sound clockSound;
+    private final Music clockSound;
     private final Sound slapSound;
     private final Sound police;
     private final Sound ambulance;
@@ -62,12 +63,11 @@ public class GameSound {
     }
 
     public void playClockSound() {
-        clockSound.loop();
+        if (!clockSound.isPlaying()) {
+            clockSound.play();
+        }
     }
 
-    public void stopClockSound() {
-        clockSound.stop();
-    }
 
     public void playSlapSound() {
         slapSound.play();

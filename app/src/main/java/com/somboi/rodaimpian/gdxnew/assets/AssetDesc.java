@@ -22,7 +22,7 @@ public class AssetDesc {
     public static final AssetDescriptor<Sound> AMBULANCE = new AssetDescriptor<Sound>(AssetPath.AMBULANCE, Sound.class);
     public static final AssetDescriptor<Sound> FIRETRUCK = new AssetDescriptor<Sound>(AssetPath.FIRE, Sound.class);
     public static final AssetDescriptor<Sound> WRONGSOUND = new AssetDescriptor<Sound>(AssetPath.WRONGSOUND, Sound.class);
-    public static final AssetDescriptor<Sound> CLOCKSOUND = new AssetDescriptor<Sound>(AssetPath.CLOCKSOUND, Sound.class);
+    public static final AssetDescriptor<Music> CLOCKSOUND = new AssetDescriptor<Music>(AssetPath.CLOCKSOUND, Music.class);
     public static final AssetDescriptor<Sound> WINSOUND = new AssetDescriptor<Sound>(AssetPath.WINSOUND, Sound.class);
     public static final AssetDescriptor<Sound> SLAPSOUND = new AssetDescriptor<Sound>(AssetPath.SLAPSOUND, Sound.class);
     public static final AssetDescriptor<Sound> TWANK = new AssetDescriptor<Sound>(AssetPath.TWANK, Sound.class);

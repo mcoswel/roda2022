@@ -220,38 +220,8 @@ public class OnlineGame extends BaseGame {
     }
 
 
-    public void executeBonusWin() {
-        stage.addActor(new Fireworks(rodaImpianNew.getAssetManager().get(AssetDesc.WINANIMATION)));
-        String dialogString = activePlayer.getName() + ", " + StringRes.WINBONUS + rodaImpianNew.getWheelParams().getScoreStrings();
-        if (bonusGiftImg != null) {
-            currentGui.getBonusWon().add(bonusGiftImg.getBonusIndex());
-        }
-        gameSound.playWinSound();
-        gameSound.playCheer();
-        vannaHost.dance();
-        currentGui.addBonus(bonusGiftImg.getBonusIndex());
-        showFinisDialog(dialogString);
-    }
 
-    public void executeLoseBonus() {
-        String dialogString = activePlayer.getName() + ", " + StringRes.LOSEBONUS;
-        gameSound.playAww();
-        gameSound.playTwank();
-        vannaHost.wrong();
-        showFinisDialog(dialogString);
-    }
 
-    private void showFinisDialog(String dialogString) {
-        ErrDiag errDiag = new ErrDiag(dialogString, skin) {
-            @Override
-            protected void result(Object object) {
-                showWinner();
-                hide();
-                super.result(object);
-            }
-        };
-        errDiag.show(stage);
-    }
 
     @Override
     public void checkBonusString(String bonusHolder) {
@@ -272,7 +242,7 @@ public class OnlineGame extends BaseGame {
                 } else {
                     label.remove();
                     if (completenessCheck()) {
-                        showWinner();
+                        sendObject(new WinBonus());
                     } else {
                         try {
                             if (isTurn()) {

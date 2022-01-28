@@ -37,8 +37,7 @@ public class LoadingScreenNew extends ScreenAdapter {
     private final SpriteBatch batch = new SpriteBatch();
     private float rotation;
     private final OrthographicCamera camera;
-    private final QuestionsSaves questionsSaves = new QuestionsSaves();
-    private final AsyncResult<Void> task;
+    private  AsyncResult<Void> task;
 
     public LoadingScreenNew(RodaImpianNew rodaImpian) {
         this.rodaImpian = rodaImpian;
@@ -97,9 +96,16 @@ public class LoadingScreenNew extends ScreenAdapter {
         assetManager.load(AssetDesc.FIRETRUCK);
         assetManager.load(AssetDesc.GOLDMUSIC);
         assetManager.load(AssetDesc.REDMUSIC);
+
+    }
+
+
+    @Override
+    public void show() {
         task = new AsyncExecutor(1).submit(new AsyncTask<Void>() {
             @Override
             public Void call() throws Exception {
+                 QuestionsSaves questionsSaves = new QuestionsSaves();
 
                 final Array<QuestionNew> mainGroup = questionsSaves.loadMainGroup();
                 final Array<QuestionNew> bonusGroup = questionsSaves.loadBonusGroup();
@@ -145,14 +151,7 @@ public class LoadingScreenNew extends ScreenAdapter {
                 }*/
                 return null;
             }
-        });
-    }
-
-
-    @Override
-    public void show() {
-        //LoadFromCSV.execute();
-    }
+        });    }
 
 
     @Override

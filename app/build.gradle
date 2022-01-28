@@ -19,7 +19,7 @@ android {
         applicationId "com.somboi.rodaimpian"
         minSdk 21
         targetSdk 31
-        versionCode 201
+        versionCode 202
         versionName "7.0"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -88,8 +88,11 @@ dependencies {
     implementation "com.github.barsoosayque:libgdxoboe:$libgdxoboe_version"
     api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
     implementation 'com.facebook.android:facebook-android-sdk:latest.release'
-    implementation 'com.facebook.android:audience-network-sdk:6.+'
+    implementation 'com.facebook.android:audience-network-sdk:6.8.0'
 
+    implementation 'com.applovin:applovin-sdk:+'
+    implementation 'com.applovin.mediation:facebook-adapter:+'
+    implementation 'com.applovin.mediation:google-adapter:+'
 }
 
 task copyAndroidNatives() {

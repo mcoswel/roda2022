@@ -128,7 +128,7 @@ public class LoadBadge {
                 Glide.with(context).load(R.drawable.teddy).into(img[index]);
             } else if (integer == 22) {
                 Glide.with(context).load(R.drawable.ultraman).into(img[index]);
-            } else if (integer == 23) {
+            } else {
                 Glide.with(context).load(R.drawable.voucher).into(img[index]);
             }
 
@@ -191,7 +191,7 @@ public class LoadBadge {
                 Glide.with(context).load(R.drawable.jersey).into(img[index]);
             } else if (integer == 22) {
                 Glide.with(context).load(R.drawable.jewel).into(img[index]);
-            }else if (integer == 23) {
+            }else {
                 Glide.with(context).load(R.drawable.airasia).into(img[index]);
             }
             index++;
