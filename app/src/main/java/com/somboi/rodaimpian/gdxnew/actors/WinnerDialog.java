@@ -143,17 +143,20 @@ public class WinnerDialog extends Dialog {
 
         if (winner.getUid() != null) {
             if (rodaImpianNew.getGameModes().equals(GameModes.SINGLE)
-                    && winner.getUid().equals(rodaImpianNew.getPlayer().getUid())) {
+                    && winner.getUid().equals(rodaImpianNew.getPlayer().getUid())
+            ) {
+
                 if (winner.getFullScore() > rodaImpianNew.getPlayer().getBestScore()) {
                     rodaImpianNew.getPlayer().setBestScore(winner.getFullScore());
                 }
+                PlayerSaves saves = new PlayerSaves();
+                rodaImpianNew.getPlayer().setTimesPlayed(rodaImpianNew.getPlayer().getTimesPlayed() + 1);
+                saves.savePlayerNew(rodaImpianNew.getPlayer());
+                if (rodaImpianNew.getPlayer().isLogged() && rodaImpianNew.getPlayer().getBestScore()>0) {
+                    rodaImpianNew.uploadScore();
+                }
             }
-            PlayerSaves saves = new PlayerSaves();
-            rodaImpianNew.getPlayer().setTimesPlayed(rodaImpianNew.getPlayer().getTimesPlayed() + 1);
-            saves.savePlayerNew(rodaImpianNew.getPlayer());
-            if (rodaImpianNew.getPlayer().isLogged()) {
-                rodaImpianNew.uploadScore();
-            }
+
         }
     }
 

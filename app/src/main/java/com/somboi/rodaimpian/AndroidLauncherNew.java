@@ -64,6 +64,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -116,6 +117,7 @@ public class AndroidLauncherNew extends AndroidApplication implements AndroInter
     private com.facebook.ads.InterstitialAd facebookInter;
     private RewardedInterstitialAd googleRewarded;
     private RewardedVideoAd facebookRewarded;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -154,6 +156,7 @@ public class AndroidLauncherNew extends AndroidApplication implements AndroInter
         facebookInter = new com.facebook.ads.InterstitialAd(this, getString(R.string.fb_inter_ads));
         facebookRewarded = new RewardedVideoAd(this, getString(R.string.fb_rewarded_ads));
 
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
     }
 
