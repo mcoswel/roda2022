@@ -321,6 +321,7 @@ public class OnlineScreen extends BaseScreenNew implements OnInterface {
                                 public void run() {
                                     statusLabel.remove();
                                     onlineGame.startRound();
+                                    logger.debug("Start turn");
                                 }
                             });
 
