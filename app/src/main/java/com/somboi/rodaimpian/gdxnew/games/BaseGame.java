@@ -678,6 +678,12 @@ public class BaseGame {
         currentGui.getProfilePic().addAction(Actions.moveTo(350f, 1150f, 1.5f));
         activePlayer.setFullScore(activePlayer.getFullScore() + activePlayer.getScore() + 200 * (gameRound + 1));
         currentGui.updateFullScore(activePlayer.getFullScore());
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                rodaImpianNew.showAds(gameRound);
+            }
+        },1.5f);
         increaseGameRound();
     }
 
@@ -690,7 +696,6 @@ public class BaseGame {
     }
 
     public void increaseGameRound() {
-        rodaImpianNew.showAds(gameRound);
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
