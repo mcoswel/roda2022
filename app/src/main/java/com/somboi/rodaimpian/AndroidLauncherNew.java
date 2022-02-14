@@ -368,9 +368,9 @@ public class AndroidLauncherNew extends AndroidApplication implements AndroInter
     @Override
     public void sahibba() {
         try {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.somboi.melayuscrabble")));
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.somboi.tekakata")));
         } catch (android.content.ActivityNotFoundException anfe) {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.somboi.melayuscrabble")));
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.somboi.tekakata")));
         }
     }
 

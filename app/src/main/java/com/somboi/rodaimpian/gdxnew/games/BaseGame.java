@@ -683,7 +683,7 @@ public class BaseGame {
             public void run() {
                 rodaImpianNew.showAds(gameRound);
             }
-        },1.5f);
+        },5f);
         increaseGameRound();
     }
 
