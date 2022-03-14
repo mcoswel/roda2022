@@ -21,7 +21,7 @@ public class IklanSahibba extends Dialog {
         getContentTable().defaults().pad(15f);
 
 
-        Label label = new Label("Maaf, iklan sebentar. Admin menjemput Tuan/Puan untuk mencuba permainan Wordle Bahasa Malaysia untuk Android", skin);
+        Label label = new Label("Admin menjemput anda mencuba permainan Sahibba yang boleh menyokong Offline & Online hingga 4 Pemain ", skin);
         label.setAlignment(Align.center);
         label.pack();
         label.setWrap(true);

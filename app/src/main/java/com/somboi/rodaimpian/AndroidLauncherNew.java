@@ -29,6 +29,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.backends.android.AndroidAudio;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.Timer;
 import com.bumptech.glide.Glide;
@@ -85,6 +86,7 @@ import com.somboi.rodaimpian.activities.LeaderBoard;
 import com.somboi.rodaimpian.activities.PlayerOnline;
 import com.somboi.rodaimpian.activities.RodaImpianNew;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
+import com.somboi.rodaimpian.gdxnew.interfaces.BoardInterface;
 import com.somboi.rodaimpian.gdxnew.interfaces.OnInterface;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.ChatOnline;
 import com.somboi.rodaimpian.gdxnew.utils.CopyPlayer;
@@ -155,9 +157,7 @@ public class AndroidLauncherNew extends AndroidApplication implements AndroInter
         AudienceNetworkAds.initialize(this);
         facebookInter = new com.facebook.ads.InterstitialAd(this, getString(R.string.fb_inter_ads));
         facebookRewarded = new RewardedVideoAd(this, getString(R.string.fb_rewarded_ads));
-
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-
     }
 
     private void getFaceBookDetail() {
@@ -368,9 +368,9 @@ public class AndroidLauncherNew extends AndroidApplication implements AndroInter
     @Override
     public void sahibba() {
         try {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.somboi.tekakata")));
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.somboi.sahibah")));
         } catch (android.content.ActivityNotFoundException anfe) {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.somboi.tekakata")));
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.somboi.sahibah")));
         }
     }
 
@@ -770,5 +770,31 @@ public class AndroidLauncherNew extends AndroidApplication implements AndroInter
         facebookRewarded.destroy();
         maxInter.destroy();
         maxRewardedAd.destroy();
+    }
+
+    @Override
+    public Array<PlayerOnline> getBoardPlayers(BoardInterface boardInterface) {
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Offline").child("jan2022");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Array<PlayerOnline> playerList = new Array<>();
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    PlayerOnline p = ds.getValue(PlayerOnline.class);
+                    playerList.add(p);
+                }
+                playerList.sort();
+                boardInterface.updateTable(playerList);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        return null;
     }
 }

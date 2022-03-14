@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CopyPlayer {
+
+
     public static PlayerOnline getPlayerOnline(PlayerNew player){
         PlayerOnline playerOnline = new PlayerOnline();
         playerOnline.name = player.getName();
@@ -66,6 +68,17 @@ public class CopyPlayer {
             playerOnline.bonusList.removeAll(toberemoved);
         }
         return playerOnline;
-
+    }
+    public static PlayerNew getPlayer (PlayerOnline playerOnline){
+        PlayerNew playerNew = new PlayerNew();
+        playerNew.setName(playerOnline.name);
+        playerNew.setUid(playerOnline.id);
+        playerNew.setPlayerGifts(playerOnline.giftsList);
+        playerNew.setBestScore(playerOnline.bestScore);
+        playerNew.setPicUri(playerOnline.picUri);
+        playerNew.setPlayerBonus(playerOnline.bonusList);
+        playerNew.setBankrupt(playerOnline.bankrupt);
+        playerNew.setTimesPlayed(playerOnline.timesplayed);
+        return playerNew;
     }
 }

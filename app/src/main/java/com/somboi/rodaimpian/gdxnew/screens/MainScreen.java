@@ -18,7 +18,7 @@ import java.util.List;
 
 public class MainScreen extends BaseScreenNew {
     private MenuFactory menuFactory;
-
+    private boolean sahiba;
     public MainScreen(RodaImpianNew rodaImpianNew) {
         super(rodaImpianNew);
         Music music = assetManager.get(AssetDesc.REDMUSIC);
@@ -44,12 +44,15 @@ public class MainScreen extends BaseScreenNew {
             LoginDiag loginDiag = new LoginDiag(skin, rodaImpianNew);
             loginDiag.show(stage);
         }
-        if (rodaImpianNew.getPlayer().isLogged()) {
-            if (rodaImpianNew.getPlayer().getTimesPlayed() > 0 && rodaImpianNew.getPlayer().getTimesPlayed() % 10 == 0) {
-                IklanSahibba iklanSahibba = new IklanSahibba(skin, rodaImpianNew);
-                iklanSahibba.show(stage);
+
+            if (rodaImpianNew.getPlayer().getTimesPlayed() > 0 && rodaImpianNew.getPlayer().getTimesPlayed() % 5 == 0) {
+                if (!sahiba) {
+                    IklanSahibba iklanSahibba = new IklanSahibba(skin, rodaImpianNew);
+                    iklanSahibba.show(stage);
+                    sahiba = true;
+                }
             }
-        }
+
     }
 
     @Override

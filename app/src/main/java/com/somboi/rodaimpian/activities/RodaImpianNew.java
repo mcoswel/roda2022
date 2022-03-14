@@ -10,6 +10,7 @@ import com.somboi.rodaimpian.AndroInterface;
 import com.somboi.rodaimpian.gdxnew.assets.QuestionNew;
 import com.somboi.rodaimpian.gdxnew.entitiesnew.PlayerNew;
 import com.somboi.rodaimpian.gdxnew.games.GameModes;
+import com.somboi.rodaimpian.gdxnew.interfaces.BoardInterface;
 import com.somboi.rodaimpian.gdxnew.interfaces.OnInterface;
 import com.somboi.rodaimpian.gdxnew.onlineclasses.ApplyForce;
 import com.somboi.rodaimpian.gdxnew.screens.GameScreen;
@@ -41,6 +42,7 @@ public class RodaImpianNew extends Game {
     private SpinOnline spinOnline;
     private Music music;
     private boolean rewardedLoaded;
+
     public RodaImpianNew(AndroInterface androInterface) {
         this.androInterface = androInterface;
     }
@@ -249,6 +251,7 @@ public class RodaImpianNew extends Game {
     }
 
     public void openLeaderBoard() {
+
         androInterface.leaderboardActivity();
     }
 
@@ -260,7 +263,7 @@ public class RodaImpianNew extends Game {
         androInterface.chatActivity();
     }
 
-    public void logout(){
+    public void logout() {
         androInterface.logout();
     }
 
@@ -271,7 +274,8 @@ public class RodaImpianNew extends Game {
     public void getTopPlayers() {
         androInterface.getTopPlayers();
     }
-    public void updateTopPlayer(List<PlayerOnline> topPlayers){
+
+    public void updateTopPlayer(List<PlayerOnline> topPlayers) {
         if (!topPlayers.isEmpty()) {
             mainScreen.updateTopPlayer(topPlayers);
         }
@@ -303,5 +307,9 @@ public class RodaImpianNew extends Game {
 
     public void openPlayStore() {
         androInterface.sahibba();
+    }
+
+    public void getLeaderBoardPlayers(BoardInterface boardInterface) {
+        androInterface.getBoardPlayers(boardInterface);
     }
 }

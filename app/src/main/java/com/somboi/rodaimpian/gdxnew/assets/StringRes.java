@@ -137,6 +137,7 @@ public class StringRes {
     public static final String MUSICOFF = "Off Muzik";
     public static final String TOPPLAYER = "Pemain Legend: ";
     public static final String SORRY = "Maaf";
+    public static final String NORECORD ="No Record" ;
 
     //159.223.73.205
 

@@ -1,6 +1,8 @@
 package com.somboi.rodaimpian;
 
+import com.badlogic.gdx.utils.Array;
 import com.somboi.rodaimpian.activities.PlayerOnline;
+import com.somboi.rodaimpian.gdxnew.interfaces.BoardInterface;
 import com.somboi.rodaimpian.gdxnew.interfaces.OnInterface;
 
 import java.util.List;
@@ -38,4 +40,6 @@ public interface AndroInterface {
     void showAds(int gameRound);
 
     void sahibba();
+
+    Array<PlayerOnline> getBoardPlayers(BoardInterface boardInterface);
 }
